@@ -1,0 +1,7 @@
+# conteggi del PMT3 a certe tensioni scritte sopra le colonne
+# 1600 1700 1800 1900 2000
+0 1 38 126 7767
+0 1 26 109 5545
+0 2 22 137 6020
+0 1 4 131 5886
+0 4 21 145 6363

@@ -1,0 +1,7 @@
+# conteggi del PMT4 a certe tensioni scritte sopra le colonne
+# 1600 1700 1800 1900 2000
+0 4 84 530 2049
+0 1 119 525 2022
+0 7 86 507 2152
+0 6 95 501 1186
+0 7 119 496 950
