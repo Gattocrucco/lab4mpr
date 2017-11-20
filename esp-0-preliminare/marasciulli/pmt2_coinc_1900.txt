@@ -1,0 +1,12 @@
+# coincidenze a 2 con con pmt4 a 1800 V e soglia=352.9 mV 
+# alim=1900 V, clock=10 s
+# tipo dati:
+#soglia (mV)
+#conteggio(2)
+#coincidenze(2)
+#
+-411 -296.0 -198.2 -101.2
+1264 1655    3902   15005
+1220 1637    3824   15603
+103  96       131    109
+105  111      107    143

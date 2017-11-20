@@ -58,3 +58,37 @@ for i in range(len(dati[2])):
 
 sys.stdout.close()
 sys.stdout=sys.__stdout__
+
+## COINCIDENZE A 2
+
+# ciclo di dati
+V=array([1700,1800,1900,2000])
+files=["pmt2_coinc_1700.txt","pmt2_coinc_1800.txt","pmt2_coinc_1900.txt","pmt2_coinc_2000.txt"]
+
+py.figure(1)
+py.rc("font",size=16)
+py.grid(linestyle="--",color="black")
+py.minorticks_on()
+
+for k in range(len(files)):
+    S1,S2,S3,S4=py.loadtxt(files[k],unpack=True)
+    s1=array([S1[0],py.mean((S1[1],S1[2])),py.mean((S1[3],S1[4]))])  # non so fare di meglio
+    s2=array([S2[0],py.mean((S2[1],S2[2])),py.mean((S2[3],S2[4]))])
+    s3=array([S3[0],py.mean((S3[1],S3[2])),py.mean((S3[3],S3[4]))])
+    s4=array([S4[0],py.mean((S4[1],S4[2])),py.mean((S4[3],S4[4]))])
+    # riduco l'informazione
+    d1=array([s1[0],s1[2]/s1[1]])
+    d2=array([s2[0],s2[2]/s2[1]])
+    d3=array([s3[0],s3[2]/s3[1]])
+    d4=array([s4[0],s4[2]/s4[1]])
+    # raccolgo per fare il grafico
+    x=array([d1[0],d2[0],d3[0],d4[0]])
+    y=array([d1[1],d2[1],d3[1],d4[1]])
+    py.errorbar(x,y,linestyle="--",marker="o",label="%i V"%V[k])
+
+py.title("Calibrazione PMT2",size=18)
+py.xlabel("soglia discriminatore  (mV)")
+py.ylabel("rapporto (S+N)/N")
+py.legend(loc="best",fontsize=10)
+py.tight_layout()
+py.show()
