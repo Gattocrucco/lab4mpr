@@ -1,0 +1,30 @@
+CALIBRAZIONE PMT4 
+
+alimentazione=1700 V
+-411.0 mV 	 rapporto S/(S+N)= 0.2+/-0.1 
+-302.9 mV 	 rapporto S/(S+N)= 0.26+/-0.08 
+-198.0 mV 	 rapporto S/(S+N)= 0.28+/-0.05 
+-102.0 mV 	 rapporto S/(S+N)= 0.17+/-0.02 
+
+
+alimentazione=1800 V
+-102.0 mV 	 rapporto S/(S+N)= 0.066+/-0.006 
+-202.3 mV 	 rapporto S/(S+N)= 0.11+/-0.01 
+-298.0 mV 	 rapporto S/(S+N)= 0.16+/-0.02 
+-411.0 mV 	 rapporto S/(S+N)= 0.17+/-0.02 
+
+
+alimentazione=1900 V
+-411.0 mV 	 rapporto S/(S+N)= 0.048+/-0.004 
+-306.3 mV 	 rapporto S/(S+N)= 0.046+/-0.004 
+-200.0 mV 	 rapporto S/(S+N)= 0.016+/-0.001 
+-100.0 mV 	 rapporto S/(S+N)= 0.0040+/-0.0003 
+
+
+alimentazione=2000 V
+-100.5 mV 	 rapporto S/(S+N)= 0.00096+/-0.00008 
+-200.0 mV 	 rapporto S/(S+N)= 0.00112+/-0.00009 
+-300.7 mV 	 rapporto S/(S+N)= 0.0016+/-0.0001 
+-411.0 mV 	 rapporto S/(S+N)= 0.0031+/-0.0003 
+
+
