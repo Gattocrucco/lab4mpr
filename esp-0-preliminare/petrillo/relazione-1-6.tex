@@ -7,9 +7,19 @@
 \usepackage{graphicx}
 \usepackage{siunitx}
 
+\setlength{\marginparwidth}{95pt}
+
 \newcommand*\de{\mathrm{d}}
 
+\title{Relazione laboratorio particelle\\Esperienza 0 (preliminare)}
+\author{Andrea Marasciulli\\
+Giacomo Petrillo\\
+Roberto Ribatti}
+\date{Dal 13 al 19 novembre 2017\footnote{Compilazione \LaTeX{} di questo documento: \today.}}
+
 \begin{document}
+	
+\maketitle
 
 \marginpar{punto 1}
 
@@ -91,5 +101,53 @@ Trovando due soglie del trigger più vicini possibili in modo che con una a volt
 Il problema di questa procedura è che il trigger dell'oscilloscopio funziona in modo diverso dal discriminatore, quindi non è detto che a parità di soglia vengano selezionati gli stessi segnali.
 Con la soglia del discriminatore al massimo otteniamo le soglie del trigger 368 e \SI{376}{mV},
 mentre il TP del discriminatore segna \SI{0.411}V, quindi lo scarto è circa \SI8\percent.
+
+Il ritardo è dato da quello dei cavi (\SI3{ns}) più quello del discriminatore.
+Puntando i cursori dell'oscilloscopio otteniamo un ritardo di \SI{20}{ns}
+quindi il ritardo del discriminatore è circa \SI{17}{ns}.
+
+Ci è difficile misurare il jitter del discriminatore perché il trigger dell'oscilloscopio funziona in modo diverso dal discriminatore, perciò facciamo una stima superiore in questo modo:
+mettiamo la soglia del trigger ai \SI{376}{mV} trovati prima che facevano circa coincidere i segnali selezionati, triggerando il segnale del PMT, e guardiamo a occhio sull'oscilloscopio la variazione temporale del fronte di salita dell'uscita del discriminatore; otteniamo \SI{\pm1}{ns}.
+
+\marginpar{punto 5}
+
+\paragraph{Documentazione contatore}
+
+Modello: 130PCZ,
+\marginpar{Siamo sicuri o era l'unico datasheet?}%
+frequenza massima \SI{70}{MHz},
+conta fino a $10^8-1$,
+l'input deve durare almeno \SI7{ns},
+l'output ``clock'' è un'onda quadra a \SI1{kHz}.
+\marginpar{Qual è il duty del clock? \SI{50}\percent?}
+
+\paragraph{Clock del contatore}
+
+Si può collegare il clock all'ingresso~8 per misurare il tempo.
+Si può impostare in modo che dopo $10^n$ $(n=2,\dots,8)$
+\marginpar{o era $1,\dots,8$?}%
+conteggi si fermi.
+Se avviamo il conteggio con il pulsante <<start>> o con l'ingresso corrispondente
+e lo facciamo fermare in automatico con il clock,
+introduciamo un'incertezza sul tempo totale dovuta al non allineamento dello start con il clock\footnote{Potremmo darlo per ovvio, però notiamo che quasi sicuramente i comandi manuali/ingresso non vengono allineati dallo strumento con il fronte successivo del clock perché gli ingressi possono definire intervalli di tempo con molta più granularità di \SI1{ms}.}.
+L'incertezza è circa di mezzo periodo, quindi \SI{.5}{ms}.
+
+Visualizziamo il clock sull'oscilloscopio, che calcola una frequenza di \SI{0.99996}{kHz},
+cioè la discrepanza è di \SI3s al giorno.
+Non sappiamo in che proporzione i due strumenti contribuiscono all'incertezza.
+\marginpar{Possiamo fare delle supposizioni?}
+
+\paragraph{Primo test di conteggio}
+
+Montiamo questo circuito:
+
+\includegraphics[width=9cm]{fig5a}
+
+Il trigger dell'oscilloscopio è impostato a \SI{376}{mV}.
+Mettiamo il clock a 1000 (\SI1s) e facciamo un po' di conteggi.
+Il contatore gira intorno a 20;
+la frequenza calcolata dall'oscilloscopio oscilla ampiamente perché probabilmente la calcola su intervalli di tempo piccoli rispetto al tasso di conteggi,
+quando si stabilizza per qualche secondo gira intorno a \SI{30}{Hz},
+quindi non troviamo incongruenze.
 
 \end{document}
