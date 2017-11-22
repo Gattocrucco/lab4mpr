@@ -1,0 +1,17 @@
+# conteggi PMT2 10s
+# file copiato da quello di Marasciulli e ricontrollato
+232
+264
+308
+236
+281
+257
+239
+245
+244
+251
+281
+267
+218
+267
+280

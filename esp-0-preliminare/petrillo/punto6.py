@@ -5,18 +5,15 @@
 from pylab import *
 import pylab as py
 from scipy.special import loggamma
+import lab
+from matplotlib.gridspec import GridSpec
 
 # dati
-n=py.loadtxt("pm2 1s.txt",unpack=True)
+n=py.loadtxt("pm2 10s.txt",unpack=True)
 
 mu=py.mean(n)
-N=10**3 # N del monte carlo
+N=10**4 # N del monte carlo
 
-def maxlogL(ki):
-    ni=len(ki)
-    km=py.mean(ki)
-    return ni*km*log(km)-ni*km-py.sum(loggamma(1+ki)) if km != 0 else 0
-    
 def poisson(k,mu):
     return py.exp( k*log(mu)-mu-loggamma(1+k)   ) if mu != 0 else where(k != 0, 0, 1)   
     
@@ -25,39 +22,39 @@ def chi2(ki):
     e=len(ki)*poisson(k,py.mean(ki))
     return py.sum((c-e)**2/py.where(e!=0,e,1))
 
-
-like=py.empty((N,2))
+chi2s=py.empty(N)
 for i in range(N):
     cont=py.poisson(mu,len(n))
-    s=maxlogL(cont)
-    like[i,0]=s
-    like[i,1]=chi2(cont)
+    chi2s[i]=chi2(cont)
     
-perc=py.empty(2)
-perc[0]=py.sum(like[:,0]<maxlogL(n))
-perc[1]=py.sum(like[:,1]>chi2(n))
+pvalue = py.sum(chi2s > chi2(n)) / N
 
-perc /= N
-
-figure('dati')
+figure('dati', figsize=[ 6.86,  2.81]).set_tight_layout(True)
 clf()
-hist(n, bins=arange(min(n)-.5, max(n)+1.5, 1))
+grid = GridSpec(1, 3)
 
-py.figure("max log L Poisson")
-py.clf()
+subplot(grid[0,:2])
 
-py.subplot(121)
-py.hist(like[:,0],bins="sqrt" if N <= 10**4 else 100,color="blue",label="p = %.3f" % perc[0])
-lims=py.ylim()
-py.plot([maxlogL(n)]*2,lims,'-r')
-py.legend()
+ks = arange(min(n), max(n) + 1)
+bar(ks, poisson(ks, mu) * len(n), label='Poissoniana, $\\mu=\\langle k \\rangle$', color='lightgray', width=1)
 
-py.subplot(122)
-py.hist(like[:,1],bins="sqrt" if N <= 10**4 else 100,color="green",label="p = %.3f" % perc[1])
-lims=py.ylim()
-oriz=py.std(like[:,1])
-py.xlim(0,oriz*3)
-py.plot([chi2(n)]*2,lims,'-r')
-py.legend()
+hist(n, bins=arange(min(n)-0.5, max(n)+1.5)+.2, label='Dati, $\\langle k \\rangle=$%s' % (lab.util_format(mu, sqrt(mu)/sqrt(len(n)), pm='@', comexp=False).split(' @')[0],), color='darkgray', width=.6)
+
+legend(loc=1, fontsize='small')
+xlabel('Conteggio')
+ylabel('Occorrenze')
+title('Test di conteggio')
+
+subplot(grid[0,-1])
+
+hist(log(1+chi2s), bins='auto', color='darkgray', label='MC N=%d' % N)
+lims = ylim()
+plot([log(1+chi2(n))]*2, lims, '-k', label='$\\log(1+\\chi^2(\\mathrm{dati}))$\n$p=%.2f$' % pvalue)
+ylim(lims)
+
+ylabel('Occorrenze')
+xlabel('$\\log(1+\\chi^2)$')
+legend(loc=1, fontsize='small')
+title('MC $\\chi^2$')
 
 py.show()

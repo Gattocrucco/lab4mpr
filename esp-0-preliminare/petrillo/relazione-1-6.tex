@@ -150,4 +150,65 @@ la frequenza calcolata dall'oscilloscopio oscilla ampiamente perché probabilmen
 quando si stabilizza per qualche secondo gira intorno a \SI{30}{Hz},
 quindi non troviamo incongruenze.
 
+\paragraph{Distribuzione dei conteggi}
+
+Ci aspettiamo che, per un tasso costante, i conteggi siano poissoniani con
+$\text{media} = \text{tasso}\times \text{tempo}$.
+Lo stimatore di massima verosimiglianza per la media è la media aritmetica ed è corretto\footnote{Unbiased.}.
+La varianza dello stimatore è la media quindi,
+con la convenzione standard di calcolare la varianza nella stima,
+per $k$ conteggi il risultato per la media $\mu$ sarà scritto come
+\[ \text{<<$\mu = k \pm \sqrt k$>>} \]
+Questo è problematico per $k$ piccoli perché la varianza varia velocemente,
+risolveremo nell'analisi dati.
+
+\marginpar{punto 6}
+
+\paragraph{Secondo test di conteggio}
+
+Facciamo una serie di conteggi trascrivendo i risultati.
+Facciamo 45 conteggi con clock 1000 e 15 con clock \num{10000}.
+Verifichiamo che siano poissoniane con un test del $\chi^2$ senza allargare i bin rispetto ai valori discreti;
+poiché il numero di conteggi è basso calcoliamo la distribuzione della statistica con monte carlo.
+Risultati:
+
+\noindent\includegraphics[width=\textwidth]{fig6a}
+
+\noindent\includegraphics[width=\textwidth]{fig6b}
+
+Vediamo che la poissonianietà della serie da \SI{10}s è in dubbio.
+
+\paragraph{Tempo dall'accensione}
+
+Può darsi che il PMT, dopo l'accensione, ci metta un po' ad arrivare in una condizione stazionaria di funzionamento.
+I PMT 3 e 4 li abbiamo lasciati spenti, quindi li usiamo per fare un test.
+Accendiamo il PMT~3 e subito prendiamo una serie di 15 conteggi con clock~1000.
+Poi accendiamo il PMT~4 e prendiamo una serie, poi proseguiamo alternando PMT~3 e 4,
+per un totale di 5 serie. Grafichiamo le medie con la varianza nell'ipotesi di poissoniane:
+
+\includegraphics[width=7cm]{fig6c}
+
+Chiaramente il tasso varia nel tempo, quindi in futuro aspetteremo sempre qualche minuto dopo che abbiamo acceso i PMT e almeno 1~minuto quando cambiamo tensione di alimentazione.
+
+\paragraph{Luce ambientale}
+
+Verifichiamo la sensibilità alla luce esterna passando una torcia vicino allo scintillatore e al PMT e verificando se il numero di conteggi cambia sensibilmente.
+Testiamo i PMT 2, 3, 4.
+\begin{center}
+\begin{tabular}{c|p{50ex}}
+	PMT & Risultato \\
+	\hline
+	4 &
+	Troviamo un ``buco ottico'' sull'attacco della guida ottica al PMT,
+	puntando la torcia i conteggi passano da $\approx 100$ a $\approx 200$. \\
+	3 &
+	Anche qui l'attacco del PMT alla guida ottica è problematico;
+	la luce entra riflettendosi sulla base del PMT.
+	I conteggi variano da $\approx 100$ a $\approx 280$.\\
+	2 &
+	Tutto ok.
+\end{tabular}
+\end{center}
+Sistemiamo tutto con il nastro isolante e ricontrolliamo.
+
 \end{document}
