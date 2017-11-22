@@ -63,7 +63,9 @@ sys.stdout=sys.__stdout__
 
 # ciclo di dati
 V=array([1700,1800,1900,2000])
-files=["pmt2_coinc_1700.txt","pmt2_coinc_1800.txt","pmt2_coinc_1900.txt","pmt2_coinc_2000.txt"]
+files=["pmt4_coinc_1700.txt","pmt4_coinc_1800.txt","pmt4_coinc_1900.txt","pmt4_coinc_2000.txt"]
+risu=open("calibr_pmt4.txt","w")
+print("CALIBRAZIONE PMT4 \n",file=risu)
 
 py.figure(1)
 py.rc("font",size=16)
@@ -77,18 +79,24 @@ for k in range(len(files)):
     s3=array([S3[0],py.mean((S3[1],S3[2])),py.mean((S3[3],S3[4]))])
     s4=array([S4[0],py.mean((S4[1],S4[2])),py.mean((S4[3],S4[4]))])
     # riduco l'informazione
-    d1=array([s1[0],s1[2]/s1[1]])
-    d2=array([s2[0],s2[2]/s2[1]])
-    d3=array([s3[0],s3[2]/s3[1]])
-    d4=array([s4[0],s4[2]/s4[1]])
+    d1=array([s1[0],uf(s1[2],sqrt(s1[2]))/uf(s1[1],sqrt(s1[1]))])
+    d2=array([s2[0],uf(s2[2],sqrt(s2[2]))/uf(s2[1],sqrt(s2[1]))])
+    d3=array([s3[0],uf(s3[2],sqrt(s3[2]))/uf(s3[1],sqrt(s3[1]))])
+    d4=array([s4[0],uf(s4[2],sqrt(s4[2]))/uf(s4[1],sqrt(s4[1]))])
     # raccolgo per fare il grafico
     x=array([d1[0],d2[0],d3[0],d4[0]])
     y=array([d1[1],d2[1],d3[1],d4[1]])
-    py.errorbar(x,y,linestyle="--",marker="o",label="%i V"%V[k])
+    py.errorbar(x,med(y),err(y),linestyle="--",marker="o",label="%i V"%V[k])
+    # li salvo sul file di testo
+    print("alimentazione=%i V"%V[k],file=risu)
+    for j in range(len(x)):
+        print("{:.1f} mV".format(x[j]), "\t rapporto S/(S+N)= {:.1u} ".format(y[j]),file=risu)
+    print("\n",file=risu)
 
-py.title("Calibrazione PMT2",size=18)
+py.title("Calibrazione PMT4",size=18)
 py.xlabel("soglia discriminatore  (mV)")
-py.ylabel("rapporto (S+N)/N")
+py.ylabel("rapporto S/(S+N)")
 py.legend(loc="best",fontsize=10)
 py.tight_layout()
 py.show()
+risu.close()
