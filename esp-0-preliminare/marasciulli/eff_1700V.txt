@@ -1,0 +1,10 @@
+# variazione parametri pmt3 per averne l'efficienza
+# V=1700 V
+# ogni colonna è:
+#soglia
+#coincidenze a 2
+#coincidenze a 3
+
+-408  -304.4  -200.3  -101.8
+140   143   127   148
+2    7   21   79
