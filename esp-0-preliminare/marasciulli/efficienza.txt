@@ -1,0 +1,28 @@
+alimentazione pmt3=1700 V
+-408.0 mV 	 efficienza non correlata= 0.01+/-0.01 
+-304.4 mV 	 efficienza non correlata= 0.05+/-0.02 
+-200.3 mV 	 efficienza non correlata= 0.17+/-0.04 
+-101.8 mV 	 efficienza non correlata= 0.53+/-0.07 
+
+
+alimentazione pmt3=1800 V
+-407.0 mV 	 efficienza non correlata= 0.31+/-0.05 
+-306.1 mV 	 efficienza non correlata= 0.54+/-0.08 
+-200.3 mV 	 efficienza non correlata= 0.8+/-0.1 
+-101.8 mV 	 efficienza non correlata= 1.0+/-0.1 
+
+
+alimentazione pmt3=1900 V
+-407.0 mV 	 efficienza non correlata= 0.9+/-0.1 
+-294.3 mV 	 efficienza non correlata= 1.0+/-0.1 
+-193.8 mV 	 efficienza non correlata= 1.0+/-0.1 
+-107.1 mV 	 efficienza non correlata= 1.0+/-0.1 
+
+
+alimentazione pmt3=2000 V
+-408.0 mV 	 efficienza non correlata= 1.0+/-0.1 
+-305.3 mV 	 efficienza non correlata= 1.0+/-0.1 
+-208.2 mV 	 efficienza non correlata= 1.0+/-0.1 
+-107.1 mV 	 efficienza non correlata= 1.0+/-0.1 
+
+
