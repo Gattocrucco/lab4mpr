@@ -1,3 +1,5 @@
+os.chdir("C:\\Users\\andre\\Documents\\GitHub\\lab4mpr\\esp-0-preliminare\\petrillo")
+
 from pylab import *
 from scipy.special import expi
 import lab
@@ -9,6 +11,7 @@ v=array([i for i in range(1700,2100,100)])
 figure('efficienza').set_tight_layout(True)
 clf()
 grid()
+sys.stdout=open("C:\\Users\\andre\\desktop/andrea/laboratorio 4/esperienza preliminare/efficienza.txt","w")
 
 for j in range(len(v)):
     S = loadtxt("eff_%dV.txt" % v[j], unpack=True)
@@ -32,3 +35,12 @@ ylabel("efficienza")
 
 legend(loc="lower right", fontsize='small')
 show()
+
+sys.stdout.close()
+sys.stdout=sys.__stdout__
+
+num=uf(110,sqrt(110))
+num/=10
+eta=uf(0.80,0.03)
+Rm=num/eta
+print("flusso di raggi cosmici=",Rm)
