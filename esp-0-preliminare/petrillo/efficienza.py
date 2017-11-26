@@ -9,8 +9,8 @@ gm = 0.57721566490153286 # euler-mascheroni
 v=array([i for i in range(1700,2100,100)])
 
 figure('efficienza').set_tight_layout(True)
-py.rc("font"=size16)
-
+py.rc("font",size=16)
+clf()
 grid()
 sys.stdout=open("C:\\Users\\andre\\desktop/andrea/laboratorio 4/esperienza preliminare/efficienza.txt","w")
 
@@ -34,7 +34,6 @@ title("Efficienza PMT3",size=18)
 xlabel("soglia (mV)")
 ylabel("efficienza")
 
-py.yscale("log")
 legend(loc="lower right", fontsize='small')
 show()
 
