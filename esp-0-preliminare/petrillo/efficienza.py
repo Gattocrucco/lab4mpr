@@ -9,7 +9,8 @@ gm = 0.57721566490153286 # euler-mascheroni
 v=array([i for i in range(1700,2100,100)])
 
 figure('efficienza').set_tight_layout(True)
-clf()
+py.rc("font"=size16)
+
 grid()
 sys.stdout=open("C:\\Users\\andre\\desktop/andrea/laboratorio 4/esperienza preliminare/efficienza.txt","w")
 
@@ -29,10 +30,11 @@ for j in range(len(v)):
         print("{:.1f} mV".format(x[k]), "\t efficienza = %s" % lab.xe(y[k], dy[k]))
     print("\n")
     
-title("Efficienza PMT3")
+title("Efficienza PMT3",size=18)
 xlabel("soglia (mV)")
 ylabel("efficienza")
 
+py.yscale("log")
 legend(loc="lower right", fontsize='small')
 show()
 
