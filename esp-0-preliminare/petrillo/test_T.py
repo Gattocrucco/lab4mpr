@@ -4,6 +4,7 @@ file3 = ['test_T_pmt3_%d.txt' % i for i in range(3)]
 file4 = ['test_T_pmt4_%d.txt' % i for i in range(2)]
 
 labels = ['PMT 3', 'PMT 4']
+colors = [3*[0.5], 'black']
 
 figure('test_T', figsize=[ 3.98,  2.6 ]).set_tight_layout(True)
 clf()
@@ -19,7 +20,7 @@ for j in range(2):
         dmu[i] = sqrt(mu[i]) / sqrt(len(data))
     
     # plot
-    errorbar(1 + arange(len(mu)), mu, yerr=dmu, capsize=2, fmt='.', label=labels[j])
+    errorbar(1 + arange(len(mu)), mu, yerr=dmu, capsize=2, fmt='.', label=labels[j], color=colors[j])
 
 grid()
 xticks([1,2,3])

@@ -13,6 +13,10 @@
 
 \setlength{\marginparwidth}{95pt}
 
+\sisetup{%
+separate-uncertainty=true,
+multi-part-units=single}
+
 \newcommand*\de{\mathrm{d}}
 \newcommand*\pdv[2]{\frac{\partial #1}{\partial #2}}
 
@@ -234,12 +238,10 @@ ovvero una coincidenza casuale ogni 3 ore.
 
 \subsection*{Tempi di propagazione dei segnali}
 
-\marginpar{punto 9}%
-
 Usiamo l'oscilloscopio per visualizzare le coincidenze, ovvero colleghiamo i due discriminatori utilizzati al nostro strumento ed osserviamo degli impulsi NIM quasi simultanei, in particolare vediamo che il segnale che arriva più tardi si discosta solo di qualche nanosecondo da quello precedente, ma questa asincronia non ci causa nessun problema perché vale al massimo il 10\% della lunghezza dei nostri impulsi.
 Ciò non dovrebbe mascherare l'arrivo di una seconda coincidenza in quell'intervallo di tempo perché il rate atteso è di decine di hertz, come già detto nella sezione \textbf{calibrazione}, che equivale in media al passaggio di un raggio cosmico ogni decimo di secondo in caso di accettanza geometrica unitaria.
 
-Per trovare il miglior punto di lavoro inseriamo nel crate due \emph{delay unit} che colleghiamo in serie ai discriminatori di cui sopra. Prima di effettuare i conteggi testiamo una delay unit mandandole in ingresso l'onda quadra data dal clock dello scaler. Confermiamo che il ritardo minimo introdotto da questo modulo è 2.5$\pm$0.2\! ns e che tutti gli altri inseribili sono compatibili con quanto dichiarato con un'incertezza integrale di meno del 10\% e una differenziale di meno di \SI{0.2}{ns}. La \emph{Figura \ref{curv}} mostra la curva di cavo che, come atteso, mostra un massimo di conteggi quando il ritardo relativo è inferiore alla durata dell'impulso del discriminatore ed è quasi nulla altrove. La variabile utilizzata è $\Delta t=D2-D4$ dove questi ultimi sono i ritardi selezionati per i rispettivi PMT. Nel $\Delta t$ non compaiono termini dipendenti dai cavi coassiali utilizzati perché i due segnali sono stati collegati ai vari moduli NIM con cavi di uguale lunghezza.
+Per trovare il miglior punto di lavoro inseriamo nel crate due \emph{delay unit} che colleghiamo in serie ai discriminatori di cui sopra. Prima di effettuare i conteggi testiamo una delay unit mandandole in ingresso l'onda quadra data dal clock dello scaler. Confermiamo che il ritardo minimo introdotto da questo modulo è 2.5$\pm$0.2\! ns e che tutti gli altri inseribili sono compatibili con quanto dichiarato con un'incertezza integrale di meno del \SI{10}\% e una differenziale di meno di \SI{0.2}{ns}. La \autoref{curv} mostra la curva di cavo che, come atteso, mostra un massimo di conteggi quando il ritardo relativo è inferiore alla durata dell'impulso del discriminatore ed è quasi nulla altrove. La variabile utilizzata è $\Delta t=D2-D4$ dove questi ultimi sono i ritardi selezionati per i rispettivi PMT. Nel $\Delta t$ non compaiono termini dipendenti dai cavi coassiali utilizzati perché i due segnali sono stati collegati ai vari moduli NIM con cavi di uguale lunghezza.
 
 \begin{figure}[h]
 \centering
@@ -255,28 +257,29 @@ Per trovare il miglior punto di lavoro inseriamo nel crate due \emph{delay unit}
 
 \marginpar{punto 10}%
 
-Dopo aver tolto le delay unit abbiamo variato la tensione di un PMT  e la soglia del discriminatore a cui era collegato mentre l'altro era lasciato ad un punto di lavoro costante in modo che non influenzasse le misure fatte sul primo. Abbiamo analizzato dapprima il PMT2 lasciando fisso il 4 ad una tensione nominale V$_4=1800$\! V ed una soglia V$_{thr_4}=-353\pm2$\! mV in modo che le concidenze casuali non potessero verificarsi in un intervallo di tempo di 10\! s. 
-Il rapporto tra le coincidenze ed i conteggi rappresenta il rapporto tra segnale e segnale più rumore, in quanto il numero mostrato dallo scaler comprende sia i disturbi che le particelle. Il risultato è visibile in \emph{Figura \ref{test1}}.
+Dopo aver tolto le delay unit abbiamo variato la tensione di un PMT  e la soglia del discriminatore a cui era collegato mentre l'altro era lasciato ad un punto di lavoro costante in modo che non influenzasse le misure fatte sul primo.
+Abbiamo scelto il punto di lavoro costante in modo che sicuramente le coincidenze casuali fossero minori di \SI{0.1}{s^{-1}}.
+Abbiamo analizzato dapprima il PMT2 lasciando fisso il 4 ad una tensione nominale $V_4=\SI{1800} V$ ed una soglia $V_{thr_4}=-353\pm2\,\mathrm{mV}$. 
+Il rapporto tra coincidenze e conteggi meno coincidenze stima il rapporto segnale/rumore.
+Il risultato è visibile in \autoref{test1}.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=8 cm]{calib_pmt2}
-\caption{Rapporti S/(S+N) per il PMT2 in diversi punti di lavoro.}
+\caption{Rapporti S/N per il PMT2 in diversi punti di lavoro.}
 \label{test1}
 \end{figure}
 
-La stessa cosa è stata fatta per il PMT4 lasciando il PMT2 al punto di lavoro V$_2=1820$\! V e V$_{thr_2}=-298\pm2$\! mV come mostrato in \emph{Figura \ref{test2}}.
+La stessa cosa è stata fatta per il PMT4 lasciando il PMT2 al punto di lavoro V$_2=1820$\! V e V$_{thr_2}=-298\pm2$\! mV come mostrato in \autoref{test2}.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=8 cm]{calib_pmt4}
-\caption{Rapporti S/(S+N) per il PMT4 in diversi punti di lavoro.}
+\caption{Rapporti S/N per il PMT4 in diversi punti di lavoro.}
 \label{test2}
 \end{figure}
 
 \subsection*{Efficienza assoluta}
-
-\marginpar{punto 11}%
 
 \paragraph{Analisi statistica}
 
@@ -378,15 +381,32 @@ Notiamo che questa notazione è poco utile quando $\epsilon$ è vicina a 0 o 1 o
 
 \paragraph{Misura}
 
-Per misurare l'efficienza assoluta del PMT3 è necessario eseguire i rapporti tra le coincidenze di tutti i tre rivelatori e quelle dei due più esterni. Per fare ciò abbiamo usato un secondo modulo di coincidenze per visualizzare quelle di tutti e tre. Non avendo ancora analizzato i dati riguardanti la sezione precedente, abbiamo stimato il punto di lavoro V$=1800$\! mV e V$_{thr}=-200$\! mV essere il migliore per i fotomoltiplicatori esterni. Quindi abbiamo variato soglia e alimentazione di quello centrale e disegnato il grafico di \emph{Figura \ref{eff}} per varie tensioni di alimentazione.
+Per misurare l'efficienza del PMT3 è necessario eseguire i rapporti tra le coincidenze di tutti i tre rivelatori e quelle dei due più esterni. Per fare ciò abbiamo usato un secondo modulo di coincidenze per visualizzare quelle di tutti e tre. Non avendo ancora analizzato i dati riguardanti la sezione precedente, abbiamo stimato il punto di lavoro $V_\text{alim}=\SI{1800}{V}$ e $V_{\text{thr}}=\SI{-200}{mV}$ essere il migliore per i fotomoltiplicatori esterni. Quindi abbiamo variato soglia e alimentazione di quello centrale e disegnato il grafico di \autoref{eff}.
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=8 cm]{efficienza}
-\caption{\label{eff}Efficienza assoluta del PMT3.}
+\begin{figure}
+	\centering
+	\includegraphics[width=8 cm]{efficienza}
+	\caption{\label{eff}%
+	Efficienza del PMT3.
+	Ogni curva corrisponde a una certa tensione di alimentazione del PMT3.}
 \end{figure}
 
-L'analisi effettuata contrassegna il punto di lavoro scelto prima come migliore perché il PMT che lavora in quelle condizioni ha una buona efficienza ed anche un buon rapporto S$/$(S$+$N). Quest'ultimo ci permette di avere meno coincidenze casuali ed evita la possibilità di overflow in caso di conteggi su un tempo molto lungo. L'efficienza corrispondente a questo punto di lavoro vale $\eta=80\pm3$\! \%. Possiamo adesso determinare il rate di particelle cosmiche avvalendoci della relazione 
+\begin{figure}
+	\centering
+	\includegraphics[width=10cm]{SN3}
+	\caption{%
+	\label{fig:sn3}%
+	Rapporto segnale/rumore per il PMT3,
+	dove segnale ($S$) e rumore ($N$) sono stimati come
+	$S=c_{234}/\epsilon^2$,
+	$N=c_3 - S$,
+	dove $c_3$ è il conteggio del PMT3,
+	$c_{234}$ il conteggio della coincidenza a tre,
+	$\epsilon$ l'efficienza calcolata per il PMT3.
+	Le barre d'errore sono calcolate con propagazione al primo ordine.}
+\end{figure}
+
+Possiamo adesso determinare il rate di particelle cosmiche avvalendoci della relazione 
 $$ R_V=\frac{R_m}{1+R_m\Delta t} $$
 in cui R$_m$è il rate misurato, R$_V$ quello vero e $\Delta t$ stimato in precedenza. Essendo quest'ultimo dell'ordine dei nanosecondi, R$_m\Delta t \ll 1$. Il rate misurato si ottiene dividendo le coincidenze a 3 per l'efficienza. Nel punto di lavoro in questione abbiamo osservato Quindi il rate di raggi cosmici risulta essere R$_V=14\pm1$\! particelle$/$s. Esso è inferiore alla metà di quanto atteso ma ciò è dovuto all'accettanza geometrica minore di uno.
 
