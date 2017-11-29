@@ -154,25 +154,47 @@ con la convenzione standard di calcolare la varianza nella stima,
 per $k$ conteggi il risultato per la media $\mu$ sarà scritto come
 \[ \text{<<$\mu = k \pm \sqrt k$>>.} \]
 
+\paragraph{Errore di clock}
+
+Calcoliamo approssimativamente il rapporto tra l'incertezza su $\mu$ introdotta dall'usare il clock per misurare il tempo
+e quella ``normale'' $\sqrt\mu$.
+Fissiamo l'unità di misura del tempo a un periodo del clock.
+L'incertezza sul tempo di misura $T$ è quindi $\Delta T\sim 1$.
+Sia $R$ il tasso.
+Allora $\mu=RT$, quindi
+\[ \frac{\Delta\mu_\text{clock}}{\Delta\mu_\text{normale}}
+= \frac{\mu\Delta T/T}{\sqrt{\mu}}
+= \frac{\sqrt\mu}T
+= \sqrt{\frac RT}.\]
+Osserviamo che $T$ è il numero di cicli di clock usati,
+e che il rapporto va a zero con la radice del tempo di misura.
+Per le nostre misure vedremo che l'errore di clock è trascurabile.
+
 \subsection*{Secondo test di conteggio}
 
 Facciamo una serie di conteggi trascrivendo i risultati.
 Facciamo 45 conteggi con clock 1000 e 15 con clock \num{10000}.
 Verifichiamo che siano poissoniane con un test del $\chi^2$ senza allargare i bin rispetto ai valori discreti;
 poiché il numero di conteggi è basso calcoliamo la distribuzione della statistica con monte carlo.
-Risultati:
-\begin{center}
+Riportiamo il risultato in \autoref{fig:testc}.
+Vediamo che la poissonianità della serie da \SI{10}s è in dubbio.
+
+\begin{figure}
+	\centering
 	\includegraphics[width=\textwidth]{fig6a} \\
 	\includegraphics[width=\textwidth]{fig6b}
-\end{center}
-Vediamo che la poissonianietà della serie da \SI{10}s è in dubbio.
+	\caption{\label{fig:testc}
+	Test di conteggio sul PMT2.
+	Il primo istogramma riporta 45 conteggi da 1000 cicli,
+	il secondo 15 conteggi da 10\,000 cicli.}
+\end{figure}
 
 \subsection*{Tempo dall'accensione}
 
 Può darsi che il PMT, dopo l'accensione, ci metta un po' ad arrivare in una condizione stazionaria di funzionamento.
 I PMT 3 e 4 li abbiamo lasciati spenti, quindi li usiamo per fare un test.
-Accendiamo il PMT~3 e subito prendiamo una serie di 15 conteggi con clock~1000.
-Poi accendiamo il PMT~4 e prendiamo una serie, poi proseguiamo alternando PMT~3 e 4,
+Accendiamo il PMT3 e subito prendiamo una serie di 15 conteggi con clock~1000.
+Poi accendiamo il PMT4 e prendiamo una serie, poi proseguiamo alternando PMT~3 e 4,
 per un totale di 5 serie. Grafichiamo le medie con la varianza nell'ipotesi di poissoniane:
 \begin{center}
 	\includegraphics[width=8cm]{fig6c}
