@@ -7,7 +7,7 @@
 \usepackage{siunitx}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{graphicx}
 \usepackage[font={sf}]{caption}
 
@@ -230,7 +230,7 @@ Variamo l'alimentazione dei vari PMT per vedere come cambia il numero di contegg
 \begin{figure}[h]
 \centering
 \includegraphics[width=8 cm]{tensio_pmt}
-\caption{Numero di conteggi in funzione della tensione di alimentazione}
+\caption{Numero di conteggi in funzione della tensione di alimentazione.}
 \label{tensio}
 \end{figure}
 
@@ -239,17 +239,18 @@ La pendenza è crescente, quindi scegliamo la tensione più bassa che ci dia un 
 per fare le misure in tempi ragionevoli.
 Scegliamo \SI{1800}V.
 
-Dal \emph{Particle Physics Booklet 2016} sappiamo che il flusso di raggi cosmici su una superficie orizzontale al livello del mare è circa \SI{180}{Hz/m^2}.
+\subsection*{Conteggio atteso}
+
+Dal \emph{Particle Physics Booklet 2016} sappiamo che il flusso di muoni%
+\footnote{Gli elettroni hanno un $1/E\, \de E/\de x \gtrsim \SI{0.15}{g^{-1}cm^{2}}$, quindi supponiamo che l'edificio schermi il nostro apparato dagli elettroni.}
+ su una superficie orizzontale al livello del mare è circa \SI{130}{Hz/m^2}.
 Essendo il nostro rivelatore di area $\SI{48}{cm}\cdot\SI{40}{cm}=\SI{0.19}{m^2}$,
-ci aspettiamo il passaggio di \SI{35}{particelle/s}.
-Questo numero è simile ai conteggi ottenuti a \SI{1800}V con soglia \SI{-376}{mV},
-tuttavia basta considerare le tensioni di alimentazione più alte per convincersi
-che non tutti i segnali sono particelle.
+ci aspettiamo il passaggio di \SI{25}{particelle/s}.
 
 \subsection*{Modulo di coincidenze}
 
-Per effettuare il conteggio delle coincidenze colleghiamo le uscite dei discriminatori a un modulo di coincidenze e la sua uscita al canale 5 del contatore.
-I canali 1 e 2 di quest'ultimo sono collegati al PMT4 e al PMT2 attraverso il discriminatore.
+Per effettuare il conteggio delle coincidenze colleghiamo le uscite dei discriminatori a un modulo di coincidenze e la sua uscita al  contatore.
+ Sono collegati al contatore anche il PMT4 e al PMT2 attraverso il discriminatore.
 Le soglie di entrambi sono massime, ovvero \SI{-0.410}V misurate dal testpoint.
 Con questi settaggi i nostri rivelatori misurano circa 40 eventi al secondo,
 quindi facciamo un calcolo approssimativo del rate di coincidenze casuali usando la formula
@@ -262,14 +263,14 @@ ovvero una coincidenza casuale ogni 3 ore.
 \subsection*{Tempi di propagazione dei segnali}
 
 Usiamo l'oscilloscopio per visualizzare le coincidenze, ovvero colleghiamo i due discriminatori utilizzati al nostro strumento ed osserviamo degli impulsi NIM quasi simultanei, in particolare vediamo che il segnale che arriva più tardi si discosta solo di qualche nanosecondo da quello precedente, ma questa asincronia non ci causa nessun problema perché vale al massimo il 10\% della lunghezza dei nostri impulsi.
-Ciò non dovrebbe mascherare l'arrivo di una seconda coincidenza in quell'intervallo di tempo perché il rate atteso è di decine di hertz, come già detto nella sezione \textbf{calibrazione}, che equivale in media al passaggio di un raggio cosmico ogni decimo di secondo in caso di accettanza geometrica unitaria.
+Ciò non dovrebbe mascherare l'arrivo di una seconda coincidenza in quell'intervallo di tempo perché il rate atteso è di decine di hertz, che equivale in media al passaggio di un raggio cosmico ogni decimo di secondo in caso di accettanza geometrica unitaria.
 
-Per trovare il miglior punto di lavoro inseriamo nel crate due \emph{delay unit} che colleghiamo in serie ai discriminatori di cui sopra. Prima di effettuare i conteggi testiamo una delay unit mandandole in ingresso l'onda quadra data dal clock dello scaler. Confermiamo che il ritardo minimo introdotto da questo modulo è 2.5$\pm$0.2\! ns e che tutti gli altri inseribili sono compatibili con quanto dichiarato con un'incertezza integrale di meno del \SI{10}\% e una differenziale di meno di \SI{0.2}{ns}. La \autoref{curv} mostra la curva di cavo che, come atteso, mostra un massimo di conteggi quando il ritardo relativo è inferiore alla durata dell'impulso del discriminatore ed è quasi nulla altrove. La variabile utilizzata è $\Delta t=D2-D4$ dove questi ultimi sono i ritardi selezionati per i rispettivi PMT. Nel $\Delta t$ non compaiono termini dipendenti dai cavi coassiali utilizzati perché i due segnali sono stati collegati ai vari moduli NIM con cavi di uguale lunghezza.
+Per trovare il miglior punto di lavoro inseriamo nel crate due \emph{delay unit} che colleghiamo in serie ai discriminatori di cui sopra. Prima di effettuare i conteggi testiamo una delay unit mandandole in ingresso l'onda quadra data dal clock del contatore. Confermiamo che il ritardo minimo introdotto da questo modulo è \SI{2.5\pm0.2} {ns} e che tutti gli altri inseribili sono compatibili con quanto dichiarato con un'incertezza integrale di meno del \SI{10}\% e una differenziale di meno di \SI{0.2}{ns}. La \autoref{curv} mostra la curva di cavo che, come atteso, mostra un massimo di conteggi quando il ritardo relativo è inferiore alla durata dell'impulso del discriminatore ed è quasi nulla altrove. La variabile utilizzata è $\Delta t=D2-D4$ dove questi ultimi sono i ritardi selezionati per i rispettivi PMT. Nel $\Delta t$ non compaiono termini dipendenti dai cavi coassiali utilizzati perché i due segnali sono stati collegati ai vari moduli NIM con cavi di uguale lunghezza.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=8 cm]{curva_cavo}
-\caption{Curva di cavo in funzione della differenza di tempi impostati sulle delay unit.}
+\caption{Numero di coincidenze in funzione della differenza dei ritardi impostati sulle delay unit.}
 \label{curv}
 \end{figure}
 
@@ -278,31 +279,22 @@ Per trovare il miglior punto di lavoro inseriamo nel crate due \emph{delay unit}
 
 \subsection*{Rapporto segnale/fondo}
 
-\marginpar{punto 10}%
-
 Dopo aver tolto le delay unit abbiamo variato la tensione di un PMT  e la soglia del discriminatore a cui era collegato mentre l'altro era lasciato ad un punto di lavoro costante in modo che non influenzasse le misure fatte sul primo.
 Abbiamo scelto il punto di lavoro costante in modo che sicuramente le coincidenze casuali fossero minori di \SI{0.1}{s^{-1}}.
-Abbiamo analizzato dapprima il PMT2 lasciando fisso il 4 ad una tensione nominale $V_4=\SI{1800} V$ ed una soglia $V_{thr_4}=-353\pm2\,\mathrm{mV}$. 
+Abbiamo analizzato dapprima il PMT2 lasciando fisso il 4 ad una tensione nominale $V_4=\SI{1800} V$ ed una soglia $V_{thr_4}=\SI{-353\pm2}{mV}$. 
 Il rapporto tra coincidenze e conteggi meno coincidenze stima il rapporto segnale/rumore.
-Il risultato è visibile in \autoref{test1}.
+La stessa cosa è stata fatta per il PMT4 lasciando il PMT2 al punto di lavoro V$_2=1820$\! V e V$_{thr_2}=-298\pm2$\! mV.
+Risultati in \autoref{test2}.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=8 cm]{calib_pmt2}
-\caption{Rapporti S/N per il PMT2 in diversi punti di lavoro.}
-\label{test1}
-\end{figure}
-
-La stessa cosa è stata fatta per il PMT4 lasciando il PMT2 al punto di lavoro V$_2=1820$\! V e V$_{thr_2}=-298\pm2$\! mV come mostrato in \autoref{test2}.
-
-\begin{figure}[h]
-\centering
 \includegraphics[width=8 cm]{calib_pmt4}
-\caption{Rapporti S/N per il PMT4 in diversi punti di lavoro.}
+\caption{Rapporti S/N (a meno di una costante moltiplicativa) per il PMT2 e il PMT4 in diversi punti di lavoro.}
 \label{test2}
 \end{figure}
 
-\subsection*{Efficienza assoluta}
+\subsection*{Efficienza}
 
 \paragraph{Analisi statistica}
 
@@ -404,20 +396,23 @@ Notiamo che questa notazione è poco utile quando $\epsilon$ è vicina a 0 o 1 o
 
 \paragraph{Misura}
 
-Per misurare l'efficienza del PMT3 è necessario eseguire i rapporti tra le coincidenze di tutti i tre rivelatori e quelle dei due più esterni. Per fare ciò abbiamo usato un secondo modulo di coincidenze per visualizzare quelle di tutti e tre. Non avendo ancora analizzato i dati riguardanti la sezione precedente, abbiamo stimato il punto di lavoro $V_\text{alim}=\SI{1800}{V}$ e $V_{\text{thr}}=\SI{-200}{mV}$ essere il migliore per i fotomoltiplicatori esterni. Quindi abbiamo variato soglia e alimentazione di quello centrale e disegnato il grafico di \autoref{eff}.
+Per misurare l'efficienza del PMT3 è necessario eseguire i rapporti tra le coincidenze di tutti i tre rivelatori e quelle dei due più esterni. Per fare ciò abbiamo usato un secondo modulo di coincidenze per visualizzare quelle di tutti e tre. Non avendo ancora analizzato i dati riguardanti la sezione precedente, abbiamo stimato il punto di lavoro $V_\text{alim}=\SI{1800}{V}$ e $V_{\text{thr}}=\SI{-200}{mV}$ essere adeguato per i fotomoltiplicatori esterni. Quindi abbiamo variato soglia e alimentazione di quello centrale e disegnato il grafico di \autoref{eff}.
 I dati misurati sono riportati in \autoref{tab:dati}.
 
+\paragraph{Tasso}
+
 Per stimare il tasso, abbiamo bisogno dell'efficienza dei PMT 2 e 4.
-Possiamo stimarla come l'efficienza del PMT3 nello stesso punto di lavoro.
+Possiamo stimarla con l'efficienza del PMT3 nello stesso punto di lavoro.
 Le coincidenze 2\&4 vengono contate sempre nello stesso punto di lavoro,
 quindi possiamo sommare tutte le prese dati.
 Il tasso allora è dato da
 \begin{equation*}
-	R = \frac{\sum c_{2\&4}}{\epsilon^2 \sum t}.
+	R = \frac{\sum c_{24}}{\epsilon_0^2 \sum t}.
 \end{equation*}
 dove le somme sono sulle prese dati,
-$t$ sono i tempi di acquisizione
-e $c_{2\&4}$ sono i conteggi delle coincidenze a due.
+$t$ sono i tempi di acquisizione,
+$\epsilon_0$ è l'efficienza del PMT3 alimentato a \SI{1800}V con soglia \SI{-200.3}{mV}
+e $c_{24}$ sono i conteggi delle coincidenze a due.
 Risulta $R=\SI{22.0 \pm 1.4}{s^{-1}}$,
 dove l'errore è calcolato con propagazione al primo ordine.
 Questo errore non include quello sistematico sull'aver usato l'efficienza di un altro PMT,
@@ -434,9 +429,22 @@ integrandoci la distribuzione
 dove $\theta$ è l'angolo dalla verticale e $\varphi$ l'azimut.
 Risulta \SI{87}\%.
 Supponendo l'efficienza uniforme,
-questa stima è strettamente superiore.
-Dividendo per l'area degli scintillatori, infine abbiamo
-$R \gtrsim 25$ con errore $\sigma_R>1.6$.
+questa stima è in eccesso.
+Abbiamo infine
+$R \ge 25$ con errore $\sigma_R>1.6$.
+
+\paragraph{Segnale/rumore}
+
+Analogamente alla misura del tasso,
+occorrono le efficienze dei PMT 2 e 4,
+che stimiamo uguali a quella del PMT3.
+Il segnale è quindi dato da
+$S=c_{234}/\epsilon_0^2$,
+dove $c_{234}$ sono le coincidenze a tre.
+Il rumore è definito come conteggi del PMT3 meno conteggio di segnale,
+quindi lo stimiamo con $N=c_3-S$.
+Notiamo che questa stima non è costruita in modo che $N$ sia necessariamente positivo.
+Riportiamo i risultati in \autoref{fig:sn3}.
 
 \begin{figure}
 	\centering
@@ -453,11 +461,11 @@ $R \gtrsim 25$ con errore $\sigma_R>1.6$.
 	\label{fig:sn3}%
 	Rapporto segnale/rumore per il PMT3,
 	dove segnale ($S$) e rumore ($N$) sono stimati come
-	$S=c_{234}/\epsilon^2$,
+	$S=c_{234}/\epsilon_0^2$,
 	$N=c_3 - S$,
 	dove $c_3$ è il conteggio del PMT3,
 	$c_{234}$ il conteggio della coincidenza a tre,
-	$\epsilon$ l'efficienza calcolata per il PMT3.
+	$\epsilon_0$ l'efficienza calcolata per il PMT3 nel punto di lavoro dei PMT 2 e 4.
 	Le barre d'errore sono calcolate con propagazione al primo ordine.}
 \end{figure}
 
@@ -482,7 +490,8 @@ $R \gtrsim 25$ con errore $\sigma_R>1.6$.
 		     & 208.2 & 1221 & 319848 & 787 & 134 & 134       \\
 		     & 107.1 & 1239 & 444108 & 791 & 143 & 143    \\
 	\end{tabular}
-	\caption{Dati per la misura dell'efficienza del PMT3.
+	\caption{\label{tab:dati}
+	Dati per la misura dell'efficienza del PMT3.
 	Le colonne a sinistra riportano la tensione di alimentazione del PMT3 e la soglia del discriminatore collegato al PMT3,
 	misurata dal test point del discriminatore.
 	Tensione di alimentazione e soglia dei PMT 2 e 5 sono rispettivamente

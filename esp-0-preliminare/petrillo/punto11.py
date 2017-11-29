@@ -29,13 +29,19 @@ for j in range(len(v)):
     if v[j] == 1800:
         eff_24 = eff[1]
         deff_24 = deff[1]
+
+for j in range(len(v)):
+    thr, c4, c3, c2, c24, c234 = loadtxt("efficienza_%d.txt" % (v[j],), unpack=True)
     
-    s = c234 / eff**2
+    eff = c234 / c24
+    deff = sqrt(eff * (1 - eff) / (exp(c24) - 1) * (expi(c24) - log(c24) - gm))
+    
+    s = c234 / eff_24**2
     n = c3 - s
     sn = s/n
     
     dc234 = sqrt(c234)
-    ds = s * sqrt((dc234/c234)**2 + 2 * (deff/eff)**2)
+    ds = s * sqrt((dc234/c234)**2 + 2 * (deff_24/eff_24)**2)
     dc3 = sqrt(c3)
     dn = sqrt(dc3**2 + ds**2)
     dsn = sn * sqrt((ds/s)**2 + (dn/n)**2)
