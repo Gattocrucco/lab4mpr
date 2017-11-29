@@ -1,6 +1,7 @@
 from pylab import *
 from scipy.special import expi
 from matplotlib.gridspec import GridSpec
+import lab
 
 gm = 0.57721566490153286 # euler-mascheroni
     
@@ -16,11 +17,18 @@ clf()
 
 G = GridSpec(3, 1)
 
+sum_c24 = 0
+
 for j in range(len(v)):
     thr, c4, c3, c2, c24, c234 = loadtxt("efficienza_%d.txt" % (v[j],), unpack=True)
     
     eff = c234 / c24
     deff = sqrt(eff * (1 - eff) / (exp(c24) - 1) * (expi(c24) - log(c24) - gm))
+    
+    sum_c24 += sum(c24)
+    if v[j] == 1800:
+        eff_24 = eff[1]
+        deff_24 = deff[1]
     
     s = c234 / eff**2
     n = c3 - s
@@ -40,6 +48,10 @@ for j in range(len(v)):
     errorbar(-thr[sn>0], sn[sn>0], yerr=dsn[sn>0], fmt='--%s' % shapes[j], label="%d V" % (v[j],), color=colors[j])
     subplot(G[-1,:])
     errorbar(-thr[sn<=0], sn[sn<=0], yerr=dsn[sn<=0], fmt='--%s' % shapes[j], label="%d V" % (v[j],), color=colors[j])
+
+R = sum_c24 / (eff_24**2 * 160)
+dR = R * sqrt(1/sum_c24 + 2*(deff_24/eff_24)**2)
+print("R = %s" % lab.xe(R, dR, pm=lab.unicode_pm))
         
 figure('efficienza')
 grid()

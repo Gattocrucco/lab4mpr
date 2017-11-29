@@ -17,6 +17,8 @@
 separate-uncertainty=true,
 multi-part-units=single}
 
+\frenchspacing
+
 \newcommand*\de{\mathrm{d}}
 \newcommand*\pdv[2]{\frac{\partial #1}{\partial #2}}
 
@@ -106,12 +108,12 @@ Puntando i cursori dell'oscilloscopio otteniamo un ritardo di \SI{20}{ns}
 quindi il ritardo del discriminatore è circa \SI{17}{ns}.
 
 Ci è difficile misurare il jitter del discriminatore perché il trigger dell'oscilloscopio funziona in modo diverso dal discriminatore, perciò facciamo una stima superiore in questo modo:
-mettiamo la soglia del trigger ai \SI{376}{mV} trovati prima che facevano circa coincidere i segnali selezionati, triggerando il segnale del PMT, e guardiamo a occhio sull'oscilloscopio la variazione temporale del fronte di salita dell'uscita del discriminatore; otteniamo \SI{\pm1}{ns}.
+mettiamo la soglia del trigger ai \SI{376}{mV} trovati prima che facevano circa coincidere i segnali selezionati, triggerando il segnale del PMT, e guardiamo a occhio sull'oscilloscopio la variazione temporale del fronte finale dell'uscita del discriminatore; otteniamo \SI{\pm1}{ns}.
 
 \subsection*{Documentazione contatore}
 
-Modello: 130PCZ,
-frequenza massima \SI{70}{MHz},
+Non troviamo la documentazione, leggiamo quella del 130~PCZ che ci somiglia.
+Frequenza massima \SI{70}{MHz} (sul nostro c'è scritto \SI{100}{MHz}),
 conta fino a $10^8-1$,
 l'input deve durare almeno \SI7{ns},
 l'output ``clock'' è un'onda quadra (duty \SI{50}\%) a \SI1{kHz}.
@@ -124,11 +126,10 @@ conteggi si fermi.
 Se avviamo il conteggio con il pulsante <<start>> o con l'ingresso corrispondente
 e lo facciamo fermare in automatico con il clock,
 introduciamo un'incertezza sul tempo totale dovuta al non allineamento dello start con il clock\footnote{Potremmo darlo per ovvio, però notiamo che quasi sicuramente i comandi manuali/ingresso non vengono allineati dallo strumento con il fronte successivo del clock perché gli ingressi possono definire intervalli di tempo con molta più granularità di \SI1{ms}.}.
-L'incertezza è circa di mezzo periodo ovvero \SI{.5}{ms}.
+L'incertezza è dell'ordine del periodo del clock.
 
 Visualizziamo il clock sull'oscilloscopio, che calcola una frequenza di \SI{0.99996}{kHz},
 cioè la discrepanza è di \SI3s al giorno.
-Non sappiamo in che proporzione i due strumenti contribuiscono all'incertezza.
 
 \subsection*{Primo test di conteggio}
 
@@ -147,7 +148,7 @@ quindi non troviamo incongruenze.
 
 Ci aspettiamo che, per un tasso costante, i conteggi siano poissoniani con
 $\text{media} = \text{tasso}\times \text{tempo}$.
-Lo stimatore di massima verosimiglianza per la media è la media aritmetica e ha bias nullo.
+Lo stimatore di massima verosimiglianza per la media è il conteggio ottenuto (la media aritmetica per più estrazioni) e ha bias nullo e varianza minima.
 La varianza dello stimatore è la media, quindi,
 con la convenzione standard di calcolare la varianza nella stima,
 per $k$ conteggi il risultato per la media $\mu$ sarà scritto come
@@ -382,6 +383,38 @@ Notiamo che questa notazione è poco utile quando $\epsilon$ è vicina a 0 o 1 o
 \paragraph{Misura}
 
 Per misurare l'efficienza del PMT3 è necessario eseguire i rapporti tra le coincidenze di tutti i tre rivelatori e quelle dei due più esterni. Per fare ciò abbiamo usato un secondo modulo di coincidenze per visualizzare quelle di tutti e tre. Non avendo ancora analizzato i dati riguardanti la sezione precedente, abbiamo stimato il punto di lavoro $V_\text{alim}=\SI{1800}{V}$ e $V_{\text{thr}}=\SI{-200}{mV}$ essere il migliore per i fotomoltiplicatori esterni. Quindi abbiamo variato soglia e alimentazione di quello centrale e disegnato il grafico di \autoref{eff}.
+I dati misurati sono riportati in \autoref{tab:dati}.
+
+Per stimare il tasso, abbiamo bisogno dell'efficienza dei PMT 2 e 4.
+Possiamo stimarla come l'efficienza del PMT3 nello stesso punto di lavoro.
+Le coincidenze 2\&4 vengono contate sempre nello stesso punto di lavoro,
+quindi possiamo sommare tutte le prese dati.
+Il tasso allora è dato da
+\begin{equation*}
+	R = \frac{\sum c_{2\&4}}{\epsilon^2 \sum t}.
+\end{equation*}
+dove le somme sono sulle prese dati,
+$t$ sono i tempi di acquisizione
+e $c_{2\&4}$ sono i conteggi delle coincidenze a due.
+Risulta $R=\SI{22.0 \pm 1.4}{s^{-1}}$,
+dove l'errore è calcolato con propagazione al primo ordine.
+Questo errore non include quello sistematico sull'aver usato l'efficienza di un altro PMT,
+che non sappiamo stimare.
+
+Notiamo che questo tasso è riferito a una certa accettanza geometrica.
+L'accettanza dipende dalla forma dei rivelatori,
+dalla distribuzione dei raggi rivelabili,
+e dalla disuniformità spaziale e angolare dell'efficienza.
+Possiamo dare una stima dell'accettanza considerando l'angolo solido
+descritto da una piramide con vertice al centro di uno dei piani esterni e base l'altro piano esterno,
+integrandoci la distribuzione
+\[\frac{4\cos^2\theta\,\de\theta}{\pi}\frac{\de\varphi}{2\pi}\]
+dove $\theta$ è l'angolo dalla verticale e $\varphi$ l'azimut.
+Risulta \SI{87}\%.
+Supponendo l'efficienza uniforme,
+questa stima è strettamente superiore.
+Dividendo per l'area degli scintillatori, infine abbiamo
+$R \gtrsim 25$ con errore $\sigma_R>1.6$.
 
 \begin{figure}
 	\centering
@@ -406,8 +439,35 @@ Per misurare l'efficienza del PMT3 è necessario eseguire i rapporti tra le coin
 	Le barre d'errore sono calcolate con propagazione al primo ordine.}
 \end{figure}
 
-Possiamo adesso determinare il rate di particelle cosmiche avvalendoci della relazione 
-$$ R_V=\frac{R_m}{1+R_m\Delta t} $$
-in cui R$_m$è il rate misurato, R$_V$ quello vero e $\Delta t$ stimato in precedenza. Essendo quest'ultimo dell'ordine dei nanosecondi, R$_m\Delta t \ll 1$. Il rate misurato si ottiene dividendo le coincidenze a 3 per l'efficienza. Nel punto di lavoro in questione abbiamo osservato Quindi il rate di raggi cosmici risulta essere R$_V=14\pm1$\! particelle$/$s. Esso è inferiore alla metà di quanto atteso ma ciò è dovuto all'accettanza geometrica minore di uno.
+\begin{table}
+	\centering
+	\begin{tabular}{ll|rrrrr}
+		Alim. [$\si V_\text{nom}$] & Soglia [$-\si{mV}$] & PMT4 & PMT3 & PMT2 & 2\&4 & 2\&3\&4 \\ \hline
+		1700 & 408 & 1253 & 6 & 750 & 140 & 2               \\
+		     & 304.4 & 1200 & 18 & 743 & 143 & 7               \\
+		     & 200.3 & 1190 & 63 & 719 & 127 & 21              \\
+		     & 101.8 & 1239 & 367 & 828 & 148 & 79           \\ \hline
+		1800 & 407 & 1221 & 193 & 791 & 138 & 43        \\
+		     & 306.1 & 1301 & 341 & 785 & 141 & 76       \\
+		     & 200.3 & 1262 & 657 & 785 & 138 & 110       \\
+		     & 101.8 & 1273 & 1415 & 799 & 133 & 131     \\ \hline
+		1900 & 407 & 1322 & 1006 & 802 & 148 & 134          \\
+		 & 294.3 & 1291 & 1468 & 759 & 138 & 135          \\
+		 & 193.8 & 1226 & 3068 & 809 & 134 & 133          \\
+		 & 107.1 & 1239 & 137541 & 783 & 144 & 141       \\ \hline
+		2000 & 408 & 1235 & 8615 & 769 & 142 & 140     \\
+		     & 305.3 & 1212 & 77732 & 799 & 143 & 140     \\
+		     & 208.2 & 1221 & 319848 & 787 & 134 & 134       \\
+		     & 107.1 & 1239 & 444108 & 791 & 143 & 143    \\
+	\end{tabular}
+	\caption{Dati per la misura dell'efficienza del PMT3.
+	Le colonne a sinistra riportano la tensione di alimentazione del PMT3 e la soglia del discriminatore collegato al PMT3,
+	misurata dal test point del discriminatore.
+	Tensione di alimentazione e soglia dei PMT 2 e 5 sono rispettivamente
+	\SI{1800}V, \SI{-200}{mV}.
+	Le due colonne più a destra riportano le coincidenze.
+	Il conteggio è su un tempo di \num{10000} cicli di clock,
+	cioè \SI{10}s a meno dell'errore di clock.}
+\end{table}
 
 \end{document}
