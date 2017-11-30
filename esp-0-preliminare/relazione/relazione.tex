@@ -36,7 +36,7 @@ Scegliamo di usare, in ordine dal basso verso l'alto, i PMT 2, 3, 4.
 Accendiamo il PMT~2 a \SI{1500}V.
 Schizzo dei segnali del PMT visti sull'oscilloscopio:
 \begin{center}
-	\includegraphics[width=6cm]{fig3a}
+	\includegraphics[width=16em]{fig3a}
 \end{center}
 Con il trigger a \SI{-27}{mV}, contando a mano su \SI1{min}, otteniamo $\sim\SI1{Hz}$.
 
@@ -81,7 +81,7 @@ soglia massima \SI{400}{mV}.
 
 Montiamo questo circuito:
 \begin{center}
-	\includegraphics[width=9cm]{fig4a}
+	\includegraphics[width=25em]{fig4a}
 \end{center}
 Girando la vite della durata vediamo che l'intervallo impostabile è circa 40--300\si{\,ns}.
 È di tipo ``restarting'' perché per soglia abbastanza bassa si vedono durate doppie in uscita,
@@ -91,7 +91,7 @@ Verifichiamo la durata impostabile anche per il canale~2, è la stessa.
 
 Modifichiamo il circuito in modo da visualizzare sia l'ingresso che l'uscita del discriminatore:
 \begin{center}
-	\includegraphics[width=5cm]{fig4b}
+	\includegraphics[width=14em]{fig4b}
 \end{center}
 Misuriamo la soglia del discriminatore con l'oscilloscopio in questo modo:
 triggeriamo sull'ingresso del discriminatore,
@@ -135,7 +135,7 @@ cioè la discrepanza è di \SI3s al giorno.
 
 Montiamo questo circuito:
 \begin{center}
-	\includegraphics[width=9cm]{fig5a}
+	\includegraphics[width=25em]{fig5a}
 \end{center}
 Il trigger dell'oscilloscopio è impostato a \SI{376}{mV}.
 Mettiamo lo stop a 1000 conteggi di clock (\SI1s) e facciamo un po' di conteggi.
@@ -197,7 +197,7 @@ Accendiamo il PMT3 e subito prendiamo una serie di 15 conteggi con clock~1000.
 Poi accendiamo il PMT4 e prendiamo una serie, poi proseguiamo alternando PMT~3 e 4,
 per un totale di 5 serie. Grafichiamo le medie con la varianza nell'ipotesi di poissoniane:
 \begin{center}
-	\includegraphics[width=8cm]{fig6c}
+	\includegraphics[width=22em]{fig6c}
 \end{center}
 Chiaramente il tasso varia nel tempo, quindi in futuro aspetteremo sempre qualche minuto dopo che abbiamo acceso i PMT e almeno 1~minuto quando cambiamo tensione di alimentazione.
 
@@ -229,7 +229,7 @@ Variamo l'alimentazione dei vari PMT per vedere come cambia il numero di contegg
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=8 cm]{tensio_pmt}
+\includegraphics[width=22em]{tensio_pmt}
 \caption{Numero di conteggi in funzione della tensione di alimentazione.}
 \label{tensio}
 \end{figure}
@@ -269,7 +269,7 @@ Per trovare il miglior punto di lavoro inseriamo nel crate due \emph{delay unit}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=8 cm]{curva_cavo}
+\includegraphics[width=22em]{curva_cavo}
 \caption{Numero di coincidenze in funzione della differenza dei ritardi impostati sulle delay unit.}
 \label{curv}
 \end{figure}
@@ -288,8 +288,8 @@ Risultati in \autoref{test2}.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=8 cm]{calib_pmt2}
-\includegraphics[width=8 cm]{calib_pmt4}
+\includegraphics[width=22em]{calib_pmt2}
+\includegraphics[width=22em]{calib_pmt4}
 \caption{Rapporti S/N (a meno di una costante moltiplicativa) per il PMT2 e il PMT4 in diversi punti di lavoro.}
 \label{test2}
 \end{figure}
@@ -425,13 +425,13 @@ e dalla disuniformità spaziale e angolare dell'efficienza.
 Possiamo dare una stima dell'accettanza considerando l'angolo solido
 descritto da una piramide con vertice al centro di uno dei piani esterni e base l'altro piano esterno,
 integrandoci la distribuzione
-\[\frac{4\cos^2\theta\,\de\theta}{\pi}\frac{\de\varphi}{2\pi}\]
+\[3\cos^2\theta\,\de(\cos\theta)\frac{\de\varphi}{2\pi}\]
 dove $\theta$ è l'angolo dalla verticale e $\varphi$ l'azimut.
-Risulta \SI{87}\%.
+Risulta \SI{72}\%.
 Supponendo l'efficienza uniforme,
 questa stima è in eccesso.
 Abbiamo infine
-$R \ge 25$ con errore $\sigma_R>1.6$.
+$R > R_\text{min} = \SI{30.6}{s^{-1}}$ con errore $\sigma_{R_\text{min}}>\SI{1.9}{s^{-1}}$.
 
 \paragraph{Segnale/rumore}
 
@@ -448,7 +448,7 @@ Riportiamo i risultati in \autoref{fig:sn3}.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=8 cm]{efficienza}
+	\includegraphics[width=22em]{efficienza}
 	\caption{\label{eff}%
 	Efficienza del PMT3.
 	Ogni curva corrisponde a una certa tensione di alimentazione del PMT3.}
@@ -456,7 +456,7 @@ Riportiamo i risultati in \autoref{fig:sn3}.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=10cm]{SN3}
+	\includegraphics[width=28em]{SN3}
 	\caption{%
 	\label{fig:sn3}%
 	Rapporto segnale/rumore per il PMT3,
