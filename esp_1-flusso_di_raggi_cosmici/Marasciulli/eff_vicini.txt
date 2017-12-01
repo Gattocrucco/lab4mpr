@@ -1,0 +1,8 @@
+SIMULAZIONE
+Due scintillatori vicini
+efficienza= 1
+distanza= 20 cm
+1e+04 raggi cosmici
+iterato 1e+03 volte
+
+accettanza geometrica= 58.67382 +- 0.478669334648 %
