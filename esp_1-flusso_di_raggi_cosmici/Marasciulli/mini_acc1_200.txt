@@ -1,0 +1,9 @@
+SIMULAZIONE MINISCINT 
+
+1e+04 raggi cosmici
+iterato 5e+02 volte
+distanza bordi del miniscint: rx= 10 ry= 20 cm
+efficienze= (1, 1)
+distanza verticale= 1
+
+accettanza geometrica= 0.20518 +- 0.0445841124861 %
