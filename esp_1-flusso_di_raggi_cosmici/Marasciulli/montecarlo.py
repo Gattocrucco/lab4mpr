@@ -11,25 +11,31 @@ def distro(teta):
 
 # cose da definire una volta sola
 tutti=10**4
-volte=500
+volte=10**3
 l1=40   #cm
 l2=48   
-h=20    
-eff=1
+  
+eff=(0.8,0.8,0.8,0.8,0.8)
+totale=py.sum(eff)
+
+dist=(10.2,20.5,30.8,41.1,80.4)
+h=py.sum(dist)
 
 try:
-    file=open("acc_2_%d.txt"%(eff*100,),"x")
+    file=open("acc_%d_%d.txt"%(len(dist)+1,totale*100),"x")
 except FileExistsError:
-    a=input("cancellare? s/n \n")
+    a=input("sovrascrivere? s/n \n")
     if a=="n":
         assert 2==0
+    else:
+      file=open("acc_%d_%d.txt"%(len(dist)+1,totale*100),"w")  
     
 sys.stdout=file
     
 print("SIMULAZIONE")
-print("Due scintillatori vicini")
+print("%d scintillatori" %(len(dist)+1))
 print("efficienza=",eff)
-print("distanza=",h,"cm")
+print("distanze=",dist,"cm")
 print("%.0e raggi cosmici" %tutti)
 print("iterato %.0e volte" %volte)
 print("")
@@ -65,16 +71,18 @@ for i in range(volte):
             else:
                 c2=False
                 
-            fortuna=random.uniform(0,1)
+            fortuna=0
+            for j in range(len(eff)):
+                fortuna+=random.uniform(0,1)
                 
-            if (c1 and c2 == True) and (fortuna<=eff):
+            if (c1 and c2 == True) and (fortuna<=totale):
                 buoni+=1
                 
     acc=py.append(acc,buoni/tutti)
     
 # creo un istogramma
     
-py.figure("acc_vicini" ).set_tight_layout(True)
+py.figure(1).set_tight_layout(True)
 py.rc("font",size=16)
 py.minorticks_on()
 
@@ -88,9 +96,10 @@ acce=py.mean(acc) # suppongo che la distribuzione sia gaussiana
 err=py.std(acc,ddof=1) # e lo è se aspetti 3 ore
 
 py.show()
-py.savefig("acc_2_%d.pdf"%(eff*100,))
+py.savefig("acc_%d_%d.pdf"%(len(dist)+1,totale*100))
 
 print("accettanza geometrica=",acce*100,"+-",err*100,"%")
+file.close()
 sys.stdout.close()
 sys.stdout=sys.__stdout__
 print("accettanza geometrica=",acce*100,"+-",err*100,"%")
