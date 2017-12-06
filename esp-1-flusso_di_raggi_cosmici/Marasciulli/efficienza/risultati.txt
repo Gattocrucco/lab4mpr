@@ -1,0 +1,11 @@
+EFFICIENZE ESP. 1 
+
+efficienza PMT3= 0.900583424037 +- 0.0899978251365
+misura migliore=0.90+/-0.01
+
+efficienza PMT4= 0.971025864435 +- 0.105557582453
+misura migliore=0.97+/-0.01
+
+efficienza PMT5= 0.920498851347 +- 0.130147431845
+misura migliore=0.93+/-0.01
+

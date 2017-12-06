@@ -1,24 +1,24 @@
 ## MONTE CARLO PER IL FLUSSO DI RAGGI COSMICI
 try:
-    os.chdir("flusso cosmici")
+    os.chdir("flusso cosmici/monte carlo")
 except FileNotFoundError:
     pass
 
 # distribuzione angolare
 
 def distro(teta):
-    return  3/(2*pi)*cos(teta)**2 
+    return  3/(2*pi)*cos(teta)**2*sin(teta) 
 
 # cose da definire una volta sola
-tutti=10**4
+tutti=10**3
 volte=10**3
 l1=40   #cm
 l2=48   
   
-eff=(1,1,1,1,1,1)  # deve avere n elementi
+eff=(1,)  # deve avere n elementi
 totale=py.sum(eff)
 
-dist=(10.2,20.5,30.8,41.1,80.4)  # deve avere n-1 elementi
+dist=(10.2,)#20.5,30.8,41.1,80.4)  # deve avere n-1 elementi
 h=py.sum(dist)
 
 try:
