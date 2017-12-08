@@ -1,0 +1,8 @@
+SIMULAZIONE
+2 scintillatori
+efficienza= (0.97, 0.9)
+distanze= (10.3,) cm
+1e+04 raggi cosmici
+iterato 1e+03 volte
+
+accettanza geometrica= 62.05652 +- 0.472898003931 %
