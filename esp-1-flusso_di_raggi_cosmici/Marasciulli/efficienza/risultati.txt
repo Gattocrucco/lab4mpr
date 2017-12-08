@@ -1,13 +1,14 @@
 EFFICIENZE ESP. 1 
 
 efficienza PMT3= 0.90+/-0.01
-coincidenze casuali a 2= 5e-07
-coincidenze casuali a 3= 2e-09 
+coincidenze casuali a 2= 5e-01
+coincidenze casuali a 3= 2e-03 
 
 efficienza PMT4= 0.97+/-0.01
-coincidenze casuali a 2= 3e-07
-coincidenze casuali a 3= 1e-09 
+coincidenze casuali a 2= 3e-01
+coincidenze casuali a 3= 1e-03 
 
 efficienza PMT5= 0.93+/-0.01
-coincidenze casuali a 2= 2e-07
-coincidenze casuali a 3= 5e-10
+coincidenze casuali a 2= 2e-01
+coincidenze casuali a 3= 5e-04 
+

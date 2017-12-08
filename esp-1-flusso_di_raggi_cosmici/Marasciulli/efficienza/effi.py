@@ -12,7 +12,7 @@ file=(3,4,5)
 dt=4e-8
 for j in range(len(file)):
     t,r1,r2,r3,c2,c3=py.loadtxt("eff_%d.txt" %file[j],unpack=True)
-    T=py.sum(t)*1000
+    T=py.sum(t)/1000
     
     cas2=py.sum( (r1*r3*dt)/T )
     cas3=py.sum( (r1*r2*r3*dt**2)/T )  #coincidenze casuali
