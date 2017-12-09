@@ -1,23 +1,7 @@
 import numpy as np
 from scipy import stats
 import sympy
-
-class Scint(object):
-    
-    def __init__(self, long_side_length=480, short_side_length=400, center_depth=0, short_side_offset=0, long_side_inclination=0, short_side_inclination=0):
-        
-        Lx = short_side_length / 1000
-        Ly = long_side_length / 1000
-        z = -center_depth / 1000
-        x = short_side_offset / 1000
-        alpha = short_side_inclination * np.pi / 180
-        beta = long_side_inclination * np.pi / 180
-        
-        self.Vx = np.array([np.cos(alpha), 0, np.sin(alpha)])
-        self.Vy = np.array([np.sin(alpha) * np.sin(beta), np.cos(beta), -np.cos(alpha) * np.sin(beta)])
-        self.P = np.array([x, 0, -z - Lx/2 * np.sin(alpha)])
-        self.Lx = Lx
-        self.Ly = Ly
+import uncertainties as un
 
 def make_sympy_solver():
     Vx = sympy.symbols('Vx:3')
@@ -33,6 +17,68 @@ def make_sympy_solver():
 
 ftx, fty = make_sympy_solver()
 
+class Scint(object):
+    
+    def _asufloat(self, x):
+        if isinstance(x, un.core.Variable):
+            return x
+        else:
+            return un.ufloat(x, 0)
+    
+    def __init__(self, long_side_length=480, short_side_length=400, center_depth=0, short_side_offset=0, long_side_inclination=0, short_side_inclination=0):
+        
+        self._Lx = self._asufloat(short_side_length) / 1000
+        self._Ly = self._asufloat(long_side_length) / 1000
+        self._z = -self._asufloat(center_depth) / 1000
+        self._x = self._asufloat(short_side_offset) / 1000
+        self._alpha = self._asufloat(short_side_inclination) * np.pi / 180
+        self._beta = self._asufloat(long_side_inclination) * np.pi / 180
+            
+    def _urandom(self, x):
+        return stats.norm.rvs(loc=x.n, scale=x.s)
+    
+    def within(self, v, p):
+        Lx = self._urandom(self._Lx)
+        Ly = self._urandom(self._Ly)
+        z = self._urandom(self._z)
+        x = self._urandom(self._x)
+        alpha = self._urandom(self._alpha)
+        beta = self._urandom(self._beta)
+        
+        Vx = np.array([np.cos(alpha), 0, np.sin(alpha)])
+        Vy = np.array([np.sin(alpha) * np.sin(beta), np.cos(beta), -np.cos(alpha) * np.sin(beta)])
+        P = np.array([x, 0, -z - Lx/2 * np.sin(alpha)])
+        
+        args = tuple(v.reshape(3,-1))
+        args += tuple(Vx.reshape(-1,1))
+        args += tuple(Vy.reshape(-1,1))
+        args += tuple(P.reshape(-1,1) - p.reshape(3,-1))
+        
+        tx = ftx(*args)
+        ty = fty(*args)
+        
+        return np.logical_and(np.logical_and(0 <= tx, tx <= Lx), np.logical_and(0 <= ty, ty <= Ly))
+    
+    def pivot(self, costheta, phi, tx, ty):
+        sintheta = np.sqrt(1 - costheta ** 2)
+        
+        v = np.array([sintheta * np.cos(phi), sintheta * np.sin(phi), costheta])
+        
+        Lx = self._urandom(self._Lx)
+        Ly = self._urandom(self._Ly)
+        z = self._urandom(self._z)
+        x = self._urandom(self._x)
+        alpha = self._urandom(self._alpha)
+        beta = self._urandom(self._beta)
+        
+        Vx = np.array([np.cos(alpha), 0, np.sin(alpha)])
+        Vy = np.array([np.sin(alpha) * np.sin(beta), np.cos(beta), -np.cos(alpha) * np.sin(beta)])
+        P = np.array([x, 0, -z - Lx/2 * np.sin(alpha)])
+        
+        p = P.reshape(-1,1) + Vx.reshape(-1,1) * tx.reshape(1,-1) * Lx + Vy.reshape(-1,1) * ty.reshape(1,-1) * Ly
+        
+        return v, p
+
 class MC(object):
     
     def __init__(self, scints, pivot_scint=0):
@@ -41,29 +87,18 @@ class MC(object):
         else:
             self.pivot = pivot_scint
         self.scints = scints
-        
     
     def random_ray(self, N=1000):
-        costheta = np.cbrt(stats.uniform.rvs(size=N))
-        phi = stats.uniform.rvs(size=N, scale=2 * np.pi)
-        sintheta = np.sqrt(1 - costheta ** 2)
-        self.v = np.array([sintheta * np.cos(phi), sintheta * np.sin(phi), costheta])
-        
-        tx = stats.uniform.rvs(size=N, scale=self.pivot.Lx)
-        ty = stats.uniform.rvs(size=N, scale=self.pivot.Ly)
-        self.p = self.pivot.P.reshape(-1,1) + self.pivot.Vx.reshape(-1,1) * tx.reshape(1,-1) + self.pivot.Vy.reshape(-1,1) * ty.reshape(1,-1)
+        self._costheta = np.cbrt(stats.uniform.rvs(size=N))
+        self._phi = stats.uniform.rvs(size=N, scale=2 * np.pi)
+        self._tx = stats.uniform.rvs(size=N)
+        self._ty = stats.uniform.rvs(size=N)
             
     def run(self):
+        v, p = self.pivot.pivot(self._costheta, self._phi, self._tx, self._ty)
         self.withins = []
         for scint in self.scints:
-            args = tuple(self.v)
-            args += tuple(scint.Vx.reshape(-1,1))
-            args += tuple(scint.Vy.reshape(-1,1))
-            args += tuple(scint.P.reshape(-1,1) - self.p)
-            tx = ftx(*args)
-            ty = fty(*args)
-            within = np.logical_and(np.logical_and(0 <= tx, tx <= scint.Lx), np.logical_and(0 <= ty, ty <= scint.Ly))
-            self.withins.append(within)
+            self.withins.append(scint.within(v, p))
     
     def count(self, boolexpr=True):
         if isinstance(boolexpr, bool):
@@ -75,9 +110,12 @@ class MC(object):
         return np.sum(within)
 
 if __name__ == '__main__':
-    scintA = Scint(center_depth=0)
-    scintB = Scint(center_depth=100)
-    mc = MC([scintA, scintB])
+    pmt6 = Scint(long_side_length=un.ufloat(482, 1), short_side_length=un.ufloat(400, 2), long_side_inclination=un.ufloat(0.2, 0.1), short_side_inclination=un.ufloat(0.7, 0.1), center_depth=0, short_side_offset=0)
+    
+    pmt5 = Scint(long_side_length=un.ufloat(482, 1), short_side_length=un.ufloat(404, 2), long_side_inclination=un.ufloat(0.3, 0.1), short_side_inclination=un.ufloat(1.0, 0.1), center_depth=un.ufloat(102, 2), short_side_offset=un.ufloat(-5, 1))
+    
+    mc = MC([pmt6, pmt5])
     mc.random_ray()
     mc.run()
+    
     print(mc.count())
