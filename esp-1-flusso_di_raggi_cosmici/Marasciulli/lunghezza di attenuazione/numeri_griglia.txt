@@ -1,0 +1,8 @@
+# Conteggi per la lunghezza di attenuazione ordinati per
+# colonne. Il numero della riga va da 4 a 1 come nel
+# disegno sul logbook.
+#D	C	B	A
+517	494	537	576
+421	534	485	667
+523	546	550	666
+552	627	635	716
