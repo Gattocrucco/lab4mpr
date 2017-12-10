@@ -77,15 +77,14 @@ class Scint(object):
         
         p = P.reshape(-1,1) + Vx.reshape(-1,1) * tx.reshape(1,-1) * Lx + Vy.reshape(-1,1) * ty.reshape(1,-1) * Ly
         
-        return v, p
+        area = Lx * Ly
+        horizontal_area = area * np.cos(alpha) * np.cos(beta)
+        
+        return v, p, horizontal_area
 
 class MC(object):
     
-    def __init__(self, scints, pivot_scint=0):
-        if not isinstance(pivot_scint, Scint):
-            self.pivot = scints.pop(pivot_scint)
-        else:
-            self.pivot = pivot_scint
+    def __init__(self, scints):
         self.scints = scints
     
     def random_ray(self, N=1000):
@@ -94,27 +93,65 @@ class MC(object):
         self._tx = stats.uniform.rvs(size=N)
         self._ty = stats.uniform.rvs(size=N)
             
-    def run(self):
-        v, p = self.pivot.pivot(self._costheta, self._phi, self._tx, self._ty)
+    def run(self, pivot_scint=0):
+        scints = self.scints.copy()
+        pivot = scints.pop(pivot_scint)
+        self._pivot = pivot_scint
+        
+        v, p, self._horizontal_area = pivot.pivot(self._costheta, self._phi, self._tx, self._ty)
         self.withins = []
-        for scint in self.scints:
+        for scint in scints:
             self.withins.append(scint.within(v, p))
     
-    def count(self, boolexpr=True):
-        if isinstance(boolexpr, bool):
-            boolexpr = [boolexpr] * len(self.scints)
+    def count(self, *expr):
+        expr = list(expr)
+        if len(expr) == 0:
+            expr = [True]
+        if len(expr) == 1:
+            expr *= len(self.scints)
+        if len(self.scints) != len(expr):
+            raise ValueError("expr must have length %d" % len(self.scints))
+        if not expr[self._pivot]:
+            raise ValueError("the pivot scint %d must be True" % self._pivot)
+        expr.pop(self._pivot)
+        
         within = np.ones(len(self.withins[0]), dtype=bool)
         for i in range(len(self.withins)):
-            w = self.withins[i] if boolexpr[i] else np.logical_not(self.withins[i])
+            if expr[i] is None: continue
+            w = self.withins[i] if expr[i] else np.logical_not(self.withins[i])
             within = np.logical_and(within, w)
         return np.sum(within)
+    
+    def density(self, *expr):
+        count = self.count(*expr)
+        return len(self._costheta) / count / self._horizontal_area
 
+long_side_angles = np.array([0.2, 0.3, 0.4, 0.3, 0.6, 0.4])
+short_side_angles = np.array([0.7, 1.0, 1.2, 0.8, 0.2, 0.8])
+
+long_side_angles -= np.mean(long_side_angles)
+short_side_angles -= np.mean(short_side_angles)
+
+long_side_inclination = []
+short_side_inclination = []
+for beta, alpha in zip(long_side_angles, short_side_angles):
+    long_side_inclination.append(un.ufloat(beta, 0.05))
+    short_side_inclination.append(un.ufloat(alpha, 0.05))
+
+pmt6 = Scint(long_side_length=un.ufloat(482, 1), short_side_length=un.ufloat(400, 2), long_side_inclination=long_side_inclination[0], short_side_inclination=short_side_inclination[0], center_depth=0, short_side_offset=0)
+    
+pmt5 = Scint(long_side_length=un.ufloat(482, 1), short_side_length=un.ufloat(404, 2), long_side_inclination=long_side_inclination[1], short_side_inclination=short_side_inclination[1], center_depth=un.ufloat(102, 1), short_side_offset=un.ufloat(-5, 1))
+    
+pmt4 = Scint(long_side_length=un.ufloat(481, 1), short_side_length=un.ufloat(398, 2), long_side_inclination=long_side_inclination[2], short_side_inclination=short_side_inclination[2], center_depth=un.ufloat(205, 1), short_side_offset=un.ufloat(1, 1))
+    
+pmt3 = Scint(long_side_length=un.ufloat(480, 1), short_side_length=un.ufloat(400, 2), long_side_inclination=long_side_inclination[3], short_side_inclination=short_side_inclination[3], center_depth=un.ufloat(308, 1), short_side_offset=un.ufloat(1, 1.4))
+    
+pmt2 = Scint(long_side_length=un.ufloat(481, 1), short_side_length=un.ufloat(395, 2), long_side_inclination=long_side_inclination[4], short_side_inclination=short_side_inclination[4], center_depth=un.ufloat(411, 1), short_side_offset=un.ufloat(2, 1.4))
+    
+pmt1 = Scint(long_side_length=un.ufloat(480, 1), short_side_length=un.ufloat(398, 2), long_side_inclination=long_side_inclination[5], short_side_inclination=short_side_inclination[5], center_depth=un.ufloat(804, 2), short_side_offset=un.ufloat(0, 2))
+    
 if __name__ == '__main__':
-    pmt6 = Scint(long_side_length=un.ufloat(482, 1), short_side_length=un.ufloat(400, 2), long_side_inclination=un.ufloat(0.2, 0.1), short_side_inclination=un.ufloat(0.7, 0.1), center_depth=0, short_side_offset=0)
-    
-    pmt5 = Scint(long_side_length=un.ufloat(482, 1), short_side_length=un.ufloat(404, 2), long_side_inclination=un.ufloat(0.3, 0.1), short_side_inclination=un.ufloat(1.0, 0.1), center_depth=un.ufloat(102, 2), short_side_offset=un.ufloat(-5, 1))
-    
-    mc = MC([pmt6, pmt5])
+    mc = MC([pmt6, pmt5, pmt4, pmt3, pmt2, pmt1])
     mc.random_ray()
     mc.run()
     
