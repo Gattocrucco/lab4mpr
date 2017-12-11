@@ -33,7 +33,7 @@ def coverage(mu, CL):
 # fast but tight right bound to the band
 # (!) k >= 0, CL > 0, CL < 1
 # norm.ppf: bound for large k
-# -log(1-CL): bound for k = 0 for great CL
+# -log(1-CL): bound for k = 0 for big CL
 # exp(-1): bound for k = 0 for small CL
 def right_bound(k, CL):
     return k + ceil(sqrt(k) * norm.ppf((1+CL)/2)) - log(1 - CL) + exp(-1)
@@ -42,13 +42,13 @@ def right_bound(k, CL):
 # (!) k >= 0, CL > 0, CL < 1
 def interval(k, CL):
     f = lambda mu: coverage(mu, CL)[1] - k + 1/2
-    mu_left = bisect(f, 0, k) if k > 0 else 0
+    mu_left = bisect(f, 0, k, rtol=1e-5) if k > 0 else 0
     f = lambda mu: coverage(mu, CL)[0] - k - 1/2
-    mu_right = bisect(f, k, right_bound(k, CL))
+    mu_right = bisect(f, k, right_bound(k, CL), rtol=1e-5)
     return array([mu_left, mu_right])
 
 if __name__ == '__main__':
-    CLS = [0.1, 0.90, 0.9999]
+    CLS = [0.90, 0.95, 0.99]
     mus = linspace(0, 20, 500)
 
     figure('FC poisson band').set_tight_layout(True)
