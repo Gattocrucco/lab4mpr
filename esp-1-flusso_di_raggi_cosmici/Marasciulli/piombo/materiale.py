@@ -32,7 +32,7 @@ py.minorticks_on()
 
 py.title("Misura con fogli di piombo",size=18)
 py.xlabel("numero di fogli")
-py.ylabel("conteggi normalizzati")  # intendo nello stesso intervallo di tempo
+py.ylabel("conteggi normalizzati")  
 
 l2=l2*corre
 
@@ -50,4 +50,28 @@ py.errorbar(z,[py.average( (med(l3)),weights=1/err(l3)**2 )]*len(z),linestyle=""
 py.plot(py.xlim(),[py.average( (med(l3)),weights=1/err(l3)**2 )]*2,linestyle="--",color="black")
 '''
 py.legend(loc="best",fontsize="small")
+py.show()
+
+## SPETTRO ENERGETICO
+
+dati="C:/Users/andre/Desktop/ANDREA/Laboratorio 4/flusso cosmici/de0_data/"
+files=["piombo_con_tutto_c12.dat","piombo_senza_c12.dat"]
+w=[]
+for file in files:
+    null_t,v,null_2=py.loadtxt(dati+file,unpack=True)
+    v*=1000
+    w.append(v)
+
+py.figure(2).set_tight_layout(True)
+py.rc("font",size=16)
+py.grid(color="black",linestyle="--")
+py.minorticks_on()
+
+py.title("Spettro energetico",size=18)
+py.xlabel("ampiezza  (mV)")
+py.ylabel("occorrenza")
+        
+py.hist(w,bins="auto",normed=True,color=["black","orange"],label=["con piombo","senza piombo"])
+py.legend(loc=0,fontsize="small")
+
 py.show()
