@@ -4,20 +4,6 @@ import sympy
 import uncertainties as un
 import lab
 
-def _make_sympy_solver():
-    Vx = sympy.symbols('Vx:3')
-    Vy = sympy.symbols('Vy:3')
-    v = sympy.symbols('v:3')
-    Pmp = sympy.symbols('Pmp:3')
-    S = sympy.Matrix([v, [-vx for vx in Vx], [-vy for vy in Vy], Pmp]).transpose()
-    ts = sympy.symbols('t tx ty')
-    sol = sympy.solve_linear_system(S, *ts)
-    ftx = sympy.lambdify(v + Vx + Vy + Pmp, sol[ts[1]])
-    fty = sympy.lambdify(v + Vx + Vy + Pmp, sol[ts[2]])
-    return ftx, fty
-
-_ftx, _fty = _make_sympy_solver()
-
 class Scint(object):
     
     def _asufloat(self, x):
@@ -72,22 +58,53 @@ class Scint(object):
         else:
             return self._efficiency.n
     
-    def within(self, v, p, randgeom=False, randeff=False):
+    def _make_sympy_solver(self, Vx=None, Vy=None):
+        v = sympy.symbols('v:3')
+        Pmp = sympy.symbols('Pmp:3')
+        args = v
+        if Vx is None:
+            Vx = sympy.symbols('Vx:3')
+            args += Vx
+        if Vy is None:
+            Vy = sympy.symbols('Vy:3')
+            args += Vy
+        args += Pmp
+    
+        S = sympy.Matrix([v, [-vx for vx in Vx], [-vy for vy in Vy], Pmp]).transpose()
+        ts = sympy.symbols('t tx ty')
+        sol = sympy.solve_linear_system(S, *ts)
+        ftx = sympy.lambdify(args, sol[ts[1]])
+        fty = sympy.lambdify(args, sol[ts[2]])
+    
+        return ftx, fty
+
+    def within(self, v, p, randgeom=False, randeff=False, cachegeom=False):
         Lx, Ly, _, _ = self._compute_geometry(randomize=randgeom)
         
+        if not randgeom and cachegeom and not hasattr(self, '_cache_ftx'):
+            self._cache_ftx, self._cache_fty = self._make_sympy_solver(Vx=self._Vx, Vy=self._Vy)
+        elif not hasattr(Scint, '_ftx'):
+            Scint._ftx, Scint._fty = self._make_sympy_solver()
+        
         args = tuple(v.reshape(3,-1))
-        args += tuple(self._Vx.reshape(-1,1))
-        args += tuple(self._Vy.reshape(-1,1))
+        if not randgeom and hasattr(self, '_cache_ftx'):
+            ftx = self._cache_ftx
+            fty = self._cache_fty
+        else:
+            ftx = Scint._ftx
+            fty = Scint._fty
+            args += tuple(self._Vx.reshape(-1,1))
+            args += tuple(self._Vy.reshape(-1,1))
         args += tuple(self._P.reshape(-1,1) - p.reshape(3,-1))
         
-        tx = _ftx(*args)
-        ty = _fty(*args)
+        tx = ftx(*args)
+        ty = fty(*args)
         
         efficiency = self._compute_efficiency(randomize=randeff)
         
         return np.logical_and(np.logical_and(0 <= tx, tx <= Lx), np.logical_and(0 <= ty, ty <= Ly)), efficiency
     
-    def pivot(self, costheta, phi, tx, ty, randgeom=False, randeff=False):
+    def pivot(self, costheta, phi, tx, ty, randgeom=False, randeff=False, cachegeom=False):
         sintheta = np.sqrt(1 - costheta ** 2)
         
         v = np.array([sintheta * np.cos(phi), sintheta * np.sin(phi), costheta])
@@ -174,7 +191,7 @@ class MC(object):
         s = 0
         for n in ns:
             self.random_ray(N=n)
-            self.run(randeff=False, randgeom=False)
+            self.run(randeff=False, randgeom=False, cachegeom=True)
             count += self.count(*expr)
             s += n
             eta.etaprint(s / N)
