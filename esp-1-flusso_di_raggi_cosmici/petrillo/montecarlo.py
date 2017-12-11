@@ -2,6 +2,7 @@ import numpy as np
 from scipy import stats
 import sympy
 import uncertainties as un
+import lab
 
 def _make_sympy_solver():
     Vx = sympy.symbols('Vx:3')
@@ -108,6 +109,9 @@ class MC(object):
         self._scints = list(scints)
     
     def random_ray(self, N=10000):
+        N = int(N)
+        if not (2 <= N <= 1000000):
+            raise ValueError("number %d of samples out of range 2--1000000." % N)
         self._costheta = np.cbrt(stats.uniform.rvs(size=N))
         self._phi = stats.uniform.rvs(size=N, scale=2 * np.pi)
         self._tx = stats.uniform.rvs(size=N)
@@ -147,13 +151,35 @@ class MC(object):
             elif expr[i]:
                 w = self._withins[i] * self._efficiencies[i]
             else:
-                w = np.logical_not(self._withins[i]) + self._withins[i] * (1 - self._efficiencies[i])
+                w = 1 - self._withins[i] * self._efficiencies[i]
             within *= w
-        return np.sum(within)
+        
+        count = np.sum(within)
+        count_sd = np.std(within, ddof=1) * np.sqrt(len(within))
+        
+        return un.ufloat(count, count_sd)
     
     def density(self, *expr):
         count = self.count(*expr)
         return self._N / count / self._horizontal_area
+    
+    def long_run(self, *expr, N=100000000):
+        N = int(N)
+        times = N // 1000000
+        rem = N % 1000000
+        ns = times * [1000000] + ([rem] if rem != 0 else [])
+        
+        count = 0
+        eta = lab.Eta()
+        s = 0
+        for n in ns:
+            self.random_ray(N=n)
+            self.run(randeff=False, randgeom=False)
+            count += self.count(*expr)
+            s += n
+            eta.etaprint(s / N)
+        
+        return N / count / self._horizontal_area
 
 def pmt(idx, efficiency=1.0):
     if not (1 <= idx <= 6):
