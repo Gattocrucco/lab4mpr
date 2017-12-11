@@ -1,5 +1,5 @@
 import numpy as np
-from scipy import stats
+from scipy import stats, optimize
 import sympy
 import uncertainties as un
 import lab
@@ -125,11 +125,43 @@ class MC(object):
     def __init__(self, *scints):
         self._scints = list(scints)
     
-    def random_ray(self, N=10000):
+    def _von_neumann(self, pdf, size):
+        out = optimize.minimize_scalar(lambda x: -pdf(x), method='bounded', bounds=[0, 1])
+        maxpdf = pdf(out.x)
+        
+        tempt_sam = stats.uniform.rvs(size=size)
+        acc_sam = stats.uniform.rvs(size=size, scale=maxpdf)
+        samples = tempt_sam[acc_sam < pdf(tempt_sam)]
+        n_tempt = size
+        
+        while len(samples) < size:
+            acceptance = len(samples) / n_tempt
+            if acceptance == 0:
+                acceptance = 3 / n_tempt
+            new_tempt = int(np.ceil((size - len(samples)) / acceptance))
+            n_tempt += new_tempt
+            
+            tempt_sam = stats.uniform.rvs(size=new_tempt)
+            acc_sam = stats.uniform.rvs(size=new_tempt, scale=maxpdf)
+            new_samples = tempt_sam[acc_sam < pdf(tempt_sam)]
+            samples = np.concatenate((samples, new_samples))
+        
+        return samples[:size]
+    
+    def random_ray(self, N=10000, distcos=None):
         N = int(N)
         if not (2 <= N <= 1000000):
             raise ValueError("number %d of samples out of range 2--1000000." % N)
-        self._costheta = np.cbrt(stats.uniform.rvs(size=N))
+        if distcos is None:
+            self._costheta = np.cbrt(stats.uniform.rvs(size=N))
+        elif hasattr(distcos, 'rvs'):
+            self._costheta = distcos.rvs(size=N)
+            if np.any(self._costheta < 0) or np.any(self._costheta > 1):
+                raise ValueError('the given distribution must have support in [0,1].')
+        elif hasattr(distcos, '__call__'):
+            self._costheta = self._von_neumann(distcos, N)
+        else:
+            raise ValueError('distcos must be either None, an instance of rv_continuous or a function.')
         self._phi = stats.uniform.rvs(size=N, scale=2 * np.pi)
         self._tx = stats.uniform.rvs(size=N)
         self._ty = stats.uniform.rvs(size=N)
