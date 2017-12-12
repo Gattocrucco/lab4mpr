@@ -5,7 +5,7 @@ try:
 except FileNotFoundError:
     pass
 
-sys.stdout=open("risultati_corr.txt","w")
+#sys.stdout=open("risultati_corr.txt","w")
 
 print("EFFICIENZE ESP. 1 \n")
 file=(3,4,5)
@@ -18,11 +18,11 @@ for j in range(len(file)):
     cas3=py.sum( (r1*r2*r3*dt**2)/T )  #coincidenze casuali
     
     eff=py.sum(c3)/py.sum(c2)
-    deff=eff*(1-eff)/py.sum(c2)
+    deff=sqrt( eff*(1-eff)/py.sum(c2) )
     
-    print("efficienza PMT%d= %f +- %f" %(file[j],eff,deff) )
+    print("efficienza PMT%d= %.1f +- %.1f" %(file[j],eff*100,deff*100) )
     print("coincidenze casuali a 2= %.0e" %cas2)
     print("coincidenze casuali a 3= %.0e" %cas3,"\n")
     
-sys.stdout.close()
-sys.stdout=sys.__stdout__
+#sys.stdout.close()
+#sys.stdout=sys.__stdout__

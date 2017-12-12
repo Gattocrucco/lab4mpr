@@ -19,7 +19,7 @@ C=uarray( C,sqrt(C) )
 B=uarray( B,sqrt(B) )
 A=uarray( A,sqrt(A) )
 
-asc=array([30,20,10,0])  # correggere
+asc=array([32.5,23,13.7,0])  
 ord=array([py.mean(D),py.mean(C),py.mean(B),py.mean(A)])
 
 valori=[666,100]
@@ -40,8 +40,8 @@ py.title("Lunghezza di attenuazione",size=18)
 py.xlabel("distanza dalla guida di luce  (cm)")
 py.ylabel("conteggi PMT1")
 
-py.errorbar(asc,med(ord),xerr=0.1,yerr=err(ord),linestyle="",color="red",capsize=2,marker=".")
-z=py.linspace(-0.5,30.5,10**3)
+py.errorbar(asc,med(ord),xerr=0.1,yerr=err(ord),linestyle="",color="red",capsize=2,marker="")
+z=py.linspace(-0.5,33,10**3)
 py.plot(z,att(z,*popt),color="blue")
 
 py.show()
@@ -50,7 +50,7 @@ chi=py.sum( ((med(ord)-att(asc,*popt))/err(ord))**2 )
 dof=len(ord)-len(popt)
 p=chdtrc(dof,chi)
 print("chi quadro=",chi,"+-",sqrt(dof))
-print("p_value=",p)
+print("p_value=",p,"\n")
 
 #sys.stdout.close()
 #sys.stdout=sys.__stdout__
@@ -63,7 +63,7 @@ print("MEDIA PER RIGHE \n")
 # Faccio la media dei conteggi di ogni riga e poi li fitto
 
 c=py.loadtxt("numeri_griglia.txt")
-x=array([30,20,10,0])  # correggere
+x=array([32.5,23,13.7,0])  
 col=["red","green","blue","orange"]
 
 py.figure(2).set_tight_layout(True)
@@ -93,8 +93,8 @@ for i in range(len(c)):
     l=py.append(l,li)
     dl=py.append(dl,dli)
     
-    py.errorbar(x,y,xerr=0.5,yerr=dy,marker="+",linestyle="",capsize=2,label="riga %d" %(4-i), color=col[i] )
-    z=py.linspace(-0.5,30.5,1000)
+    py.errorbar(x,y,xerr=0.1,yerr=dy,marker="",linestyle="",capsize=2,label="riga %d" %(4-i), color=col[i] )
+    z=py.linspace(-0.5,33,1000)
     py.plot(z,att(z,*popt),color=col[i])
     
     chi=py.sum( ((y-att(x,*popt))/dy)**2 )
