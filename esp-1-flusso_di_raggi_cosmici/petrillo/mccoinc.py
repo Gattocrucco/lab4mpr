@@ -52,5 +52,5 @@ if __name__ == '__main__':
     
     c_1 = r1 * (1 - tm * r1) * r2 * (1 - tm * r2) * (tc1 + tc2) * T
     
-    print('MC  = %12s' % xe(c, sqrt(c + dc**2)))
-    print('att = %12s' % xe(c_1, sqrt(c_1)))
+    print('MC  = %12s' % xe(c, dc))
+    print('att = %d' % c_1)
