@@ -19,7 +19,7 @@ C=uarray( C,sqrt(C) )
 B=uarray( B,sqrt(B) )
 A=uarray( A,sqrt(A) )
 
-asc=array([32.5,23,13.7,0])  
+asc=array([30.5,21,11.7,0])  
 ord=array([py.mean(D),py.mean(C),py.mean(B),py.mean(A)])
 
 valori=[666,100]
@@ -63,7 +63,7 @@ print("MEDIA PER RIGHE \n")
 # Faccio la media dei conteggi di ogni riga e poi li fitto
 
 c=py.loadtxt("numeri_griglia.txt")
-x=array([32.5,23,13.7,0])  
+x=array([30.5,21,11.7,0])  
 col=["red","green","blue","orange"]
 
 py.figure(2).set_tight_layout(True)
