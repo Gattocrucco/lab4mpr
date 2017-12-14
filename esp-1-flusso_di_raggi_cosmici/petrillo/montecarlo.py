@@ -212,6 +212,8 @@ class MC(object):
         count = self.count(*expr)
         return self._N / count / self._horizontal_area
     
+    # TODO
+    # modificare in modo che accetti array di expr
     def long_run(self, *expr, N=100000000):
         N = int(N)
         times = N // 1000000
