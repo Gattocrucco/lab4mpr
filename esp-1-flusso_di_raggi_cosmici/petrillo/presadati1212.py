@@ -21,7 +21,7 @@ r4 = c4 / time
 E3 = c6523 / c652
 E3 = uarray(E3, sqrt(E3*(1-E3)/c652))
 E4 = c6524 / c652
-E4 = uarray(E4, sqrt(E4*(1-E4)/c652)) * mce # TODO calcolare la varianza giusta
+E4 = uarray(E4, sqrt(E4*(1-E4)/c652)) * mce
 E5 = c652 / c62
 E5 = uarray(E5, sqrt(E5*(1-E5)/c62))
 
@@ -45,7 +45,7 @@ mis = (c34 / time - n34_att) / (E3 * E4) * mc
 # calcolato in modo che su una delle misure sia uguale a quello atteso
 r_att = (c34 / time - n34_att) / (E3 * E4)
 
-n34 = c34 / time - r_att[-3] * E3 * E4
+n34 = c34 / time - r_att[-1] * E3 * E4
 
 print("%8s%6s%13s%9s%6s%13s%12s%12s%12s" % ("soglia3","alim3","eff3","soglia4","alim4","eff4","noise34","noisec","mis"))
 for i in range(len(s3)):
