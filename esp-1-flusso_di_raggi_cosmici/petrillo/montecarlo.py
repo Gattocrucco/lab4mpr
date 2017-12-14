@@ -181,40 +181,55 @@ class MC(object):
         
         self._N = len(self._costheta)
     
-    def count(self, *expr):
-        expr = list(expr)
-        if len(expr) == 0:
-            expr = [True]
-        if len(expr) == 1:
-            expr *= len(self._scints)
-        if len(self._scints) != len(expr):
-            raise ValueError("expr must have length %d" % len(self._scints))
-        if not expr[self._pivot]:
-            raise ValueError("the pivot scint %d must be True" % self._pivot)
-        expr.pop(self._pivot)
+    def count(self, *exprs):
+        exprs = list(exprs)
+        if len(exprs) == 0:
+            exprs = [True]
+        if not any([hasattr(expr, '__len__') for expr in exprs]):
+            exprs = [exprs]
+            d1 = False
+        else:
+            d1 = True
+        for i in range(len(exprs)):
+            expr = exprs[i]
+            if not hasattr(expr, '__len__'):
+                expr = [expr]
+            if len(expr) == 0:
+                expr = [True]
+            expr = list(expr)
+            if len(expr) == 1:
+                expr *= len(self._scints)
+            if len(self._scints) != len(expr):
+                raise ValueError("exprs[%d] has length %d != %d" % (i, len(expr), len(self._scints)))
+            if not expr[self._pivot]:
+                raise ValueError("exprs[%d] has pivot scint (%d) = %s != True" % (i, self._pivot, str(expr[self._pivot])))
+            expr.pop(self._pivot)
+            exprs[i] = expr
+                
+        withins = np.ones((len(exprs), self._N)) * self._pivot_eff
+        for j in range(len(exprs)):
+            expr = exprs[j]
+            for i in range(len(self._withins)):
+                if expr[i] is None or expr[i] is Ellipsis:
+                    continue
+                elif expr[i]:
+                    w = self._withins[i] * self._efficiencies[i]
+                else:
+                    w = 1 - self._withins[i] * self._efficiencies[i]
+                withins[j] *= w
         
-        within = np.ones(self._N) * self._pivot_eff
-        for i in range(len(self._withins)):
-            if expr[i] is None:
-                continue
-            elif expr[i]:
-                w = self._withins[i] * self._efficiencies[i]
-            else:
-                w = 1 - self._withins[i] * self._efficiencies[i]
-            within *= w
+        counts = np.sum(withins, axis=1)
+        counts_cov = np.atleast_2d(np.cov(withins, ddof=1)) * len(withins[0])
         
-        count = np.sum(within)
-        count_sd = np.std(within, ddof=1) * np.sqrt(len(within))
-        
-        return un.ufloat(count, count_sd)
+        rt = np.array(un.correlated_values(counts, counts_cov))
+        return rt if d1 else rt[0]
     
     def density(self, *expr):
         count = self.count(*expr)
         return self._N / count / self._horizontal_area
     
-    # TODO
-    # modificare in modo che accetti array di expr
-    def long_run(self, *expr, N=100000000):
+    def long_run(self, *expr, **kw):
+        N = kw.pop('N', 1e8)
         N = int(N)
         times = N // 1000000
         rem = N % 1000000
