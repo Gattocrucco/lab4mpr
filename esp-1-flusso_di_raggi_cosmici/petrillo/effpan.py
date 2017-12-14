@@ -25,8 +25,15 @@ for i in range(N):
     ce6[i] = (c51 / c6521).n
     ce1[i] = (c652 / c6521).n
 
-f6 = ufloat(np.mean(ce6), np.std(ce6) / np.sqrt(len(ce6)))
-f1 = ufloat(np.mean(ce1), np.std(ce1) / np.sqrt(len(ce1)))
+# usare long_run perché l'errore MC con 1e6 viene confrontabile con quello geometrico
+mc.random_ray(1e6)
+mc.run(pivot_scint=1)
+c51 = mc.count(None, 1, None, 1)
+c6521 = mc.count(1, 1, 1, 1)
+c652 = mc.count(1, 1, 1, None)
+
+f6 = ufloat((c51 / c6521).n, np.std(ce6))
+f1 = ufloat((c652 / c6521).n, np.std(ce1))
 
 print(f6)
 print(f1)
