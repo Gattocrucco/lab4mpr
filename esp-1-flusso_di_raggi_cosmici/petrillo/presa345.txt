@@ -1,0 +1,14 @@
+# 3&4&5
+#
+# tensioni di 2, 6: 1900 V.
+# soglie di 2, 6: 100 mV
+#
+# soglie in -mV x 10 misurate dal T.P.
+# alimentazioni nominali in V
+#
+# soglia3	soglia4	soglia5	alim3	alim4	alim5	clock	5	4	3&4&5	6&2	6&2&5	6&2&4	6&2&3	MC	MC eff
+#----------------------------------------------------------------------------------------------------------------------------------------------
+# durata secondo stadio 3: 
+# durata secondo stadio 4:
+# durata secondo stadio 5: 
+307.1	297.1	207.1	2000	2000	2000	53093476	62962492	723662210	1073466	668411	617769	607441	591279			
