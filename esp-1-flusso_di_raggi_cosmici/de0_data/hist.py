@@ -19,6 +19,11 @@ for file in files:
 maxlen = max([len(ch0) for ch0 in ch0s])
 hist(ch0s, normed=True, bins=min(maxbins, int(sqrt(maxlen))), label=files, alpha=.5)
 
+#lims = xlim()
+#xs = linspace(lims[0], lims[1], 100)
+#p = 4/pi/sqrt(xs**8-xs**6)
+#plot(xs,p,'-k')
+
 legend(loc=0, fontsize='small')
 show()
 
