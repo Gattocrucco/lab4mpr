@@ -77,9 +77,13 @@ class Scint(object):
         fty = sympy.lambdify(args, sol[ts[2]])
     
         return ftx, fty
-
-    def within(self, v, p, randgeom=False, randeff=False, cachegeom=False):
-        Lx, Ly, _, _ = self._compute_geometry(randomize=randgeom)
+    
+    def _angle(self, v, alpha, beta):
+        # stub implementation
+        return v[2]
+    
+    def within(self, v, p, randgeom=False, randeff=False, cachegeom=False, angle=False):
+        Lx, Ly, alpha, beta = self._compute_geometry(randomize=randgeom)
         
         if not randgeom and cachegeom and not hasattr(self, '_cache_ftx'):
             self._cache_ftx, self._cache_fty = self._make_sympy_solver(Vx=self._Vx, Vy=self._Vy)
@@ -102,9 +106,12 @@ class Scint(object):
         
         efficiency = self._compute_efficiency(randomize=randeff)
         
-        return np.logical_and(np.logical_and(0 <= tx, tx <= Lx), np.logical_and(0 <= ty, ty <= Ly)), efficiency
+        rt = (np.logical_and(np.logical_and(0 <= tx, tx <= Lx), np.logical_and(0 <= ty, ty <= Ly)), efficiency)
+        if angle:
+            rt += (self._angle(v, alpha, beta),)
+        return rt
     
-    def pivot(self, costheta, phi, tx, ty, randgeom=False, randeff=False, cachegeom=False):
+    def pivot(self, costheta, phi, tx, ty, randgeom=False, randeff=False, cachegeom=False, angle=False):
         sintheta = np.sqrt(1 - costheta ** 2)
         
         v = np.array([sintheta * np.cos(phi), sintheta * np.sin(phi), costheta])
@@ -118,8 +125,11 @@ class Scint(object):
         
         efficiency = self._compute_efficiency(randomize=randeff)
         
-        return v, p, horizontal_area, efficiency
-
+        rt = (v, p, horizontal_area, efficiency)
+        if angle:
+            rt += (self._angle(v, alpha, beta),)
+        return rt
+    
 class MC(object):
     
     def __init__(self, *scints):
@@ -166,22 +176,50 @@ class MC(object):
         self._tx = stats.uniform.rvs(size=N)
         self._ty = stats.uniform.rvs(size=N)
             
-    def run(self, pivot_scint=0, **kw):
+    def run(self, pivot_scint=0, spectrum=None, **kw):
         scints = self._scints.copy()
+        if spectrum is True:
+            spectrum = pivot_scint
+        spectrum_scint = scints[spectrum] if not spectrum is None else None
         pivot = scints.pop(pivot_scint)
         self._pivot = pivot_scint
         
-        v, p, self._horizontal_area, self._pivot_eff = pivot.pivot(self._costheta, self._phi, self._tx, self._ty, **kw)
+        if not spectrum_scint is pivot:
+            v, p, self._horizontal_area, self._pivot_eff = pivot.pivot(self._costheta, self._phi, self._tx, self._ty, **kw)
+        else:
+            v, p, self._horizontal_area, self._pivot_eff, self._spectr_ang = pivot.pivot(self._costheta, self._phi, self._tx, self._ty, angle=True, **kw)
+            self._spectr_within = True
         self._withins = []
         self._efficiencies = []
         for scint in scints:
-            w, e = scint.within(v, p, **kw)
+            if not spectrum_scint is scint:
+                w, e = scint.within(v, p, **kw)
+            else:
+                w, e, self._spectr_ang = scint.within(v, p, angle=True, **kw)
+                self._spectr_within = w
             self._withins.append(w)
             self._efficiencies.append(e)
         
         self._N = len(self._costheta)
     
+    def costheta(self, *exprs):
+        # stub implementation, do not consider efficiency
+        withins, d1 = self._compute_withins(*exprs)
+        rt = []
+        for within in withins:
+            rt.append(self._spectr_ang[np.logical_and(self._spectr_within, within)])
+        return rt if d1 else rt[0]
+    
     def count(self, *exprs):
+        withins, d1 = self._compute_withins(*exprs)
+        
+        counts = np.sum(withins, axis=1)
+        counts_cov = np.atleast_2d(np.cov(withins, ddof=1)) * len(withins[0])
+        
+        rt = np.array(un.correlated_values(counts, counts_cov))
+        return rt if d1 else rt[0]
+    
+    def _compute_withins(self, *exprs):
         exprs = list(exprs)
         if len(exprs) == 0:
             exprs = [True]
@@ -218,12 +256,8 @@ class MC(object):
                     w = 1 - self._withins[i] * self._efficiencies[i]
                 withins[j] *= w
         
-        counts = np.sum(withins, axis=1)
-        counts_cov = np.atleast_2d(np.cov(withins, ddof=1)) * len(withins[0])
+        return withins, d1
         
-        rt = np.array(un.correlated_values(counts, counts_cov))
-        return rt if d1 else rt[0]
-    
     def density(self, *expr):
         count = self.count(*expr)
         return self._N / count / self._horizontal_area
