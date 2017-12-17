@@ -12,7 +12,7 @@ class Scint(object):
         else:
             return un.ufloat(x, 0)
     
-    def __init__(self, long_side_length=480, short_side_length=400, center_depth=0, short_side_offset=0, long_side_inclination=0, short_side_inclination=0, efficiency=1.0):
+    def __init__(self, long_side_length=480, short_side_length=400, center_depth=0, short_side_offset=0, long_side_inclination=0, short_side_inclination=0, efficiency=1.0, thickness=10):
         
         self._Lx = self._asufloat(short_side_length) / 1000
         self._Ly = self._asufloat(long_side_length) / 1000
@@ -21,9 +21,14 @@ class Scint(object):
         self._alpha = self._asufloat(short_side_inclination) * np.pi / 180
         self._beta = self._asufloat(long_side_inclination) * np.pi / 180
         self._efficiency = self._asufloat(efficiency)
+        self._thickness = self._asufloat(thickness) / 1000
         
         self._compute_geometry(randomize=False)
-        
+    
+    @property
+    def thickness(self):
+        return self._thickness.n
+    
     def _urandom(self, x):
         return stats.norm.rvs(loc=x.n, scale=x.s)
     
@@ -189,6 +194,7 @@ class MC(object):
         else:
             v, p, self._horizontal_area, self._pivot_eff, self._spectr_ang = pivot.pivot(self._costheta, self._phi, self._tx, self._ty, angle=True, **kw)
             self._spectr_within = True
+            self._spectr_thick = pivot.thickness
         self._withins = []
         self._efficiencies = []
         for scint in scints:
@@ -197,6 +203,7 @@ class MC(object):
             else:
                 w, e, self._spectr_ang = scint.within(v, p, angle=True, **kw)
                 self._spectr_within = w
+                self._spectr_thick = scint.thickness
             self._withins.append(w)
             self._efficiencies.append(e)
         
@@ -209,6 +216,10 @@ class MC(object):
         for within in withins:
             rt.append(self._spectr_ang[np.logical_and(self._spectr_within, within)])
         return rt if d1 else rt[0]
+    
+    def energy(self, *exprs):
+        costheta = self.costheta(*exprs)
+        return self._spectr_thick / costheta * 1.5 * 100
     
     def count(self, *exprs):
         withins, d1 = self._compute_withins(*exprs)
