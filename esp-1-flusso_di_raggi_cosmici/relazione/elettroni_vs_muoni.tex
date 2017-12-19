@@ -1,0 +1,52 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage[font={sf}]{caption}
+
+\setlength{\marginparwidth}{95pt}
+
+\sisetup{%
+separate-uncertainty=true,
+multi-part-units=single,
+exponent-product=\cdot}
+
+\frenchspacing
+
+\begin{document}
+  
+\subsection*{Elettroni vs muoni}  % titolo provvisorio
+
+I raggi cosmici carichi presenti al livello del suolo\footnote{Informazioni prese dalla scheda dell'esperienza} sono costituiti principalmente da muoni e da elettroni (positroni). Alcune di queste particelle potrebbero non essere rivelate dal nostro telescopio di raggi cosmici a causa dell'energia persa nell'attraversare il tetto dell'edificio. Calcoliamo allora l'entità di questo effetto.
+\subsubsection*{Muoni} 
+Per i calcoli sui muoni ci avvaliamo del grafico%
+\footnote{\emph{Particle Physics Booklet 2014}, pag. 255}
+che mostra il rapporto tra percorso residuo e massa in funzione dell'impulso del muone.
+I muoni a livello del suolo hanno un'energia media $E_\mu=\SI4{GeV}$. Essendo $m_\mu \ll E_\mu$, $p_\mu \simeq E_\mu$. Il valore di $R/M$ equivalente a questo impulso nel piombo è circa \SI{3e4}{g cm^{-2} GeV^{-1}}. Per trovare il percorso residuo bisogna moltiplicare questa quantità per la massa della particella e dividere per la densità del materiale.
+\footnote{Ho inserito tutti questi passaggi in modo che almeno voi due non dobbiate scervellarvi per capire che cosa ho fatto}
+\begin{equation}
+R(\si{cm})=\frac{R}{M} (\si{g cm^{-2} GeV^{-1}}) \cdot \frac{M(\si{GeV})}{\rho_{\text{Pb}} (\si{g/cm^3})}=3\cdot10^4 \cdot  \frac{10^{-1} }{11.35}=\SI{300}{cm}    
+\end{equation}
+Quindi per fermare un muone da \SI{4}{GeV} sono necessari \SI{3}{m} di piombo, ma il tetto dell'edificio ha uno spessore di circa \SI{1}{m}
+\footnote{spero di non sbagliarmi. Comunque se fosse spesso 2 m non dovrebbe cambiare la situazione.} 
+ ed è costituito da un materiale meno denso del piombo. I muoni penetrati all'interno del laboratorio hanno quindi perso meno di un terzo della loro energia iniziale e sono ancora ultrarelativistici: le loro perdite di energia in aria e nello scintillatore sono trascurabili. \footnote{non ho scritto la formula del minimo di ionizzazione e relativi calcoli perché questi dovrebbero trovarsi più su a relazione finita.}
+
+\subsubsection*{Elettroni} 
+Quando un elettrone di energia $E_0$ attraversa uno strato di materiale di lunghezza $L$, l'energia persa può essere scritta come 
+\begin{equation}
+\Delta E=E_0(1-e^{-L/X_0})  \label{Eres}
+\end{equation}
+dove $X_0$ è la lunghezza di attenuazione del materiale.
+Facciamo una stima in eccesso supponendo la densità del tetto pari a quella del piombo ($X_0=\SI{0.56}{cm}$)%
+\footnote{\emph{Particle Physics Booklet 2014}, pag. 324}
+ed $L=\SI{1}{m}$. Otteniamo $(E_0-\Delta E)/E_0=0.56\%$. \footnote{basta fare $L/X_0$} Nonostante la grande perdita di energia, agli elettroni di \SI{1}{GeV} restano circa \SI{5.6}{Mev} ossia $(\gamma\beta)_{e^-}=10$. Ma, a differenza dei muoni, la perdita di \SI{1.5}{MeV} nel passaggio attraverso ogni scintillatore è rilevante e basterebbero 4 dei nostri scintillatori per bloccarlo completamente se l'irraggiamento fosse sempre quello minimo. 
+\footnote{Il calcolo dice che ci vogliono 3.7 cm per fermarli al MIP. Siccome sopra sarà scritto che ogni scint. ha lo spessore di un cm, penso che questa frase si capisca.}
+
+\end{document}
