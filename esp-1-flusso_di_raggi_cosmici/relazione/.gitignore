@@ -1,0 +1,9 @@
+relazione.pdf
+elettroni_vs_muoni.pdf
+*.aux
+*.out
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.log
+*.watcher_pid
