@@ -1,0 +1,52 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+
+\usepackage[margin=4.5cm, top=1.5cm, bottom=2.5cm]{geometry}
+
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage[font={sf}]{caption}
+
+\setlength{\marginparwidth}{95pt}
+\let\oldmarginpar\marginpar
+\renewcommand\marginpar[1]{\oldmarginpar{\scriptsize\sffamily #1}}
+
+\sisetup{%
+separate-uncertainty=true,
+multi-part-units=single,
+exponent-product=\cdot}
+
+\frenchspacing
+\begin{document}
+
+\subsection{Lunghezza di attenuazione}
+
+La possibilità di fare misure locali con il miniscint 
+\marginpar{dobbiamo chiamarlo miniscint?}
+ci permette di misurare la lunghezza di attenuazione del sistema scintillatore più guida di luce. Avendo preso misure soltanto sullo scintillatore potrebbe sembrare che abbiamo misurato soltanto la sua lunghezza di attenuazione, ma la nostra strumentazione rivela un evento soltanto quando i fotoni rilasciati raggiungono il PMT dopo aver attraversato la guida di luce. 
+Abbiamo eseguito le misure dividendo il PM1 in 16 caselle e ponendo su ognuna di esse il miniscint nei punti mostrati in \emph{figura}. 
+\marginpar{inserire disegno e descrizione}
+
+Nel fare le misure sulle caselle periferiche abbiamo appoggiato il miniscint sulla struttura che circonda il PM1 in modo che l'angolo tra esso ed il miniscint sia sempre lo stesso. Tale accorgimento ci permette di usare quelle misure per stimare l'efficienza locale (relativa) del PM1 \emph{che sarà trattata in dettaglio in una delle sezioni seguenti  (dire quale) }.                            \marginpar{spiegare quel ``relativa'' nella relazione completa}
+Per ogni casella abbiamo acquisito il numero di coincidenze verificatesi in \SI{1000}{s}. Al PM1 era collegata l'ADC in modo da poter registrare anche il rilascio di energia in ogni sezione.
+
+Se chiamiamo N il numero di muoni che attraversano ogni casella, possiamo legare questa quantità alla lunghezza di attenuazione attraverso la relazione \eqref{exp} in cui $x$ è la posizione della colonna relativa al bordo della lastra; $N_0$ e $\lambda$ sono i parametri del fit. 
+\begin{equation}
+N=N_0 e^{-\frac{x}{\lambda}}  \label{exp}
+\end{equation}
+
+I dati raccolti sono stati trattati in due modi diversi perché entrambi permettono di ricavare la lunghezza di attenuazione e nessuno dei due ha delle caratteristiche che lo rendono preferibile rispetto all'altro.
+
+\subsubsection{Media per colonne}
+
+La prima strategia di analisi dati consiste nel fare la media dei conteggi per ognuna delle 4 colonne e poi fittare questi punti con la funzione \eqref{exp}.  \marginpar{aggiungere la tabella}
+ Il fit ha restituito i seguenti risultati: $N_0=634\pm25$,  $\lambda=\SI{118\pm32}{cm}$, $\chi^2=11\pm2$ con dof=2 e $corr(N_0,\lambda)=-0.8$.  \marginpar{``corr'' è la covarianza normalizzata}
+
+
+\end{document}
