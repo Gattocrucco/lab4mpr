@@ -2,7 +2,6 @@ import numpy as np
 from scipy import stats, optimize
 import sympy
 import uncertainties as un
-import lab
 
 class Scint(object):
     
@@ -136,6 +135,49 @@ class Scint(object):
         return rt
     
 class MC(object):
+    """
+    Object to draw random samples and compute acceptance ratios.
+    
+    Parameters
+    ----------
+    *scints : objects of class Scint
+        The scintillator planes to use. The order identify the scint
+        inside the MC object, example if you initialise with
+            MC(A,B,C)
+        then the index of A is 0, B is 1, C is 2.
+    
+    Methods
+    -------
+    random_ray : draw random rays
+    run : perform computation for each ray
+    count : count number of rays satisfying logic expression
+    density : return "d" such that the rate per unit horizontal area is
+        r_hor = d * (measured rate)
+    
+    Example
+    -------
+    Create Scint objects using the pmt function:
+    >>> sA = pmt(2)
+    >>> sB = pmt(4)
+    Initialise a MC object:
+    >>> mc = MC(sA, sB)
+    Draw 1000 random rays with angular distribution cos^2 theta:
+    >>> mc.random_ray(N=1000, distcos=lambda x: x**2)
+    Perform computations with the first scint (sA) as pivot:
+    >>> mc.run(pivot_scint=0)
+    Count rays that make coincidence:
+    >>> mc.count(True, True)
+    Count rays that pass from sA but not sB:
+    >>> mc.count(True, False)
+    Count rays that pass from sA:
+    >>> mc.count(True, ...) # --> 1000 if the efficiency of sA is 1
+    This thing should give error:
+    >>> mc.count(False, True) # --> ERROR
+    because scint 0 was fixed as pivot by mc.run, which means it must always be true.
+    To compute the previous count, mc.run must be called again:
+    >>> mc.run(pivot_scint=1) # pivot scint is scint 1 aka sB
+    >>> mc.count(False, True) # --> OK
+    """
     
     def __init__(self, *scints):
         self._scints = list(scints)
@@ -164,6 +206,19 @@ class MC(object):
         return samples[:size]
     
     def random_ray(self, N=10000, distcos=None):
+        """
+        Draw random rays and saves them in the MC object.
+        
+        Parameters
+        ----------
+        N : integer, 2 <= N <= 1e6
+            Number of rays to sample. The range is for memory reasons.
+        distcos : None, distribution from scipy.stats or callable
+            The probability distribution for the variable x = cos(theta).
+            If None, p(x) = x**2 is used. If a distribution from the module
+            scipy.stats, random xs are obtained with distcos.rvs(). If callable,
+            it is the pdf of x (eventually non-normalised): p(x) \propto distcos(x).
+        """
         N = int(N)
         if not (2 <= N <= 1000000):
             raise ValueError("number %d of samples out of range 2--1000000." % N)
@@ -182,6 +237,28 @@ class MC(object):
         self._ty = stats.uniform.rvs(size=N)
             
     def run(self, pivot_scint=0, spectrum=None, **kw):
+        """
+        Compute for each ray which scints it hits.
+        Since rays are needed, random_ray must have been called at least once.
+        
+        Parameters
+        ----------
+        pivot_scint : index
+            The index of the pivot scint. The pivot scint is the one
+            which is used to actually place in space the random rays,
+            that is all random rays hit the pivot scint. So later,
+            when counting logical expressions, the pivot scint must
+            always be True.
+        
+        Keyword arguments
+        -----------------
+        randgeom : boolean, default to False
+            If True, extract at random the geometrical properties of the scints
+            before doing the all the computation. The distribution used is gaussian
+            with standard deviation as given into the Scints objects.
+        randeff : boolean, default to False
+            The same for the efficiency of the Scints.
+        """
         scints = self._scints.copy()
         if spectrum is True:
             spectrum = pivot_scint
@@ -217,11 +294,19 @@ class MC(object):
             rt.append(self._spectr_ang[np.logical_and(self._spectr_within, within)])
         return rt if d1 else rt[0]
     
-    def energy(self, *exprs):
+    def energy(self, *exprs, smear=False):
+        # in MeV
         costheta = self.costheta(*exprs)
-        return self._spectr_thick / costheta * 1.5 * 100
+        energy = self._spectr_thick / costheta * 1.5 * 100
+        if smear:
+            energy += stats.norm.rvs(size=len(energy), loc=0, scale=energy/10)
+        return energy
     
     def count(self, *exprs):
+        """
+        Count rays which satisfy given logical expression(s).
+        A logical expression is a list of either 
+        """
         withins, d1 = self._compute_withins(*exprs)
         
         counts = np.sum(withins, axis=1)
@@ -274,6 +359,7 @@ class MC(object):
         return self._N / count / self._horizontal_area
     
     def long_run(self, *expr, **kw):
+        import lab
         N = kw.pop('N', 1e8)
         N = int(N)
         times = N // 1000000
