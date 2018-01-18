@@ -167,9 +167,9 @@ class MC(object):
     >>> mc.run(pivot_scint=0)
     Count rays that make coincidence:
     >>> mc.count(True, True)
-    Count rays that pass from sA but not sB:
+    Count rays that hit sA but not sB:
     >>> mc.count(True, False)
-    Count rays that pass from sA:
+    Count rays that hit sA:
     >>> mc.count(True, ...) # --> 1000 if the efficiency of sA is 1
     This thing should give error:
     >>> mc.count(False, True) # --> ERROR
@@ -305,7 +305,47 @@ class MC(object):
     def count(self, *exprs):
         """
         Count rays which satisfy given logical expression(s).
-        A logical expression is a list of either 
+        A logical expression is a list of either True, False or None,
+        correspoding to the scints in order.
+            True = the ray hits the scint;
+            False = the ray does not hit the scint;
+            None = ignore this scint.
+        Example: to count rays that hit scint 0 and scint 1 but not scint 2,
+        ignoring what happens at scint 3:
+            True, True, False, None.
+        
+        Synonyms
+        --------
+        Ellipsis can be used instead of None. Remember that Ellipsis can
+        also be written as ...
+        Anything that can be cast to bool (excluding None and Ellipsis)
+        is valid to specify True or False, e.g. 1 or 0 for quick writing.
+        An empty expression means all scints True.
+        
+        Uncertainty
+        -----------
+        The returned count is a value with uncertainty (from the uncertainties
+        package). The uncertainty is the Monte Carlo standard deviation.
+        
+        Efficiency
+        ----------
+        The returned count is effectively a count if the efficiencies of the
+        scints are 1. If they are not 1, the simulation of the efficiency is
+        implemented as an integral, i.e. a hit is weighted with the efficiency
+        instead of simulating if the hit happens or not.
+        
+        Multiple expressions
+        --------------------
+        The argument *exprs can be either an expression or a list of expressions.
+        If a list of expressions, the values returned are properly correlated.
+        This is useful to reduce the Monte Carlo uncertainty when calculating
+        e.g. ratios of acceptances.
+        
+        Examples
+        --------
+        Calculate the ratio of two acceptances:
+        >>> c01, c02 = mc.count([True, True, ...], [True, ..., True])
+        >>> r = c01 / c02 # the uncertainty is propagated with correlation
         """
         withins, d1 = self._compute_withins(*exprs)
         
@@ -354,8 +394,32 @@ class MC(object):
         
         return withins, d1
         
-    def density(self, *expr):
-        count = self.count(*expr)
+    def density(self, *exprs):
+        """
+        Let R be the rate of hits for a given logical expression,
+        and R_hor the rate per unit area, this method compute the
+        factor D such that
+            R_hor = D * R.
+        See the docstring of MC.count() for how to specify logical expressions
+        in the *exprs argument.
+        
+        Area
+        ----
+        The horizontal area is obtained projecting the pivot scint.
+        
+        Uncertainties
+        -------------
+        The uncertainties are Monte Carlo standard deviations. No uncertainty
+        is accounted for the horizontal area, but if randgeom=True has been
+        specified when calling MC.run(), the horizontal area of the pivot
+        scint has been randomized.
+        
+        Multiple expressions
+        --------------------
+        Multiple expressions are treated as in MC.count(), properly
+        storing correlations in the results.
+        """
+        count = self.count(*exprs)
         return self._N / count / self._horizontal_area
     
     def long_run(self, *expr, **kw):
@@ -379,6 +443,16 @@ class MC(object):
         return N / count / self._horizontal_area
 
 def pmt(idx, efficiency=1.0):
+    """
+    Costruisce l'oggetto Scint per uno dei nostri PMT,
+    con i numeri che usiamo a lab, mettendo tutte le caratteristiche
+    geometriche misurate con le incertezze. L'efficienza si
+    specifica con l'argomento (che può avere incertezza).
+    
+    Esempio:
+        s = pmt(1, efficiency=ufloat(0.95, 0.01))
+    crea l'oggetto che rappresenta il PMT 1 con efficienza 95 % +- 1 %.
+    """
     if not (1 <= idx <= 6):
         raise ValueError("PMT index %d out of range 1--6." % idx)
     
