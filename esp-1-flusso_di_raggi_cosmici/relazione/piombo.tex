@@ -1,30 +1,3 @@
-\documentclass[a4paper]{article}
-
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[italian]{babel}
-
-\usepackage[margin=4.5cm, top=1.5cm, bottom=2.5cm]{geometry}
-
-\usepackage{siunitx}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage[hidelinks]{hyperref}
-\usepackage{graphicx}
-\usepackage[font={sf}]{caption}
-
-\setlength{\marginparwidth}{95pt}
-\let\oldmarginpar\marginpar
-\renewcommand\marginpar[1]{\oldmarginpar{\scriptsize\sffamily #1}}
-
-\sisetup{%
-separate-uncertainty=true,
-multi-part-units=single,
-exponent-product=\cdot}
-
-\frenchspacing
-
-\begin{document}
 
 \subsection{Effetto del materiale sulla misura}
 
@@ -50,7 +23,7 @@ L2=\SI{45.0\pm0.1}{ cm}
 Abbiamo posizionato le lastre rigide tra il PM3 ed il PM4 per vedere se esse riuscivano a fermare parte dei muoni. Per fare questa misura abbiamo confrontato le coincidenze  PM5 \& PM4 e PM5 \& PM4 \& PM3, però non possiamo confrontarle così come sono a causa dell'accettanza geometrica: anche in assenza delle lastre le coincidenze a tre sono diverse da quelle a due. Allora correggiamo le coincidenze a due con un Monte Carlo che tiene in considerazione le efficienze dei tre rivelatori. Il fattore di correzione ottenuto è il rapporto tra le accettanze delle due configurazioni  $\delta=mc(\text{PM5 \& PM4 \&PM3})/mc(\text{PM5 \& PM4})=65.71\pm0.02\%$, dove $mc$ indica il risultato del Monte Carlo per la configurazione in questione. Siano $C2$ il numero di coincidenze a due e $C3$ il numero di quelle a tre, per capire quanto sia significativo l'effetto delle lastre sulle nostre misure confrontiamo le quantità $C2'=C2 \cdot \delta$ e $C3$ in funzione del numero di lastre inserite%
 \footnote{Nel grafico di \autoref{cfr} non è presente il caso di 3 lastre perché, avendone una di alluminio, abbiamo deciso di metterla insieme alla terza lastra di piombo.}. %
 Dal confronto, presente in \autoref{cfr}, non si evince nessuna differenza tra i conteggi a meno di una separazione di $3\sigma$ nell'ultimo caso che, come descritto nella sezione successiva, rappresenta solo una fluttuazione.
-\marginpar{scrivere il tempo di misura || $3\sigma$ l'ho detto ad occhio || giustificazione nella sezione successiva}
+\marginpar{scrivere il tempo di misura || $3\sigma$ l'ho detto ad occhio || giustificazione nella sezione successiva || efficienze}
 
 \begin{figure}[h]
 \centering
@@ -61,4 +34,19 @@ Dal confronto, presente in \autoref{cfr}, non si evince nessuna differenza tra i
 
 \subsubsection{Energia}
 
-\end{document}
+\begin{huge}
+QUI CI SAR\`A DA SCRIVERE IL VERGOGNOSO FALLIMENTO DELL'ADC
+\end{huge}
+
+Infine abbiamo eseguito due acquisizioni di lunga durata. Nella prima abbiamo messo tutte le lastre a nostra disposizione sul PM1 e abbiamo acquisito i loro rilasci di energia per tutta la notte. Il giorno seguente le abbiamo tolte ed abbiamo preso dati per \SI{4}{ore}. In entrambi i casi il trigger dell'ADC è dato dalle coincidenze PM2 \& PM1.  Abbiamo normalizzato 
+\marginpar{dire che Python divide per l'area o si capisce?}
+entrambi gli spettri per poterli confrontare ed evincere che non mostrano nessuna differenza, come si può vedere in \autoref{gemini}. \marginpar{non ci sono le barre d'errore sulle barre dell'istogramma}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=8 cm]{gemelli}
+\caption{Confronto tra gli spettri normalizzati con e senza piombo. Il picchetto a destra è dato dagli eventi talmente energetici da saturare l'uscita dell'amplificatore.}
+\label{gemini}    
+\end{figure}
+
+\marginpar{solo a me la legenda fa pensare alla benzina?}
