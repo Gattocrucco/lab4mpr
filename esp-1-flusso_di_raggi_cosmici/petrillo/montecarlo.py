@@ -207,6 +207,45 @@ class MC(object):
         
         return samples[:size]
     
+    def random_samples(self, N=10000):
+        """
+        Draw random samples and saves them without doing anything.
+        Use in conjunction with ray().
+        """
+        self._samples = stats.uniform.rvs(size=N)
+        self._phi = stats.uniform.rvs(size=N, scale=2 * np.pi)
+        self._tx = stats.uniform.rvs(size=N)
+        self._ty = stats.uniform.rvs(size=N)
+    
+    def ray(self, stat):
+        """
+        Apply a statistic to the samples drawn with random_samples()
+        to obtain samples with an arbitrary distribution, then
+        obtain random rays. The samples from random_samples()
+        are uniformly distributed in [0,1].
+        
+        Parameters
+        ----------
+        stat : callable
+            An ufunction that takes a number in [0,1] and returns
+            a number in [0,1]. (ufunction means it works on arrays)
+        
+        Example
+        -------
+        Draw 10000 uniform random samples:
+        >>> mc.random_samples(10000)
+        Use the angular distribution p(cos(theta)) = cos^2(theta),
+        which is obtained by a cube root:
+        >>> mc.ray(lambda x: np.cbrt(x))
+        
+        The same could be accomplished with
+        >>> mc.random_ray(N=10000, distcos=lambda x: x**2)
+        but by separating the samples from the distribution
+        the result of the Monte Carlo is continuous with respect
+        to the parameters of the distribution.
+        """
+        self._costheta = stat(self._samples)
+    
     def random_ray(self, N=10000, distcos=None):
         """
         Draw random rays and saves them in the MC object.
