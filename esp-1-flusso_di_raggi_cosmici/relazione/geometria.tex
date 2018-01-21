@@ -21,3 +21,80 @@ $y$ quella ortogonale,
 $z$ la direzione verticale.
 Assumiamo che la direzione verticale data dalla gravità
 coincida con la media dei versori normali alle lastre.
+
+Una lastra è descritta da un'\emph{origine} $\vec P$,
+da due \emph{generatori} $\hat V_x$ e $\hat V_y$
+e dalle lunghezze dei lati $L_x$ e $L_y$.
+La superficie superiore della lastra è un parallelogramma descritto parametricamente da
+\marginpar{Mettere il simbolo di versore anche nella figura.}
+\begin{equation}
+	\label{eq:lastra}
+	\vec r(t_x, t_y) = \vec P + t_x L_x \hat V_x + t_y L_y \hat V_y,
+	\quad t_x,t_y \in (0,1).
+\end{equation}
+
+\subsubsection{Monte Carlo}
+
+Quello che dobbiamo calcolare sono accettanze geometriche
+e fattori di conversione da rate a rate per unità di area orizzontale.
+Implementiamo il calcolo con un integrale Monte Carlo.
+
+\paragraph{Raggi}
+
+Estraiamo dei \emph{raggi} casuali.
+Un raggio è definito dalle variabili aleatorie:
+\begin{equation*}
+	\begin{array}{ll}
+		t_x, t_y & \text{uniformi in $(0,1)$}, \\
+		\phi     & \text{uniforme in $(0,2\pi)$}, \\
+		u        & \text{distribuzione non fissata in $(0,1)$}.
+	\end{array}
+\end{equation*}
+Scegliamo una certa lastra che chiamamo \emph{pivot}.
+Da un raggio otteniamo una retta nello spazio parametrizzata come
+\begin{align*}
+	\vec r(t) &= \vec p + t \hat v, \quad \text{dove} \\
+	\vec p    &= \vec r_\text{pivot}(t_x, t_y), \\
+	\hat v    &= \sin\theta\cos\phi\,\hat x + \sin\theta\sin\phi\,\hat y + \cos\theta\,\hat z, \\
+	\theta    &= \arccos u,
+\end{align*}
+e $\vec r_\text{pivot}$ è la parametrizzazione del pivot secondo la \eqref{eq:lastra}.
+
+\paragraph{Accettanza}
+
+Un'\emph{accettanza geometrica} è la probabilità
+che un raggio che passa per il pivot
+faccia scattare alcune lastre (lastre in \emph{coincidenza})
+e non altre (lastre in \emph{anticoincidenza}).
+Richiediamo che il pivot sia sempre in coincidenza.
+Ogni lastra ha un'\emph{efficienza}
+cioè la probabilità che un raggio che passa per la lastra la faccia scattare.
+Sia $i$ un indice che corre lungo $N$ estrazioni di raggi casuali.
+Sia $\epsilon(L)$ l'efficienza della lastra $L$.
+Sia
+\begin{equation*}
+	w_i(L) = \begin{cases}
+		1 & \text{se il raggio $i$ passa per la lastra $L$,} \\
+		0 & \text{se non passa.}
+	\end{cases}
+\end{equation*}
+Allora l'espressione che converge in probabilità all'accettanza geometrica è
+\begin{equation*}
+	\frac1N \sum_i
+	\left( \prod_\text{$L$ in coinc.} w_i(L) \epsilon(L) \right)
+	\cdot \left( \prod_\text{$L$ in anticoinc.} \big(1 - w_i(L) \epsilon(L)\big) \right).
+\end{equation*}
+
+\paragraph{Area orizzontale}
+
+Chiamiamo \emph{espressione logica} una specificazione di quali lastre sono in (anti)coincidenza.
+Per convertire il rate di una certa espressione logica in un rate per unità di area orizzontale,
+dobbiamo tener conto del fattore di conversione (il jacobiano)
+dalla distribuzione con cui abbiamo estratto i raggi a una distribuzione uniforme sul piano $(x,y)$,
+e della misura della parte di spazio in cui abbiamo estratto i raggi,
+quindi alla fine il fattore di conversione è l'area orizzontale del pivot,
+ovvero
+\begin{equation*}
+	A_\text{hor} = L_x \sqrt{1-(\hat V_x\hat z)^2} \cdot L_y \sqrt{1-(\hat V_y\hat z)^2}.
+\end{equation*}
+Detto $R$ il rate, il rate per unità di area orizzontale è dato da $R/A_\text{hor}$.
