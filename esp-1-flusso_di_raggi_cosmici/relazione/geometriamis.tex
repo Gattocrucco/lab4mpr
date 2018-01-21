@@ -10,26 +10,50 @@
 	I \emph{disallineamenti} $\Delta X$ e $\Delta Y$ sono misurati
 	con il righello o il metro a nastro usando come riferimento
 	una livella a bolla.
-	Le \emph{inclinazioni} $\alpha$ e $\beta$ sono misurate con
+	Le \emph{inclinazioni relative} $\alpha_0$ e $\beta_0$ sono misurate con
 	una livella elettronica (un telefono) che ha una risoluzione di \SI{0.1}{\degree}.}
 \end{figure}
+
+\begin{table}
+	\center
+	\begin{tabular}{cccccccc}
+		PM & $\Delta X$ [\si{mm}] & $\Delta Y$ [\si{mm}] & $\Delta Z$ [\si{mm}] & $\alpha_0$ [\si\degree] & $\beta_0$ [\si\degree] & $L_x$ [mm]      & $L_y$ [mm]      \\
+		\hline
+		6  & 0                    & \num{543 \pm 1}      & 0                    & 0.7                     & 0.2                    & \num{400 \pm 2} & \num{482 \pm 1} \\
+		5  & \num{-5 \pm 1}       & \num{540 \pm 1}      & \num{102 \pm 1}      & 1.0                     & 0.3                    & \num{404 \pm 2} & \num{482 \pm 1} \\
+		4  & \num{1 \pm 1}        & \num{536 \pm 1}      & \num{205 \pm 1}      & 1.2                     & 0.4                    & \num{398 \pm 2} & \num{481 \pm 1} \\
+		3  & \num{1 \pm 1.4}      & \num{539 \pm 1}      & \num{308 \pm 1}      & 0.8                     & 0.3                    & \num{400 \pm 2} & \num{480 \pm 1} \\
+		2  & \num{2 \pm 1.4}      & \num{531 \pm 1}      & \num{411 \pm 1}      & 0.2                     & 0.6                    & \num{395 \pm 2} & \num{481 \pm 1} \\
+		1  & \num{0 \pm 2}        & non mis.             & \num{804 \pm 2}      & 0.8                     & 0.4                    & \num{398 \pm 2} & \num{480 \pm 1}
+	\end{tabular}
+	\caption{\label{tab:geom}
+	Misure di geometria.
+	Per gli angoli abbiamo preso un'incertezza pari a metà della risoluzione cioè \SI{0.05}\degree.
+	Le incertezze delle misure con righello o metro a nastro
+	le abbiamo fissate a una tacca o a due tacche
+	a seconda della difficoltà della misura.
+	Le misure con incertezza \num{1.4} sono ottenute
+	sommando due misure con incertezza \num{1}.}
+\end{table}
 
 Dobbiamo misurare le caratteristiche gemetriche dell'apparato
 per assegnare misure alle variabili del modello in \autoref{fig:geometriadef}.
 
 Con una livella a bolla controlliamo che tutte le lastre siano orizzontali.
 La livella a bolla ha, per verifica empirica, una risoluzione minore di quella
-elettronica del telefono (\SI{1}{\degree}).
+elettronica del telefono (\SI{0.1}{\degree}).
 Tuttavia la livella elettronica non ha uno zero fisso; lo zero va impostato
 appoggiandola su una superficie di riferimento.
-Allora misuriamo l'inclinazione delle lastre (gli angoli $\alpha$ e $\beta$,
-che sono gli angoli di Eulero del telefono forniti dal software)
+Allora misuriamo l'inclinazione delle lastre con la livella elettronica 
+(gli angoli $\alpha_0$ e $\beta_0$,
+che sono gli angoli di Eulero del telefono forniti dal software),
 \marginpar{Controllare con il telefono di Bob se sono effettivamente questi angoli
 come li sto definendo fin'ora.}
-con la livella elettronica, e poi assumiamo, come detto nella \autoref{sec:teogeom},
+e poi assumiamo, come detto nella \autoref{sec:teogeom},
 che l'inclinazione media delle lastre sia nulla.
 Questo ci permette di valutare in modo quantitativo quantomeno l'incertezza
 dovuta all'inclinazione relativa delle lastre.
 
 Misuriamo la posizione spaziale usando righello, metro a nastro e livella a bolla.
-Facendo riferimento alla \autoref{fig:geometriamis} per la notazione,
+Facendo riferimento alla \autoref{fig:geometriamis} per la notazione, riportiamo
+in \autoref{tab:geom} le misure.
