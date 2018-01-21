@@ -127,8 +127,7 @@ class Scint(object):
         
         p = self._P.reshape(-1,1) + self._Vx.reshape(-1,1) * tx.reshape(1,-1) * Lx + self._Vy.reshape(-1,1) * ty.reshape(1,-1) * Ly
         
-        area = Lx * Ly
-        horizontal_area = area * np.cos(alpha) * np.cos(beta)
+        horizontal_area = Lx * np.sqrt(1 - self._Vx[2]**2) * Ly * np.sqrt(1 - self._Vy[2]**2)
         
         efficiency = self._compute_efficiency(randomize=randeff)
         
