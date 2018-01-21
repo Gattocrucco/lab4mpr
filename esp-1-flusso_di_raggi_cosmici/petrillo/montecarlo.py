@@ -11,12 +11,13 @@ class Scint(object):
         else:
             return un.ufloat(x, 0)
     
-    def __init__(self, long_side_length=480, short_side_length=400, center_depth=0, short_side_offset=0, long_side_inclination=0, short_side_inclination=0, efficiency=1.0, thickness=10):
+    def __init__(self, long_side_length=480, short_side_length=400, center_depth=0, long_side_offset=0, short_side_offset=0, long_side_inclination=0, short_side_inclination=0, efficiency=1.0, thickness=10):
         
         self._Lx = self._asufloat(short_side_length) / 1000
         self._Ly = self._asufloat(long_side_length) / 1000
         self._z = -self._asufloat(center_depth) / 1000
         self._x = self._asufloat(short_side_offset) / 1000
+        self._y = self._asufloat(long_side_offset) / 1000
         self._alpha = self._asufloat(short_side_inclination) * np.pi / 180
         self._beta = self._asufloat(long_side_inclination) * np.pi / 180
         self._efficiency = self._asufloat(efficiency)
@@ -37,6 +38,7 @@ class Scint(object):
             Ly = self._urandom(self._Ly)
             z = self._urandom(self._z)
             x = self._urandom(self._x)
+            y = self._urandom(self._y)
             alpha = self._urandom(self._alpha)
             beta = self._urandom(self._beta)
         else:
@@ -44,12 +46,13 @@ class Scint(object):
             Ly = self._Ly.n
             z = self._z.n
             x = self._x.n
+            y = self._y.n
             alpha = self._alpha.n
             beta = self._beta.n
             
         self._Vx = np.array([np.cos(alpha), 0, np.sin(alpha)])
         self._Vy = np.array([np.sin(alpha) * np.sin(beta), np.cos(beta), -np.cos(alpha) * np.sin(beta)])
-        self._P = np.array([x, 0, -z - Lx/2 * np.sin(alpha)])
+        self._P = np.array([x, y - self._Vy[1] * Ly, -z - Lx/2 * self._Vx[2]])
         
         return Lx, Ly, alpha, beta
     
@@ -254,7 +257,7 @@ class MC(object):
         -----------------
         randgeom : boolean, default to False
             If True, extract at random the geometrical properties of the scints
-            before doing the all the computation. The distribution used is gaussian
+            before doing all the computation. The distribution used is gaussian
             with standard deviation as given into the Scints objects.
         randeff : boolean, default to False
             The same for the efficiency of the Scints.
@@ -375,7 +378,8 @@ class MC(object):
                 expr *= len(self._scints)
             if len(self._scints) != len(expr):
                 raise ValueError("exprs[%d] has length %d != %d" % (i, len(expr), len(self._scints)))
-            if not expr[self._pivot]:
+            pe = expr[self._pivot]
+            if pe is None or pe is Ellipsis or not pe:
                 raise ValueError("exprs[%d] has pivot scint (%d) = %s != True" % (i, self._pivot, str(expr[self._pivot])))
             expr.pop(self._pivot)
             exprs[i] = expr
@@ -484,13 +488,16 @@ def pmt(idx, efficiency=1.0):
 
     short_side_offsets = [0, -5, 1, 1, 2, 0]
     short_side_offsets_un = [0, 1, 1, 1.4, 1.4, 2]
+    long_side_offsets = [543, 540, 536, 539, 531]
+    long_side_offsets.append(np.mean(long_side_offsets))
 
     for i in range(len(short_side_offsets)):
         short_side_offsets[i] = un.ufloat(short_side_offsets[i], short_side_offsets_un[i])
+        long_side_offsets[i] = un.ufloat(long_side_offsets[i], 1)
     
     i = 6 - idx
     
-    return Scint(long_side_length=long_side_lengths[i], short_side_length=short_side_lengths[i], long_side_inclination=long_side_inclinations[i], short_side_inclination=short_side_inclinations[i], short_side_offset=short_side_offsets[i], center_depth=center_depths[i], efficiency=efficiency)
+    return Scint(long_side_length=long_side_lengths[i], short_side_length=short_side_lengths[i], long_side_inclination=long_side_inclinations[i], short_side_inclination=short_side_inclinations[i], long_side_offset=long_side_offsets[i], short_side_offset=short_side_offsets[i], center_depth=center_depths[i], efficiency=efficiency)
 
 if __name__ == '__main__':
     mc = MC(*[pmt(i) for i in range(6, 0, -1)])
