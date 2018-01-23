@@ -19,8 +19,8 @@ I dati raccolti sono stati trattati in due modi diversi perché entrambi permett
 
 \subsubsection{Media per colonne}
 
-La prima strategia di analisi dati consiste nel fare la media dei conteggi per ognuna delle 4 colonne e poi fittare questi punti con la funzione \eqref{exp}.  \marginpar{aggiungere la tabella}
-Il fit ha restituito i seguenti risultati: $N_0=634\pm25$,  $\lambda=\SI{118\pm32}{cm}$, $\chi^2=11\pm2$ con dof=2 e corr$(N_0,\lambda)=-0.8$.  \marginpar{``corr'' è la covarianza normalizzata}
+La prima strategia di analisi dati consiste nel fare la media dei conteggi per ognuna delle 4 colonne e poi fittare questi punti con la funzione \eqref{exp}.
+Il fit ha restituito i seguenti risultati: $N_0=634\pm25$,  $\lambda=\SI{118\pm32}{cm}$, $\chi^2=11\pm2$ con dof=2 e covarianza normalizzata corr$(N_0,\lambda)=-0.8$. 
 La \autoref{atte} mostra le medie ottenute e la relativa funzione di fit.
 \begin{figure}[h]
 \centering
@@ -29,10 +29,42 @@ La \autoref{atte} mostra le medie ottenute e la relativa funzione di fit.
 \label{atte}
 \end{figure}
 
+\begin{table}[h]
+\centering
+\begin{tabular}{| c | r @{$\pm$} l |}
+\hline
+colonna & \multicolumn{2}{c|}{media} \\
+\hline
+D & 503&11 \\
+C & 550&12 \\
+B & 551&12 \\
+A & 656&13 \\
+\hline
+\end{tabular}
+\caption{Dati del grafico in \autoref{atte}. La colonna D è quella più lontana dalla guida di luce.}
+\end{table}
+
 \subsubsection{Media per righe}
 
 La seconda strategia adottata consiste nel fittare con la \eqref{exp} i conteggi di ogni riga separatamente e poi fare la media delle 4 lunghezze di attenuazione ottenute.
-In \autoref{4atte} è possibile vedere le 4 curve con le relative funzioni di fit e di seguito sono elencati i risultati del fit:  \marginpar{risultati riga per riga in una tabella per febbraio}
+In \autoref{4atte} è possibile vedere le 4 curve con le relative funzioni di fit, mentre la \autoref{tab:righe} contiene i risultati del fit.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{| c | r @{$\pm$} l  | r @{$\pm$} l  | c |}
+\hline
+riga & \multicolumn{2}{c|}{$N_0$} & \multicolumn{2}{c|}{ $\lambda$ [\si{cm}] } & $\chi^2$ \\
+\hline
+1 & 711&19 & 121&23 & 1\\
+2 & 638&32 & 127&47 & 4\\
+3 & 632&60 & 73&30 & 15\\
+4 & 565&21 & 228&111 & 2\\
+\hline
+\end{tabular}
+\caption{Risultati restituiti dai fit presenti in \autoref{4atte} riga per riga. Tutti i fit hanno 2 gradi di libertà.}
+\label{tab:righe}
+\end{table}
+
 
 La media dei parametri del fit restituisce $\langle\lambda\rangle=\SI{110\pm17}{cm}$ e $\langle N_0\rangle=643\pm13$.
 \begin{figure}[h]
