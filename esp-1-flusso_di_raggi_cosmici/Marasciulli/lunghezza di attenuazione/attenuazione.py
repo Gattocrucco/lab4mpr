@@ -137,19 +137,15 @@ for j in range(len(colonna)):
         no,en,non=py.loadtxt("C:/Users/andre/Desktop/ANDREA/Laboratorio 4/flusso cosmici/de0_data/misura_%s%s.dat" %(colonna[j],riga[i]),unpack=True)
         del no,non;
         
-        try:
-            mode=py.append(stat.mode(en),mode)
-        except stat.StatisticsError:
-            bt,bb=py.unique(en,return_counts=True)
-            BB=list(bb)
-            valore=en[BB.index(max(BB))]
-            mode=py.append(mode,valore)
-        #er=py.append(py.std(en,ddof=1),er)/sqrt(len(en))
-    
+        t=py.histogram(en,bins="auto")
+        tt=list(t[0])
+        moda=t[1][tt.index(max(tt))+1]
+        mode=py.append(mode,moda)
+
     y=py.average(mode)
     dy=astd([3/2**12]*4)   # errore di digitalizzazione in volt
     Y=py.append(Y,uf(y,dy))
-    
+
 # fit
 
 x=array([3.5,13.7,23,32.5])-3.5
@@ -226,15 +222,14 @@ for i in range(len(riga)):
         no,en,non=py.loadtxt("C:/Users/andre/Desktop/ANDREA/Laboratorio 4/flusso cosmici/de0_data/misura_%s%s.dat" %(colonna[j],riga[i]),unpack=True)
         del no,non
         
-        try:
-            mode=py.append(stat.mode(en),mode)
-        except stat.StatisticsError:
-            bt,bb=py.unique(en,return_counts=True)
-            BB=list(bb)
-            valore=en[BB.index(max(BB))]
-            mode=py.append(mode,valore)  
-    
+        h=py.histogram(en,bins="auto")
+        hh=list(h[0])
+        moda=h[1][hh.index(max(h[0]))+1]
+        mode=py.append(mode,moda)
+        
     orrore=3/2**12
+    mode*=1000
+    orrore*=1000
     '''
     # fit
     # todo: delta
@@ -251,16 +246,16 @@ for i in range(len(riga)):
     '''
     # grafico
     
-    py.errorbar(X,mode,xerr=0.2,yerr=orrore,linestyle="",capsize=2,label="riga %d"%riga[i],marker=lista[i],color=col[i])
+    py.errorbar(X,mode,xerr=0.2,yerr=orrore,linestyle=":",capsize=2,label="riga %d"%riga[i],marker=lista[i],color=col[i])
     z=py.linspace(0,30,1000)
     #py.plot(z,att(z,*popt))
-    
+    '''
     chi=py.sum( ((mode-att(X,*popt))/orrore)**2 )
     dof=len(mode)-len(popt)
     p=chdtrc(dof,chi)
     print("chi quadro riga %d=" %(i+1),chi,"+-",sqrt(2*dof))
     print("p_value=",p,"\n")
-    
+    '''
 py.legend(fontsize="small",loc="best")
 py.show()
 
