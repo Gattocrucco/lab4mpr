@@ -1,15 +1,15 @@
 MEDIA PER RIGHE 
 
-chi quadro riga 4= 2.19780151744 +- 1.41421356237
+chi quadro riga 4= 2.19780151744 +- 2
 p_value= 0.333237190517 
 
-chi quadro riga 3= 15.1805384009 +- 1.41421356237
+chi quadro riga 3= 15.1805384009 +- 2
 p_value= 0.000505344996555 
 
-chi quadro riga 2= 4.35575390642 +- 1.41421356237
+chi quadro riga 2= 4.35575390642 +- 2
 p_value= 0.113281778037 
 
-chi quadro riga 1= 1.43597739681 +- 1.41421356237
+chi quadro riga 1= 1.43597739681 +- 2
 p_value= 0.487732246746 
 
 Ampiezza media= 643.285595042 +- 12.8332486023
