@@ -139,7 +139,8 @@ for j in range(len(colonna)):
         
         t=py.histogram(en,bins="auto")
         tt=list(t[0])
-        moda=t[1][tt.index(max(tt))+1]
+        indice=tt.index(max(tt))
+        moda=(t[1][indice]+t[1][indice+1])/2
         mode=py.append(mode,moda)
 
     y=py.average(mode)
@@ -224,7 +225,8 @@ for i in range(len(riga)):
         
         h=py.histogram(en,bins="auto")
         hh=list(h[0])
-        moda=h[1][hh.index(max(h[0]))+1]
+        indice=hh.index(max(hh))
+        moda=(h[1][indice]+h[1][indice+1])/2
         mode=py.append(mode,moda)
         
     orrore=3/2**12
