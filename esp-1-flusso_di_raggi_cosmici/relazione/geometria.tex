@@ -79,11 +79,13 @@ Sia
 	\end{cases}
 \end{equation*}
 Allora l'espressione che converge in probabilità all'accettanza geometrica è
-\begin{equation*}
-	\frac1N \sum_i
+\begin{align}
+	\label{eq:accettanza}
+	Q &:= \frac1N \sum_i q_i, \\
+	\text{dove}\quad q_i &:= 
 	\left( \prod_\text{$L$ in coinc.} w_i(L) \epsilon(L) \right)
-	\cdot \left( \prod_\text{$L$ in anticoinc.} \big(1 - w_i(L) \epsilon(L)\big) \right).
-\end{equation*}
+	\cdot \left( \prod_\text{$L$ in anticoinc.} \big(1 - w_i(L) \epsilon(L)\big) \right). \notag
+\end{align}
 
 \paragraph{Area orizzontale}
 
@@ -95,6 +97,17 @@ e della misura della parte di spazio in cui abbiamo estratto i raggi,
 quindi alla fine il fattore di conversione è l'area orizzontale del pivot,
 ovvero
 \begin{equation*}
-	A_\text{hor} = L_x \sqrt{1-(\hat V_x\hat z)^2} \cdot L_y \sqrt{1-(\hat V_y\hat z)^2}.
+	A_\text{hor} = L_x \sqrt{1-(\hat V_x\hat z)^2} \cdot L_y \sqrt{1-(\hat V_y\hat z)^2},
 \end{equation*}
+dove i simboli hanno lo stesso significato che nella \eqref{eq:lastra}
+e sono riferiti al pivot.
 Detto $R$ il rate, il rate per unità di area orizzontale è dato da $R/A_\text{hor}$.
+
+\paragraph{Incertezza}
+
+Notiamo che la $Q$ (equazione \ref{eq:accettanza}) è una media aritmetica,
+quindi una buona stima della sua varianza $\sigma_Q^2$ si ottiene con la varianza campione
+\begin{equation*}
+	\hat\sigma_Q^2
+	= \frac1{N(N-1)} \sum_i (q_i - Q)^2.
+\end{equation*}
