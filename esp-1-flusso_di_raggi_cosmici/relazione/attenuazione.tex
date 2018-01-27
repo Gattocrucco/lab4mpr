@@ -48,7 +48,7 @@ A & 656&13 \\
 
 La seconda strategia adottata consiste nel fittare con la \eqref{exp} i conteggi di ogni riga separatamente e poi fare la media delle 4 lunghezze di attenuazione ottenute.
 In \autoref{4atte} è possibile vedere le 4 curve con le relative funzioni di fit, mentre la \autoref{tab:righe} contiene i risultati del fit.
-
+\marginpar{aggiungere la correlazione nella tabella}
 \begin{table}[h]
 \centering
 \begin{tabular}{| c | r @{$\pm$} l  | r @{$\pm$} l  | c |}
@@ -82,19 +82,44 @@ Le dimensioni trasversali del miniscint non permettono di definire la distanza d
 
 \subsubsection{Lunghezza di attenuazione in energia.}
 
-Abbiamo analizzato i dati registrati dall'ADC collegata al PM1 (\autoref{fall}) facendo la media dei rilasci di energia per ogni colonna ma non abbiamo potuto estrarne alcuna informazione.
-\marginpar{inventare una scusa\\
-\emph{1. In questo grafico le barre d'errore mi sembrano la deviazione standard
-anziché la deviazione standard sulla media;
-2. Poiché la Landau non ha media definita e inoltre stiamo troncando l'istogramma,
-credo sia meglio utilizzare la moda campione (come consigliato sul PDG).}\\
-Ho visto che hai calcolato la moda in modo discreto,
-visto che abbiamo poco riempimento (meno dati dei valori possibili),
-non è meglio calcolarla con un istogramma?}
+Abbiamo operato una media per colonne nello stesso modo visto prima, ma utilizzando i rilasci di energia misurati dall'ADC. Dopo aver eseguito l'istogramma relativo ad una delle 16 caselle, abbiamo preso la moda della distribuzione di Landau%
+\footnote{Come consigliato dal PDG.}
+corrispondente e le abbiamo assegnato come errore quello dato dalla distanza tra un bit e l'altro dell'ADC. Essendo essa a \SI{12}{bit} e sapendo che il valore massimo digitalizzabile è \SI{3}{V}, l'errore attribuito ad ogni moda vale \SI{0.7}{mV}%
+\marginpar{Non sapevo che altro metterci. Si accettano consigli in merito. Proverò a mettere la semilarghezza del bin.}. 
+L'errore usato per il fit è invece quello propagato usando la derivata della funzione \eqref{exp} dopo aver eseguito il fit con il solo errore sulla media delle mode.
+Abbiamo sostituito il fattore pre-esponenziale $N_0$ della funzione \eqref{exp} con $V_0$ perché abbiamo dei valori in \si{mV} in ordinata. Il punto più a sinistra (vedi \autoref{col}) non è stato considerato nel fit perché palesemente lontano dall'andamento esponenziale seguito dagli altri punti. I parametri restituiti dal fit sono: $V_0=\SI{199\pm1}{mV}$, $\lambda=\SI{810\pm263}{cm}$, corr$(V_0,\lambda)=-0.93$, $\chi^2=8\pm1$ con dof=2. La lunghezza di attenuazione non è compatibile con entrambi i fit eseguiti precedentemente.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{| c | c |}
+\hline
+colonna & media delle mode [mV] \\
+\hline
+A & 195.2\\
+B & 197.4\\
+C & 193.9\\
+D & 192.9\\
+\hline
+\end{tabular}
+\caption{Dati presenti in \autoref{col}. Gli errori presenti in questa tabella sono quelli propagati usando la derivata della funzione di fit e valgono \SI{0.4}{mV}}
+\label{tab:ADC}
+\end {table}
+
 \begin{figure}[h]
 \centering
-\includegraphics[width=8 cm]{fallimento}
-\caption{Energia media giunta al pmt per ogni colonna.}
-\label{fall}
+\includegraphics[width=8 cm]{ecol}
+\caption{Energia media giunta al pmt per ogni colonna. Il punto più a sinistra è stato escluso dal fit.}
+\label{col}
 \end{figure}
+
+
+Anche questa volta abbiamo analizzato le singole righe, ma la \autoref{rig} mostra chiaramente quanto sia inutile tentare un fit con la funzione \eqref{exp}. 
+\marginpar{forse potevamo fittare solo i 3 punti più a destra della riga gialla, ma penso che non ne valga la pena}
+\begin{figure}[h]
+\centering
+\includegraphics[width=8 cm]{erig}
+\caption{Energia media giunta al pmt per ogni riga.}
+\label{rig}
+\end{figure}
+
 
