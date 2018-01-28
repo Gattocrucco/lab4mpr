@@ -12,7 +12,7 @@ def loadtxtlbs(filename, labels, prefit=True):
     for i in range(len(data)):
         datadict[labels[i]] = data[i]
     p = datadict['prefit']
-    c = p == prefit
+    c = p == 1
     for k in datadict.keys():
         if k != 'prefit':
             datadict[k] = datadict[k][c]
@@ -32,6 +32,20 @@ dataeff = loadtxtlbs('fitdataeff.txt', dataefflbs)
 data2sigA = un.ufloat(38, 2) * 1e-9
 data2sigB = un.ufloat(37, 2) * 1e-9
 
+data2asigA = data2sigA
+data2asigB = data2sigB
+
+time1e5 = un.ufloat(1e5, 0.5) * 1e-3
+data3rateA = un.ufloat(4243753, np.sqrt(4243753)) / time1e5 # logbook:14dic
+data3ratea = un.ufloat(86130, np.sqrt(86130)) / time1e5
+data3rateb = un.ufloat(31799, np.sqrt(31799)) / time1e5
+
+data3sigA = data2sigA
+data3sigB = data2sigB
+data3sigC = un.ufloat(35, 1) * 1e-9
+data3siga = un.ufloat(35, 1) * 1e-9
+data3sigb = un.ufloat(35, 1) * 1e-9
+
 ####### prepare monte carlo #######
 
 # draw samples
@@ -39,7 +53,7 @@ mcobj = mc.MC(*[mc.pmt(i+1) for i in range(6)])
 mcobj.random_samples(N=100000)
 
 mcgeom = mc.MC(*[mc.pmt(i+1) for i in range(6)])
-mcgeom.random_samples(N=1000)
+mcgeom.random_samples(N=500)
 
 # create list of expressions to compute
 mclist = []
@@ -50,7 +64,7 @@ for i in range(len(data2['clock'])):
 for i in range(len(data2a['clock'])):
     mclist += [
         {data2a['PMTA'][i], data2a['PMTB'][i]},
-        {data2a['PMTa'][i], data2a['PMTb'][i]},
+        {data2a['PMTa'][i], data2a['PMTb'][i], data2a['PMTA'][i], data2a['PMTB'][i]},
         {data2a['PMTa'][i], data2a['PMTb'][i], data2a['PMTA'][i]},
         {data2a['PMTa'][i], data2a['PMTb'][i], data2a['PMTB'][i]}
     ]
@@ -126,24 +140,25 @@ mcsegeom = dict()
 for expr in mcexprs.keys():
     mcsegeom[expr] = []
 # compute acceptances for each geometry sample
-for j in range(1000):
+for j in range(100):
     for pivot in exprs.keys():
         mcgeom.run(pivot_scint=pivot, randgeom=True)
         counts = mcgeom.count(*cexprs[pivot])
         expr = exprs[pivot]
         for i in range(len(expr)):
-            mcsegeom[expr[i]].append(counts[i].n / mcgeom.number_of_rays * mcgeom.pivot_horizontal_area.n)
+            mcsegeom[expr[i]].append(counts[i].n / mcgeom.number_of_rays * mcgeom.pivot_horizontal_area)
 # compute standard deviation due to geometry
 for expr in mcsegeom.keys():
     samples = mcsegeom[expr]
     sd = np.std(samples, ddof=1)
     val = mcexprs[expr]
-    mcexprs[expr] = (val, un.ufloat(1, sd / val.n))
+    mcexprs[expr] *= un.ufloat(1, sd / val.n)
 
 # process data2
-fluxes = []
+fluxes2 = []
 for i in range(len(data2['clock'])):
-    time = un.ufloat(data2['clock'][i], 0.5) / 1000
+    assert(data2['prefit'][i])
+    time = un.ufloat(data2['clock'][i], 0.5) * 1e-3
     
     count = lambda label: un.ufloat(data2[label][i], np.sqrt(data2[label][i]))
     countA = count('A')
@@ -166,6 +181,67 @@ for i in range(len(data2['clock'])):
     
     noiseAB = rateA * rateB * (data2sigA + data2sigB)
     
-    flux = (rateAB - noiseAB) / (mcAB[0] * mcAB[1] * effA * effB)
-    fluxes.append(flux)
+    flux = (rateAB - noiseAB) / (mcAB * effA * effB)
+    fluxes2.append(flux)
+
+# process data2a
+fluxes2a = []
+for i in range(len(data2a['clock'])):
+    assert(data2a['prefit'][i])
+    time = un.ufloat(data2a['clock'][i], 0.5) * 1e-3
     
+    count = lambda label: un.ufloat(data2a[label][i], np.sqrt(data2a[label][i]))
+    countA = count('A')
+    countB = count('B')
+    countAB = count('A&B')
+    
+    rateA = countA / time
+    rateB = countB / time
+    rateAB = countAB / time
+    
+    countabA = count('a&b&A')
+    countabB = count('a&b&B')
+    countabAB = count('a&b&A&B')
+    
+    mcabAB = mcexprs[frozenset({data2a['PMTa'][i], data2a['PMTb'][i], data2a['PMTA'][i], data2a['PMTB'][i]})]
+    mcabA = mcexprs[frozenset({data2a['PMTa'][i], data2a['PMTb'][i], data2a['PMTA'][i]})]
+    mcabB = mcexprs[frozenset({data2a['PMTa'][i], data2a['PMTb'][i], data2a['PMTB'][i]})]
+    mcAB = mcexprs[frozenset({data2a['PMTA'][i], data2a['PMTB'][i]})]
+    
+    eff = lambda c3, c2: un.ufloat(c3.n / c2.n, c3.n/c2.n * (1 - c3.n/c2.n) * 1/c2.n * (1 + 1/c2.n))
+    # problema: qui le efficienze sono correlate
+    effA = eff(countabAB, countabB) * mcabB / mcabAB
+    effB = eff(countabAB, countabA) * mcabA / mcabAB
+    
+    noiseAB = rateA * rateB * (data2asigA + data2asigB)
+    
+    flux = (rateAB - noiseAB) / (mcAB * effA * effB)
+    fluxes2a.append(flux)
+
+# process data3
+fluxes3 = []
+for i in range(len(data3['clock'])):
+    assert(data3['prefit'][i])
+    time = un.ufloat(data3['clock'][i], 0.5) * 1e-3
+    
+    count = lambda label: un.ufloat(data3[label][i], np.sqrt(data3[label][i]))
+    countABC = count('A&B&C')
+    
+    rateABC = countABC / time
+    
+    countab = count('a&b')
+    countabA = count('a&b&A')
+    countabB = count('a&b&B')
+    countabC = count('a&b&C')
+    
+    noiseab = data3ratea * data3rateb * (data3siga + data3sigb)
+    
+    eff = lambda c3, c2: un.ufloat(c3.n / c2.n, c3.n/c2.n * (1 - c3.n/c2.n) * 1/c2.n * (1 + 1/c2.n))
+    effA = eff(countabA, countab - noiseab * time)
+    effB = eff(countabB, countab - noiseab * time)
+    effC = eff(countabC, countab - noiseab * time)
+    
+    mcABC = mcexprs[frozenset({data3['PMTA'][i], data3['PMTB'][i]}, data3['PMTC'][i])]
+    
+    flux = rateABC / (mcABC * effA * effB * effC)
+    fluxes3.append(flux)
