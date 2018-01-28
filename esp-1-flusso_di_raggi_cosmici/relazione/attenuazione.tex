@@ -85,9 +85,15 @@ Le dimensioni trasversali del miniscint non permettono di definire la distanza d
 Abbiamo operato una media per colonne nello stesso modo visto prima, ma utilizzando i rilasci di energia misurati dall'ADC. Dopo aver eseguito l'istogramma relativo ad una delle 16 caselle, abbiamo preso la moda della distribuzione di Landau%
 \footnote{Come consigliato dal PDG.}
 corrispondente e le abbiamo assegnato come errore quello dato dalla distanza tra un bit e l'altro dell'ADC. Essendo essa a \SI{12}{bit} e sapendo che il valore massimo digitalizzabile è \SI{3}{V}, l'errore attribuito ad ogni moda vale \SI{0.7}{mV}%
-\marginpar{Non sapevo che altro metterci. Si accettano consigli in merito. Proverò a mettere la semilarghezza del bin.}. 
+\marginpar{Non sapevo che altro metterci. Si accettano consigli in merito. Proverò a mettere la semilarghezza del bin.\\
+\emph{È chiaro che la larghezza del bin ha molto più senso della digitalizzazione dell'ADC.}}. 
 L'errore usato per il fit è invece quello propagato usando la derivata della funzione \eqref{exp} dopo aver eseguito il fit con il solo errore sulla media delle mode.
-Abbiamo sostituito il fattore pre-esponenziale $N_0$ della funzione \eqref{exp} con $V_0$ perché abbiamo dei valori in \si{mV} in ordinata. Il punto più a sinistra (vedi \autoref{col}) non è stato considerato nel fit perché palesemente lontano dall'andamento esponenziale seguito dagli altri punti. I parametri restituiti dal fit sono: $V_0=\SI{199\pm1}{mV}$, $\lambda=\SI{810\pm263}{cm}$, corr$(V_0,\lambda)=-0.93$, $\chi^2=8\pm1$ con dof=2. La lunghezza di attenuazione non è compatibile con entrambi i fit eseguiti precedentemente.
+Abbiamo sostituito il fattore pre-esponenziale $N_0$ della funzione \eqref{exp} con $V_0$ perché abbiamo dei valori in \si{mV} in ordinata. Il punto più a sinistra (vedi \autoref{col}) non è stato considerato nel fit perché palesemente lontano dall'andamento esponenziale seguito dagli altri punti.
+\marginpar{\emph{Secondo me il fit non ha senso neanche sui tre punti a destra.
+Infatti guardando \autoref{rig} suppongo che facendo la media solo di alcune delle quattro curve
+si possano ottenere altri andamenti, quindi il fit dipende molto da quali punti ci mettiamo.
+Inoltre se come errore metti la semilarghezza del bin, forse l'andamento diventa palesemente casuale.}}
+I parametri restituiti dal fit sono: $V_0=\SI{199\pm1}{mV}$, $\lambda=\SI{810\pm263}{cm}$, corr$(V_0,\lambda)=-0.93$, $\chi^2=8\pm1$ con dof=2. La lunghezza di attenuazione non è compatibile con entrambi i fit eseguiti precedentemente.
 
 \begin{table}[h]
 \centering
