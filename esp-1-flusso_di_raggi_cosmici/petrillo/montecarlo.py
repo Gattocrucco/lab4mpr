@@ -327,6 +327,14 @@ class MC(object):
         
         self._N = len(self._costheta)
     
+    @property
+    def pivot_horizontal_area(self):
+        return self._horizontal_area
+    
+    @property
+    def number_of_rays(self):
+        return self._N
+    
     def costheta(self, *exprs):
         # stub implementation, do not consider efficiency
         withins, d1 = self._compute_withins(*exprs)
@@ -527,11 +535,13 @@ def pmt(idx, efficiency=1.0):
     short_side_offsets = [0, -5, 1, 1, 2, 0]
     short_side_offsets_un = [0, 1, 1, 1.4, 1.4, 2]
     long_side_offsets = [543, 540, 536, 539, 531]
+    s = np.std(long_side_offsets, ddof=1)
     long_side_offsets.append(np.mean(long_side_offsets))
 
     for i in range(len(short_side_offsets)):
         short_side_offsets[i] = un.ufloat(short_side_offsets[i], short_side_offsets_un[i])
         long_side_offsets[i] = un.ufloat(long_side_offsets[i], 1)
+    long_side_offsets[-1].std_dev = s
     
     i = 6 - idx
     

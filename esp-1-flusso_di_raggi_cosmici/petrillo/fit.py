@@ -1,5 +1,5 @@
 import numpy as np
-from montecarlo import MC, pmt
+import montecarlo as mc
 import uncertainties as un
 
 ####### load data #######
@@ -29,11 +29,17 @@ data2a = loadtxtlbs('fitdata2a.txt', data2albs)
 data3 = loadtxtlbs('fitdata3.txt', data3lbs)
 dataeff = loadtxtlbs('fitdataeff.txt', dataefflbs)
 
+data2sigA = un.ufloat(38, 2) * 1e-9
+data2sigB = un.ufloat(37, 2) * 1e-9
+
 ####### prepare monte carlo #######
 
 # draw samples
-mc = MC(*[pmt(i+1) for i in range(6)])
-mc.random_samples(N=1000000)
+mcobj = mc.MC(*[mc.pmt(i+1) for i in range(6)])
+mcobj.random_samples(N=100000)
+
+mcgeom = mc.MC(*[mc.pmt(i+1) for i in range(6)])
+mcgeom.random_samples(N=1000)
 
 # create list of expressions to compute
 mclist = []
@@ -63,7 +69,8 @@ for i in range(len(dataeff['clock'])):
     ]
 
 # decide pivots
-pivots = dict()
+cexprs = dict() # format of MC.count
+exprs = dict() # format used as key
 while len(mclist) > 0:
     # count how many times each PMT is used in an expression
     count = [0] * 6
@@ -74,22 +81,91 @@ while len(mclist) > 0:
     pivot = np.argmax(count)
     # remove from mclist expressions which contain the pivot,
     # and put them in a per-pivot list
-    pivotlist = []
+    pivotset = set()
     i = 0
     while i < len(mclist):
         if pivot + 1 in mclist[i]:
-            pivotlist.append(mclist.pop(i))
+            pivotset.add(frozenset(map(int, mclist.pop(i))))
         else:
             i += 1
-    pivots[pivot] = pivotlist
-
-# remove duplicate expressions;
-# we did not remove them before because to choose the pivot we counted occurences
-for pivot in pivots.keys():
-    pivots[pivot] = set(map(frozenset, pivots[pivot]))
+    # convert expressions to the format used by MC.count
+    exprs_list = tuple(map(tuple, pivotset))
+    cexprs_list = []
+    for i in range(len(exprs_list)):
+        cexpr = [...] * 6
+        for s in exprs_list[i]:
+            cexpr[s - 1] = True
+        cexprs_list.append(cexpr)
+    cexprs[pivot] = cexprs_list
+    exprs[pivot] = list(map(frozenset, exprs_list))
 
 ####### fit function #######
 
-def sum_squares(total_flux, distr_par):
-    # process data2
+# def f_fit(total_flux, distr_par):
+total_flux=0
+distr_par=2
+# compute rays
+distr = lambda x: x ** (1 / (1 + distr_par)) # vedi logbook:fit
+mcobj.ray(distr)
+mcgeom.ray(distr)
+
+# compute acceptances
+mcexprs = dict()
+for pivot in exprs.keys():
+    # run
+    mcobj.run(pivot_scint=pivot)  
+    # count
+    counts = mcobj.count(*cexprs[pivot])
+    # save
+    expr = exprs[pivot]
+    for i in range(len(expr)):
+        mcexprs[expr[i]] = counts[i] / mcobj.number_of_rays * mcobj.pivot_horizontal_area
+
+# compute geometrical uncertainty
+mcsegeom = dict()
+for expr in mcexprs.keys():
+    mcsegeom[expr] = []
+# compute acceptances for each geometry sample
+for j in range(1000):
+    for pivot in exprs.keys():
+        mcgeom.run(pivot_scint=pivot, randgeom=True)
+        counts = mcgeom.count(*cexprs[pivot])
+        expr = exprs[pivot]
+        for i in range(len(expr)):
+            mcsegeom[expr[i]].append(counts[i].n / mcgeom.number_of_rays * mcgeom.pivot_horizontal_area.n)
+# compute standard deviation due to geometry
+for expr in mcsegeom.keys():
+    samples = mcsegeom[expr]
+    sd = np.std(samples, ddof=1)
+    val = mcexprs[expr]
+    mcexprs[expr] = (val, un.ufloat(1, sd / val.n))
+
+# process data2
+fluxes = []
+for i in range(len(data2['clock'])):
+    time = un.ufloat(data2['clock'][i], 0.5) / 1000
+    
+    count = lambda label: un.ufloat(data2[label][i], np.sqrt(data2[label][i]))
+    countA = count('A')
+    countB = count('B')
+    countAB = count('A&B')
+    
+    rateA = countA / time
+    rateB = countB / time
+    rateAB = countAB / time
+    
+    countabc = count('a&b&c')
+    countabcA = count('a&b&c&A')
+    countabcB = count('a&b&c&B')
+    
+    eff = lambda c3, c2: un.ufloat(c3.n / c2.n, c3.n/c2.n * (1 - c3.n/c2.n) * 1/c2.n * (1 + 1/c2.n))
+    effA = eff(countabcA, countabc)
+    effB = eff(countabcB, countabc)
+    
+    mcAB = mcexprs[frozenset({data2['PMTA'][i], data2['PMTB'][i]})]
+    
+    noiseAB = rateA * rateB * (data2sigA + data2sigB)
+    
+    flux = (rateAB - noiseAB) / (mcAB[0] * mcAB[1] * effA * effB)
+    fluxes.append(flux)
     
