@@ -1,6 +1,7 @@
 import numpy as np
 import montecarlo as mc
 import uncertainties as un
+import copy
 
 ####### load data #######
 
@@ -45,6 +46,13 @@ data3sigB = data2sigB
 data3sigC = un.ufloat(35, 1) * 1e-9
 data3siga = un.ufloat(35, 1) * 1e-9
 data3sigb = un.ufloat(35, 1) * 1e-9
+
+dataeffrate = un.ufloat(500, 30)
+dataeffsigA = data3sigA
+dataeffsiga = data3siga
+dataeffsigb = data3sigB
+dataeffsigc = data3sigC
+dataeffsigd = data3sigb
 
 ####### prepare monte carlo #######
 
@@ -117,7 +125,7 @@ while len(mclist) > 0:
 
 # def f_fit(total_flux, distr_par):
 total_flux=0
-distr_par=2
+distr_par=3
 # compute rays
 distr = lambda x: x ** (1 / (1 + distr_par)) # vedi logbook:fit
 mcobj.ray(distr)
@@ -148,6 +156,7 @@ for j in range(100):
         for i in range(len(expr)):
             mcsegeom[expr[i]].append(counts[i].n / mcgeom.number_of_rays * mcgeom.pivot_horizontal_area)
 # compute standard deviation due to geometry
+# mancano le correlazioni, aggiungere randgeom='last' al montecarlo
 for expr in mcsegeom.keys():
     samples = mcsegeom[expr]
     sd = np.std(samples, ddof=1)
@@ -173,7 +182,7 @@ for i in range(len(data2['clock'])):
     countabcA = count('a&b&c&A')
     countabcB = count('a&b&c&B')
     
-    eff = lambda c3, c2: un.ufloat(c3.n / c2.n, c3.n/c2.n * (1 - c3.n/c2.n) * 1/c2.n * (1 + 1/c2.n))
+    eff = lambda c3, c2: un.ufloat(c3.n / c2.n, np.sqrt(c3.n/c2.n * (1 - c3.n/c2.n) * 1/c2.n * (1 + 1/c2.n)))
     effA = eff(countabcA, countabc)
     effB = eff(countabcB, countabc)
     
@@ -208,7 +217,7 @@ for i in range(len(data2a['clock'])):
     mcabB = mcexprs[frozenset({data2a['PMTa'][i], data2a['PMTb'][i], data2a['PMTB'][i]})]
     mcAB = mcexprs[frozenset({data2a['PMTA'][i], data2a['PMTB'][i]})]
     
-    eff = lambda c3, c2: un.ufloat(c3.n / c2.n, c3.n/c2.n * (1 - c3.n/c2.n) * 1/c2.n * (1 + 1/c2.n))
+    eff = lambda c3, c2: un.ufloat(c3.n / c2.n, np.sqrt(c3.n/c2.n * (1 - c3.n/c2.n) * 1/c2.n * (1 + 1/c2.n)))
     # problema: qui le efficienze sono correlate
     effA = eff(countabAB, countabB) * mcabB / mcabAB
     effB = eff(countabAB, countabA) * mcabA / mcabAB
@@ -226,22 +235,62 @@ for i in range(len(data3['clock'])):
     
     count = lambda label: un.ufloat(data3[label][i], np.sqrt(data3[label][i]))
     countABC = count('A&B&C')
-    
-    rateABC = countABC / time
-    
     countab = count('a&b')
     countabA = count('a&b&A')
     countabB = count('a&b&B')
     countabC = count('a&b&C')
     
+    rateABC = countABC / time    
     noiseab = data3ratea * data3rateb * (data3siga + data3sigb)
     
-    eff = lambda c3, c2: un.ufloat(c3.n / c2.n, c3.n/c2.n * (1 - c3.n/c2.n) * 1/c2.n * (1 + 1/c2.n))
-    effA = eff(countabA, countab - noiseab * time)
-    effB = eff(countabB, countab - noiseab * time)
-    effC = eff(countabC, countab - noiseab * time)
+    def eff(c3, c2):
+        e = c3.n / c2
+        return un.ufloat(e.n, np.sqrt(e.n * (1 - e.n) * 1/c2.n * (1 + 1/c2.n))) * e / e.n
+    effA = eff(countabA, countab.n - noiseab * time)
+    effB = eff(countabB, countab.n - noiseab * time)
+    effC = eff(countabC, countab.n - noiseab * time)
     
     mcABC = mcexprs[frozenset({data3['PMTA'][i], data3['PMTB'][i]}, data3['PMTC'][i])]
     
     flux = rateABC / (mcABC * effA * effB * effC)
     fluxes3.append(flux)
+
+dataefflbs = ['clock', 'a&b', 'a&b&A', 'b&c', 'b&c&A', 'b&d', 'b&d&A', 'PMTA', 'PMTa', 'PMTb', 'PMTc', 'PMTd', 'prefit']
+# process dataeff
+efficiencies = []
+for i in range(len(dataeff['clock'])):
+    assert(dataeff['prefit'][i])
+    time = un.ufloat(dataeff['clock'][i], 0.5) * 1e-3
+    
+    count = lambda label: dataeff[label][i]
+    countab = count('a&b')
+    countabA = count('a&b&A')
+    countbc = count('b&c')
+    countbcA = count('b&c&A')
+    countbd = count('b&d')
+    countbdA = count('b&d&A')
+    
+    ratea = copy.copy(dataeffrate)
+    rateb = copy.copy(dataeffrate)
+    ratec = copy.copy(dataeffrate)
+    rated = copy.copy(dataeffrate)
+    
+    noiseab = ratea * rateb * (dataeffsiga + dataeffsigb) * time
+    noisebc = rateb * ratec * (dataeffsigb + dataeffsigc) * time
+    noisebd = rateb * rated * (dataeffsigb + dataeffsigd) * time
+    
+    mcab = mcexprs[frozenset({dataeff['PMTa'][i], dataeff['PMTb'][i]})]
+    mcbc = mcexprs[frozenset({dataeff['PMTb'][i], dataeff['PMTc'][i]})]
+    mcbd = mcexprs[frozenset({dataeff['PMTb'][i], dataeff['PMTd'][i]})]
+    mcabA = mcexprs[frozenset({dataeff['PMTa'][i], dataeff['PMTb'][i], dataeff['PMTA'][i]})]
+    mcbcA = mcexprs[frozenset({dataeff['PMTb'][i], dataeff['PMTc'][i], dataeff['PMTA'][i]})]
+    mcbdA = mcexprs[frozenset({dataeff['PMTb'][i], dataeff['PMTd'][i], dataeff['PMTA'][i]})]
+    
+    def eff(c3, c2):
+        e = c3 / c2
+        return un.ufloat(e.n, np.sqrt(e.n * (1 - e.n) * 1/c2.n * (1 + 1/c2.n))) * e / e.n
+    effAab = eff(countabA, countab - noiseab) * mcab / mcabA
+    effAbc = eff(countbcA, countbc - noisebc) * mcbc / mcbcA
+    effAbd = eff(countbdA, countbd - noisebd) * mcbd / mcbdA
+    
+    efficiencies.append((effAab, effAbc, effAbd))
