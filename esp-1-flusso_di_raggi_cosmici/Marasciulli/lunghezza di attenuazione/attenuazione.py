@@ -3,7 +3,8 @@ try:
     os.chdir("lunghezza di attenuazione")
 except FileNotFoundError:
     pass
-    
+
+import pylab as py 
 #sys.stdout=open("mc.txt","w")
 
 print("MEDIA PER COLONNE \n")
@@ -131,6 +132,7 @@ Y=uarray([],[])
 for j in range(len(colonna)):
     
     mode=array([])
+    er=array([])
     
     for i in range(len(riga)):
 
@@ -142,28 +144,17 @@ for j in range(len(colonna)):
         indice=tt.index(max(tt))
         moda=(t[1][indice]+t[1][indice+1])/2
         mode=py.append(mode,moda)
+        errore=(t[1][indice+1]-t[1][indice])/2
+        er=py.append(er,errore)
 
     y=py.average(mode)
-    dy=astd([3/2**12]*4)   # errore di digitalizzazione in volt
+    dy=astd(er)  
     Y=py.append(Y,uf(y,dy))
 
 # fit
 
 x=array([3.5,13.7,23,32.5])-3.5
 Y*=1000
-delta=sqrt( err(Y)**2 + 0.2**2*( A/l*e**(-x/l) )**2 )
-
-def att(x,A,l):
-    return A*e**(-x/l)
-
-valori=[300,100]
-popt,pcov=curve_fit(att,x[1:],med(Y[1:]),valori,sigma=delta[1:])
-A,l=popt
-dA,dl=sqrt(pcov.diagonal())
-print("ampiezza=",A,"+-",dA," mV")
-print("lambda=",l,"+-",dl," cm")
-print("correlazione=",cov(0,1,pcov),"\n")
-
 # grafico 
 
 py.figure(3).set_tight_layout(True)
@@ -176,17 +167,11 @@ py.xlabel("distanza dalla guida di luce  (cm)")
 py.ylabel("valore ADC  (mV)")
     
     
-py.errorbar(x,med(Y),xerr=0.2,yerr=delta,capsize=2,linestyle="",color="black")  # mostro i risultati in mV
-z=py.linspace(0,30,10**3)
-py.plot(z,att(z,*popt),color="blue")
+py.errorbar(x,med(Y),xerr=0.2,yerr=err(Y),capsize=2,linestyle="",color="black")  # mostro i risultati in mV
+
     
 py.show()
 
-chi=py.sum( ((med(Y[1:])-att(x[1:],*popt))/delta[1:])**2 )
-dof=len(x[1:])-len(popt)
-p=chdtrc(dof,chi)
-print("chi quadro=",chi,"+-",sqrt(2*dof))
-print("p_value=",p,"\n")
 
 #sys.stdout.close()
 #sys.stdout=sys.__stdout__
@@ -218,6 +203,7 @@ py.ylabel("valore ADC  (mV)")
 for i in range(len(riga)):
     
     mode=array([])
+    orr=array([])
     
     for j in range(len(colonna)):
         no,en,non=py.loadtxt("C:/Users/andre/Desktop/ANDREA/Laboratorio 4/flusso cosmici/de0_data/misura_%s%s.dat" %(colonna[j],riga[i]),unpack=True)
@@ -228,36 +214,17 @@ for i in range(len(riga)):
         indice=hh.index(max(hh))
         moda=(h[1][indice]+h[1][indice+1])/2
         mode=py.append(mode,moda)
-        
-    orrore=3/2**12
-    mode*=1000
-    orrore*=1000
-    '''
-    # fit
-    # todo: delta
-    def att(x,A,l):
-        return A*e**(-x/l)
+        orrore=(h[1][indice+1]-h[1][indice])/2
+        orr=append(orr,orrore)
     
-    valori=[300,100]
-    popt,pcov=curve_fit(att,X,mode,valori,sigma=[orrore]*len(X))
-    A,l=popt
-    dA,dl=sqrt(pcov.diagonal())
-    print("ampiezza=",A,"+-",dA," mV")
-    print("lambda=",l,"+-",dl," cm")
-    print("correlazione=",cov(0,1,pcov),"\n")
-    '''
+    mode*=1000
+    orr*=1000
+
     # grafico
     
-    py.errorbar(X,mode,xerr=0.2,yerr=orrore,linestyle=":",capsize=2,label="riga %d"%riga[i],marker=lista[i],color=col[i])
-    z=py.linspace(0,30,1000)
-    #py.plot(z,att(z,*popt))
-    '''
-    chi=py.sum( ((mode-att(X,*popt))/orrore)**2 )
-    dof=len(mode)-len(popt)
-    p=chdtrc(dof,chi)
-    print("chi quadro riga %d=" %(i+1),chi,"+-",sqrt(2*dof))
-    print("p_value=",p,"\n")
-    '''
+    py.errorbar(X,mode,xerr=0.2,yerr=orr,linestyle="",capsize=2,label="riga %d"%riga[i],marker=lista[i],color=col[i])
+    
+
 py.legend(fontsize="small",loc="best")
 py.show()
 

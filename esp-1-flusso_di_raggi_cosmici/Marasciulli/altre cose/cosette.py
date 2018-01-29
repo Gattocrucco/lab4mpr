@@ -61,7 +61,8 @@ print("moda grande angolo=",moda2*1000,"+-",err2*1000," mV")
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-fig=plt.figure(2).set_tight_layout(True)
+figure(2).set_tight_layout(True)
+rc("font",size=16)
 ax1=subplot(111,projection="3d")
 
 x=[1,2,3,4]*4
@@ -72,5 +73,15 @@ dx=ones(len(x))*0.3
 dy=ones(len(y))*0.3
 dz=array([552,627,635,716,  523,546,550,666  ,421,534,485,667,  517,494,537,576])
 
-ax1.bar3d(x,y,z,dx,dy,dz,color="yellow")
-plt.show()
+ax1.bar3d(x,y,z,dx,dy,dz,color="orange")
+xlabel("colonna")
+ylabel("riga")
+ax1.set_zlabel("conteggi")
+
+colonne=["D","","C","","B","","A"]
+righe=[1,"",2,"",3,"",4]
+ax1.w_xaxis.set_ticklabels(colonne)
+ax1.w_yaxis.set_ticklabels(righe)
+title("Efficienza locale",size=18)
+
+show()
