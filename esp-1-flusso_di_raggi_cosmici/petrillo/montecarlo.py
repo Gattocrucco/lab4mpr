@@ -6,7 +6,7 @@ import uncertainties as un
 class Scint(object):
     
     def _asufloat(self, x):
-        if isinstance(x, un.core.Variable):
+        if isinstance(x, un.UFloat):
             return x
         else:
             return un.ufloat(x, 0)
@@ -33,7 +33,9 @@ class Scint(object):
         return stats.norm.rvs(loc=x.n, scale=x.s)
     
     def _compute_geometry(self, randomize=False):
-        if randomize:
+        if randomize == 'last':
+            return
+        elif randomize:
             Lx = self._urandom(self._Lx)
             Ly = self._urandom(self._Ly)
             z = self._urandom(self._z)
@@ -53,9 +55,8 @@ class Scint(object):
         self._Vx = np.array([np.cos(alpha), 0, np.sin(alpha)])
         self._Vy = np.array([np.sin(alpha) * np.sin(beta), np.cos(beta), -np.cos(alpha) * np.sin(beta)])
         self._P = np.array([x, y - self._Vy[1] * Ly, -z - Lx/2 * self._Vx[2]])
-        
-        return Lx, Ly, alpha, beta
-    
+        self._size = (Lx, Ly)
+            
     def _compute_efficiency(self, randomize=False):
         if randomize:
             e = -1
@@ -85,12 +86,12 @@ class Scint(object):
     
         return ftx, fty
     
-    def _angle(self, v, alpha, beta):
+    def _angle(self, v):
         # stub implementation
         return v[2]
     
     def within(self, v, p, randgeom=False, randeff=False, cachegeom=False, angle=False):
-        Lx, Ly, alpha, beta = self._compute_geometry(randomize=randgeom)
+        self._compute_geometry(randomize=randgeom)
         
         if not randgeom and cachegeom and not hasattr(self, '_cache_ftx'):
             self._cache_ftx, self._cache_fty = self._make_sympy_solver(Vx=self._Vx, Vy=self._Vy)
@@ -113,9 +114,9 @@ class Scint(object):
         
         efficiency = self._compute_efficiency(randomize=randeff)
         
-        rt = (np.logical_and(np.logical_and(0 <= tx, tx <= Lx), np.logical_and(0 <= ty, ty <= Ly)), efficiency)
+        rt = (np.logical_and(np.logical_and(0 <= tx, tx <= self._size[0]), np.logical_and(0 <= ty, ty <= self._size[1])), efficiency)
         if angle:
-            rt += (self._angle(v, alpha, beta),)
+            rt += (self._angle(v),)
         return rt
     
     def pivot(self, costheta, phi, tx, ty, randgeom=False, randeff=False, cachegeom=False, angle=False):
@@ -123,17 +124,17 @@ class Scint(object):
         
         v = np.array([sintheta * np.cos(phi), sintheta * np.sin(phi), costheta])
         
-        Lx, Ly, alpha, beta = self._compute_geometry(randomize=randgeom)
+        self._compute_geometry(randomize=randgeom)
         
-        p = self._P.reshape(-1,1) + self._Vx.reshape(-1,1) * tx.reshape(1,-1) * Lx + self._Vy.reshape(-1,1) * ty.reshape(1,-1) * Ly
+        p = self._P.reshape(-1,1) + self._Vx.reshape(-1,1) * tx.reshape(1,-1) * self._size[0] + self._Vy.reshape(-1,1) * ty.reshape(1,-1) * self._size[1]
         
-        horizontal_area = Lx * np.sqrt(1 - self._Vx[2]**2) * Ly * np.sqrt(1 - self._Vy[2]**2)
+        horizontal_area = self._size[0] * np.sqrt(1 - self._Vx[2]**2) * self._size[1] * np.sqrt(1 - self._Vy[2]**2)
         
         efficiency = self._compute_efficiency(randomize=randeff)
         
         rt = (v, p, horizontal_area, efficiency)
         if angle:
-            rt += (self._angle(v, alpha, beta),)
+            rt += (self._angle(v),)
         return rt
     
 class MC(object):
@@ -293,10 +294,12 @@ class MC(object):
         
         Keyword arguments
         -----------------
-        randgeom : boolean, default to False
+        randgeom : boolean or string, default to False
             If True, extract at random the geometrical properties of the scints
             before doing all the computation. The distribution used is gaussian
-            with standard deviation as given into the Scints objects.
+            with standard deviation as given into the Scints objects. If False
+            (default), use nominal values. If 'last', use values from last time
+            (if they were random, they are not sampled again).
         randeff : boolean, default to False
             The same for the efficiency of the Scints.
         """
@@ -351,7 +354,7 @@ class MC(object):
             energy += stats.norm.rvs(size=len(energy), loc=0, scale=energy/10)
         return energy
     
-    def count(self, *exprs):
+    def count(self, *exprs, tags=None):
         """
         Count rays which satisfy given logical expression(s).
         A logical expression is a list of either True, False or None,
@@ -401,7 +404,7 @@ class MC(object):
         counts = np.sum(withins, axis=1)
         counts_cov = np.atleast_2d(np.cov(withins, ddof=1)) * len(withins[0])
         
-        rt = np.array(un.correlated_values(counts, counts_cov))
+        rt = np.array(un.correlated_values(counts, counts_cov, tags=tags))
         return rt if d1 else rt[0]
     
     def _compute_withins(self, *exprs):
