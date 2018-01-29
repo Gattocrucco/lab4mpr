@@ -156,11 +156,12 @@ def f_fit(distr_par):
             expr = exprs[pivot]
             for i in range(len(expr)):
                 mcsegeom[expr[i]][j] = counts[i].n / mcgeom.number_of_rays * mcgeom.pivot_horizontal_area
-    # compute uncertainty due to geometry
+    # compute covariance matrix
     mcsegeom_keys = list(mcsegeom.keys())
     mcsegeom_array = np.array([mcsegeom[key] for key in mcsegeom_keys])
     mcsegeom_cov = np.cov(mcsegeom_array)
     assert(len(mcsegeom_cov) == len(mcsegeom_keys))
+    # make unitary multiplicative factors containing the geometrical uncertainty
     vals = np.array([mcexprs[key] for key in mcsegeom_keys])
     nom_values = unp.nominal_values(vals)
     geom_factors = np.array(un.correlated_values(nom_values / nom_values, mcsegeom_cov / np.outer(nom_values, nom_values), tags=['geom'] * len(nom_values)))
@@ -305,11 +306,18 @@ def sum_squares(parameters):
     total_flux = parameters[0]
     distr_par = parameters[1]
     efficiencies = parameters[2:]
-    
+
     fluxes, effs = f_fit(distr_par)
-    
-    vect = [(flux - total_flux) for flux in fluxes]
-    
+
+    vect = [flux - total_flux for flux in fluxes]
+    for i in range(len(efficiencies)):
+        vect += [eff - efficiencies[i] for eff in effs[i]]
+    vect_nom = unp.nominal_values(vect)
+    vect_cov = un.covariance_matrix(vect)
+    inverse = np.linalg.inv(vect_cov)
+
+    Q = np.dot(vect_nom, np.dot(inverse, vect_nom))
+    return Q
 
 ####### diagnostics #######
 
