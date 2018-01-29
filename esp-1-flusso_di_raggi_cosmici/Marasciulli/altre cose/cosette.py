@@ -55,3 +55,22 @@ err2=(edge2[ind2+1]-edge2[ind2])/2
 
 print("moda piccolo angolo=",moda1*1000,"+-",err1*1000," mV")
 print("moda grande angolo=",moda2*1000,"+-",err2*1000," mV")
+
+## EFFICIENZA LOCALE
+
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+fig=plt.figure(2).set_tight_layout(True)
+ax1=subplot(111,projection="3d")
+
+x=[1,2,3,4]*4
+y=[1,1,1,1  ,2,2,2,2, 3,3,3,3  ,4,4,4,4]
+z=zeros(16)
+
+dx=ones(len(x))*0.3
+dy=ones(len(y))*0.3
+dz=array([552,627,635,716,  523,546,550,666  ,421,534,485,667,  517,494,537,576])
+
+ax1.bar3d(x,y,z,dx,dy,dz,color="yellow")
+plt.show()
