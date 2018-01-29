@@ -139,7 +139,7 @@ for pivot in exprs.keys():
     mcobj.run(pivot_scint=pivot)  
     # count
     expr = exprs[pivot]
-    counts = mcobj.count(*cexprs[pivot], tags=["mccount%s" % (''.join([str(j) for j in expri]),) for expri in expr])
+    counts = mcobj.count(*cexprs[pivot], tags=['mc'] * len(cexprs[pivot]))
     # save
     for i in range(len(expr)):
         mcexprs[expr[i]] = counts[i] / mcobj.number_of_rays * mcobj.pivot_horizontal_area
@@ -165,7 +165,7 @@ mcsegeom_cov = np.cov(mcsegeom_array)
 assert(len(mcsegeom_cov) == len(mcsegeom_keys))
 vals = np.array([mcexprs[key] for key in mcsegeom_keys])
 nom_values = unp.nominal_values(vals)
-geom_factors = np.array(un.correlated_values(nom_values / nom_values, mcsegeom_cov / np.outer(nom_values, nom_values), tags=["geom%s" % (''.join([str(j) for j in key]),) for key in mcsegeom_keys]))
+geom_factors = np.array(un.correlated_values(nom_values / nom_values, mcsegeom_cov / np.outer(nom_values, nom_values), tags=['geom'] * len(nom_values)))
 for i in range(len(mcsegeom_keys)):
     mcexprs[mcsegeom_keys[i]] *= geom_factors[i]
 
@@ -300,3 +300,40 @@ for i in range(len(dataeff['clock'])):
     effAbd = eff(countbdA, countbd - noisebd, 'Abd') * mcbd / mcbdA
     
     efficiencies.append((effAab, effAbc, effAbd))
+
+def errorsummary(x):
+    from collections import OrderedDict
+    comps = x.error_components()
+    
+    varmc = 0
+    vargeom = 0
+    varother = 0
+    tags = []
+    sds = []
+    for (var, sd) in comps.items():
+        if var.tag == 'mc':
+            varmc += sd ** 2
+        elif var.tag == 'geom':
+            vargeom += sd ** 2
+        elif var.tag is None:
+            varother += sd ** 2
+        else:
+            tags.append(var.tag)
+            sds.append(sd)
+    
+    if varmc > 0:
+        tags.append('mc')
+        sds.append(np.sqrt(varmc))
+    if vargeom > 0:
+        tags.append('geom')
+        sds.append(np.sqrt(vargeom))
+    if varother > 0:
+        tags.append('_other')
+        sds.append(np.sqrt(varother))
+    
+    idx = np.argsort(sds)[::-1]
+    d = OrderedDict()
+    for i in idx:
+        d[tags[i]] = sds[i]
+    
+    return d
