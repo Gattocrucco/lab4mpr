@@ -29,12 +29,34 @@ class Scint(object):
     def thickness(self):
         return self._thickness.n
     
-    def _urandom(self, x):
-        return stats.norm.rvs(loc=x.n, scale=x.s)
+    def _urandom(self, x, size=None):
+        return stats.norm.rvs(loc=x.n, scale=x.s, size=size)
+    
+    def sample_geometry(self, size):
+        size = int(size)
+        assert(1 <= size <= 100000)
+        self._random_Lx = self._urandom(self._Lx, size=size)
+        self._random_Ly = self._urandom(self._Ly, size=size)
+        self._random_z = self._urandom(self._z, size=size)
+        self._random_x = self._urandom(self._x, size=size)
+        self._random_y = self._urandom(self._y, size=size)
+        self._random_alpha = self._urandom(self._alpha, size=size)
+        self._random_beta = self._urandom(self._beta, size=size)
+        self._random_index = 0
     
     def _compute_geometry(self, randomize=False):
         if randomize == 'last':
             return
+        elif randomize == 'next':
+            Lx    = self._random_Lx[self._random_index]
+            Ly    = self._random_Ly[self._random_index]
+            z     = self._random_z[self._random_index]
+            x     = self._random_x[self._random_index]
+            y     = self._random_y[self._random_index]
+            alpha = self._random_alpha[self._random_index]
+            beta  = self._random_beta[self._random_index]
+            self._random_index += 1
+            self._random_index %= len(self._random_Lx)
         elif randomize:
             Lx = self._urandom(self._Lx)
             Ly = self._urandom(self._Ly)
@@ -207,6 +229,10 @@ class MC(object):
             samples = np.concatenate((samples, new_samples))
         
         return samples[:size]
+    
+    def sample_geometry(self, size):
+        for scint in self._scints:
+            scint.sample_geometry(size)
     
     def random_samples(self, N=10000):
         """

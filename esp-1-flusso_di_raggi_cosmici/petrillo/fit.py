@@ -63,6 +63,8 @@ mcobj.random_samples(N=100000)
 
 mcgeom = mc.MC(*[mc.pmt(i+1) for i in range(6)])
 mcgeom.random_samples(N=500)
+Ngeom = 100
+mcgeom.sample_geometry(Ngeom)
 
 # create list of expressions to compute
 mclist = []
@@ -145,17 +147,15 @@ def f_fit(distr_par):
     # compute geometrical uncertainty
     mcsegeom = dict()
     for expr in mcexprs.keys():
-        mcsegeom[expr] = []
+        mcsegeom[expr] = np.empty(Ngeom)
     # compute acceptances for each geometry sample
-    for j in range(100):
-        randgeom = True
+    for j in range(Ngeom):
         for pivot in exprs.keys():
-            mcgeom.run(pivot_scint=pivot, randgeom=randgeom)
-            randgeom = 'last'
+            mcgeom.run(pivot_scint=pivot, randgeom='next')
             counts = mcgeom.count(*cexprs[pivot])
             expr = exprs[pivot]
             for i in range(len(expr)):
-                mcsegeom[expr[i]].append(counts[i].n / mcgeom.number_of_rays * mcgeom.pivot_horizontal_area)
+                mcsegeom[expr[i]][j] = counts[i].n / mcgeom.number_of_rays * mcgeom.pivot_horizontal_area
     # compute uncertainty due to geometry
     mcsegeom_keys = list(mcsegeom.keys())
     mcsegeom_array = np.array([mcsegeom[key] for key in mcsegeom_keys])
@@ -300,6 +300,18 @@ def f_fit(distr_par):
         efficiencies.append((effAab, effAbc, effAbd))
    
     return fluxes2 + fluxes2a + fluxes3, efficiencies
+
+def sum_squares(parameters):
+    total_flux = parameters[0]
+    distr_par = parameters[1]
+    efficiencies = parameters[2:]
+    
+    fluxes, effs = f_fit(distr_par)
+    
+    vect = [(flux - total_flux) for flux in fluxes]
+    
+
+####### diagnostics #######
 
 def errorsummary(x):
     from collections import OrderedDict
