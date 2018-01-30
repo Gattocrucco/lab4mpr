@@ -85,3 +85,29 @@ ax1.w_yaxis.set_ticklabels(righe)
 title("Efficienza locale",size=18)
 
 show()
+
+## SEGNALE SU RUMORE
+
+cartella="C:/Users/andre/Desktop/ANDREA/Laboratorio 4/flusso cosmici/de0_data/"
+v=[r for r in range(1600,2100,100)]
+
+
+for i in range(len(v)):
+    no,adc,non=loadtxt(cartella+"signal_"+str(v[i])+".dat",unpack=True)
+    no,cda,non=loadtxt(cartella+"noise_"+str(v[i])+".dat",unpack=True)
+    
+    figure(v[i]).set_tight_layout(True)
+    rc("font",size=16)
+    grid(color="black",linestyle=":")
+    minorticks_on()
+
+    title("Segnale vs rumore a %d V"%v[i],size=18)
+    xlabel("tensione ADC  (V)")
+    ylabel("occorrenze normalizzate")
+    
+    # sturges per 1600 V
+    hist(cda,bins="sqrt",color="red",label="rumore",rwidth=0.9,normed=True)
+    hist(adc,bins="sqrt",color="blue",label="segnale",rwidth=0.6,normed=True)
+    
+    legend()
+    show()
