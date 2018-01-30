@@ -3,6 +3,10 @@ import montecarlo as mc
 import uncertainties as un
 from uncertainties import unumpy as unp
 import copy
+from collections import OrderedDict
+from scipy import optimize, linalg
+import time
+from matplotlib import pyplot as plt
 
 ####### load data #######
 
@@ -302,7 +306,25 @@ def f_fit(distr_par):
    
     return fluxes2 + fluxes2a + fluxes3, efficiencies
 
-def sum_squares(parameters):
+####### minimize #######
+
+p0 = [250, 5] + [0.90] * len(dataeff['clock'])
+simplex = np.array([
+    [p0[0]]
+])
+calls = 0
+start = time.time()
+plt.ion()
+fig = plt.figure('Simplex')
+fig.clf()
+ax = fig.add_subplot(111)
+line, = ax.plot([p0[0]], [p0[1]], 'xr')
+fig.show()
+pars = []
+for p in p0:
+    pars.append([])
+Qs = []
+def squares(parameters):
     total_flux = parameters[0]
     distr_par = parameters[1]
     efficiencies = parameters[2:]
@@ -314,15 +336,40 @@ def sum_squares(parameters):
         vect += [eff - efficiencies[i] for eff in effs[i]]
     vect_nom = unp.nominal_values(vect)
     vect_cov = un.covariance_matrix(vect)
+    
+    # eigenvalues, transf = linalg.eigh(vect_cov)
+    # orth_vect = transf.T.dot(vect_nom)
+    # res = orth_vect / np.sqrt(eigenvalues)
+    
     inverse = np.linalg.inv(vect_cov)
-
     Q = np.dot(vect_nom, np.dot(inverse, vect_nom))
+    
+    global calls
+    calls += 1
+    et = time.time() - start
+    print('------------------------------')
+    print('squares: evaluation %d, elapsed time: %s' % (calls, '%.1f min' % (et / 60) if et >= 100 else '%.1f s' % et))
+    print('parameters: %s' % (' '.join(['%.3f' % par for par in parameters])))
+    print('sum of squares: %.3f' % Q)
+    for i in range(len(pars)):
+        pars[i].append(parameters[i])
+    Qs.append(Q)
+    line.set_xdata(pars[0])
+    line.set_ydata(pars[1])
+    fig.canvas.draw()
+    plt.pause(1e-17)
+    time.sleep(0.05)
+        
     return Q
+
+# bounds = [(100, 400), (1, 10)] + [(0, 1)] * len(dataeff['clock'])
+# scale = [10, 1] + [0.03] * len(dataeff['clock'])
+# result = optimize.least_squares(squares, p0, diff_step=1e-5, verbose=2)
+out = optimize.minimize(squares, p0, method='Nelder-Mead', options=dict(disp=True, xatol=1e-4, fatol=1e-3, initial_simplex=simplex))
 
 ####### diagnostics #######
 
 def errorsummary(x):
-    from collections import OrderedDict
     comps = x.error_components()
     
     tags = set(map(lambda v: v.tag, comps.keys()))
