@@ -109,5 +109,30 @@ for i in range(len(v)):
     hist(cda,bins="sqrt",color="red",label="rumore",rwidth=0.9,normed=True)
     hist(adc,bins="sqrt",color="blue",label="segnale",rwidth=0.6,normed=True)
     
-    legend()
+    legend(fontsize="small")
     show()
+
+# bump 2000 V
+
+no,adc,lol=loadtxt(cartella+"signal_2000.dat",unpack=True)
+no,cda,lol=loadtxt(cartella+"noise_2000.dat",unpack=True)
+del no,lol
+
+segnale,segn=histogram(adc,bins="sqrt",normed=True)
+vero,ver=histogram(adc,bins="sqrt",normed=False)
+rumore,rum=histogram(cda,bins="sqrt",normed=True)
+
+hist(cda,bins="sqrt",normed=True,rwidth=0.8)
+hist(adc,bins="sqrt",normed=True,rwidth=0.9)
+
+show()
+# ho visto dall'istogramma che il bump si trova nei primi 7 canali
+
+n=7
+sumj=uf(sum(vero),sqrt(sum(vero)))
+sumi=uf(sum(vero[:n]),sqrt(sum(vero[:n])))
+
+R=sumi/sumj
+
+print("importanza bump=",R*100,"%")
+
