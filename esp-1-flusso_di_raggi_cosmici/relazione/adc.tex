@@ -1,0 +1,23 @@
+
+\subsection{Configurazione utilizzo ADC}  % troppo giornalistico?  (mi riferisco alla mancanza di articoli)
+
+La necessità di misurare quantitativamente il rilascio di energia nel rivelatore ci obbliga ad aggiungere nel nostro crate 3 moduli che permettono di digitalizzare l'uscita del PMT: il preamplificatore, l'amplificatore e l'ADC. Il preamplificatore ha il compito di allungare la durata dell'output del PMT dai nanosecondi ai microsecondi, in modo che l'amplificatore e l'ADC abbiano il tempo di leggerla. Esso è collegato direttamente al PMT che vogliamo usare per evitare riflessioni e non è possibile operare un adattamento di impedenza, in quanto il preamplificatore necessita di un'elevata impedenza d'ingresso per allungare la durata del segnale. 
+Lo abbiamo impostato in modo che esso restituisca un segnale con una salita praticamente istantanea ed una discesa esponenziale \marginpar{se credete che stia sbagliando, ricordatevi le convenzioni di nomenclatura} con un $\tau\approx\SI{15}{\mu s}$.
+
+Il compito dell'amplificatore è intensificare il segnale al suo ingresso (in questo caso quello del preamplificatore) e restituire un'uscita analogica proporzionale all'energia del segnale in ingresso%
+\footnote{Il manuale dice che la forma dell'uscita è data dalla funzione $e^{-3t}\sin^4{t}$, in cui $t$ è il tempo. Aggiunge poi che questa forma ``simile ad una Gaussiana'' è ``proporzionale all'energia''.}.
+Ha un'uscita massima di \SI{11}{V}.
+
+Lo scopo dell'ADC è trasformare un segnale analogico in uno digitale (solitamente un numero intero) in modo che questo possa essere salvato su un computer.  
+\marginpar{so che non è corretto dire segnale digitale=numero intero ma non so in che altro modo dirlo!}
+La conversione del segnale parte dopo \SI{1}{\mu s} dall'arrivo di un segnale di \emph{trigger} e dura all'incirca tale intervallo di tempo. L'ADC può leggere segnali analogici che vanno da qualche \si{mV} a \SI{2.5}{V} e può digitalizzarne al massimo 40 al secondo, il trigger legge un segnale TTL di ampiezza massima \SI{3.3}{V}. 
+
+Per poter sfruttare l'apparato di digitalizzazione dobbiamo trasformare l'uscita del PMT adoperando il preamplificatore, smorzare il segnale dell'amplificatore in modo che non possa danneggiare l'ADC e costruire un trigger che faccia partire l'acquisizione \SI{1}{\mu s} prima che il segnale amplificato raggiunga il massimo.
+Agiamo come segue: \marginpar{inserire uno schema. lo schema che ho descritto non si trova disegnato nel logbook. è più generale}
+colleghiamo un certo PMT al preamplificatore e la sua uscita all'amplificatore. Prendiamo il segnale del preamplificatore%
+\footnote{Un'uscita dell'amplificatore ci permette di farlo.}
+che vogliamo usare nelle coincidenze e nella fabbricazione di un trigger. Portiamo questo segnale ad un discriminatore a cui sono collegati anche gli altri PMT. Le uscite di quest'ultimo sono mandate ad un modulo \emph{gate \& delay}
+\marginpar{cercare di italianizzarlo}
+non retriggerabile%
+\footnote{Abbiamo riscontrato numerose ripartenze prima di utilizzare questo modulo.}
+collegato poi ad un secondo discriminatore che abbiamo usato come fan-out (l'altro fan-out a disposizione non ci bastava) per mandare i segnali a dei moduli di coincidenze, al contatore, ecc. In caso di coincidenze, un segnale tra quelli che ci interessano viene ritardato in modo da poter raggiungere l'ingresso del trigger  \SI{1}{\mu s} prima che il segnale dell'amplificatore raggiunga il suo massimo. Questa operazione viene effettuata dapprima ritardando il segnale con un \emph{timer} per poi farlo passare attraverso un convertitore NIM-TTL in modo che sia leggibile dal modulo dell'ADC. Nel frattempo il segnale amplificato viene smorzato da un attenuatore da \SI{14}{dB} che riduce l'ampiezza dei segnali maggiori da \SI{11}{V} a \SI{2.5}{V} in modo che sia impossibile danneggiare l'ADC. Il fatto che il convertitore TTL-NIM abbia un'uscita massima di \SI{3}{V} evita che il trigger possa causare danni.
