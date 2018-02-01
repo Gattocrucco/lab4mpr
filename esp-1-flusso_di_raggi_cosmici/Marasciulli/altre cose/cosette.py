@@ -5,6 +5,10 @@ try:
 except FileNotFoundError:
     pass
 # from pylab import *
+# from uncertainties import ufloat as uf
+# from importante import astd
+# from scipy.optimize import curve_fit
+
 # dati
 piccolo_angolo=["","_II","_III"]   # hanno tutti 'ang_6and1' davanti
 grande_angolo=["","_II"]           # hanno davanti 'ang_6and5andnot4' e dietro .dat
@@ -26,10 +30,10 @@ del no,non
 # istogrammi
 figure(1).set_tight_layout(True)
 rc("font",size=16)
-title("Perdita di energia ed angolo",size=18)
 grid(color="black",linestyle=":")
 minorticks_on()
 
+title("Perdita di energia ed angolo",size=18)
 xlabel("energia ADC  (mV)")
 ylabel("occorrenze normalizzate")
 
