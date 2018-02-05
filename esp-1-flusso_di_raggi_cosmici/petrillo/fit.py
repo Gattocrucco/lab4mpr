@@ -86,8 +86,8 @@ mcobj = mc.MC(*[mc.pmt(i+1) for i in range(6)])
 mcobj.random_samples(N=100000)
 
 mcgeom = mc.MC(*[mc.pmt(i+1) for i in range(6)])
-mcgeom.random_samples(N=316)
-mcgeom.sample_geometry(316)
+mcgeom.random_samples(N=1000)
+mcgeom.sample_geometry(1000)
 
 # create list of expressions to compute
 mclist = []
@@ -382,4 +382,3 @@ def squares(parameters):
 # scale = [10, 1] + [0.03] * len(dataeff['clock'])
 # result = optimize.least_squares(squares, p0, diff_step=1e-5, verbose=2)
 # out = optimize.minimize(squares, p0, method='Nelder-Mead', options=dict(disp=True, xatol=1e-4, fatol=1e-3))
-

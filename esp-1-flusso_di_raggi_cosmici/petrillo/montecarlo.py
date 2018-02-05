@@ -2,6 +2,7 @@ import numpy as np
 from scipy import stats, optimize
 import sympy
 import uncertainties as un
+import numba
 
 class Scint(object):
     
@@ -108,6 +109,9 @@ class Scint(object):
         sol = sympy.solve_linear_system(S, *ts)
         ftx = sympy.lambdify(args, sol[ts[1]])
         fty = sympy.lambdify(args, sol[ts[2]])
+        
+        ftx = numba.jit(ftx, nopython=True)
+        fty = numba.jit(fty, nopython=True)
     
         return ftx, fty
     
