@@ -34,7 +34,7 @@ class Scint(object):
     
     def sample_geometry(self, size):
         size = int(size)
-        assert(1 <= size <= 100000)
+        assert(1 <= size <= 1e5)
         self._random_Lx = self._urandom(self._Lx, size=size)
         self._random_Ly = self._urandom(self._Ly, size=size)
         self._random_z = self._urandom(self._z, size=size)
@@ -42,42 +42,45 @@ class Scint(object):
         self._random_y = self._urandom(self._y, size=size)
         self._random_alpha = self._urandom(self._alpha, size=size)
         self._random_beta = self._urandom(self._beta, size=size)
-        self._random_index = 0
     
     def _compute_geometry(self, randomize=False):
-        if randomize == 'last':
-            return
-        elif randomize == 'next':
-            Lx    = self._random_Lx[self._random_index]
-            Ly    = self._random_Ly[self._random_index]
-            z     = self._random_z[self._random_index]
-            x     = self._random_x[self._random_index]
-            y     = self._random_y[self._random_index]
-            alpha = self._random_alpha[self._random_index]
-            beta  = self._random_beta[self._random_index]
-            self._random_index += 1
-            self._random_index %= len(self._random_Lx)
-        elif randomize:
-            Lx = self._urandom(self._Lx)
-            Ly = self._urandom(self._Ly)
-            z = self._urandom(self._z)
-            x = self._urandom(self._x)
-            y = self._urandom(self._y)
-            alpha = self._urandom(self._alpha)
-            beta = self._urandom(self._beta)
+        if randomize:
+            Lx    = self._random_Lx
+            Ly    = self._random_Ly
+            z     = self._random_z
+            x     = self._random_x
+            y     = self._random_y
+            alpha = self._random_alpha
+            beta  = self._random_beta
         else:
-            Lx = self._Lx.n
-            Ly = self._Ly.n
-            z = self._z.n
-            x = self._x.n
-            y = self._y.n
-            alpha = self._alpha.n
-            beta = self._beta.n
-            
-        self._Vx = np.array([np.cos(alpha), 0, np.sin(alpha)])
-        self._Vy = np.array([np.sin(alpha) * np.sin(beta), np.cos(beta), -np.cos(alpha) * np.sin(beta)])
-        self._P = np.array([x, y - self._Vy[1] * Ly, -z - Lx/2 * self._Vx[2]])
-        self._size = (Lx, Ly)
+            Lx    = np.array([self._Lx.n   ])
+            Ly    = np.array([self._Ly.n   ])
+            z     = np.array([self._z.n    ])
+            x     = np.array([self._x.n    ])
+            y     = np.array([self._y.n    ])
+            alpha = np.array([self._alpha.n])
+            beta  = np.array([self._beta.n ])
+        
+        sa = np.sin(alpha)
+        ca = np.cos(alpha)
+        sb = np.sin(beta)
+        cb = np.cos(beta)
+        
+        self._Vx, self._Vy, self._P = np.empty((3, 3, len(Lx)))
+        
+        self._Vx[0] = ca
+        self._Vx[1] = 0
+        self._Vx[2] = sa
+        
+        self._Vy[0] = sa * sb
+        self._Vy[1] = cb
+        self._Vy[2] = -ca * sb
+        
+        self._P[0] = x
+        self._P[1] = y - self._Vy[1] * Ly
+        self._P[2] = -z - Lx/2 * self._Vx[2]
+        
+        self._size = np.array([Lx, Ly])
             
     def _compute_efficiency(self, randomize=False):
         if randomize:
@@ -112,6 +115,8 @@ class Scint(object):
         # stub implementation
         return v[2]
     
+    # axis order:
+    # 0 xyz, 1 mc, 2 geom
     def within(self, v, p, randgeom=False, randeff=False, cachegeom=False, angle=False):
         self._compute_geometry(randomize=randgeom)
         
@@ -120,23 +125,23 @@ class Scint(object):
         elif not hasattr(Scint, '_ftx'):
             Scint._ftx, Scint._fty = self._make_sympy_solver()
         
-        args = tuple(v.reshape(3,-1))
+        args = tuple(v.reshape(3,-1,1))
         if not randgeom and hasattr(self, '_cache_ftx'):
             ftx = self._cache_ftx
             fty = self._cache_fty
         else:
             ftx = Scint._ftx
             fty = Scint._fty
-            args += tuple(self._Vx.reshape(-1,1))
-            args += tuple(self._Vy.reshape(-1,1))
-        args += tuple(self._P.reshape(-1,1) - p.reshape(3,-1))
+            args += tuple(self._Vx.reshape(3,1,-1))
+            args += tuple(self._Vy.reshape(3,1,-1))
+        args += tuple(self._P.reshape(3,1,-1) - p)
         
         tx = ftx(*args)
         ty = fty(*args)
         
         efficiency = self._compute_efficiency(randomize=randeff)
         
-        rt = (np.logical_and(np.logical_and(0 <= tx, tx <= self._size[0]), np.logical_and(0 <= ty, ty <= self._size[1])), efficiency)
+        rt = (np.logical_and(np.logical_and(0 <= tx, tx <= self._size[0].reshape(1,-1)), np.logical_and(0 <= ty, ty <= self._size[1].reshape(1,-1))), efficiency)
         if angle:
             rt += (self._angle(v),)
         return rt
@@ -148,7 +153,7 @@ class Scint(object):
         
         self._compute_geometry(randomize=randgeom)
         
-        p = self._P.reshape(-1,1) + self._Vx.reshape(-1,1) * tx.reshape(1,-1) * self._size[0] + self._Vy.reshape(-1,1) * ty.reshape(1,-1) * self._size[1]
+        p = self._P.reshape(3,1,-1) + self._Vx.reshape(3,1,-1) * tx.reshape(1,-1,1) * self._size[0].reshape(1,1,-1) + self._Vy.reshape(3,1,-1) * ty.reshape(1,-1,1) * self._size[1].reshape(1,1,-1)
         
         horizontal_area = self._size[0] * np.sqrt(1 - self._Vx[2]**2) * self._size[1] * np.sqrt(1 - self._Vy[2]**2)
         
@@ -324,8 +329,7 @@ class MC(object):
             If True, extract at random the geometrical properties of the scints
             before doing all the computation. The distribution used is gaussian
             with standard deviation as given into the Scints objects. If False
-            (default), use nominal values. If 'last', use values from last time
-            (if they were random, they are not sampled again).
+            (default), use nominal values.
         randeff : boolean, default to False
             The same for the efficiency of the Scints.
         """
@@ -355,10 +359,11 @@ class MC(object):
             self._efficiencies.append(e)
         
         self._N = len(self._costheta)
+        self._geom0d = not kw.get('randgeom', False)
     
     @property
     def pivot_horizontal_area(self):
-        return self._horizontal_area
+        return self._horizontal_area[0] if self._geom0d else self._horizontal_area
     
     @property
     def number_of_rays(self):
@@ -427,11 +432,15 @@ class MC(object):
         """
         withins, d1 = self._compute_withins(*exprs)
         
-        counts = np.sum(withins, axis=1)
-        counts_cov = np.atleast_2d(np.cov(withins, ddof=1)) * len(withins[0])
-        
-        rt = np.array(un.correlated_values(counts, counts_cov, tags=tags))
-        return rt if d1 else rt[0]
+        if self._geom0d:
+            withins = withins[:,:,0] # eliminate geometry samples axis
+            counts = np.sum(withins, axis=1)
+            counts_cov = np.atleast_2d(np.cov(withins, ddof=1)) * withins.shape[1]
+            ucounts = np.array(un.correlated_values(counts, counts_cov, tags=tags))
+            return ucounts if d1 else ucounts[0]
+        else:
+            counts = np.sum(withins, axis=1)
+            return counts if d1 else counts[0]
     
     def _compute_withins(self, *exprs):
         exprs = list(exprs)
@@ -459,7 +468,7 @@ class MC(object):
             expr.pop(self._pivot)
             exprs[i] = expr
                 
-        withins = np.ones((len(exprs), self._N)) * self._pivot_eff
+        withins = np.ones((len(exprs),) + self._withins[0].shape) * self._pivot_eff
         for j in range(len(exprs)):
             expr = exprs[j]
             for i in range(len(self._withins)):
@@ -499,7 +508,7 @@ class MC(object):
         storing correlations in the results.
         """
         count = self.count(*exprs)
-        return self._N / count / self._horizontal_area
+        return self.number_of_rays / (count * ha)
     
     def long_run(self, *expr, **kw):
         import lab
@@ -519,7 +528,13 @@ class MC(object):
             s += n
             eta.etaprint(s / N)
         
-        return N / count / self._horizontal_area
+        if self._geom0d:
+            ha = self._horizontal_area[0]
+        elif len(count.shape) == 2:
+            ha = self._horizontal_area.reshape(1,-1)
+        else:
+            ha = self._horizontal_area
+        return N / (count * ha)
 
 def pmt(idx, efficiency=1.0):
     """
@@ -575,10 +590,3 @@ def pmt(idx, efficiency=1.0):
     i = 6 - idx
     
     return Scint(long_side_length=long_side_lengths[i], short_side_length=short_side_lengths[i], long_side_inclination=long_side_inclinations[i], short_side_inclination=short_side_inclinations[i], long_side_offset=long_side_offsets[i], short_side_offset=short_side_offsets[i], center_depth=center_depths[i], efficiency=efficiency)
-
-if __name__ == '__main__':
-    mc = MC(*[pmt(i) for i in range(6, 0, -1)])
-    mc.random_ray()
-    mc.run()
-    
-    print(mc.count())

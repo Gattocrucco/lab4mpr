@@ -8,6 +8,26 @@ from scipy import optimize, linalg
 import time
 from matplotlib import pyplot as plt
 
+####### diagnostics #######
+
+def errorsummary(x):
+    comps = x.error_components()
+    
+    tags = set(map(lambda v: v.tag, comps.keys()))
+    var = dict(zip(tags, [0] * len(tags)))
+    
+    for (v, sd) in comps.items():
+        var[v.tag] += sd ** 2
+    
+    tags = list(tags)
+    sds = np.sqrt(np.array([var[tag] for tag in tags]))
+    idx = np.argsort(sds)[::-1]
+    d = OrderedDict()
+    for i in idx:
+        d[tags[i]] = sds[i]
+    
+    return d
+
 ####### load data #######
 
 def loadtxtlbs(filename, labels, prefit=True):
@@ -66,9 +86,8 @@ mcobj = mc.MC(*[mc.pmt(i+1) for i in range(6)])
 mcobj.random_samples(N=100000)
 
 mcgeom = mc.MC(*[mc.pmt(i+1) for i in range(6)])
-mcgeom.random_samples(N=500)
-Ngeom = 100
-mcgeom.sample_geometry(Ngeom)
+mcgeom.random_samples(N=316)
+mcgeom.sample_geometry(316)
 
 # create list of expressions to compute
 mclist = []
@@ -149,17 +168,14 @@ def f_fit(distr_par):
             mcexprs[expr[i]] = counts[i] / mcobj.number_of_rays * mcobj.pivot_horizontal_area
 
     # compute geometrical uncertainty
-    mcsegeom = dict()
-    for expr in mcexprs.keys():
-        mcsegeom[expr] = np.empty(Ngeom)
     # compute acceptances for each geometry sample
-    for j in range(Ngeom):
-        for pivot in exprs.keys():
-            mcgeom.run(pivot_scint=pivot, randgeom='next')
-            counts = mcgeom.count(*cexprs[pivot])
-            expr = exprs[pivot]
-            for i in range(len(expr)):
-                mcsegeom[expr[i]][j] = counts[i].n / mcgeom.number_of_rays * mcgeom.pivot_horizontal_area
+    mcsegeom = dict()
+    for pivot in exprs.keys():
+        mcgeom.run(pivot_scint=pivot, randgeom=True)
+        counts = mcgeom.count(*cexprs[pivot])
+        expr = exprs[pivot]
+        for i in range(len(expr)):
+            mcsegeom[expr[i]] = counts[i] / mcgeom.number_of_rays * mcgeom.pivot_horizontal_area
     # compute covariance matrix
     mcsegeom_keys = list(mcsegeom.keys())
     mcsegeom_array = np.array([mcsegeom[key] for key in mcsegeom_keys])
@@ -318,7 +334,7 @@ plt.ion()
 fig = plt.figure('Simplex')
 fig.clf()
 ax = fig.add_subplot(111)
-line, = ax.plot([p0[0]], [p0[1]], 'xr')
+line, = ax.plot([p0[0]], [p0[1]], '-xr')
 fig.show()
 pars = []
 for p in p0:
@@ -365,24 +381,5 @@ def squares(parameters):
 # bounds = [(100, 400), (1, 10)] + [(0, 1)] * len(dataeff['clock'])
 # scale = [10, 1] + [0.03] * len(dataeff['clock'])
 # result = optimize.least_squares(squares, p0, diff_step=1e-5, verbose=2)
-out = optimize.minimize(squares, p0, method='Nelder-Mead', options=dict(disp=True, xatol=1e-4, fatol=1e-3, initial_simplex=simplex))
+# out = optimize.minimize(squares, p0, method='Nelder-Mead', options=dict(disp=True, xatol=1e-4, fatol=1e-3))
 
-####### diagnostics #######
-
-def errorsummary(x):
-    comps = x.error_components()
-    
-    tags = set(map(lambda v: v.tag, comps.keys()))
-    var = dict(zip(tags, [0] * len(tags)))
-    
-    for (v, sd) in comps.items():
-        var[v.tag] += sd ** 2
-    
-    tags = list(tags)
-    sds = np.sqrt(np.array([var[tag] for tag in tags]))
-    idx = np.argsort(sds)[::-1]
-    d = OrderedDict()
-    for i in idx:
-        d[tags[i]] = sds[i]
-    
-    return d
