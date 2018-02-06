@@ -7,8 +7,9 @@ from collections import OrderedDict
 from scipy import optimize, linalg
 import time
 from matplotlib import pyplot as plt
+import sys
 
-####### diagnostics #######
+####### things #######
 
 def errorsummary(x):
     comps = x.error_components()
@@ -27,6 +28,11 @@ def errorsummary(x):
         d[tags[i]] = sds[i]
     
     return d
+
+def clear_lines(nlines, nrows):
+    for i in range(nlines):
+        sys.stdout.write('\033[F\r%s\r' % (" " * nrows,))
+    sys.stdout.flush()
 
 ####### load data #######
 
@@ -149,11 +155,10 @@ while len(mclist) > 0:
 
 ####### fit function #######
 
-def f_fit(distr_par):
+def f_fit(distr_par, options={}):
     # compute rays
     distr = lambda x: x ** (1 / (1 + distr_par)) # vedi logbook:fit
     mcobj.ray(distr)
-    mcgeom.ray(distr)
 
     # compute acceptances
     mcexprs = dict()
@@ -168,25 +173,31 @@ def f_fit(distr_par):
             mcexprs[expr[i]] = counts[i] / mcobj.number_of_rays * mcobj.pivot_horizontal_area
 
     # compute geometrical uncertainty
-    # compute acceptances for each geometry sample
-    mcsegeom = dict()
-    for pivot in exprs.keys():
-        mcgeom.run(pivot_scint=pivot, randgeom=True)
-        counts = mcgeom.count(*cexprs[pivot])
-        expr = exprs[pivot]
-        for i in range(len(expr)):
-            mcsegeom[expr[i]] = counts[i] / mcgeom.number_of_rays * mcgeom.pivot_horizontal_area
-    # compute covariance matrix
-    mcsegeom_keys = list(mcsegeom.keys())
-    mcsegeom_array = np.array([mcsegeom[key] for key in mcsegeom_keys])
-    mcsegeom_cov = np.cov(mcsegeom_array)
-    assert(len(mcsegeom_cov) == len(mcsegeom_keys))
-    # make unitary multiplicative factors containing the geometrical uncertainty
-    vals = np.array([mcexprs[key] for key in mcsegeom_keys])
-    nom_values = unp.nominal_values(vals)
-    geom_factors = np.array(un.correlated_values(nom_values / nom_values, mcsegeom_cov / np.outer(nom_values, nom_values), tags=['geom'] * len(nom_values)))
-    for i in range(len(mcsegeom_keys)):
-        mcexprs[mcsegeom_keys[i]] *= geom_factors[i]
+    geometry_factors = options.get('geometry_factors', {})
+    if len(geometry_factors) == 0:
+        mcgeom.ray(distr)
+        # compute acceptances for each geometry sample
+        mcsegeom = dict()
+        for pivot in exprs.keys():
+            mcgeom.run(pivot_scint=pivot, randgeom=True)
+            counts = mcgeom.count(*cexprs[pivot])
+            expr = exprs[pivot]
+            for i in range(len(expr)):
+                mcsegeom[expr[i]] = counts[i] / mcgeom.number_of_rays * mcgeom.pivot_horizontal_area
+        # compute covariance matrix
+        mcsegeom_keys = list(mcsegeom.keys())
+        mcsegeom_array = np.array([mcsegeom[key] for key in mcsegeom_keys])
+        mcsegeom_cov = np.cov(mcsegeom_array)
+        assert(len(mcsegeom_cov) == len(mcsegeom_keys))
+        # make unitary multiplicative factors containing the geometrical uncertainty
+        vals = np.array([mcexprs[key] for key in mcsegeom_keys])
+        nom_values = unp.nominal_values(vals)
+        geom_factors = np.array(un.correlated_values(nom_values / nom_values, mcsegeom_cov / np.outer(nom_values, nom_values), tags=['geom'] * len(nom_values)))
+        for i in range(len(mcsegeom_keys)):
+            geometry_factors[mcsegeom_keys[i]] = geom_factors[i]
+        options['geometry_factors'] = geometry_factors
+    for key in geometry_factors.keys():
+        mcexprs[key] *= geometry_factors[key]
 
     # process data2
     fluxes2 = []
@@ -280,7 +291,6 @@ def f_fit(distr_par):
         flux = rateABC / (mcABC * effA * effB * effC)
         fluxes3.append(flux)
 
-    dataefflbs = ['clock', 'a&b', 'a&b&A', 'b&c', 'b&c&A', 'b&d', 'b&d&A', 'PMTA', 'PMTa', 'PMTb', 'PMTc', 'PMTd', 'prefit']
     # process dataeff
     efficiencies = []
     for i in range(len(dataeff['clock'])):
@@ -324,28 +334,36 @@ def f_fit(distr_par):
 
 ####### minimize #######
 
-p0 = [250, 5] + [0.90] * len(dataeff['clock'])
-simplex = np.array([
-    [p0[0]]
-])
-calls = 0
-start = time.time()
+# p0 +/- dp0
+up0 = [
+    (2, 0.3), # total flux divided by 100
+    (3.5, 1.5)
+] + [(0.9, 0.1)] * len(dataeff['clock'])
+p0 = [u[0] for u in up0]
+simplex = [[u[0] - u[1] for u in up0]]
+for i in range(len(up0)):
+    simplex_element = [u[0] + u[1] for u in up0]
+    simplex_element[i] = up0[i][0] - up0[i][1]
+    simplex.append(simplex_element)
+
 plt.ion()
 fig = plt.figure('Simplex')
 fig.clf()
 ax = fig.add_subplot(111)
-line, = ax.plot([p0[0]], [p0[1]], '-xr')
+line, = ax.plot([p0[0]], [p0[1]], 'x', markersize=3)
+lastline, = ax.plot([p0[0]], [p0[1]], 'kx', markersize=8)
+a = [s[0] for s in simplex]
+ax.set_xlim(min(a), max(a))
+a = [s[1] for s in simplex]
+ax.set_ylim(min(a), max(a))
 fig.show()
-pars = []
-for p in p0:
-    pars.append([])
-Qs = []
-def squares(parameters):
-    total_flux = parameters[0]
+
+def squares(parameters, args={}):
+    total_flux = parameters[0] * 100
     distr_par = parameters[1]
     efficiencies = parameters[2:]
 
-    fluxes, effs = f_fit(distr_par)
+    fluxes, effs = f_fit(distr_par, args)
 
     vect = [flux - total_flux for flux in fluxes]
     for i in range(len(efficiencies)):
@@ -360,25 +378,78 @@ def squares(parameters):
     inverse = np.linalg.inv(vect_cov)
     Q = np.dot(vect_nom, np.dot(inverse, vect_nom))
     
-    global calls
-    calls += 1
-    et = time.time() - start
-    print('------------------------------')
-    print('squares: evaluation %d, elapsed time: %s' % (calls, '%.1f min' % (et / 60) if et >= 100 else '%.1f s' % et))
-    print('parameters: %s' % (' '.join(['%.3f' % par for par in parameters])))
-    print('sum of squares: %.3f' % Q)
+    # save parameters, number of calls, value of function
+    trace = args['trace']
+    if not ('calls' in trace):
+        trace['calls'] = 0
+        trace['start'] = time.time()
+        trace['pars'] = []
+        for p in parameters:
+            trace['pars'].append([])
+        trace['Qs'] = []
+    trace['calls'] += 1
+    pars = trace['pars']
     for i in range(len(pars)):
         pars[i].append(parameters[i])
-    Qs.append(Q)
-    line.set_xdata(pars[0])
-    line.set_ydata(pars[1])
-    fig.canvas.draw()
-    plt.pause(1e-17)
-    time.sleep(0.05)
-        
+    trace['Qs'].append(Q)
+    
+    # log to the console
+    if args.get('log', False):
+        et = time.time() - trace['start']
+        if trace['calls'] > 1:
+            clear_lines(3, 70)
+        print('squares: evaluation %d, elapsed time: %s' % (trace['calls'], '%.1f min' % (et / 60) if et >= 100 else '%.1f s' % et))
+        print('parameters: %s' % (' '.join(['%.4f' % par for par in parameters])))
+        print('sum of squares: %.4f' % Q)
+    
+    # plot flux, distr_par
+    if args.get('plot', False):
+        args['plotline'].set_xdata(pars[0])
+        args['plotline'].set_ydata(pars[1])
+        lastline.set_xdata(pars[0][-1:])
+        lastline.set_ydata(pars[1][-1:])
+        fig.canvas.draw()
+        plt.pause(1e-17)
+    
     return Q
 
-# bounds = [(100, 400), (1, 10)] + [(0, 1)] * len(dataeff['clock'])
-# scale = [10, 1] + [0.03] * len(dataeff['clock'])
+def curvature(trace, n=None, **kw):
+    m = len(trace['pars'])
+    if n is None:
+        n = int((m * (m + 1) / 2) * 2)
+    idxs = np.triu_indices(m)
+    x = np.array(trace['pars'])[:,-n:]
+    y = np.array(trace['Qs'])[-n:]
+    x0 = x[:,-1:]
+    v = x - x0
+    vv = np.outer(v, v)[idxs]
+    H = 1/2 * np.einsum('', v, v)
+    # def f(xs, *p):
+    #     V[idxs] = p
+    #     V.T[idxs] = p
+    #     Vinv = np.linalg.inv(V)
+    #     return 1/2 * np.einsum('ij,ik,kj->j', v, Vinv, v)
+    # p0 = np.diag([0.1, 0.2] + [0.05] * (m-2))[idxs]**2
+    # par, cov = optimize.curve_fit(f, x, y, p0=p0, **kw)
+    # return par, cov
+
 # result = optimize.least_squares(squares, p0, diff_step=1e-5, verbose=2)
-# out = optimize.minimize(squares, p0, method='Nelder-Mead', options=dict(disp=True, xatol=1e-4, fatol=1e-3))
+fit_options = dict(disp=True, xatol=1e-4, fatol=1e-3, initial_simplex=simplex)
+
+# compute geometry once with initial parameters
+args = dict(log=True, plot=True, plotline=line, trace={})
+f_fit(p0[1], args)
+
+out1 = optimize.minimize(squares, p0, args=(args,), method='Nelder-Mead', options=fit_options)
+trace1 = args['trace']
+
+# compute geometry again with fit result
+args.pop('geometry_factors')
+f_fit(out1.x[1], args)
+
+line, = ax.plot([p0[0]], [p0[1]], 'x', markersize=2)
+args['plotline'] = line
+args['trace'] = {}
+
+out2 = optimize.minimize(squares, p0, args=(args,), method='Nelder-Mead', options=fit_options)
+trace2 = args['trace']
