@@ -4,7 +4,7 @@ import uncertainties as un
 from uncertainties import unumpy as unp
 import copy
 from collections import OrderedDict
-from scipy import optimize, linalg
+from scipy import optimize, linalg, interpolate
 import time
 from matplotlib import pyplot as plt
 import sys
@@ -413,27 +413,95 @@ def squares(parameters, args={}):
     
     return Q
 
-def curvature(trace, n=None, **kw):
-    m = len(trace['pars'])
-    if n is None:
-        n = int((m * (m + 1) / 2) * 2)
-    idxs = np.triu_indices(m)
-    x = np.array(trace['pars'])[:,-n:]
-    y = np.array(trace['Qs'])[-n:]
-    x0 = x[:,-1:]
-    v = x - x0
-    vv = np.outer(v, v)[idxs]
-    H = 1/2 * np.einsum('', v, v)
-    # def f(xs, *p):
-    #     V[idxs] = p
-    #     V.T[idxs] = p
-    #     Vinv = np.linalg.inv(V)
-    #     return 1/2 * np.einsum('ij,ik,kj->j', v, Vinv, v)
-    # p0 = np.diag([0.1, 0.2] + [0.05] * (m-2))[idxs]**2
-    # par, cov = optimize.curve_fit(f, x, y, p0=p0, **kw)
-    # return par, cov
+# def curvature(trace, n=None, **kw):
+#     m = len(trace['pars'])
+#     if n is None:
+#         n = int((m * (m + 1) / 2) * 2)
+#     idxs = np.triu_indices(m)
+#     x = np.array(trace['pars'])[:,-n:]
+#     y = np.array(trace['Qs'])[-n:]
+#     x0 = x[:,-1:]
+#     Q0 = y[-1]
+#     v = x - x0
+#     V = np.empty((m, m))
+#     def f(xs, *p):
+#         V[idxs] = p
+#         V.T[idxs] = p
+#         Vinv = np.linalg.inv(V)
+#         return 1/2 * np.einsum('ij,ik,kj->j', v, Vinv, v) + Q0
+#     p0 = np.diag([0.01, 0.1] + [0.01] * (m-2))[idxs]**2
+#     par, cov = optimize.curve_fit(f, x, y, p0=p0, **kw)
+#     return par, cov
+#     H = 1/2 * np.einsum('ik,jk->ijk', v, v)[idxs]
+#     Vinv = np.einsum('ik,jk->ij', H, H)
+#     V = np.linalg.inv(Vinv)
+#     p = np.einsum('ij,jk,k->i', V, H, y)
+#
+#     covinv = np.empty((m, m))
+#     covinv[idxs] = p
+#     covinv.T[idxs] = p
+#
+#     return covinv
 
-# result = optimize.least_squares(squares, p0, diff_step=1e-5, verbose=2)
+def plot_curvature(x0, ix, sx, n=10):
+    ixs = np.linspace(x0[ix] - sx, x0[ix] + sx, n)
+    args = dict(log=True, plot=False, trace={})
+    x0 = np.copy(x0)
+    squares(x0, args)
+    for x in ixs:
+        x0[ix] = x
+        squares(x0, args)
+    
+    # plot
+    trace = args['trace']
+    x = np.array(trace['pars'][ix])
+    y = np.array(trace['Qs'])
+    fig = plt.figure('curvature')
+    fig.clf()
+    ax = fig.add_subplot(111)
+    ax.plot(np.sort(x), y[np.argsort(x)], '-k.')
+    fig.show()
+
+def covariance(p0, dps, ips=[0,1], n=10):
+    # compute geometrical uncertainty at p0
+    args = dict(log=True, trace={})
+    squares(p0, args)
+    Q0 = args['trace']['Qs'][-1]
+    
+    # fit function
+    def parabola(x, sigma, x0, y0):
+        return 1/2 * (x - x0)**2 / sigma**2 + y0
+    
+    # compute variances
+    sigmas = []
+    for i in ips:
+        # compute n points inside p0 +/- dps and find +3 chi^2 limits
+        ps = np.linspace(p0[i] - dps[i], p0[i] + dps[i], n)
+        vp = np.copy(p0)
+        for p in ps:
+            vp[i] = p
+            squares(vp, args)
+        x = np.concatenate((args['trace']['pars'][i][-n:], [p0[i]]))
+        y = np.concatenate((args['trace']['Qs'][-n:], [Q0]))
+        s = np.argsort(x)
+        x = x[s]
+        y = y[s]
+        f = interpolate.interp1d(x, y)
+        L = optimize.bisect(lambda x: f(x) - (Q0 + 3), x[0], p0[i])
+        R = optimize.bisect(lambda x: f(x) - (Q0 + 3), p0[i], x[-1])
+        
+        # compute n points inside +3 chi^2 limits and fit parabola
+        ps = np.linspace(L, R, n)
+        for p in ps:
+            vp[i] = p
+            squares(vp, args)
+        x = np.array(args['trace']['pars'][i][-n:])
+        y = np.array(args['trace']['Qs'][-n:])
+        par, cov = optimize.curve_fit(parabola, x, y, p0=((R-L)/6, p0[i], Q0))
+        sigmas.append(un.ufloat(par[0], np.sqrt(cov[0,0]), tag='sigma_p%d' % i))
+    
+    return sigmas
+
 fit_options = dict(disp=True, xatol=1e-4, fatol=1e-3, initial_simplex=simplex)
 
 # compute geometry once with initial parameters
