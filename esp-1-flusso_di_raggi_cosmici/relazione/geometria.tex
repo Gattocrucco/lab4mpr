@@ -13,7 +13,7 @@
 
 Esponiamo la modellizzazione geometrica dell'apparato ai fini di calcoli e simulazioni
 (vedi \autoref{fig:geometriadef}).
-Consideriamo ogni lastra di scintillatore come un parallelepipedo.
+Consideriamo ogni lastra di scintillatore come un parallepipedo.
 Teniamo conto dei \emph{disallineamenti} cioè della posizione arbitraria nello spazio delle lastre,
 supponendo però che sia poco diversa da quella ideale di lastre orizzontali, rettangolari e allineate verticalmente.
 Chiamiamo $x$ la direzione orizzontale parallela ai tubi fotomoltiplicatori,
@@ -38,18 +38,20 @@ La superficie superiore della lastra è un parallelogramma descritto parametrica
 Quello che dobbiamo calcolare sono accettanze geometriche
 e fattori di conversione da rate a rate per unità di area orizzontale.
 Implementiamo il calcolo con un integrale Monte Carlo.
+Per questo calcolo trascuriamo lo spessore delle lastre.
 
 \paragraph{Raggi}
 
 Estraiamo dei \emph{raggi} casuali.
 Un raggio è definito dalle variabili aleatorie:
-\begin{equation*}
+\begin{equation}
+	\label{eq:raggio}
 	\begin{array}{ll}
 		t_x, t_y & \text{uniformi in $(0,1)$}, \\
 		\phi     & \text{uniforme in $(0,2\pi)$}, \\
 		u        & \text{distribuzione non fissata in $(0,1)$}.
 	\end{array}
-\end{equation*}
+\end{equation}
 Scegliamo una certa lastra che chiamiamo \emph{pivot}.
 Da un raggio otteniamo una retta nello spazio parametrizzata come
 \begin{align*}
@@ -62,8 +64,7 @@ e $\vec r_\text{pivot}$ è la parametrizzazione del pivot secondo la \eqref{eq:l
 
 \paragraph{Accettanza}
 
-Un'\emph{accettanza geometrica} è la probabilità
-che un raggio che passa per il pivot
+Un'\emph{accettanza} è la probabilità che un raggio
 faccia scattare alcune lastre (lastre in \emph{coincidenza})
 e non altre (lastre in \emph{anticoincidenza}).
 Richiediamo che il pivot sia sempre in coincidenza.
@@ -78,38 +79,72 @@ Sia
 		0 & \text{se non passa.}
 	\end{cases}
 \end{equation*}
-Allora l'espressione che converge in probabilità all'accettanza geometrica è
+Allora l'espressione che converge in probabilità all'accettanza è
 \begin{align}
 	\label{eq:accettanza}
-	Q &:= \frac1N \sum_i q_i, \\
+	\hat Q &:= \frac1N \sum_i q_i, \\
 	\text{dove}\quad q_i &:= 
 	\left( \prod_\text{$L$ in coinc.} w_i(L) \epsilon(L) \right)
 	\cdot \left( \prod_\text{$L$ in anticoinc.} \big(1 - w_i(L) \epsilon(L)\big) \right). \notag
 \end{align}
 
-\paragraph{Area orizzontale}
+\paragraph{Flusso totale}
 
+Consideriamo una distribuzione non normalizzata di raggi su tutto il \emph{piano orizzontale} $(x,y)$,
+cioè sostituiamo le variabili $t_x$, $t_y$ della \eqref{eq:raggio} con $x$, $y$.
+Sia il \emph{flusso totale $\Phi$} la densità di raggi per unità di area orizzontale,
+cioè integriamo le variabili $\phi$ e $u$.
 Chiamiamo \emph{espressione logica} una specificazione di quali lastre sono in (anti)coincidenza.
-Per convertire il rate di una certa espressione logica in un rate per unità di area orizzontale,
-dobbiamo tener conto del fattore di conversione (il jacobiano)
-dalla distribuzione con cui abbiamo estratto i raggi a una distribuzione uniforme sul piano $(x,y)$,
-e della misura della parte di spazio in cui abbiamo estratto i raggi,
-quindi alla fine il fattore di conversione è l'area orizzontale del pivot,
-ovvero
+Poiché abbiamo richiesto che il pivot sia in coincidenza,
+usare la distribuzione dei raggi su tutto il piano orizzontale è equivalente
+a usare la distribuzione solo sulla superficie del pivot.
+Per passare da una distribuzione all'altra,
+il jacobiano non è altro che la proiezione sul piano orizzontale dell'area del pivot
 \begin{equation*}
 	A_\text{hor} = L_x \sqrt{1-(\hat V_x\hat z)^2} \cdot L_y \sqrt{1-(\hat V_y\hat z)^2},
 \end{equation*}
 dove i simboli hanno lo stesso significato che nella \eqref{eq:lastra}
 e sono riferiti al pivot.
-Detto $R$ il rate, il rate per unità di area orizzontale è dato da $R/A_\text{hor}$.
-\marginpar{Questo <<rate dell'espressione per unità di area>> non è ben definito,
-bisogna tirare subito in ballo il flusso totale.}
+Sia il \emph{rate $R$} di un'espressione logica l'analogo dell'accettanza
+ma con la distribuzione di raggi non normalizzata sul piano orizzontale\footnote{Non abbiamo inserito il tempo che non è rilevante per tutta questa discussione.}.
+Dalle definizioni segue che
+\begin{equation}
+	\label{eq:rate}
+	R = \Phi \cdot Q \cdot A_\text{hor},
+\end{equation}
+dove $Q$ è l'accettanza.
+
+\paragraph{Efficienza}
+
+Consideriamo due espressioni logiche, $A$ e $B$, senza lastre in anticoincidenza.
+In questo caso le efficienze delle lastre si fattorizzano e l'accettanza si può scrivere come
+\begin{equation*}
+	Q = \left( \prod_L \epsilon(L) \right) \bar Q,
+\end{equation*}
+dove $\bar Q$ la chiamiamo \emph{accettanza geometrica}
+e dipende solo dalle caratteristiche geometriche delle lastre.
+Poniamo che l'espressione $B$ abbia le lastre dell'espressione $A$ più un'altra lastra che chiamiamo $0$.
+Allora il rapporto delle accettanze è l'efficienza della lastra $0$ per una quantità che dipende solo dalla geometria:
+\begin{equation*}
+	\frac{Q_B}{Q_A} = \frac
+	{\left( \epsilon_0 \cdot \prod_{L\neq 0} \epsilon(L) \right) \bar Q_B}
+	{\left( \prod_{L\neq 0} \epsilon(L) \right) \bar Q_A}
+	= \epsilon_0 \frac{\bar Q_B}{\bar Q_A}.
+\end{equation*}
+Invertendo la \eqref{eq:rate}, lo stesso rapporto vale anche
+\begin{equation*}
+	\frac{Q_B}{Q_A} = \frac{R_B}{R_A} \frac{A_{\text{hor},A}}{A_{\text{hor},B}},
+\end{equation*}
+da cui infine
+\begin{equation*}
+	\epsilon_0 = \frac{R_B}{R_A} \cdot \frac{\bar Q_A A_{\text{hor},A}}{\bar Q_B A_{\text{hor},B}}.
+\end{equation*}
 
 \paragraph{Incertezza}
 
-Notiamo che la $Q$ (equazione \ref{eq:accettanza}) è una media aritmetica,
+Notiamo che la $\hat Q$ (equazione \ref{eq:accettanza}) è una media aritmetica,
 quindi una buona stima della sua varianza $\sigma_Q^2$ si ottiene con la varianza campione
 \begin{equation*}
 	\hat\sigma_Q^2
-	= \frac1{N(N-1)} \sum_i (q_i - Q)^2.
+	= \frac1{N(N-1)} \sum_i (q_i - \hat Q)^2.
 \end{equation*}
