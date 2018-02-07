@@ -2,11 +2,13 @@ import numpy as np
 import montecarlo as mc
 import uncertainties as un
 from uncertainties import unumpy as unp
+from uncertainties import umath
 import copy
 from collections import OrderedDict
 from scipy import optimize, linalg, interpolate
 import time
 from matplotlib import pyplot as plt
+from matplotlib import gridspec
 import sys
 
 ####### things #######
@@ -362,7 +364,8 @@ def squares(parameters, args={}):
     total_flux = parameters[0] * 100
     distr_par = parameters[1]
     efficiencies = parameters[2:]
-
+    
+    # note: memoizing on distr_par would have very little effect
     fluxes, effs = f_fit(distr_par, args)
 
     vect = [flux - total_flux for flux in fluxes]
@@ -375,8 +378,8 @@ def squares(parameters, args={}):
     # orth_vect = transf.T.dot(vect_nom)
     # res = orth_vect / np.sqrt(eigenvalues)
     
-    inverse = np.linalg.inv(vect_cov)
-    Q = np.dot(vect_nom, np.dot(inverse, vect_nom))
+    cov_inv = np.linalg.inv(vect_cov)
+    Q = np.dot(vect_nom, np.dot(cov_inv, vect_nom))
     
     # save parameters, number of calls, value of function
     trace = args['trace']
@@ -443,9 +446,9 @@ def squares(parameters, args={}):
 #
 #     return covinv
 
-def plot_curvature(x0, ix, sx, n=10):
+def plot_curvature(x0, ix, sx, n=10, geom={}):
     ixs = np.linspace(x0[ix] - sx, x0[ix] + sx, n)
-    args = dict(log=True, plot=False, trace={})
+    args = dict(log=True, plot=False, trace={}, geometry_factors=geom)
     x0 = np.copy(x0)
     squares(x0, args)
     for x in ixs:
@@ -462,27 +465,50 @@ def plot_curvature(x0, ix, sx, n=10):
     ax.plot(np.sort(x), y[np.argsort(x)], '-k.')
     fig.show()
 
-def covariance(p0, dps, ips=[0,1], n=10):
-    # compute geometrical uncertainty at p0
-    args = dict(log=True, trace={})
+def curvature(p0, dps, n='auto', geom={}, fig=None):
+    """
+    Parameters
+    ----------
+    p0: minimum
+    dps: starting point to compute covariance is a box p0 +/- dps
+    n: 'auto', or number of points used to compute a coefficient of the covariance matrix
+    geom: empty dictionary, or geometry factors as computed by f_fit
+    fig: None, or figure where fits used to compute the matrix are plotted
+    
+    Returns
+    -------
+    Curvature matrix (the inverse of the covariance) with uncertainties
+    """
+    # compute at p0 (eventually computing geometry uncertainty)
+    args = dict(log=True, trace={}, geometry_factors=geom)
     squares(p0, args)
     Q0 = args['trace']['Qs'][-1]
     
     # fit function
-    def parabola(x, sigma, x0, y0):
-        return 1/2 * (x - x0)**2 / sigma**2 + y0
+    def parabola(x, a, x0, y0):
+        return 1/2 * a * (x - x0)**2 + y0
     
-    # compute variances
-    sigmas = []
-    for i in ips:
+    # plot
+    if not (fig is None):
+        fig.clf()
+        G = gridspec.GridSpec(len(p0), len(p0))
+    
+    curvature = np.empty((len(p0), len(p0)), dtype=object)
+    
+    # compute diagonal elements
+    for i in range(len(p0)):
+        if n == 'auto':
+            N = 10 if i == 1 else 4
+        else:
+            N = n
         # compute n points inside p0 +/- dps and find +3 chi^2 limits
-        ps = np.linspace(p0[i] - dps[i], p0[i] + dps[i], n)
+        ps = np.linspace(p0[i] - dps[i], p0[i] + dps[i], N)
         vp = np.copy(p0)
         for p in ps:
             vp[i] = p
             squares(vp, args)
-        x = np.concatenate((args['trace']['pars'][i][-n:], [p0[i]]))
-        y = np.concatenate((args['trace']['Qs'][-n:], [Q0]))
+        x = np.concatenate((args['trace']['pars'][i][-N:], [p0[i]]))
+        y = np.concatenate((args['trace']['Qs'][-N:], [Q0]))
         s = np.argsort(x)
         x = x[s]
         y = y[s]
@@ -491,16 +517,68 @@ def covariance(p0, dps, ips=[0,1], n=10):
         R = optimize.bisect(lambda x: f(x) - (Q0 + 3), p0[i], x[-1])
         
         # compute n points inside +3 chi^2 limits and fit parabola
-        ps = np.linspace(L, R, n)
+        ps = np.linspace(L, R, N)
         for p in ps:
             vp[i] = p
             squares(vp, args)
-        x = np.array(args['trace']['pars'][i][-n:])
-        y = np.array(args['trace']['Qs'][-n:])
-        par, cov = optimize.curve_fit(parabola, x, y, p0=((R-L)/6, p0[i], Q0))
-        sigmas.append(un.ufloat(par[0], np.sqrt(cov[0,0]), tag='sigma_p%d' % i))
+        x = np.array(args['trace']['pars'][i][-N:])
+        y = np.array(args['trace']['Qs'][-N:]) / 2
+        par, cov = optimize.curve_fit(parabola, x, y, p0=(1/((R-L)/6)**2, p0[i], Q0/2))
+        assert(par[0] > 0)
+        curvature[i, i] = un.ufloat(par[0], np.sqrt(cov[0,0]), tag='curv_%d%d' % (i, i))
+        
+        # plot
+        if not (fig is None):
+            ax = fig.add_subplot(G[i,i])
+            ax.plot(x, y, '.k', label="p%d" % i)
+            xp = np.linspace(min(x), max(x), 100)
+            ax.plot(xp, parabola(xp, *par), '-r', label='fit')
+            ax.legend(fontsize='small')
     
-    return sigmas
+    # compute off-diagonal elements
+    for i in range(len(p0)):
+        for j in range(i + 1, len(p0)):
+            if n == 'auto':
+                N = 10 if (i == 1 or j == 1) else 4
+            else:
+                N = n
+        
+            # compute N points along i, j scaled by 1 / sqrt(curvature)
+            # conti sul quaderno alla data 2018-02-07
+            cii = curvature[i,i]
+            cjj = curvature[j,j]
+            sigma_i = 1 / np.sqrt(cii.n)
+            sigma_j = 1 / np.sqrt(cjj.n)
+            ps_i = np.linspace(p0[i] - 3 * sigma_i, p0[i] + 3 * sigma_i, N)
+            ps_j = np.linspace(p0[j] - 3 * sigma_j, p0[j] + 3 * sigma_j, N)
+            vp = np.copy(p0)
+            for k in range(len(ps_i)):
+                vp[i] = ps_i[k]
+                vp[j] = ps_j[k]
+                squares(vp, args)
+            x_i = np.array(args['trace']['pars'][i][-N:])
+            x_j = np.array(args['trace']['pars'][j][-N:])
+            x = x_i / sigma_i + x_j / sigma_j
+            y = np.array(args['trace']['Qs'][-N:]) / 2
+            fit_p0 = [
+                1/4 * (cii.n**2 + cjj.n**2), # corresponds to cij = 0
+                p0[i] / sigma_i + p0[j] / sigma_j,
+                Q0 / 2
+            ]
+            par, cov = optimize.curve_fit(parabola, x, y, p0=fit_p0)
+            ctpp = un.ufloat(par[0], np.sqrt(cov[0,0]), tag='curv_%d+%d' % (i, j))
+            curvature[i, j] = (4 * ctpp - cii**2 - cjj**2) / (2 * umath.sqrt(cii * cjj))
+            curvature[j, i] = curvature[i, j]
+        
+            # plot
+            if not (fig is None):
+                ax = fig.add_subplot(G[j,i])
+                ax.plot(x, y, '.k', label="p%d+p%d" % (i,j))
+                xp = np.linspace(min(x), max(x), 100)
+                ax.plot(xp, parabola(xp, *par), '-r', label='fit')
+                ax.legend(fontsize='small')
+    
+    return curvature
 
 fit_options = dict(disp=True, xatol=1e-4, fatol=1e-3, initial_simplex=simplex)
 
@@ -510,6 +588,7 @@ f_fit(p0[1], args)
 
 out1 = optimize.minimize(squares, p0, args=(args,), method='Nelder-Mead', options=fit_options)
 trace1 = args['trace']
+geom1 = args['geometry_factors']
 
 # compute geometry again with fit result
 args.pop('geometry_factors')
@@ -521,3 +600,4 @@ args['trace'] = {}
 
 out2 = optimize.minimize(squares, p0, args=(args,), method='Nelder-Mead', options=fit_options)
 trace2 = args['trace']
+geom2 = args['geometry_factors']
