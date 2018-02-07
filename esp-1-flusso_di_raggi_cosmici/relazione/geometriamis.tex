@@ -59,8 +59,6 @@ dovuta all'inclinazione relativa delle lastre.
 Misuriamo la posizione spaziale usando righello, metro a nastro e livella a bolla.
 Facendo riferimento alla \autoref{fig:geometriamis} per la notazione, riportiamo
 in \autoref{tab:geom} le misure.
-\marginpar{Aggiungere come si passa dalle misure alle variabili del modello e l'incertezza del calcolo
-(incertezza Monte Carlo, incertezza dovuta alle misure).}
 
 Riportiamo le formule per passare dalle misure al modello.
 Per convertire le inclinazioni relative in assolute,
@@ -82,3 +80,20 @@ I parametri di una lastra (equazione \ref{eq:lastra}) sono dati da
 	\end{pmatrix},
 \end{align*}
 dove abbiamo posto che i lati ``$x$'' delle lastre siano sul piano $xz$.
+
+\subsubsection{Incertezza dell'accettanza}
+
+Nell'integrale Monte Carlo \eqref{eq:accmc} per l'accettanza,
+le misure di geometria entrano nei termini $w_i(L)$.
+Il risultato ha quindi non solo l'incertezza intrinseca del calcolo Monte Carlo,
+ma anche un'incertezza associata alle misure di geometria.
+
+Per stimarla procediamo in questo modo:
+fissiamo le estrazioni dei raggi con cui calcoliamo l'integrale.
+Estraiamo delle misure di geometria pseudocasuali,
+usando delle gaussiane con medie i valori nominali e deviazioni standard le incertezze
+riportati nella \autoref{tab:geom}.
+Calcoliamo $\hat Q$ per ogni estrazione di geometria e, come incertezza geometrica,
+prendiamo la deviazione standard campione di questi $\hat Q$
+(e la covarianza campione nel caso di più accettanze).
+Come valore nominale per $\hat Q$ prendiamo quello calcolato con i valori nominali delle misure di geometria.
