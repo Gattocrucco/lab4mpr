@@ -6,6 +6,7 @@ adc.pdf
 *.aux
 *.out
 *.synctex.gz
+*(busy)
 *.fdb_latexmk
 *.fls
 *.log
