@@ -33,17 +33,15 @@ La superficie superiore della lastra è un parallelogramma descritto parametrica
 	\quad t_x,t_y \in (0,1).
 \end{equation}
 
-\subsubsection{Monte Carlo}
+\subsection{Raggi cosmici}
 
-Quello che dobbiamo calcolare sono accettanze geometriche
-e fattori di conversione da rate a rate per unità di area orizzontale.
-Implementiamo il calcolo con un integrale Monte Carlo.
-Per questo calcolo trascuriamo lo spessore delle lastre.
+Poniamo che le traiettorie dei raggi cosmici siano rettilinee.
+Per la seguente discussione trascuriamo lo spessore delle lastre.
 
 \paragraph{Raggi}
 
-Estraiamo dei \emph{raggi} casuali.
-Un raggio è definito dalle variabili aleatorie:
+Consideriamo una distribuzione di \emph{raggi}.
+Un raggio è definito dalle variabili:
 \begin{equation}
 	\label{eq:raggio}
 	\begin{array}{ll}
@@ -70,23 +68,22 @@ e non altre (lastre in \emph{anticoincidenza}).
 Richiediamo che il pivot sia sempre in coincidenza.
 Ogni lastra ha un'\emph{efficienza},
 cioè la probabilità che un raggio che passa per la lastra la faccia scattare.
-Sia $i$ un indice che corre lungo $N$ estrazioni di raggi casuali.
 Sia $\epsilon(L)$ l'efficienza della lastra $L$.
 Sia
 \begin{equation*}
-	w_i(L) = \begin{cases}
-		1 & \text{se il raggio $i$ passa per la lastra $L$,} \\
-		0 & \text{se non passa.}
+	w_r(L) = \begin{cases}
+		1 & \text{se il raggio $r$ passa per la lastra $L$,} \\
+		0 & \text{se non passa,}
 	\end{cases}
 \end{equation*}
-Allora l'espressione che converge in probabilità all'accettanza è
-\begin{align}
-	\label{eq:accettanza}
-	\hat Q &:= \frac1N \sum_i q_i, \\
-	\text{dove}\quad q_i &:= 
-	\left( \prod_\text{$L$ in coinc.} w_i(L) \epsilon(L) \right)
-	\cdot \left( \prod_\text{$L$ in anticoinc.} \big(1 - w_i(L) \epsilon(L)\big) \right). \notag
-\end{align}
+dove $r$ sono le variabili della \eqref{eq:raggio}.
+Allora l'accettanza è
+\begin{equation}
+	\label{eq:acc}
+	Q = \int p(r) \mathrm{d} r
+	\left( \prod_\text{$L$ in coinc.} w_r(L) \epsilon(L) \right)
+	\cdot \left( \prod_\text{$L$ in anticoinc.} \big(1 - w_r(L) \epsilon(L)\big) \right).
+\end{equation}
 
 \paragraph{Flusso totale}
 
@@ -110,9 +107,8 @@ ma con la distribuzione di raggi non normalizzata sul piano orizzontale\footnote
 Dalle definizioni segue che
 \begin{equation}
 	\label{eq:rate}
-	R = \Phi \cdot Q \cdot A_\text{hor},
+	R = \Phi \cdot Q \cdot A_\text{hor}.
 \end{equation}
-dove $Q$ è l'accettanza.
 
 \paragraph{Efficienza}
 
@@ -140,11 +136,27 @@ da cui infine
 	\epsilon_0 = \frac{R_B}{R_A} \cdot \frac{\bar Q_A A_{\text{hor},A}}{\bar Q_B A_{\text{hor},B}}.
 \end{equation*}
 
-\paragraph{Incertezza}
+\subsection{Monte Carlo}
 
-Notiamo che la $\hat Q$ (equazione \ref{eq:accettanza}) è una media aritmetica,
+Il modo più immediato di calcolare l'integrale \eqref{eq:acc} è con Monte Carlo.
+Sia $i$ un indice che corre lungo $N$ estrazioni di raggi casuali,
+allora l'espressione che converge in probabilità all'accettanza è
+\begin{align}
+	\label{eq:accmc}
+	\hat Q &:= \frac1N \sum_i q_i, \\
+	\text{dove}\quad q_i &:=
+	\left( \prod_\text{$L$ in coinc.} w_i(L) \epsilon(L) \right)
+	\cdot \left( \prod_\text{$L$ in anticoinc.} \big(1 - w_i(L) \epsilon(L)\big) \right). \notag
+\end{align}
+Notiamo che la $\hat Q$ è una media aritmetica,
 quindi una buona stima della sua varianza $\sigma_Q^2$ si ottiene con la varianza campione
 \begin{equation*}
 	\hat\sigma_Q^2
-	= \frac1{N(N-1)} \sum_i (q_i - \hat Q)^2.
+	= \frac1{N(N-1)} \sum_i (q_i - \hat Q)^2
+\end{equation*}
+e, se calcoliamo più accettanze con la stessa estrazione,
+la covarianza tra $\hat Q_A$ e $\hat Q_B$ si stima con
+\begin{equation*}
+	\hat\sigma_{Q_A,Q_B}
+	= \frac1{N(N-1)} \sum_i (q_{A,i} - \hat Q_A) (q_{B,i} - \hat Q_B).
 \end{equation*}
