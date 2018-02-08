@@ -53,7 +53,7 @@ def loadtxtlbs(filename, labels, prefit=True):
     datadict['prefit'] = p[c]
     return datadict
 
-data2lbs = ['clock', 'A', 'B', 'A&B', 'a&c', 'a&b&c', 'a&b&c&A', 'a&b&c&B', 'PMTA', 'PMTB', 'PMTa', 'PMTb', 'PMTc', 'prefit']
+data2lbs = ['sogliaA', 'sogliaB', 'alimA', 'alimB', 'clock', 'A', 'B', 'A&B', 'a&c', 'a&b&c', 'a&b&c&A', 'a&b&c&B', 'PMTA', 'PMTB', 'PMTa', 'PMTb', 'PMTc', 'prefit']
 data2albs = ['clock', 'A', 'B', 'A&B', 'a&b', 'a&b&B', 'a&b&A', 'a&b&A&B', 'PMTA', 'PMTB', 'PMTa', 'PMTb', 'prefit']
 data3lbs = ['clock', 'C', 'B', 'A&B&C', 'a&b', 'a&b&C', 'a&b&B', 'a&b&A', 'PMTA', 'PMTB', 'PMTC', 'pmta', 'pmtb', 'prefit']
 dataefflbs = ['clock', 'a&b', 'a&b&A', 'b&c', 'b&c&A', 'b&d', 'b&d&A', 'PMTA', 'PMTa', 'PMTb', 'PMTc', 'PMTd', 'prefit']
@@ -572,7 +572,7 @@ def curvature(p0, dps, n='auto', geom={}, fig=None):
         
             # plot
             if not (fig is None):
-                ax = fig.add_subplot(G[j,i])
+                ax = fig.add_subplot(G[i,j])
                 ax.plot(x, y, '.k', label="p%d+p%d" % (i,j))
                 xp = np.linspace(min(x), max(x), 100)
                 ax.plot(xp, parabola(xp, *par), '-r', label='fit')

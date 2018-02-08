@@ -16,7 +16,7 @@ class Scint(object):
         
         self._Lx = self._asufloat(short_side_length) / 1000
         self._Ly = self._asufloat(long_side_length) / 1000
-        self._z = -self._asufloat(center_depth) / 1000
+        self._z = self._asufloat(center_depth) / 1000
         self._x = self._asufloat(short_side_offset) / 1000
         self._y = self._asufloat(long_side_offset) / 1000
         self._alpha = self._asufloat(short_side_inclination) * np.pi / 180
