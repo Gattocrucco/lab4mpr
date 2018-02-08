@@ -3,6 +3,8 @@
 In base all'esperienza acquisita nella parte ``di calibrazione'',
 e in base ai limiti di moduli NIM disponibili e tempo rimasto,
 abbiamo effettuato quattro tipi di misure ``ufficiali'' con cui calcolare il flusso di muoni.
+Per queste misure abbiamo coperto l'apparato dalla luce
+con un telo nero, un laminato di plastica e un'amaca.
 
 \begin{figure}
 	\centering
@@ -18,6 +20,19 @@ abbiamo effettuato quattro tipi di misure ``ufficiali'' con cui calcolare il flu
 
 \subsubsection{Misure in coincidenza a 2}
 
+\begin{figure}
+	\centering
+	\includegraphics[width=30em]{circuitomisdue}
+	\caption{\label{fig:circuitomisdue}
+	Circuito per la misura in configurazione ``2''.
+	Le linee di collegamento doppie rappresentano genericamente più di un cavo.
+	I segnali dei PMT vanno ai discriminatori.
+	Dopo i discriminatori ci sono i moduli \texttt{Gate\&Delay} e \texttt{Dual Timer}
+	impostati su una durata di \SI{700}{ns} non retriggerabile;
+	i segnali di questi passano da discriminatori <<secondo stadio>> (per distinguerli dagli altri)
+	che riportano la durata dei segnali a circa~\SI{40}{ns}.}
+\end{figure}
+
 Usiamo il conteggio di due lastre (chiamate $A$ e $B$) in coincidenza per misurare il flusso
 e tre lastre in coincidenza ($a$, $b$ e $c$) per misurare le efficienze di $A$ e $B$
 (vedi configurazione ``2'' in \autoref{fig:modmisfinale}).
@@ -28,7 +43,32 @@ Le lastre $A$ e $B$ sono comprese tra le lastre $a$, $b$ e $c$
 in modo che la misura dell'efficienza non dipenda dalla distribuzione angolare.
 Complessivamente quindi questa misura è ottimizzata per il flusso totale.
 
+Il circuito è riportato in \autoref{fig:circuitomisdue}.
+I circuiti delle altre configurazioni sono in sostanza uguali.
+
 \subsubsection{Misure in coincidenza a 2 con distribuzione angolare}
+
+\begin{table}
+	% \centering
+	\small
+	\hspace{-5em}
+	\begin{tabular}{ll|lrrrrrrr|c}
+		sogliaA & sogliaB & clock & A & B & A\&B & a\&b & a\&b\&B & a\&b\&A & a\&b\&A\&B & prefit \\
+		\hline
+		307.3 & 297.3 & 1e5 & 1008979 & 270259 & 920 & 1763 & 1224 & 702 & 555  & 1               \\
+		307.3 & 297.3 & 1e6 & 9995686 & 2690915 & 9059 & 17919 & 12177 & 6977 & 5346 & 0          \\
+		1468 & 1832 & 1e5 & 98858 & 92615 & 601 & 1859 & 1221 & 688 & 509  & 1                    \\
+		1468 & 1832 & 1e6 & 988694 & 926201 & 5550 & 17807 & 11758 & 6195 & 4645 & 0              \\
+		1.287e3 & 0.964e3 & 1e5 & 197923 & 205786 & 634 & 1708 & 1160 & 615 & 487  & 1            \\
+		1.287e3 & 0.964e3 & 1e6 & 1996164 & 2070802 & 6443 & 17532 & 11819 & 6397 & 4922 & 0      
+	\end{tabular}
+	\caption{\label{tab:data2a}
+	Dati per la misura finale in configurazione ``2a''.
+	La notazione è la stessa della \autoref{tab:data2}.
+	Tutte le misure sono state fatte con $A$ = PM1, $B$ = PM6, $a$ = PM2, $b$ = PM5.
+	L'alimentazione di $A$ e $B$ è \SI{2000}V.
+	Le durate del secondo stadio sono le stesse della configurazione ``2''.}
+\end{table}
 
 Questa configurazione (``2a'' in \autoref{fig:modmisfinale}) è simile alla precedente,
 ma le lastre usate per misurare l'efficienza sono comprese tra quelle usate per misurare il flusso anziché esterne.
@@ -109,6 +149,9 @@ da avere almeno una misura di efficienza che non dipende dalla distribuzione ang
 		Le colonne successive a <<clock>> sono i conteggi; le <<\&>> indicano le coincidenze.
 		Le colonne <<PM\dots>> indicano a quali PM corrispondono le etichette $A$, $B$, $a$, $b$, $c$;
 		le linee orizzontali nella tabella demarcano il cambiamento degli assegnamenti.
-		La colonna <<prefit>> indica se i dati vengono utilizzati nel fit preliminare (1) o nel fit finale (0).}
+		La colonna <<prefit>> indica se i dati vengono utilizzati nel fit preliminare (1) o nel fit finale (0).
+		Le durate dei discriminatori secondo stadio (vedi circuito in \autoref{fig:circuitomisdue})
+		sono \SI{38\pm2}{ns} per $A$ e \SI{37\pm2}{ns} per $B$.
+		Il secondo stadio di $a$, $b$ e $c$ è a circa \SI{40}{ns}.}
 	\end{table}
 \end{landscape}
