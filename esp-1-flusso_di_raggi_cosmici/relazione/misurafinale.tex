@@ -81,6 +81,25 @@ perché usiamo anche $B$ per misurare l'efficienza di $A$ e viceversa.
 
 \subsubsection{Misure in coincidenza a 3}
 
+\begin{table}
+	\small
+	\hspace{-9em}
+	\begin{tabular}{lll|rrrrrrrr|c}
+		sogliaA & sogliaB & sogliaC & clock & C & B & A\&B\&C & a\&b & a\&b\&C & a\&b\&B & a\&b\&A & prefit \\
+		\hline
+		307.1 & 297.1 & 207.1 & 53093476 & 62962492 & 723662210 & 1073466 & 668411 & 617769 & 607441 & 591279 & 0
+	\end{tabular}
+	\caption{\label{tab:data3}
+	Dati per la misura finale in configurazione ``3''.
+	La notazione è la stessa della \autoref{tab:data2}.
+	Le tensioni di alimentazione di $A$ e $B$ sono \SI{2000}V.
+	Le etichette sono $A$ = PM3, $B$ = PM4, $C$ = PM5, $a$ = PM2, $b$ = PM6.
+	Le durate del secondo stadio per $A$ e $B$ sono le stesse della configurazione ``2''.
+	Il secondo stadio di $a$, $b$ e $C$ è \SI{35\pm1}{ns}.
+	Sono stati misurati separatamente i tassi di $A$, $a$ e $b$:
+	su un clock di 1e5, i conteggi sono $C_A=4243753$, $C_a=86130$, $C_b=31799$.}
+\end{table}
+
 In questa configurazione (``3'' in \autoref{fig:modmisfinale})
 usiamo tre lastre ($A$, $B$ e $C$) in coincidenza per misurare il flusso
 e due lastre ($a$ e $b$) esterne ad $A$, $B$ e $C$ per misurare l'efficienza di $A$, $B$ e $C$.
@@ -88,6 +107,32 @@ In questo modo non dobbiamo preoccuparci del rumore sulle lastre con cui misuria
 È interessante confrontare questa misura con una della configurazione ``2'' tale che $A_2=A_3$ e $B_2=C_3$.
 
 \subsubsection{Misure di efficienza con distribuzione angolare}
+
+\begin{table}
+	\small
+	\hspace{-10.5em}
+	\begin{tabular}{l|rrrrrrrr|ccccc|c}
+		sogliaA & clock & A &a\&b & a\&b\&A & b\&c & b\&c\&A & b\&d & b\&d\&A & PMA & PMa & PMb & PMc & PMd & prefit \\
+		\hline\hline
+		2216 & 1e5   & 2862828 & 1989 & 1791 & 2630 & 1830 & 1908 & 1402 & 3 & 2 & 4 & 5 & 6 & 1           \\
+		2216 & 1e6   & 29620183 & 19040 & 17372 & 26445 & 18041 & 18864 & 13703 & 3 & 2 & 4 & 5 & 6 & 0     \\
+		5.11e3 & 1e5 & 120032 & 1975 & 1782 & 2684 & 1804 & 1888 & 1362 & 3 & 2 & 4 & 5 & 6 & 1         \\
+		306.5 & 1e5  & 4464209 & 1957 & 1790 & 2641 & 1833 & 1926 & 1421 & 3 & 2 & 4 & 5 & 6 & 1          \\
+		\hline
+		306.5 & 1e5  & 122838 & 965 & 922 & 2500 & 1847 & 1938 & 1443 & 2 & 1 & 3 & 4 & 5 & 1            \\
+		306.5 & 1e6  & 1239854 & 9576 & 9163 & 24663 & 18227 & 19352 & 14530 & 2 & 1 & 3 & 4 & 5 & 0      \\
+		1460 & 1e5   & 104482 & 955 & 903 & 2465 & 1773 & 1961 & 1443 & 2 & 1 & 3 & 4 & 5 & 1             \\
+		\hline
+		1460 & 1e5   & 50512 & 943 & 901 & 2465 & 1802 & 1454 & 1088 & 2 & 1 & 3 & 4 & 6 & 0             
+	\end{tabular}
+	\caption{\label{tab:dataeff}
+	Dati per la misura finale in configurazione ``eff''.
+	La notazione è la stessa della \autoref{tab:data2}.
+	Le alimentazioni sono
+	$V_1=\SI{2000}V$, $V_2=\SI{2000}V$, $V_3=\SI{1900}V$, $V_4=\SI{1950}V$, $V_5=\SI{2000}V$, $V_6=\SI{2000}V$,
+	ad eccezione di $A$ che è sempre a \SI{2000}V.
+	I~rate di $a$, $b$, $c$, $d$ sono sempre circa \SI{500}{s^{-1}}.}
+\end{table}
 
 Questa configurazione (``eff'' in \autoref{fig:modmisfinale})
 è abbastanza diversa dalle altre perché è ottimizzata per la distribuzione angolare anziché per il flusso.
@@ -142,7 +187,7 @@ da avere almeno una misura di efficienza che non dipende dalla distribuzione ang
 		\caption{\label{tab:data2}
 		Dati per la configurazione ``2'' della misura finale.
 		I dati sono riportati in ordine cronologico di acquisizione.
-		Le colonne <<soglia\dots>> riportano la soglia del discriminatore in decimi di volt.
+		Le colonne <<soglia\dots>> riportano la soglia del discriminatore in decimillesimi di volt.
 		Le colonne <<alim\dots>> riportano la tensione nominale di alimentazione dei PMT in volt.
 		La colonna <<clock>> riporta il conteggio del \texttt{clock} del contatore,
 		quindi il tempo di acquisizione in millesimi di secondo.
