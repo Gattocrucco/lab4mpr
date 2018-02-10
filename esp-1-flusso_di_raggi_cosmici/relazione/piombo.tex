@@ -1,28 +1,24 @@
-
 \subsection{Effetto del materiale sulla misura}
 
-Abbiamo testato quanto la presenza di lastre di piombo potesse influire sulla rivelazione dei raggi cosmici. Abbiamo a disposizione il seguente materiale:
+Abbiamo testato quanto la presenza di lastre di metallo potesse influire sulla rivelazione dei raggi cosmici,
+per indagare quanto possa essere rilevante il materiale circostante (soffitto, pareti).
+Abbiamo a disposizione:
 \begin{itemize}
-
-\item 3 lastre rigide di piombo\\
-spessore=\SI{4\pm1}{mm}\\
-L1=\SI{39.9\pm0.1}{ cm}\\
-L2=\SI{40.0\pm0.1}{cm}
-
-\item 1 lastra di alluminio con le stesse dimensioni delle 3 precedenti
-
-\item 10 lastre flessibili di piombo\\
-spessore=\SI{2\pm1}{ mm}\\
-L1=\SI{47.5\pm0.1}{ cm}\\
-L2=\SI{45.0\pm0.1}{ cm}
-
+	\item 3 lastre di piombo rivestite di alluminio, ciascuna di spessore totale \SI{4}{mm},
+	\item 1 lastra di alluminio di spessore \SI{4}{mm},
+	\item 10 lastre di piombo spesse \SI{2}{mm}.
 \end{itemize}
+Non abbiamo misurato lo spessore della parte di piombo di quelle con piombo e alluminio.
+Le lastre di metallo ricoprono circa l'\SI{80}\% delle lastre di scintillatore. 
 
 \subsubsection{Conteggi}
 
-Abbiamo posizionato le lastre rigide tra il PM3 ed il PM4 per vedere se esse riuscivano a fermare parte dei muoni. Per fare questa misura abbiamo confrontato le coincidenze  PM5 \& PM4 e PM5 \& PM4 \& PM3, però non possiamo confrontarle così come sono a causa dell'accettanza geometrica: anche in assenza delle lastre le coincidenze a tre sono diverse da quelle a due. Allora correggiamo le coincidenze a due con un Monte Carlo che tiene in considerazione le efficienze dei tre rivelatori: $\epsilon(\text{PM5})=92.6\pm0.3\%$, $\epsilon(\text{PM4})=97.2\pm0.1\%$, $\epsilon(\text{PM3})=90.1\pm0.2\%$. Il fattore di correzione ottenuto è il rapporto tra le accettanze delle due configurazioni  $\delta=mc(\text{PM5 \& PM4 \&PM3})/mc(\text{PM5 \& PM4})=65.71\pm0.02\%$, dove $mc$ indica il risultato del Monte Carlo per la configurazione in questione. Siano $C2$ il numero di coincidenze a due e $C3$ il numero di quelle a tre, per capire quanto sia significativo l'effetto delle lastre sulle nostre misure confrontiamo le quantità $C2'=C2 \cdot \delta$ e $C3$ in funzione del numero di lastre inserite%
-\footnote{Nel grafico di \autoref{cfr} non è presente il caso di 3 lastre perché, avendone una di alluminio, abbiamo deciso di metterla insieme alla terza lastra di piombo.}. %
-Dal confronto, presente in \autoref{cfr}, non si evince nessuna differenza tra i conteggi a meno di una separazione di $3.2\sigma$ nell'ultimo caso che, come descritto nella \autoref{sez}, rappresenta solo una fluttuazione.
+Abbiamo posizionato le lastre di metallo tra il PM3 ed il PM4
+per vedere se esse riuscivano a fermare parte dei muoni.
+Per fare questa misura abbiamo confrontato il rapporto tra le coincidenze 5\&4\&3 e 5\&4
+al variare del numero di lastre di metallo.
+Abbiamo confrontato i rapporti per non dover tener conto dell'accettanza%
+\footnote{Sia l'efficienza che la geometria.}.
 
 \begin{table}[h]
 \centering
@@ -36,7 +32,11 @@ tempo totale [\si{s}] & \multicolumn{2}{c|}{R($C2$) [1/\si{s}]} & \multicolumn{2
 1000 & 20.1&0.1 & 13.19&0.09 & 12.7&0.1 \\
 \hline
 \end{tabular}
-\caption{Dati presenti nel grafico di \autoref{cfr}. R indica il rapporto tra il numero di eventi di più acquisizioni ed il tempo totale.}
+\caption{MODIFICARE:
+colonna 1: lastre usate;
+colonna 2: conteggio c2;
+colonna 3: conteggio c3;
+colonna 4: c3/c2 con l'errore giusto}
 \label{dati cfr}
 \end{table}
 
@@ -44,20 +44,24 @@ tempo totale [\si{s}] & \multicolumn{2}{c|}{R($C2$) [1/\si{s}]} & \multicolumn{2
 \begin{figure}[h]
 \centering
 \includegraphics[width=8 cm]{confronto}
-\caption{Confronto tra le coincidenze a due corrette e quelle a tre in funzione del numero di lastre inserite sul PM3.}
+\caption{MODIFICARE: rapporti come nella \autoref{dati cfr}.}
 \label{cfr}
 \end{figure}
 
 \subsubsection{Energia}
 
-\label{sez}
-Infine abbiamo eseguito due acquisizioni di lunga durata. Nella prima abbiamo messo tutte le lastre a nostra disposizione sul PM1 e abbiamo acquisito i loro rilasci di energia per tutta la notte. Il giorno seguente le abbiamo tolte ed abbiamo preso dati per \SI{4}{ore}. In entrambi i casi il trigger dell'ADC è dato dalle coincidenze PM2 \& PM1.  Abbiamo normalizzato (dividendo per l'area) entrambi gli spettri per poterli confrontare ed evincere che non mostrano nessuna differenza, come si può vedere in \autoref{gemini}. Questo fatto ci autorizza a pensare che la deviazione di $3.2\sigma$ vista precedentemente sia solo una fluttuazione, data la grande differenza tra i tempi di acquisizione (10$^3$\! s e tutta la notte). 
-\marginpar{discutere errori istogrammi}
+Infine abbiamo eseguito due acquisizioni di lunga durata.
+Nella prima abbiamo messo tutte le lastre a nostra disposizione sul PM1
+e abbiamo acquisito i loro rilasci di energia per tutta la notte.
+Il giorno seguente le abbiamo tolte ed abbiamo preso dati per \SI{4}{ore}.
+In entrambi i casi il trigger dell'ADC è dato dalle coincidenze PM2 \& PM1.
+\marginpar{Aggiungere test di Kolmogorov-Smirnov.}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=8 cm]{gemelli}
-\caption{Confronto tra gli spettri normalizzati (dividendo per l'area) con e senza piombo. Il picchetto a destra è dato dagli eventi talmente energetici da saturare l'uscita dell'amplificatore.}
+\caption{MODIFICARE:
+subplot 211: istogrammi;
+subplot 212: differenza degli istogrammi.}
 \label{gemini}    
 \end{figure}
-
