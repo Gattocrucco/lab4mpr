@@ -75,7 +75,7 @@ class Scint(object):
         
         self._Vy[0] = sa * sb
         self._Vy[1] = cb
-        self._Vy[2] = -ca * sb
+        self._Vy[2] = -sb
         
         self._P[0] = x
         self._P[1] = y - self._Vy[1] * Ly
