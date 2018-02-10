@@ -1,4 +1,4 @@
-\subsection{Coincidenze casuali e tempo morto}
+\subsection{Calcolo delle coincidenze casuali}
 
 Per tenere conto con simulazioni o calcoli delle coincidenze casuali e dei tempi morti,
 trattiamo i segnali digitali come forme perfettamente rettangolari.
@@ -10,4 +10,34 @@ se il tempo trascorso dall'ultimo fronte di salita
 Il segnale rimane alto per una certa \emph{durata del segnale} fissata.
 Il tempo morto è almeno la durata del segnale.
 I segnali fanno coincidenza quando sono entrambi alti per almeno un certo \emph{tempo di coincidenza}.
-\marginpar{Descrivere algoritmo Monte Carlo.}
+
+\subsubsection{Simulazione Monte Carlo}
+
+Prendiamo un insieme di segnali, indicizzati da $j$,
+con rate $r_j$, durate $c_j$ e tempi morti $d_j \ge c_j$.
+Per ogni segnale siano $t_{j,i}$ i tempi dei vari eventi.
+
+L'idea di base per simulare le coincidenze è semplice.
+Sia $t_{j,i}$ l'ultimo evento che ha generato un fronte di salita sul segnale $j$,
+estraiamo $t_{j,i+1}$ dalla distribuzione esponenziale di scala $r_j^{-1}$;
+continuiamo a estrarre nuovi eventi finché non superano il tempo morto cioè $t_{j,i+k}>t_{j,i} + d_j$,
+allora $t_{j,i+k}$ genera il nuovo fronte di salita.
+Generiamo un nuovo fronte sul segnale 0.
+Generiamo nuovi fronti sul segnale~1 finché non si verifica che:
+o il segnale 1 fa coincidenza con il segnale 0,
+o l'ultimo fronte~1 supera l'ultimo fronte 0 abbastanza da non poter fare coincidenze.
+Se c'è coincidenza si prosegue generando fronti sul segnale 2;
+se alla fine tutti i segnali fanno coincidenza si incrementa il conteggio delle coincidenze.
+Si prosegue generando un nuovo fronte sul segnale 0,
+finché $t_{0,i}$ non supera il tempo totale.
+
+Questo algoritmo ha il bug che un fronte sul segnale 0 non può generare più di una coincidenza.
+La soluzione è la seguente:
+si introduce un \emph{segnale leader} $J$ che inizialmente è $J=0$
+e che ha il ruolo del segnale 0 nella precedente descrizione.
+Quando si verifica una coincidenza,
+il nuovo leader è il segnale che ha il fronte di discesa $t_{j,i}+c_j$ maggiore.
+Viene aggiunto un nuovo evento al leader solo quando non si verifica una coincidenza.
+Il motivo è che qualunque nuova coincidenza
+che avvenga senza aggiungere un nuovo evento su un certo segnale,
+deve necessariamente avvenire senza aggiungere un evento sul segnale che termina più tardi.
