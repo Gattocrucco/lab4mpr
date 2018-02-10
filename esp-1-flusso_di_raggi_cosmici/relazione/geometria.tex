@@ -1,4 +1,4 @@
-\subsection{Modello delle lastre}
+\subsection{Modello di lastre e raggi cosmici}
 \label{sec:teogeom}
 
 \begin{figure}
@@ -11,10 +11,14 @@
 	Gli assi di rotazione sono riferiti alla lastra.}
 \end{figure}
 
-Esponiamo la modellizzazione geometrica dell'apparato ai fini di calcoli e simulazioni
-(vedi \autoref{fig:geometriadef}).
-Consideriamo ogni lastra di scintillatore come un parallepipedo.
-Teniamo conto dei \emph{disallineamenti} cioè della posizione arbitraria nello spazio delle lastre,
+Esponiamo la modellizzazione geometrica dell'apparato ai fini di calcoli e simulazioni.
+È rilevante avere un modello geometrico chiaro per valutare le incertezze
+dovute alle misure geometriche dell'apparato perché non saranno trascurabili.
+
+\paragraph{Lastre}
+
+Consideriamo ogni lastra di scintillatore come un parallelepipedo (vedi \autoref{fig:geometriadef}).
+Teniamo conto dei disallineamenti cioè della posizione arbitraria nello spazio delle lastre,
 supponendo però che sia poco diversa da quella ideale di lastre orizzontali, rettangolari e allineate verticalmente.
 Chiamiamo $x$ la direzione orizzontale parallela ai tubi fotomoltiplicatori,
 $y$ quella ortogonale,
@@ -32,8 +36,6 @@ La superficie superiore della lastra è un parallelogramma descritto parametrica
 	\quad t_x,t_y \in (0,1).
 \end{equation}
 
-\subsection{Modello dei raggi cosmici}
-
 Poniamo che le traiettorie dei raggi cosmici siano rettilinee.
 Per la seguente discussione trascuriamo lo spessore delle lastre.
 
@@ -46,9 +48,10 @@ Un raggio è definito dalle variabili:
 	\begin{array}{ll}
 		t_x, t_y & \text{uniformi in $(0,1)$}, \\
 		\phi     & \text{uniforme in $(0,2\pi)$}, \\
-		u        & \text{distribuzione non fissata in $(0,1)$}.
+		u        & \text{distribuzione non fissata in $(0,1)$},
 	\end{array}
 \end{equation}
+dove le distribuzioni si intendono normalizzate all'unità.
 Scegliamo una certa lastra che chiamiamo \emph{pivot}.
 Da un raggio otteniamo una retta nello spazio parametrizzata come
 \begin{align*}
@@ -70,19 +73,20 @@ cioè la probabilità che un raggio che passa per la lastra la faccia scattare.
 Sia $\epsilon(L)$ l'efficienza della lastra $L$.
 Sia
 \begin{equation*}
-	w_r(L) = \begin{cases}
-		1 & \text{se la retta del raggio $r$ passa per la lastra $L$,} \\
+	w_\rho(L) = \begin{cases}
+		1 & \text{se la retta del raggio $\rho$ passa per la lastra $L$,} \\
 		0 & \text{se non passa,}
 	\end{cases}
 \end{equation*}
-dove $r$ sono le variabili della \eqref{eq:raggio}.
+dove $\rho$ sono le variabili della \eqref{eq:raggio}.
 Allora l'accettanza è
 \begin{equation}
 	\label{eq:acc}
-	Q = \int p(r) \mathrm{d} r
-	\left( \prod_\text{$L$ in coinc.} w_r(L) \epsilon(L) \right)
-	\cdot \left( \prod_\text{$L$ in anticoinc.} \big(1 - w_r(L) \epsilon(L)\big) \right).
+	Q = \int p(\rho) \mathrm{d} \rho
+	\left( \prod_\text{$L$ in coinc.} w_\rho(L) \epsilon(L) \right)
+	\cdot \left( \prod_\text{$L$ in anticoinc.} \big(1 - w_\rho(L) \epsilon(L)\big) \right),
 \end{equation}
+dove $p(\rho)$ è la distribuzione (normalizzata) di $\rho$.
 
 \paragraph{Flusso totale}
 
@@ -97,7 +101,7 @@ a usare la distribuzione solo sulla superficie del pivot.
 Per passare da una distribuzione all'altra,
 il jacobiano non è altro che la proiezione sul piano orizzontale dell'area del pivot
 \begin{equation*}
-	A_\text{hor} = L_x \sqrt{1-(\hat V_x\hat z)^2} \cdot L_y \sqrt{1-(\hat V_y\hat z)^2},
+	A_\text{hor} = L_x \sqrt{1-(\hat V_x\cdot\hat z)^2} \cdot L_y \sqrt{1-(\hat V_y\cdot\hat z)^2},
 \end{equation*}
 dove i simboli hanno lo stesso significato che nella \eqref{eq:lastra}
 e sono riferiti al pivot.
@@ -106,7 +110,7 @@ ma con la distribuzione di raggi non normalizzata sul piano orizzontale\footnote
 Dalle definizioni segue che
 \begin{equation}
 	\label{eq:rate}
-	R = \Phi \cdot Q \cdot A_\text{hor}.
+	R = \Phi \cdot A_\text{hor} \cdot Q.
 \end{equation}
 
 \paragraph{Efficienza}
@@ -114,17 +118,17 @@ Dalle definizioni segue che
 Consideriamo due espressioni logiche, $A$ e $B$, senza lastre in anticoincidenza.
 In questo caso le efficienze delle lastre si fattorizzano e l'accettanza si può scrivere come
 \begin{equation*}
-	Q = \left( \prod_L \epsilon(L) \right) \bar Q,
+	Q = \left( \prod_L \epsilon(L) \right) Q_\text g,
 \end{equation*}
-dove $\bar Q$ la chiamiamo \emph{accettanza geometrica}
+dove $Q_\text g$ la chiamiamo \emph{accettanza geometrica}
 e dipende solo dalle caratteristiche geometriche delle lastre.
 Poniamo che l'espressione $B$ abbia le lastre dell'espressione $A$ più un'altra lastra che chiamiamo $0$.
 Allora il rapporto delle accettanze è l'efficienza della lastra $0$ per una quantità che dipende solo dalla geometria:
 \begin{equation*}
 	\frac{Q_B}{Q_A} = \frac
-	{\left( \epsilon_0 \cdot \prod_{L\neq 0} \epsilon(L) \right) \bar Q_B}
-	{\left( \prod_{L\neq 0} \epsilon(L) \right) \bar Q_A}
-	= \epsilon_0 \frac{\bar Q_B}{\bar Q_A}.
+	{\left( \epsilon_0 \cdot \prod_{L\neq 0} \epsilon(L) \right) Q_{\text{g},B}}
+	{\left( \prod_{L\neq 0} \epsilon(L) \right) Q_{\text{g},A}}
+	= \epsilon_0 \frac{Q_{\text{g},B}}{Q_{\text{g},A}}.
 \end{equation*}
 Invertendo la \eqref{eq:rate}, lo stesso rapporto vale anche
 \begin{equation*}
@@ -132,13 +136,14 @@ Invertendo la \eqref{eq:rate}, lo stesso rapporto vale anche
 \end{equation*}
 da cui infine
 \begin{equation*}
-	\epsilon_0 = \frac{R_B}{R_A} \cdot \frac{\bar Q_A A_{\text{hor},A}}{\bar Q_B A_{\text{hor},B}}.
+	\epsilon_0 = \frac{R_B}{R_A} \cdot \frac{Q_{\text{g},A} A_{\text{hor},A}}{Q_{\text{g},B} A_{\text{hor},B}}.
 \end{equation*}
 
 \subsection{Calcolo dell'accettanza}
 
-Il modo più immediato di calcolare l'integrale \eqref{eq:acc} è con Monte Carlo.
-Sia $i$ un indice che corre lungo $N$ estrazioni di raggi casuali,
+Il modo più immediato di calcolare l'integrale \eqref{eq:acc} è con un Monte Carlo.
+% Sia $i$ un indice che corre lungo $N$ estrazioni di raggi casuali,
+Prendiamo $N$ estrazioni di raggi casuali indicizzate da $i$,
 allora l'espressione che converge in probabilità all'accettanza è
 \begin{align}
 	\label{eq:accmc}

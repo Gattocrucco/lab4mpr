@@ -49,8 +49,6 @@ Tuttavia la livella elettronica non ha uno zero fisso; lo zero va impostato
 appoggiandola su una superficie di riferimento.
 Allora misuriamo l'inclinazione delle lastre con la livella elettronica 
 (gli angoli di Eulero del telefono forniti dal software, che chiamiamo $\alpha_0$ e $\beta_0$),
-\marginpar{Controllare con il telefono di Bob se sono effettivamente questi angoli
-come li sto definendo fin'ora.}
 e poi assumiamo, come detto nella \autoref{sec:teogeom},
 che l'inclinazione media delle lastre sia nulla.
 Questo ci permette di valutare in modo quantitativo quantomeno l'incertezza
@@ -76,10 +74,11 @@ I parametri di una lastra (equazione \ref{eq:lastra}) sono dati da
 		\sin\alpha\sin\beta, & \cos\beta, & -\cos\alpha\sin\beta
 	\end{pmatrix} \\
 	\vec P &= \begin{pmatrix}
-		\Delta X, & \Delta Y - L_y\hat V_y\hat y, & -\Delta Z - \frac12 L_x\hat V_x\hat z
+		\Delta X, & \Delta Y - L_y(\hat V_y\cdot\hat y), & -\Delta Z - \frac12 L_x(\hat V_x\cdot\hat z)
 	\end{pmatrix},
 \end{align*}
-dove abbiamo posto che i lati ``$x$'' delle lastre siano sul piano $xz$.
+dove abbiamo posto che i lati ``$x$'' delle lastre siano sul piano $xz$
+e i calcoli trigonometrici sono al secondo ordine in $\alpha$, $\beta$.
 
 \subsubsection{Incertezza dell'accettanza}
 

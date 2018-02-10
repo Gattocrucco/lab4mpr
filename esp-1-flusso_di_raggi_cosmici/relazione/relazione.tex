@@ -12,7 +12,9 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{graphicx}
 \usepackage[font={sf}]{caption}
+\usepackage{subcaption}
 \usepackage{pdflscape}
+\usepackage{makecell}
 
 \setlength{\marginparwidth}{95pt}
 \let\oldmarginpar\marginpar
@@ -48,9 +50,11 @@ Esperienza 1. Flusso di raggi cosmici (base)}
 
 \section{Teoria}
 
+\input{elettroni_vs_muoni.tex}
+
 \input{geometria.tex}
 
-\input{elettroni_vs_muoni.tex}
+\marginpar{Spettri, rilascio di energia etc.}
 
 \input{coinctm.tex}
 
