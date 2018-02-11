@@ -50,18 +50,27 @@ colonna 4: c3/c2 con l'errore giusto}
 
 \subsubsection{Energia}
 
+\begin{figure}
+	\hspace{-7.5em}
+	\includegraphics[width=1.4\textwidth]{piombo_energia}
+	\caption{\label{fig:piomboenergia}
+	Distribuzione del rilascio di energia sul PM1 con e senza lastre di piombo.
+	L'istogramma ha un numero di bin pari alla radice quadrata del numero di campioni nella presa dati con meno campioni.
+	Nel secondo grafico (la differenza degli istogrammi del primo)
+	le barre d'errore sono riportate ma sono effettivamente molto piccole.}
+\end{figure}
+
 Infine abbiamo eseguito due acquisizioni di lunga durata.
 Nella prima abbiamo messo tutte le lastre a nostra disposizione sul PM1
 e abbiamo acquisito i loro rilasci di energia per tutta la notte.
 Il giorno seguente le abbiamo tolte ed abbiamo preso dati per \SI{4}{ore}.
 In entrambi i casi il trigger dell'ADC è dato dalle coincidenze PM2 \& PM1.
-\marginpar{Aggiungere test di Kolmogorov-Smirnov.}
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=8 cm]{gemelli}
-\caption{MODIFICARE:
-subplot 211: istogrammi;
-subplot 212: differenza degli istogrammi.}
-\label{gemini}    
-\end{figure}
+Il risultato è riportato in \autoref{fig:piomboenergia}.
+Dal grafico della differenza delle distribuzioni
+si nota che la distribuzione con il piombo è spostata verso energia maggiore.
+È in effetti plausibile che i muoni rallentati dal piombo
+rilascino più energia a causa della risalita di ionizzazione.
+Per verifica confrontiamo i due campioni con il test di Kolmogorov-Smirnov a $5\sigma$,
+risulta significativo.
+\marginpar{Dovremmo parlare del fatto che la distribuzione è irregolare (i picchetti non sono statistici).}
