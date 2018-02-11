@@ -21,8 +21,7 @@ al variare del numero di lastre di metallo.
 Abbiamo confrontato i rapporti per non dover tener conto dell'accettanza%
 \footnote{Sia l'efficienza che la geometria.}.
 L'errore sui rapporti è dato dalla formula
-\marginpar{Formula sbagliata!}
-$$ \sigma(C3/C2)= \sqrt{ \frac{C3/C2}{C2(1-C3/C2)} } $$
+$$ \sigma(C3/C2)= \sqrt{ \frac{C3/C2\cdot (1-C3/C2)}{C2} } $$
 che descrive la deviazione standard di un rapporto tra coincidenze in cui si tiene conto della correlazione tra gli eventi in coincidenza a 3 e quelli in coincidenza a 2. La dimostrazione di tale formula è presente in \textbf{Appendice}.
 
 La \autoref{cfr} evidenzia un assorbimento di particelle da parte del piombo%
@@ -34,9 +33,9 @@ La \autoref{cfr} evidenzia un assorbimento di particelle da parte del piombo%
 \hline
 $\#$lastre & \multicolumn{2}{c|}{$C3$} & \multicolumn{2}{c|}{$C2$} & \multicolumn{2}{c|}{$C3/C2$} \\ 
 \hline
-1 & 13455&116 & 20248&142 & 0.664&0.003 \\
-2 & 13328&115 & 20381&143 & 0.654&0.003 \\
-3 & 13400&116 & 20438&143 & 0.655&0.003 \\
+0 & 13455&116 & 20248&142 & 0.664&0.003 \\
+1 & 13328&115 & 20381&143 & 0.654&0.003 \\
+2 & 13400&116 & 20438&143 & 0.655&0.003 \\
 4 & 12715&113 & 20071&142 & 0.633&0.003 \\
 \hline
 \end{tabular}
