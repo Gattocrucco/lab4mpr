@@ -116,7 +116,7 @@ for i in range(len(c)):
     
     
 py.legend(loc="best",fontsize="small")
-#py.show()
+py.show()
 
 # veri errori e parametri
 
@@ -211,7 +211,6 @@ import statistics as stat
 
 colonna=["A","B","C","D"]
 riga=[1,2,3,4]
-rega=["1 +2.5 cm","2","3 +2.5 cm","4"]
 X=array([3.5,13.7,23,32.5])-3.5
 col=["red","green","blue","orange"]
 lista=["o","x","^","v"]    # marker
@@ -247,12 +246,7 @@ for i in range(len(riga)):
     mode*=1000
     orr*=1000
 
-    # grafico
-    if i%2==0:
-        O=X+2.5
-    else:
-        O=X
-    py.errorbar(O,mode,xerr=0,yerr=orr,linestyle="",capsize=2,label="riga %s"%rega[i],marker=lista[i],color=col[i],markersize=7)
+    py.errorbar(X+i/1.5,mode,xerr=0,yerr=orr,linestyle="",capsize=2,label="riga %s"%riga[i],marker=lista[i],color=col[i],markersize=7)
     
 
 py.legend(fontsize="x-small",loc="lower left")
