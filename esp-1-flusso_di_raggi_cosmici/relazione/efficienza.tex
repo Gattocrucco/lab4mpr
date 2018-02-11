@@ -2,7 +2,7 @@
 
 I rivelatori di raggi cosmici di cui disponiamo sono un sistema composto da una lastra di scintillatore plastico, una guida ottica e un fotomoltiplicatore.
 Quando una particella attraversa il rivelatore rilascia energia, portando all'eccitazione o ionizzazione gli elettroni del materiale a cui segue l'emissione di fotoni proporzionalmente all'energia rilasciata.
-I fotoni prodotti propagano nella guida ottica fino a raggiungere il fotomoltiplicatore dove il segnale viene convertito in un impulso in tensione proporzionale alla luce in arrivo.
+I fotoni prodotti propagano nella guida ottica fino a raggiungere il fotomoltiplicatore dove il segnale viene convertito in un impulso proporzionale alla luce in arrivo.
 
 Le caratteristiche più importanti dei nostri rivelatori sono il rapporto segnale/rumore e l'efficienza.
 
@@ -23,20 +23,21 @@ Andiamo brevemente ad analizzarli.
 Come già visto nell'esperienza preliminare la tensione di alimentazione e la soglia dei discriminatori sono i due parametri principali su cui possiamo agire per modificare l'efficienza e conseguentemente rapporto segnale/rumore. La prima constatazione che possiamo fare è che i rivelatori presi singolarmente sono molto rumorosi e non è possibile eseguire una misura di flusso senza abbattere il rumore tramite coincidenze. L'uso delle coincidenze abbatte il rumore ma limita e seleziona l'angolo solido sul quale misuriamo il flusso. Notiamo anche che i rivelatori  hanno un comportamento sostanzialmente disuniforme tra di loro per efficienze massime e rapporto segnale/rumore (a pari efficienza).
 
 \paragraph{Efficienza locale}
-I fotoni sono emessi isotropi nella posizione in cui la particella attraversa la lastra di questi solo una piccola parte raggiunge direttamente il fotomoltiplicatore, il resto in parte raggiunge il PMT dopo essere stato riflesso più volte dalla superficie argentata che avvolge gli scintillatori e nella guida ottica e in parte assorbito. Ci aspettiamo quindi che l'efficienza di rivelazione sia maggiore per le particelle che passano vicine al PMT e non abbiamo motivo di aspettarci un'asimmetria dell'efficienza locale rispetto all'asse di simmetria del rivelatore\footnote{come vedremo più avanti questa previsione verrà disattesa}.
+I fotoni sono emessi isotropi nella posizione in cui la particella attraversa la lastra,
+di questi solo una piccola parte raggiunge direttamente il fotomoltiplicatore, il resto in parte raggiunge il PMT dopo essere stato riflesso più volte dalla superficie argentata che avvolge gli scintillatori e nella guida ottica e in parte assorbito. Ci aspettiamo quindi che l'efficienza di rivelazione sia maggiore per le particelle che passano vicine al PMT e non abbiamo motivo di aspettarci un'asimmetria dell'efficienza locale rispetto all'asse di simmetria del rivelatore\footnote{Come vedremo più avanti questa previsione verrà disattesa.}.
 
 \paragraph{Energia rilasciata}
 L'efficienza dipenderà dalla quantità di fotoni emessi e quindi dall'energia rilasciata dalle particelle. Come detto precedentemente i muoni (che ci attendiamo siano la gran parte del flusso in arrivo) sono MIP per cui in prima approssimazione rilasciano tutti la stessa quantità di energia per unità di lunghezza attraversata (che dipende dall'angolo di incidenza): in ultima analisi l'efficienza dipenderà dall'angolo di incidenza delle particelle.
 Quando mettiamo in coincidenza dei rivelatori stiamo selezionando un certo angolo solido e una certa distribuzione angolare (e della posizione di incidenza) dei raggi in arrivo, per cui l'efficienza varierà al variare delle coincidenze che utilizzeremo.
 
 \paragraph{Tempi morti dell'elettronica}
-I tempi morti dell'elettronica sono responsabili di un inefficienza ineliminabile dei nostri rivelatori e tuttavia spesso sarà necessario aumentare i tempi morti per evitare problemi di retrigger\footnote{ovvero quando i discriminatori scattano più volte sullo stesso segnale}. Il tempo morto totale (e quindi l'inefficienza) aumentano all'aumentare del rumore. Questa inefficienza è facilmente tenuta sotto controllo (basta conoscere il rate e misurare il tempo morto) a differenza delle dipendenze prima esposte, per il quale non disponiamo di un modello utilizzabile.
+I tempi morti dell'elettronica sono responsabili di un'inefficienza ineliminabile dei nostri rivelatori e tuttavia spesso sarà necessario aumentare i tempi morti per evitare problemi di retrigger\footnote{Ovvero quando i discriminatori scattano più volte sullo stesso segnale.}. Il tempo morto totale (e quindi l'inefficienza) aumentano all'aumentare del rumore. Questa inefficienza è facilmente tenuta sotto controllo (basta conoscere il rate e misurare il tempo morto) a differenza delle dipendenze prima esposte, per il quale non disponiamo di un modello utilizzabile.
 
 \paragraph{Rumori ambientali}
 La luce ambientale che riesce a penetrare l'involucro opaco dei rivelatori può aumentare sensibilmente il rumore dei rivelatori. Per limitare questo effetto bisogna migliorare l'opacizzazione degli stessi e provvedere a schermarli ulteriormente dalla luce ambientale.
 
 La conclusione di queste considerazioni è che l'efficienza è una quantità molto difficile da tenere sotto controllo e conoscere con precisione: in linea di principio quando misuro l'efficienza di un rivelatore (ad esempio con un rapporto di rate tra coincidenze  a 2 e a 3) sto misurando l'efficienza di quella precisa configurazione di lastre.
 
-Per ridurre drasticamente la dipendenza dell'efficienza da tutti questi fattori senza necessariamente tenerli in conto o modellizzarli è necessario tenere l'efficienza intrinseca\footnote{qui con efficienza intrinseca intendiamo quella scorporata dall'inefficienza dovuta ai tempi morti che non dipende dalla distribuzione angolare e dalla posizione di incidenza dei raggi.} il più possibile vicino al 100\%. Bisognerà però fare attenzione a tenere sotto controllo il rumore.
+Per ridurre drasticamente la dipendenza dell'efficienza da tutti questi fattori senza necessariamente tenerli in conto o modellizzarli è necessario tenere l'efficienza intrinseca\footnote{Qui con efficienza intrinseca intendiamo quella scorporata dall'inefficienza dovuta ai tempi morti che non dipende dalla distribuzione angolare e dalla posizione di incidenza dei raggi.} il più possibile vicino al 100\%. Bisognerà però fare attenzione a tenere sotto controllo il rumore.
  
  
