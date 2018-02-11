@@ -97,7 +97,7 @@ mcobj.random_samples(N=300000)
 
 print('drawing samples for geometry uncertainty MC...')
 mcgeom = mc.MC(*[mc.pmt(i+1) for i in range(6)])
-mcgeom.random_samples(N=10000)
+mcgeom.random_samples(N=3000)
 mcgeom.sample_geometry(3000)
 
 # create list of expressions to compute
