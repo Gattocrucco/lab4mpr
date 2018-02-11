@@ -39,7 +39,7 @@ def clear_lines(nlines, nrows):
 
 ####### load data #######
 
-def loadtxtlbs(filename, labels, prefit=True):
+def loadtxtlbs(filename, labels, prefit=False):
     data = np.loadtxt(filename, unpack=True)
     datadict = dict()
     if len(data) != len(labels):
@@ -47,7 +47,7 @@ def loadtxtlbs(filename, labels, prefit=True):
     for i in range(len(data)):
         datadict[labels[i]] = data[i]
     p = datadict['prefit']
-    c = p == 1
+    c = p == prefit
     for k in datadict.keys():
         if k != 'prefit':
             datadict[k] = datadict[k][c]
@@ -56,7 +56,7 @@ def loadtxtlbs(filename, labels, prefit=True):
 
 data2lbs = ['sogliaA', 'sogliaB', 'alimA', 'alimB', 'clock', 'A', 'B', 'A&B', 'a&c', 'a&b&c', 'a&b&c&A', 'a&b&c&B', 'PMTA', 'PMTB', 'PMTa', 'PMTb', 'PMTc', 'prefit']
 data2albs = ['sogliaA', 'sogliaB', 'alimA', 'alimB', 'clock', 'A', 'B', 'A&B', 'a&b', 'a&b&B', 'a&b&A', 'a&b&A&B', 'PMTA', 'PMTB', 'PMTa', 'PMTb', 'prefit']
-data3lbs = ['sogliaA', 'sogliaB', 'sogliaC', 'alimA', 'alimB', 'alimC', 'clock', 'C', 'B', 'A&B&C', 'a&b', 'a&b&C', 'a&b&B', 'a&b&A', 'PMTA', 'PMTB', 'PMTC', 'pmta', 'pmtb', 'prefit']
+data3lbs = ['sogliaA', 'sogliaB', 'sogliaC', 'alimA', 'alimB', 'alimC', 'clock', 'C', 'B', 'A&B&C', 'a&b', 'a&b&C', 'a&b&B', 'a&b&A', 'PMTA', 'PMTB', 'PMTC', 'PMTa', 'PMTb', 'prefit']
 dataefflbs = ['sogliaA', 'clock', 'A', 'a&b', 'a&b&A', 'b&c', 'b&c&A', 'b&d', 'b&d&A', 'PMTA', 'PMTa', 'PMTb', 'PMTc', 'PMTd', 'prefit']
 
 data2 = loadtxtlbs('fitdata2.txt', data2lbs)
@@ -214,7 +214,7 @@ def f_fit(distr_par, options={}, lamda=1):
     # process data2
     fluxes2 = []
     for i in range(len(data2['clock'])):
-        assert(data2['prefit'][i])
+        # # assert(data2['prefit'][i])
         time = un.ufloat(data2['clock'][i], 0.5, tag="data2_%dtime" % i) * 1e-3
     
         count = lambda label: un.ufloat(data2[label][i], np.sqrt(data2[label][i]), tag="data2_%dcount%s" % (i, label))
@@ -247,7 +247,7 @@ def f_fit(distr_par, options={}, lamda=1):
     # process data2a
     fluxes2a = []
     for i in range(len(data2a['clock'])):
-        assert(data2a['prefit'][i])
+        # assert(data2a['prefit'][i])
         time = un.ufloat(data2a['clock'][i], 0.5, tag="data2a_%dtime" % i) * 1e-3
     
         count = lambda label: un.ufloat(data2a[label][i], np.sqrt(data2a[label][i]), tag="data2a_%dcount%s" % (i, label))
@@ -281,7 +281,7 @@ def f_fit(distr_par, options={}, lamda=1):
     # process data3
     fluxes3 = []
     for i in range(len(data3['clock'])):
-        assert(data3['prefit'][i])
+        # assert(data3['prefit'][i])
         time = un.ufloat(data3['clock'][i], 0.5, tag="data3_%dtime" % i) * 1e-3
     
         count = lambda label: un.ufloat(data3[label][i], np.sqrt(data3[label][i]), tag="data3_%dcount%s" % (i, label))
@@ -320,7 +320,7 @@ def f_fit(distr_par, options={}, lamda=1):
     # process dataeff
     efficiencies = []
     for i in range(len(dataeff['clock'])):
-        assert(dataeff['prefit'][i])
+        # assert(dataeff['prefit'][i])
         time = un.ufloat(dataeff['clock'][i], 0.5, tag="dataeff_%dtime" % i) * 1e-3
     
         count = lambda label: dataeff[label][i]
@@ -369,7 +369,9 @@ def f_fit(distr_par, options={}, lamda=1):
 up0 = [
     (2, 0.3), # total flux divided by 100
     (3.5, 1.5)
-] + [(0.9, 0.1)] * len(dataeff['clock'])
+] + [(0.9, 0.1)] * len(dataeff['clock']) + [
+    (0, 0.2)
+]
 p0 = [u[0] for u in up0]
 simplex = [[u[0] - u[1] for u in up0]]
 for i in range(len(up0)):
@@ -392,10 +394,11 @@ fig.show()
 def squares(parameters, args={}):
     total_flux = parameters[0] * 100
     distr_par = parameters[1]
-    efficiencies = parameters[2:]
+    efficiencies = parameters[2:-1]
+    lamda = 10 ** parameters[-1]
     
     # note: memoizing on distr_par would have very little effect
-    fluxes2, fluxes2a, fluxes3, effs = f_fit(distr_par, options=args)
+    fluxes2, fluxes2a, fluxes3, effs = f_fit(distr_par, options=args, lamda=lamda)
     fluxes = fluxes2 + fluxes2a + fluxes3
 
     vect = [flux - total_flux for flux in fluxes]
@@ -489,7 +492,7 @@ def plot_curvature(x0, ix, sx, n=10, geom={}):
     trace = args['trace']
     x = np.array(trace['pars'][ix])
     y = np.array(trace['Qs'])
-    fig = plt.figure('curvature')
+    fig = plt.figure('curvature_single')
     fig.clf()
     ax = fig.add_subplot(111)
     ax.plot(np.sort(x), y[np.argsort(x)], '-k.')
@@ -507,8 +510,10 @@ def hessian(p0, dps, n='auto', geom={}, fig=None):
     
     Returns
     -------
-    Hessian (the inverse of the covariance) with uncertainties
+    minima, Hessian (the inverse of the covariance) with uncertainties
     """
+    assert(len(p0) == len(dps))
+    
     # compute at p0 (eventually computing geometry uncertainty)
     args = dict(log=True, trace={}, geometry_factors=geom)
     squares(p0, args)
@@ -524,6 +529,7 @@ def hessian(p0, dps, n='auto', geom={}, fig=None):
         G = gridspec.GridSpec(len(p0), len(p0))
     
     curvature = np.empty((len(p0), len(p0)), dtype=object)
+    PAR = np.empty(len(p0), dtype=object)
     
     # compute diagonal elements
     for i in range(len(p0)):
@@ -543,8 +549,9 @@ def hessian(p0, dps, n='auto', geom={}, fig=None):
         x = x[s]
         y = y[s]
         f = interpolate.interp1d(x, y)
-        L = optimize.bisect(lambda x: f(x) - (Q0 + 3), x[0], p0[i])
-        R = optimize.bisect(lambda x: f(x) - (Q0 + 3), p0[i], x[-1])
+        deltachi2 = 15 if i == 1 else 3
+        L = optimize.bisect(lambda x: f(x) - (Q0 + deltachi2), x[0], p0[i])
+        R = optimize.bisect(lambda x: f(x) - (Q0 + deltachi2), p0[i], x[-1])
         
         # compute n points inside +3 chi^2 limits and fit parabola
         ps = np.linspace(L, R, N)
@@ -556,6 +563,7 @@ def hessian(p0, dps, n='auto', geom={}, fig=None):
         par, cov = optimize.curve_fit(parabola, x, y, p0=(1/((R-L)/6)**2, p0[i], Q0/2))
         assert(par[0] > 0)
         curvature[i, i] = un.ufloat(par[0], np.sqrt(cov[0,0]), tag='curv_%d%d' % (i, i))
+        PAR[i] = un.ufloat(par[1], np.sqrt(cov[1,1]), tag='x_0_%d%d' % (i, i))
         
         # plot
         if not (fig is None):
@@ -608,17 +616,19 @@ def hessian(p0, dps, n='auto', geom={}, fig=None):
                 ax.plot(xp, parabola(xp, *par), '-r', label='fit')
                 ax.legend(fontsize='small')
     
-    return curvature
+    return PAR, curvature
 
-def res_plot(par, geom, cov=None, p1=None):
+def res_plot(par, geom, cov=None, p1=None, **kw):
     par = np.copy(par)
     if not (p1 is None):
         par[1] = p1
-    fluxes2, fluxes2a, fluxes3, effs = f_fit(par[1], options={'geometry_factors': geom}, lamda=par[-1])
+    kwargs = dict(options={'geometry_factors': geom}, lamda=10**par[-1])
+    kwargs.update(kw)
+    fluxes2, fluxes2a, fluxes3, effs = f_fit(par[1], **kwargs)
     
     fig = plt.figure('residuals')
     fig.clf()
-    G = gridspec.GridSpec(5, 3)
+    G = gridspec.GridSpec(len(par) - 3, 3)
     
     # fluxes plot
     idxs = np.arange(len(fluxes2) + len(fluxes2a) + len(fluxes3))[::-1]
@@ -662,11 +672,11 @@ def res_plot(par, geom, cov=None, p1=None):
     
     fig.show()
 
-fit_options = dict(disp=True, xatol=1e-4, fatol=1e-3, initial_simplex=simplex)
+fit_options = dict(disp=True, xatol=2e-4, fatol=2e-3, initial_simplex=simplex)
 
 print('computing geometrical uncertainty...')
-args = dict(log=True, plot=False, plotline=line, trace={})
-f_fit(p0[1], args)
+args = dict(log=True, plot=True, plotline=line, trace={})
+f_fit(p0[1], args, lamda=p0[-1])
 
 print('first (of 3) fit...')
 out1 = optimize.minimize(squares, p0, args=(args,), method='Nelder-Mead', options=fit_options)
@@ -675,7 +685,7 @@ geom1 = args['geometry_factors']
 
 print('recomputing geometrical uncertainty...')
 args.pop('geometry_factors')
-f_fit(out1.x[1], args)
+f_fit(out1.x[1], args, lamda=out1.x[-1])
 
 line, = ax.plot([p0[0]], [p0[1]], 'x', markersize=3)
 args['plotline'] = line
@@ -688,7 +698,7 @@ geom2 = args['geometry_factors']
 
 print('recomputing geometrical uncertainty...')
 args.pop('geometry_factors')
-f_fit(out2.x[1], args)
+f_fit(out2.x[1], args, lamda=out2.x[-1])
 
 line, = ax.plot([p0[0]], [p0[1]], 'x', markersize=2)
 args['plotline'] = line
@@ -700,12 +710,15 @@ trace3 = args['trace']
 geom3 = args['geometry_factors']
 
 print('computing covariance...')
-figcurv = figure('curvature')
-H = hessian(out3.x, [0.1,0.3,0.05,0.05,0.05,0.05,0.05], geom=geom3, fig=figcurv)
+figcurv = plt.figure('curvature')
+upar, H = hessian(out3.x, [0.1, 0.4] + [0.05] * len(dataeff['clock']) + [0.3], geom=geom3, fig=figcurv)
 cov = np.linalg.inv(unp.nominal_values(H))
+par = unp.nominal_values(upar)
 
+print('upar:')
+print(upar)
 print('result:')
-print(lab.format_par_cov(out3.x, cov))
+print(lab.format_par_cov(par, cov))
 
 dof = len(data2['clock']) + len(data2a['clock']) + len(data3['clock']) + 3 * len(dataeff['clock']) - len(out3.x)
 chisq = trace3['Qs'][-1]
