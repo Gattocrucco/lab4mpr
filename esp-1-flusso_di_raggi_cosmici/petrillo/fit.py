@@ -101,7 +101,10 @@ mcgeom.sample_geometry(1000)
 mclist = []
 for i in range(len(data2['clock'])):
     mclist += [
-        {data2['PMTA'][i], data2['PMTB'][i]}
+        {data2['PMTA'][i], data2['PMTB'][i]},
+        {data2['PMTa'][i], data2['PMTb'][i], data2['PMTc'][i]},
+        {data2['PMTa'][i], data2['PMTb'][i], data2['PMTc'][i], data2['PMTA'][i]},
+        {data2['PMTa'][i], data2['PMTb'][i], data2['PMTc'][i], data2['PMTB'][i]}
     ]
 for i in range(len(data2a['clock'])):
     mclist += [
@@ -112,7 +115,11 @@ for i in range(len(data2a['clock'])):
     ]
 for i in range(len(data3['clock'])):
     mclist += [
-        {data3['PMTA'][i], data3['PMTB'][i], data3['PMTC'][i]}
+        {data3['PMTA'][i], data3['PMTB'][i], data3['PMTC'][i]},
+        {data3['PMTa'][i], data3['PMTb'][i]},
+        {data3['PMTa'][i], data3['PMTb'][i], data3['PMTA'][i]},
+        {data3['PMTa'][i], data3['PMTb'][i], data3['PMTB'][i]},
+        {data3['PMTa'][i], data3['PMTb'][i], data3['PMTC'][i]}
     ]
 for i in range(len(dataeff['clock'])):
     mclist += [
@@ -157,7 +164,7 @@ while len(mclist) > 0:
 
 ####### fit function #######
 
-def f_fit(distr_par, options={}):
+def f_fit(distr_par, options={}, lamda=1):
     # compute rays
     distr = lambda x: x ** (1 / (1 + distr_par)) # vedi logbook:fit
     mcobj.ray(distr)
@@ -220,13 +227,16 @@ def f_fit(distr_par, options={}):
         countabcA = count('a&b&c&A')
         countabcB = count('a&b&c&B')
     
+        mcAB   = mcexprs[frozenset({data2['PMTA'][i], data2['PMTB'][i]}                                    )]
+        mcabc  = mcexprs[frozenset({data2['PMTa'][i], data2['PMTb'][i], data2['PMTc'][i]}                  )]
+        mcabcA = mcexprs[frozenset({data2['PMTa'][i], data2['PMTb'][i], data2['PMTc'][i], data2['PMTA'][i]})]
+        mcabcB = mcexprs[frozenset({data2['PMTa'][i], data2['PMTb'][i], data2['PMTc'][i], data2['PMTB'][i]})]
+    
+        noiseAB = lamda * rateA * rateB * (data2sigA + data2sigB)
+    
         eff = lambda c3, c2, tag: un.ufloat(c3.n / c2.n, np.sqrt(c3.n/c2.n * (1 - c3.n/c2.n) * 1/c2.n * (1 + 1/c2.n)), tag="data2_%deff%s" % (i, tag))
-        effA = eff(countabcA, countabc, 'A')
-        effB = eff(countabcB, countabc, 'B')
-    
-        mcAB = mcexprs[frozenset({data2['PMTA'][i], data2['PMTB'][i]})]
-    
-        noiseAB = rateA * rateB * (data2sigA + data2sigB)
+        effA = eff(countabcA, countabc, 'A') * mcabc / mcabcA
+        effB = eff(countabcB, countabc, 'B') * mcabc / mcabcB
     
         flux = (rateAB - noiseAB) / (mcAB * effA * effB)
         fluxes2.append(flux)
@@ -260,7 +270,7 @@ def f_fit(distr_par, options={}):
         effA = eff(countabAB, countabB, 'A') * mcabB / mcabAB
         effB = eff(countabAB, countabA, 'B') * mcabA / mcabAB
     
-        noiseAB = rateA * rateB * (data2asigA + data2asigB)
+        noiseAB = lamda * rateA * rateB * (data2asigA + data2asigB)
     
         flux = (rateAB - noiseAB) / (mcAB * effA * effB)
         fluxes2a.append(flux)
@@ -278,19 +288,30 @@ def f_fit(distr_par, options={}):
         countabB = count('a&b&B')
         countabC = count('a&b&C')
     
-        rateABC = countABC / time    
-        noiseab = data3ratea * data3rateb * (data3siga + data3sigb)
+        rateABC = countABC / time
+        rateB = count('B') / time
+        rateC = count('C') / time
+        
+        noiseab = lamda * data3ratea * data3rateb * (data3siga + data3sigb)
+        noiseabA = lamda * data3rateA * noiseab * (data3siga / 2 + data3sigA)
+        noiseabB = lamda * rateB      * noiseab * (data3siga / 2 + data3sigB)
+        noiseabC = lamda * rateC      * noiseab * (data3siga / 2 + data3sigC)
+        noiseABC = lamda**2 * data3rateA * rateB * rateC * (data3sigA + data3sigB) * (data3sigA / 2 + data3sigC)
+    
+        mcABC = mcexprs[frozenset({data3['PMTA'][i], data3['PMTB'][i], data3['PMTC'][i]})]
+        mcab  = mcexprs[frozenset({data3['PMTa'][i], data3['PMTb'][i]}                  )]
+        mcabA = mcexprs[frozenset({data3['PMTa'][i], data3['PMTb'][i], data3['PMTA'][i]})]
+        mcabB = mcexprs[frozenset({data3['PMTa'][i], data3['PMTb'][i], data3['PMTB'][i]})]
+        mcabC = mcexprs[frozenset({data3['PMTa'][i], data3['PMTb'][i], data3['PMTC'][i]})]
     
         def eff(c3, c2, tag):
-            e = c3.n / c2
+            e = c3 / c2
             return un.ufloat(e.n, np.sqrt(e.n * (1 - e.n) * 1/c2.n * (1 + 1/c2.n)), tag="data3_%deff%s" % (i, tag)) * e / e.n
-        effA = eff(countabA, countab.n - noiseab * time, 'A')
-        effB = eff(countabB, countab.n - noiseab * time, 'B')
-        effC = eff(countabC, countab.n - noiseab * time, 'C')
+        effA = eff(countabA.n - noiseabA * time, countab.n - noiseab * time, 'A') * mcab / mcabA
+        effB = eff(countabB.n - noiseabB * time, countab.n - noiseab * time, 'B') * mcab / mcabB
+        effC = eff(countabC.n - noiseabC * time, countab.n - noiseab * time, 'C') * mcab / mcabC
     
-        mcABC = mcexprs[frozenset({data3['PMTA'][i], data3['PMTB'][i]}, data3['PMTC'][i])]
-    
-        flux = rateABC / (mcABC * effA * effB * effC)
+        flux = (rateABC - noiseABC) / (mcABC * effA * effB * effC)
         fluxes3.append(flux)
 
     # process dataeff
@@ -300,6 +321,7 @@ def f_fit(distr_par, options={}):
         time = un.ufloat(dataeff['clock'][i], 0.5, tag="dataeff_%dtime" % i) * 1e-3
     
         count = lambda label: dataeff[label][i]
+        ucount = lambda label: un.ufloat(dataeff[label][i], np.sqrt(dataeff[label][i]), tag="dataeff_%dcount%s" % (i, label))
         countab = count('a&b')
         countabA = count('a&b&A')
         countbc = count('b&c')
@@ -311,10 +333,14 @@ def f_fit(distr_par, options={}):
         rateb = copy.copy(dataeffrate)
         ratec = copy.copy(dataeffrate)
         rated = copy.copy(dataeffrate)
+        rateA = ucount('A') / time
     
-        noiseab = ratea * rateb * (dataeffsiga + dataeffsigb) * time
-        noisebc = rateb * ratec * (dataeffsigb + dataeffsigc) * time
-        noisebd = rateb * rated * (dataeffsigb + dataeffsigd) * time
+        noiseab = lamda * ratea * rateb * (dataeffsiga + dataeffsigb)
+        noisebc = lamda * rateb * ratec * (dataeffsigb + dataeffsigc)
+        noisebd = lamda * rateb * rated * (dataeffsigb + dataeffsigd)
+        noiseabA = lamda * noiseab * rateA * (dataeffsiga / 2 + dataeffsigA)
+        noisebcA = lamda * noisebc * rateA * (dataeffsigb / 2 + dataeffsigA)
+        noisebdA = lamda * noisebd * rateA * (dataeffsigb / 2 + dataeffsigA)
     
         mcab = mcexprs[frozenset({dataeff['PMTa'][i], dataeff['PMTb'][i]})]
         mcbc = mcexprs[frozenset({dataeff['PMTb'][i], dataeff['PMTc'][i]})]
@@ -326,9 +352,9 @@ def f_fit(distr_par, options={}):
         def eff(c3, c2, tag):
             e = c3 / c2
             return un.ufloat(e.n, np.sqrt(e.n * (1 - e.n) * 1/c2.n * (1 + 1/c2.n)), tag="dataeff_%deff%s" % (i, tag)) * e / e.n
-        effAab = eff(countabA, countab - noiseab, 'Aab') * mcab / mcabA
-        effAbc = eff(countbcA, countbc - noisebc, 'Abc') * mcbc / mcbcA
-        effAbd = eff(countbdA, countbd - noisebd, 'Abd') * mcbd / mcbdA
+        effAab = eff(countabA - noiseabA * time, countab - noiseab * time, 'Aab') * mcab / mcabA
+        effAbc = eff(countbcA - noisebcA * time, countbc - noisebc * time, 'Abc') * mcbc / mcbcA
+        effAbd = eff(countbdA - noisebdA * time, countbd - noisebd * time, 'Abd') * mcbd / mcbdA
     
         efficiencies.append((effAab, effAbc, effAbd))
    
@@ -581,7 +607,10 @@ def curvature(p0, dps, n='auto', geom={}, fig=None):
     
     return curvature
 
-def res_plot(par, geom):
+def res_plot(par, geom, p1=None):
+    par = np.copy(par)
+    if not (p1 is None):
+        par[1] = p1
     fluxes2, fluxes2a, fluxes3, effs = f_fit(par[1], {'geometry_factors': geom})
     
     fig = plt.figure('residuals')
