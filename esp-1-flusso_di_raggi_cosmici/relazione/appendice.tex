@@ -75,13 +75,38 @@ Quindi infine
 	&= \epsilon(1-\epsilon)\frac{\Ei(\mu) - \log\mu - \gamma}{e^\mu - 1}.
 \end{align*}
 Vediamo l'andamento per $\mu$ grande.
-Vale $\Ei(\mu) \approx e^{\mu}/\mu$, dunque
+Vale $\Ei(\mu) \approx e^{\mu}/\mu$ (vedi \autoref{sec:asintmu}), dunque
 \begin{align*}
 	\operatorname{Var}[\hat\epsilon]
 	&\approx \frac{\epsilon(1-\epsilon)}{\mu}.
 \end{align*}
 
-\paragraph{Sviluppo asintotico in $\mu$}
+\subsection{Correlazione}
+\label{sec:rappcorr}
+
+Consideriamo un'ulteriore coincidenza $B'$ del tipo di $B$,
+cioè con una lastra in più rispetto ad $A$.
+Supponiamo che, dato un raggio che fa scattare $A$,
+far scattare $B$ e far scattare $B'$ siano due eventi indipendenti.
+Calcoliamo la correlazione tra $\hat\epsilon$ e $\hat\epsilon'=k_B'/k_A$.
+Siano le variabili primate le corrispondenti delle variabili non primate.
+\begin{align*}
+	P(k_B,k_B'|k_A)
+	&= P(k_B|k_A) P(k_B'|k_A) \\
+	P(k_A,k_B,k_B')
+	&= P(k_B,k_B'|k_A) P(k_A) = \\
+	&= P(k_A) P(k_B|k_A) P(k_B'|k_A) \\
+	E[\hat\epsilon \hat\epsilon']
+	&= \sum_{k_Bk_B'k_A} P(k_A) P(k_B|k_A) P(k_B'|k_A) \frac{k_Bk_B'}{k_A^2} = \\
+	&= \sum_{k_A} \frac{P(k_A)}{k_A^2} E[k_B|k_A] E[k_B'|k_A] = \\
+	&= \sum_{k_A} \frac{P(k_A)}{k_A^2} k_A\epsilon\,k_A\epsilon' = \\
+	&= \epsilon\epsilon' \\
+	\operatorname{Cov}[\hat\epsilon,\hat\epsilon']
+	&= E[\hat\epsilon\hat\epsilon'] - E[\hat\epsilon]E[\hat\epsilon'] = 0.
+\end{align*}
+
+\subsection{Sviluppo asintotico in $\mu$}
+\label{sec:asintmu}
 
 Dimostriamo lo sviluppo asintotico della funzione $\Ei$ usato precedentemente
 e calcoliamo anche i termini superiori al primo.

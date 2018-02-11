@@ -111,9 +111,9 @@ Teniamo conto di tutte le correlazioni, con queste eccezioni:
 	\item Nel calcolo delle efficienze per le misure ``eff'' e ``2a''
 	non calcoliamo la correlazione tra i vari rapporti di conteggi;
 	tuttavia stimiamo che sia piccola.
-	Per le efficienze nelle misure ``2'' e ``3'' abbiamo calcolato
-	che la correlazione tra i rapporti di conteggi è nulla
-	(vedi \autoref{sec:vareff}).
+	Per le efficienze nelle misure ``2'' e ``3'' abbiamo calcolato che,
+	quando le lastre per calcolare l'efficienza sono esterne a quelle per misurare il flusso,
+	la correlazione tra i rapporti di conteggi è nulla (vedi \autoref{sec:rappcorr}).
 \end{itemize}
 
 \paragraph{Monte Carlo}
@@ -128,7 +128,7 @@ e poi nel fit applichiamo una statistica che dipende da $\alpha$ per ottenere la
 \paragraph{Covarianza della stima}
 
 Per stimare la matrice di covarianza della stima dei parametri
-usiamo il metodo standard di invertire la matrice di curvatura (l'hessiana) di $X/2$.
+usiamo il metodo standard di invertire l'hessiana di $X/2$.
 Tuttavia $X$ non è derivabile con i metodi numerici standard rispetto ad $\alpha$ perché
 il calcolo Monte Carlo è per sua natura discreto.
 Allora calcoliamo la curvatura in questo modo:
@@ -146,7 +146,7 @@ Allora calcoliamo la curvatura in questo modo:
 		Fittiamo la parabola $\frac12a(x-x_0)^2+y_0$ dove $\mathbf x=\mathbf p\sqrt{a_p} + \mathbf q\sqrt{a_q}$.
 		Sia $a_{pq}$ il risultato per $a$, allora la derivata incrociata è data da
 		\begin{equation*}
-			\frac{\partial^2}{\partial p\partial q} \frac X2 = (2a_{pq} - 1)\sqrt{a_p}\sqrt{a_q}.
+			\frac{\partial^2}{\partial p\partial q} \frac X2 = (a_{pq} - 1)\sqrt{a_p}\sqrt{a_q}.
 		\end{equation*}
 \end{description}
 
