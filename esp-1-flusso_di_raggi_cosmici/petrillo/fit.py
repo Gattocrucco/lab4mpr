@@ -8,8 +8,9 @@ from collections import OrderedDict
 from scipy import optimize, linalg, interpolate
 import time
 from matplotlib import pyplot as plt
-from matplotlib import gridspec
+from matplotlib import gridspec, patches
 import sys
+import lab
 
 ####### things #######
 
@@ -90,12 +91,14 @@ dataeffsigd = data3sigb
 ####### prepare monte carlo #######
 
 # draw samples
+print('drawing samples for acceptances MC...')
 mcobj = mc.MC(*[mc.pmt(i+1) for i in range(6)])
-mcobj.random_samples(N=100000)
+mcobj.random_samples(N=300000)
 
+print('drawing samples for geometry uncertainty MC...')
 mcgeom = mc.MC(*[mc.pmt(i+1) for i in range(6)])
-mcgeom.random_samples(N=1000)
-mcgeom.sample_geometry(1000)
+mcgeom.random_samples(N=10000)
+mcgeom.sample_geometry(3000)
 
 # create list of expressions to compute
 mclist = []
@@ -379,7 +382,7 @@ fig = plt.figure('Simplex')
 fig.clf()
 ax = fig.add_subplot(111)
 line, = ax.plot([p0[0]], [p0[1]], 'x', markersize=3)
-lastline, = ax.plot([p0[0]], [p0[1]], 'kx', markersize=8)
+lastline, = ax.plot([p0[0]], [p0[1]], 'kx', markersize=8, zorder=10)
 a = [s[0] for s in simplex]
 ax.set_xlim(min(a), max(a))
 a = [s[1] for s in simplex]
@@ -392,7 +395,7 @@ def squares(parameters, args={}):
     efficiencies = parameters[2:]
     
     # note: memoizing on distr_par would have very little effect
-    fluxes2, fluxes2a, fluxes3, effs = f_fit(distr_par, args)
+    fluxes2, fluxes2a, fluxes3, effs = f_fit(distr_par, options=args)
     fluxes = fluxes2 + fluxes2a + fluxes3
 
     vect = [flux - total_flux for flux in fluxes]
@@ -588,13 +591,13 @@ def curvature(p0, dps, n='auto', geom={}, fig=None):
             x = x_i / sigma_i + x_j / sigma_j
             y = np.array(args['trace']['Qs'][-N:]) / 2
             fit_p0 = [
-                1/4 * (cii.n**2 + cjj.n**2), # corresponds to cij = 0
+                1/2, # corresponds to cij = 0
                 p0[i] / sigma_i + p0[j] / sigma_j,
                 Q0 / 2
             ]
             par, cov = optimize.curve_fit(parabola, x, y, p0=fit_p0)
             ctpp = un.ufloat(par[0], np.sqrt(cov[0,0]), tag='curv_%d+%d' % (i, j))
-            curvature[i, j] = (4 * ctpp - cii**2 - cjj**2) / (2 * umath.sqrt(cii * cjj))
+            curvature[i, j] = (2 * ctpp - 1) * umath.sqrt(cii * cjj)
             curvature[j, i] = curvature[i, j]
         
             # plot
@@ -607,11 +610,11 @@ def curvature(p0, dps, n='auto', geom={}, fig=None):
     
     return curvature
 
-def res_plot(par, geom, p1=None):
+def res_plot(par, geom, cov=None, p1=None):
     par = np.copy(par)
     if not (p1 is None):
         par[1] = p1
-    fluxes2, fluxes2a, fluxes3, effs = f_fit(par[1], {'geometry_factors': geom})
+    fluxes2, fluxes2a, fluxes3, effs = f_fit(par[1], options={'geometry_factors': geom}, lamda=par[-1])
     
     fig = plt.figure('residuals')
     fig.clf()
@@ -661,22 +664,51 @@ def res_plot(par, geom, p1=None):
 
 fit_options = dict(disp=True, xatol=1e-4, fatol=1e-3, initial_simplex=simplex)
 
-# compute geometry once with initial parameters
-args = dict(log=True, plot=True, plotline=line, trace={})
+print('computing geometrical uncertainty...')
+args = dict(log=True, plot=False, plotline=line, trace={})
 f_fit(p0[1], args)
 
+print('first (of 3) fit...')
 out1 = optimize.minimize(squares, p0, args=(args,), method='Nelder-Mead', options=fit_options)
 trace1 = args['trace']
 geom1 = args['geometry_factors']
 
-# compute geometry again with fit result
+print('recomputing geometrical uncertainty...')
 args.pop('geometry_factors')
 f_fit(out1.x[1], args)
+
+line, = ax.plot([p0[0]], [p0[1]], 'x', markersize=3)
+args['plotline'] = line
+args['trace'] = {}
+
+print('second (of 3) fit...')
+out2 = optimize.minimize(squares, p0, args=(args,), method='Nelder-Mead', options=fit_options)
+trace2 = args['trace']
+geom2 = args['geometry_factors']
+
+print('recomputing geometrical uncertainty...')
+args.pop('geometry_factors')
+f_fit(out2.x[1], args)
 
 line, = ax.plot([p0[0]], [p0[1]], 'x', markersize=2)
 args['plotline'] = line
 args['trace'] = {}
 
-out2 = optimize.minimize(squares, p0, args=(args,), method='Nelder-Mead', options=fit_options)
-trace2 = args['trace']
-geom2 = args['geometry_factors']
+print('third fit...')
+out3 = optimize.minimize(squares, p0, args=(args,), method='Nelder-Mead', options=fit_options)
+trace3 = args['trace']
+geom3 = args['geometry_factors']
+
+print('computing covariance...')
+c = curvature(out3.x, [0.1,0.3,0.05,0.05,0.05,0.05,0.05], geom=geom3)
+cov = np.linalg.inv(unp.nominal_values(c))
+
+print('result:')
+print(lab.format_par_cov(out3.x, cov))
+
+dof = len(data2['clock']) + len(data2a['clock']) + len(data3['clock']) + 3 * len(dataeff['clock']) - len(out3.x)
+chisq = trace3['Qs'][-1]
+
+print('chi2 = %.1f (dof = %d), chi2/dof = %.1f' % (chisq, dof, chisq / dof))
+
+res_plot(out3.x, geom3, cov=cov)
