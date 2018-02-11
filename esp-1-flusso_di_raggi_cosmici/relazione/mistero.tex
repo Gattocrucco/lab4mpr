@@ -1,24 +1,22 @@
 \subsection{Rumore anomalo}
 \label{rumore}
 
-Quando abbiamo analizzato il file signal\_2000.dat ci siamo accorti del picco descritto nella \autoref{cenno}. Descriviamo le operazioni eseguite per capirne l'origine o cercare di delinearne la dipendenza dalle grandezze in gioco nel caso in cui non riuscissimo a scoprirne la causa.
+Come accennato in \autoref{cenno} analizzando gli spettri energetici di segnale e rumore ci siamo accorti che ad alte tensioni (la cosa è evidente a $\SI{2000}{V}$ in \autoref{quattro}) lo spettro del segnale mostra un eccesso nella zona a basse energie, quella popolata dal rumore, forte indizio che si tratti in realtà di falsi positivi. I conteggi in questa zona sono però più del 10\% del totale, quasi 2 ordini di grandezza più di quanto atteso dalla previsione teorica al prim'ordine delle coincidenze casuali: $R_1 R_2 \Delta t$, dove $R_1$ e $R_2$ sono i rate e $\Delta t$ è la somma delle durate dei segnali.
 
-Iniziamo accorgendoci che le coincidenze a tre sono molto diverse da quelle a 2 e cambiamo le soglie per vedere se hanno una qualche influenza sui dati, ma non riscontriamo nulla. Pensiamo che la causa del fenomeno siano i retrigger, ma non notiamo nessun miglioramento dopo aver inserito un circuito di antiretrigger. Allora attacchiamo il preamplificatore al PMT4 per vedere se il problema era del PMT5: non notiamo differenze, però sospettiamo che a volte il trigger dell'amplificatore scatti quando quello che abbiamo costruito per l'ADC non lo fa.
-\marginpar{aggiungere foto?}
-Pensiamo che questi rumori facciano scattare le coincidenze a 2 ma non quelle a 3. Allora facciamo 4\&2\&$\neq$3 per vedere quali segnali fanno scattare una coincidenza a 2 ma non a 3. Scopriamo che sono segnali che non superano i \SI{200}{mV}, ovvero sono in quella zona che a \SI{2000}V è dominata dal rumore. Questo ci fa pensare che siano coincidenze casuali nonostante siano molto più frequenti di quanto calcolato con la formula al primo ordine $R_1 R_2 \Delta t$. 
-Modifichiamo il circuito di misura in modo da contare la differenza tra coincidenze a 2 e coincidenze a 3.
-A questo punto ripetiamo le misure precedenti ma senza ADC e non notiamo differenze.
-Poi ci accorgiamo che abbiamo fatto alcune misure tenendo collegato l'oscilloscopio, quindi le terminazioni inadatte hanno rovinato la lettura di alcuni segnali. Dopo averlo scollegato la situazione non è cambiata per niente. A questo punto ci viene in mente che un rumore correlato può venire soltanto dall'alimentatore ad alta tensione o direttamente dalla rete elettrica. Quindi facciamo le stesse misure di prima ma con un  \texttt{alimentatore HV NIM} e poi con entrambi gli alimentatori a nostra disposizione, ma senza risultati. Come ``ultima spiaggia'' ritardiamo molto il segnale di un PMT in modo che non possa mai essere in coincidenza a 2 con un altro a nostra scelta. I conteggi che otteniamo da questa ``coincidenza'' sono compatibili con le coincidenze casuali attese. 
-Infine copriamo l'apparato con un telo nero: i conteggi di alcuni PMT si dimezzano, ma la differenza tra coincidenze a 2 e a 3 rimane la stessa.
+Inizialmente si è pensato ad un problema del trigger dell'ADC ma l'ipotesi è stata scartata perchè il problema si presenta anche eliminando l'ADC dal circuito. Le misure riportate in \autoref{orrore} sono ben rappresentative del problema: si è fatta una normale misura di efficienza sul PMT3, usando i PMT2 e 5\footnote{Si sono cioè misurate le coincidenze 2\&5 e 2\&3\&5.}. La tensione di alimentazione del PMT3 era massima ($\SI{2000}{V}$) e la misura è stata ripetuta al variare dell'alimentazione dei PMT2 e 5, spaziando da $\SI{1800}{V}$ a $\SI{2000}{V}$. Per valutare sperimentalmente il rumore dovuto alle coincidenze casuali si sono misurate le coincidenze tra PMT2 e il segnale del PMT5 ritardato abbastanza da poter eliminare qualsiasi correlazione temporale residua (decine di $\si{\micro s}$).
+Come è evidente dalle misure il rapporto tra coincidenze a 3 e coincidenze a 2 che dovrebbe essere l'efficienza (a meno della correzione per le coincidenze casuali) è $\sim 100\%$ per basse tensioni dei PMT esterni (e quindi bassi rate) e scende fino al $\sim 70\%$ a $\SI{2000}{V}$ (ovvero rate elevati) e questa differenza non è in nessun modo giustificata dalle coincidenze casuali previste dalla teoria che ben si accordano con quelle misurate con le coincidenze ritardate. Sembra quindi che ci siano coincidenze di impulsi che non sono segnale ma che sono correlate temporalmente.
 
-Concludiamo che il rumore anomalo dipende solo dai conteggi dei singoli PMT.
-La \autoref{orrore} riporta i risultati di una serie di misure semplici da comprende con una breve occhiata e riassume in modo quantitativo la complicata situazione sopra descritta. 
+Abbiamo verificato sperimentalmente che questo tipo di rumore anomalo viene ridotto (ma non eliminato) aumentando il numero di rivelatori in coincidenza e che sembra dipende solo dal rate e non dal particolare valore di alimentazione e soglia.
+
+Abbiamo escluso che la luce ambientale possa avere un ruolo in questo rumore, coprendo completamente l'apparato e spegnendo la luce, senza riscontrare cambiamenti.
+
+Sospettiamo si possa trattare di rumore sulla linea elettrica, non soppresso dall'alimentatore, che correla temporalmente tra di loro segnali di rumore su canali diversi.
 
 \begin{table}
 \centering
 \begin{tabular}{c|c|c|c|c|c|c}
 \hline
-alimentazione [V] & PM5 & PM3 & PM2 & 5\&2 & 5rit\&2 & 5\&3\&2 \\
+alim. PM2 e 5[V] & PM5 & PM3 & PM2 & 5\&2 & 5rit\&2 & 5\&3\&2 \\
 \hline
 2000 & 86781 & 3289968 & 137650 & 2092 & 50 & 1457 \\
 1950 & 49883 & 3154704 & 105920 & 1824 & 25 & 1467 \\
@@ -27,6 +25,6 @@ alimentazione [V] & PM5 & PM3 & PM2 & 5\&2 & 5rit\&2 & 5\&3\&2 \\
 1800 & 6069 & 3161410 & 8943 & 1087 & 0 & 1068 \\
 \hline
 \end{tabular}
-\caption{Misure di rumore per varie tensioni di alimentazione del PMT5 e PMT2. L'alimentazione del PMT3 è 2000\,V. Ogni misura è stata eseguita in 100\,s e l'errore su tutti i conteggi è la loro radice quadrata.}
+\caption{Misure di "efficienza" al variare della tensioni di alimentazione dei PMT esterni con misura delle coincidenze casuali tra questi ultimi attraverso coincidenze ritardate. L'alimentazione del PMT3 è 2000\,V. Tempo di acquisizione 100\,s..}
 \label{orrore}
 \end{table}
