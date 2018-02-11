@@ -30,13 +30,11 @@ print('piombo: media = {}\nsenza piombo: media = {}'.format(mu1, mu2))
 ############ PLOT ############
 
 #nbins = int(sqrt(min(len(data2), len(data1))))
-nbins = 256
+nbins = 500
 # crea istogrammi
-#MIN = min(min(data1), min(data2))
-#MAX = max(max(data1), max(data2))
+MIN = -3.3/8192
+MAX = 5999*3.3/8192
 
-MIN = 3.3/8192
-MAX = 3.3/8192*2049
 counts1, edges = histogram(data1, bins=nbins, range=(MIN, MAX))
 counts2, edges = histogram(data2, bins=nbins, range=(MIN, MAX))
 counts1 = counts1 / len(data1) / (MAX - MIN)
@@ -44,6 +42,7 @@ counts2 = counts2 / len(data2) / (MAX - MIN)
 
 figure('piombo energia').set_tight_layout(False)
 clf()
+xlims = (-.01,1)
 
 # plot istogrammi insieme
 subplot(211)
@@ -58,6 +57,7 @@ plot(dup_edges, dup_counts, '-k', label='con piombo', linewidth=1)
 ylabel('densità [arb.un.$^{-1}$]')
 legend(loc=0, fontsize='small')
 xticks([])
+xlim(*xlims)
 
 # plot differenza istogrammi
 subplot(212)
@@ -73,11 +73,12 @@ dup_counts[2 * arange(len(edges) - 1) + 2] = counts1 - counts2
 plot(dup_edges, dup_counts, '-k', label='piombo $-$ senza piombo', linewidth=1)
 centers = edges[:-1] + (edges[1]-edges[0])/2
 def error(counts, data):
-    return sqrt(counts) / len(data) / (MAX - MIN)
+    return sqrt(counts*len(data) * (MAX - MIN)) / len(data) / (MAX - MIN)
 errors = sqrt(error(counts1, data1)**2 + error(counts2, data2)**2)
 errorbar(centers, counts1 - counts2, yerr=errors, fmt=',k', capsize=0)
 legend(loc=0, fontsize='small')
 ylabel('densità [arb.un.$^{-1}$]')
+xlim(*xlims)
 
 xlabel('energia [arb.un.]')
 
