@@ -13,19 +13,6 @@ Le lastre di metallo ricoprono circa l'\SI{80}\% delle lastre di scintillatore.
 
 \subsubsection{Conteggi}
 
-Abbiamo posizionato le lastre di metallo tra il PM3 ed il PM4
-per vedere se esse riuscivano a fermare parte dei raggi cosmici.
-
-Per fare questa misura abbiamo confrontato il rapporto tra le coincidenze 5\&4\&3 e 5\&4
-al variare del numero di lastre di metallo.
-Abbiamo confrontato i rapporti per non dover tener conto dell'accettanza%
-\footnote{Sia l'efficienza che la geometria.}.
-L'errore sui rapporti è dato dalla formula
-$$ \sigma(C3/C2)= \sqrt{ \frac{C3/C2\cdot (1-C3/C2)}{C2} } $$
-che descrive la deviazione standard di un rapporto tra coincidenze in cui si tiene conto della correlazione tra gli eventi in coincidenza a 3 e quelli in coincidenza a 2. La dimostrazione di tale formula è presente in \textbf{Appendice}.
-
-La \autoref{cfr} evidenzia un assorbimento di particelle da parte del piombo: si tratta probabilmente degli elettroni che sono riusciti ad attraversare il tetto\footnote{Sospettiamo che il 2\si{\degree} e 3\si{\degree} rapporto siano compatibili perché la lastra aggiunta era d'alluminio.}.
-
 \begin{table}
 \centering
 \begin{tabular}{| c | r @{\,$\pm$\,} l | r @{\,$\pm$\,} l | r @{\,$\pm$\,} l |}
@@ -42,13 +29,25 @@ $\#$lastre & \multicolumn{2}{c|}{$C3$} & \multicolumn{2}{c|}{$C2$} & \multicolum
 \label{dati cfr}
 \end{table}
 
-
 \begin{figure}
 \centering
 \includegraphics[width=8 cm]{confronto}
 \caption{Rapporto tra coincidenze a 3 ($C3$) e coincidenze a 2 ($C2$) in funzione delle lastre di materiale inserite.}
 \label{cfr}
 \end{figure}
+
+Abbiamo posizionato le lastre di metallo tra il PM3 ed il PM4
+per vedere se esse riuscivano a fermare parte dei raggi cosmici.
+
+Per fare questa misura abbiamo confrontato il rapporto tra le coincidenze 5\&4\&3 e 5\&4
+al variare del numero di lastre di metallo.
+Abbiamo confrontato i rapporti per non dover tener conto dell'accettanza%
+\footnote{Sia l'efficienza che la geometria.}.
+L'errore sui rapporti è dato dalla formula
+$$ \sigma(C3/C2)= \sqrt{ \frac{C3/C2\cdot (1-C3/C2)}{C2} } $$
+che descrive la deviazione standard di un rapporto tra coincidenze in cui si tiene conto della correlazione tra gli eventi in coincidenza a 3 e quelli in coincidenza a 2. La dimostrazione di tale formula è presente in \autoref{sec:vareff}.
+
+La \autoref{cfr} evidenzia un assorbimento di particelle da parte del piombo: si tratta probabilmente degli elettroni che sono riusciti ad attraversare il tetto\footnote{Sospettiamo che il 2\si{\degree} e 3\si{\degree} rapporto siano compatibili perché la lastra aggiunta era d'alluminio.}.
 
 \subsubsection{Energia}
 
@@ -73,5 +72,3 @@ si nota che la distribuzione con il piombo è spostata verso energia maggiore.
 rilascino più energia a causa della risalita di ionizzazione.
 Per verifica confrontiamo i due campioni con il test di Kolmogorov-Smirnov a $5\sigma$,
 risulta significativo.
-\marginpar{Dovremmo parlare del fatto che la distribuzione è irregolare (i picchetti non sono statistici).
-Controllare che non siano per la discretizzazione dell'ADC (allineare i bin ai digit).}
