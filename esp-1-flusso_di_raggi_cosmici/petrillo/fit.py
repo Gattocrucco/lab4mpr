@@ -549,7 +549,7 @@ def hessian(p0, dps, n='auto', geom={}, fig=None):
         x = x[s]
         y = y[s]
         f = interpolate.interp1d(x, y)
-        deltachi2 = 15 if i == 1 else 3
+        deltachi2 = 40 if i == 1 else 3
         L = optimize.bisect(lambda x: f(x) - (Q0 + deltachi2), x[0], p0[i])
         R = optimize.bisect(lambda x: f(x) - (Q0 + deltachi2), p0[i], x[-1])
         
