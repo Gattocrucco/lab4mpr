@@ -9,9 +9,9 @@
 
 La necessità di misurare quantitativamente il rilascio di energia nel rivelatore ci obbliga ad aggiungere nel nostro crate 3 moduli che permettono di digitalizzare l'uscita del PMT: il preamplificatore, l'amplificatore e l'ADC
 (vedi circuito in \autoref{fig:schemaadc}).
-Il preamplificatore ha il compito di allungare la durata dell'output del PMT dai nanosecondi ai microsecondi, in modo che l'amplificatore e l'ADC abbiano il tempo di leggerla. Esso è collegato direttamente al PMT che vogliamo usare per evitare riflessioni e non è possibile operare un adattamento di impedenza, in quanto il preamplificatore necessita di un'elevata impedenza d'ingresso per allungare la durata del segnale. 
+Il preamplificatore ha il compito di allungare la durata dell'uscita del PMT dai nanosecondi ai microsecondi, in modo che l'amplificatore e l'ADC abbiano il tempo di leggerla. Esso è collegato direttamente al PMT che vogliamo usare per evitare riflessioni e non è possibile operare un adattamento di impedenza, in quanto il preamplificatore necessita di un'elevata impedenza d'ingresso per allungare la durata del segnale. 
 Il~preamplificatore restituisce un segnale con una salita praticamente istantanea
-ed una discesa esponenziale con un $\tau\approx\SI{15}{\mu s}$.
+ed una discesa esponenziale con un $\tau\approx\SI{15}{\micro s}$.
 
 Il compito dell'amplificatore è intensificare il segnale al suo ingresso
 (in questo caso quello del preamplificatore)
@@ -20,7 +20,7 @@ Ci sono due uscite analogiche che generano una forma diversa di segnale,
 dette \emph{unipolare} e \emph{bipolare}.
 Il manuale specifica che la forma dell'uscita unipolare
 è data dalla funzione $e^{-3t}\sin^4{t}$ (simile a una gaussiana), in cui $t$ è il tempo.
-La forma bipolare è simile ma ha il massimo anticipato rispetto a quello dell'unipolare.
+La forma bipolare è simile, ma ha il massimo anticipato rispetto a quello dell'unipolare.
 La tensione massima in uscita è \SI{11}{V}.
 
 Lo scopo dell'ADC è trasformare un segnale analogico in uno digitale
