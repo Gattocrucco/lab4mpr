@@ -16,7 +16,7 @@ rc("font",size=16)
 grid(color="black",linestyle=":")
 minorticks_on()
 
-title("Particelle doppie",size=18)
+title("Correlazione moda-soglia",size=18)
 xlabel("soglia (mV)")
 ylabel("moda  (mV)")
 
@@ -26,7 +26,7 @@ for j in range(len(soglie)):
     mode=append(mode,moda(en))
 
 mode*=1000
-errorbar(sogliola,med(mode),xerr=0.3,yerr=err(mode),linestyle="",capsize=2,color="brown")
+errorbar(sogliola,med(mode),xerr=0.3,yerr=err(mode),linestyle="",capsize=3,color="brown",marker="o")
     
-legend(fontsize="small",loc="best")
+#legend(fontsize="small",loc="best")
 show()
