@@ -18,14 +18,13 @@ i1=array([])
 i2=array([])
 
 for i in range(len(piccolo_angolo)):
-    no,si,non=loadtxt(cartella+"ang_6and1"+piccolo_angolo[i]+".dat",unpack=True)
+    si=loadtxt(cartella+"ang_6and1"+piccolo_angolo[i]+".dat",unpack=True,usecols=1)
     i1=append(i1,si)
     
 for i in range(len(grande_angolo)):
-    no,si,non=loadtxt(cartella+"ang_6and5andnot4"+grande_angolo[i]+".dat",unpack=True)
+    si=loadtxt(cartella+"ang_6and5andnot4"+grande_angolo[i]+".dat",unpack=True,usecols=1)
     i2=append(i2,si)
-    
-del no,non
+
 
 # istogrammi
 figure(1).set_tight_layout(True)
@@ -37,8 +36,8 @@ title("Perdita di energia ed angolo",size=18)
 xlabel("energia ADC  (mV)")
 ylabel("occorrenze normalizzate")
 
-hist(i1*1000,normed=True,color="blue",rwidth=1,label="piccolo angolo",bins="auto")
-hist(i2*1000,normed=True,color="orange",rwidth=0.9,label="grande angolo",bins="auto")
+hist(i1*1000,normed=True,color="black",rwidth=1,label='"piccolo angolo"',bins="auto")
+hist(i2*1000,normed=True,color=[0.8,0.8,0.8],rwidth=0.9,label='"grande angolo"',bins="auto")
 
 legend(fontsize="small",loc="best")
 show()
@@ -60,6 +59,30 @@ err2=(edge2[ind2+1]-edge2[ind2])/2
 print("moda piccolo angolo=",moda1*1000,"+-",err1*1000," mV")
 print("moda grande angolo=",moda2*1000,"+-",err2*1000," mV")
 
+## DOPPIETTO?
+
+digi=i1*2**12/3.3
+seq=arange(0,2893,14)+0.5
+conv=3.3/2**12
+
+figure(1).set_tight_layout(True)
+rc("font",size=16)
+grid(color="black",linestyle=":")
+minorticks_on()
+
+title("Ipotesi particelle doppie",size=18)
+xlabel("energia ADC  (mV)")
+ylabel("occorrenze")
+
+occ,bor,no=hist(i1*1000,bins=seq*conv*1000,rwidth=0.9)
+
+show()
+
+mo=moda(digi,binni=seq,per=2)
+mod=mo*3.3/2**12
+print("moda doppie=",mod," V")
+
+
 ## EFFICIENZA LOCALE
 
 import matplotlib.pyplot as plt
@@ -76,19 +99,24 @@ z=zeros(16)
 dx=ones(len(x))*0.3
 dy=ones(len(y))*0.3
 dz=array([552,627,635,716,  523,546,550,666  ,421,534,485,667,  517,494,537,576])
+dezu=dz/max(dz)
 
-ax1.bar3d(x,y,z,dx,dy,dz,color="orange")
+ax1.bar3d(x,y,z,dx,dy,dezu,color="cyan")
 xlabel("colonna")
 ylabel("riga")
-ax1.set_zlabel("conteggi")
+ax1.set_zlabel("conteggi normalizzati")
 
 colonne=["D","","C","","B","","A"]
 righe=[1,"",2,"",3,"",4]
 ax1.w_xaxis.set_ticklabels(colonne)
 ax1.w_yaxis.set_ticklabels(righe)
-title("Efficienza locale",size=18)
+title("Efficienza locale normalizzata",size=18)
 
 show()
+
+conti=uarray(dz,sqrt(dz))
+mass=max(med(conti))
+norm=conti/mass
 
 ## SEGNALE SU RUMORE
 
