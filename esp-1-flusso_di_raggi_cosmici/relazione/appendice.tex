@@ -1,62 +1,50 @@
 \appendix
-\section{Varianza del rapporto di conteggi}
+\section{Varianza del rapporto di conteggi\protect\footnote{Questa parte è presa con pochi cambiamenti dalla nostra relazione preliminare.}}
 \label{sec:vareff}
 
-Chiamiamo $k_2$, $k_3$ le coincidenze a due e a tre rispettivamente..
-Assegnamo una distribuzione poissoniana a $k_2$ e binomiale a $k_3$ dato $k_2$:
+Consideriamo i conteggi di due coincidenze $A$ e $B$,
+in cui la coincidenza $B$ contiene tutte le lastre della $A$ più un'altra diversa.
+Chiamiamo $k_A$ e $k_B$ i rispettivi conteggi.
+Assegnamo una distribuzione poissoniana a $k_A$ e binomiale a $k_B$ dato $k_A$:
 \begin{align*}
-	P(k_2;\mu)
-	&= \frac{\mu^{k_2}}{k_2!}e^{-\mu} \\
-	P(k_3|k_2;\epsilon)
-	&= \binom{k_2}{k_3} \epsilon^{k_3} (1-\epsilon)^{k_2-k_3}
+	P(k_A;\mu)
+	&= \frac{\mu^{k_A}}{k_A!}e^{-\mu} \\
+	P(k_B|k_A;\epsilon)
+	&= \binom{k_A}{k_B} \epsilon^{k_B} (1-\epsilon)^{k_A-k_B},
 \end{align*}
-dove $\epsilon$ è l'efficienza del rivelatore interno.
-Calcoliamo la distribuzione congiunta:
+ovvero $\epsilon$ è la probabilità che un raggio che fa scattare $A$
+faccia scattare anche la lastra in più in $B$.
+Definiamo
+\begin{equation*}
+	\hat\epsilon := \frac{k_B}{k_A}
+\end{equation*}
+e studiamone le proprietà come stimatore di $\epsilon$.
+Calcoliamo la distribuzione congiunta dei conteggi:
 \begin{align*}
-	P(k_2,k_3;\mu,\epsilon)
-	&= P(k_2;\mu) P(k_3|k_2;\epsilon) = \\
-	&= \frac{e^{-\mu}}{k_3!(k_2-k_3)!} \big(\mu(1-\epsilon)\big)^{k_2} \left(\frac\epsilon{1-\epsilon}\right)^{k_3},
-	\quad k_3 \le k_2.
+	P(k_A,k_B;\mu,\epsilon)
+	&= P(k_A;\mu) P(k_B|k_A;\epsilon) = \\
+	&= \frac{e^{-\mu}}{k_B!(k_A-k_B)!} \big(\mu(1-\epsilon)\big)^{k_A} \left(\frac\epsilon{1-\epsilon}\right)^{k_B},
+	\quad k_B \le k_A.
 \end{align*}
-Calcoliamo lo stimatore di massima verosimiglianza:
-\begin{align*}
-	L := \log P(k_2,k_3;\mu,\epsilon)
-	&= k_2 \big( \log\mu + \log(1-\epsilon) \big) + {}\\
-	&\phantom{{}={}}+ k_3 \big( \log\epsilon - \log(1-\epsilon) \big)
-	- \mu + f(k_2,k_3) \\
-	\pdv{L}{\epsilon}
-	&= \frac{k_3-k_2}{1-\epsilon} + \frac{k_3}\epsilon \implies \\
-	\implies \hat\epsilon
-	&= \frac{k_3}{k_2} \\
-	\pdv{L}{\mu}
-	&= \frac{k_2}{\mu} - 1 \implies \\
-	\implies \hat\mu
-	&= k_2
-\end{align*}
-Il risultato è quello intuitivo.
-Notiamo che $\hat\epsilon$ è definito per $k_2\neq 0$,
-infatti per $k_2=0$, ricordando che $k_3\le k_2$, si ha
-$L = -\mu + f(k_2,k_3)$ che non dipende da $\epsilon$.
-Restringiamo il dominio a $k_2\neq 0$,
+Notiamo che $\hat\epsilon$ è definito per $k_A\neq 0$.
+Restringiamo il dominio a $k_A\neq 0$,
 quindi ricalcoliamo la normalizzazione:
 \begin{align*}
-	P(k_2=0,k_3=0)
+	P(k_A=0,k_B=0)
 	&= e^{-\mu} \implies \\
-	\implies P(k_2\neq 0,k_3)
-	&= \frac{P(k_2,k_3)}{1-e^{-\mu}}.
+	\implies P(k_A\neq 0,k_B)
+	&= \frac{P(k_A,k_B)}{1-e^{-\mu}}.
 \end{align*}
-Le proprietà di $\hat\mu$ sono immediate,
-studiamo $\hat\epsilon$.
-Calcoliamo il valore atteso:
+Calcoliamo il valore atteso di $\hat\epsilon$:
 \begin{align*}
 	E[\hat\epsilon]
-	&= E \left[ \frac{k_3}{k_2} \right] = \\
-	&= \sum_{k_2\ge k_3} \frac{k_3}{k_2} P(k_2) P(k_3|k_2) = \\
-	&= \sum_{k_2=1}^\infty \frac{P(k_2)}{k_2}
-	\sum_{k_3=0}^{k_2} P(k_3|k_2) k_3 = \\
+	&= E \left[ \frac{k_B}{k_A} \right] = \\
+	&= \sum_{k_A\ge k_B} \frac{k_B}{k_A} P(k_A) P(k_B|k_A) = \\
+	&= \sum_{k_A=1}^\infty \frac{P(k_A)}{k_A}
+	\sum_{k_B=0}^{k_A} P(k_B|k_A) k_B = \\
 	\intertext{riconosciamo che la seconda somma è la media della binomiale}
-	&= \sum_{k_2=1}^\infty \frac{P(k_2)}{k_2} k_2 \epsilon = \\
-	&= \epsilon \sum_{k_2=1}^\infty P(k_2)
+	&= \sum_{k_A=1}^\infty \frac{P(k_A)}{k_A} k_A \epsilon = \\
+	&= \epsilon \sum_{k_A=1}^\infty P(k_A)
 	= \epsilon,
 \end{align*}
 quindi $\hat\epsilon$ ha bias nullo.
@@ -65,34 +53,46 @@ Calcoliamo la varianza:
 	\operatorname{Var}[\hat\epsilon]
 	&= E[\hat\epsilon^2] - E[\epsilon]^2 \\
 	E[\hat\epsilon^2]
-	&= \sum_{k_2=1}^\infty \frac{P(k_2)}{k_2^2}
-	\sum_{k_3=0}^{k_2} P(k_3|k_2) k_3^2 = \\
-	\intertext{la seconda somma è $E[k_3^2|k_2]$}
-	&= \sum_{k_2=1}^\infty \frac{P(k_2)}{k_2^2}
-	\big (k_2\epsilon(1-\epsilon) + k_2^2\epsilon^2 \big) = \\
-	&= \epsilon(1-\epsilon) \sum_{k_2=1}^\infty \frac{\mu^{k_2}}{k_2k_2!}\frac{e^{-\mu}}{1-e^{-\mu}}
-	+ \epsilon^2 \sum_{k_2=1}^\infty P(k_2) = \\
-	&= \frac{\epsilon(1-\epsilon)}{e^{\mu}-1} \sum_{k_2=1}^\infty \frac{\mu^{k_2}}{k_2k_2!} + \epsilon^2.
+	&= \sum_{k_A=1}^\infty \frac{P(k_A)}{k_A^2}
+	\sum_{k_B=0}^{k_A} P(k_B|k_A) k_B^2 = \\
+	\intertext{la seconda somma è $E[k_B^2|k_A]$}
+	&= \sum_{k_A=1}^\infty \frac{P(k_A)}{k_A^2}
+	\big (k_A\epsilon(1-\epsilon) + k_A^2\epsilon^2 \big) = \\
+	&= \epsilon(1-\epsilon) \sum_{k_A=1}^\infty \frac{\mu^{k_A}}{k_Ak_A!}\frac{e^{-\mu}}{1-e^{-\mu}}
+	+ \epsilon^2 \sum_{k_A=1}^\infty P(k_A) = \\
+	&= \frac{\epsilon(1-\epsilon)}{e^{\mu}-1} \sum_{k_A=1}^\infty \frac{\mu^{k_A}}{k_Ak_A!} + \epsilon^2.
 \end{align*}
 Si può dimostrare che\footnote{L'abbiamo calcolato con WolframAlpha.}
 \begin{align*}
-	\sum_{k_2=1}^\infty \frac{\mu^{k_2}}{k_2k_2!}
-	&= \operatorname{Ei}(\mu) - \log\mu - \gamma,
+	\sum_{k_A=1}^\infty \frac{\mu^{k_A}}{k_Ak_A!}
+	&= \Ei(\mu) - \log\mu - \gamma,
 \end{align*}
-dove Ei è la funzione integrale esponenziale che è già implementata nelle librerie standard
+dove $\Ei$ è la funzione integrale esponenziale che è già implementata nelle librerie standard
 e $\gamma$ è la costante di Eulero-Mascheroni $\approx 0.6$.
 Quindi infine
 \begin{align*}
 	\operatorname{Var}[\hat\epsilon]
-	&= \epsilon(1-\epsilon)\frac{\operatorname{Ei}(\mu) - \log\mu - \gamma}{e^\mu - 1}.
+	&= \epsilon(1-\epsilon)\frac{\Ei(\mu) - \log\mu - \gamma}{e^\mu - 1}.
 \end{align*}
 Vediamo l'andamento per $\mu$ grande.
-Vale $\operatorname{Ei}(\mu) \approx e^{\mu}/\mu$, dunque
+Vale $\Ei(\mu) \approx e^{\mu}/\mu$, dunque
 \begin{align*}
 	\operatorname{Var}[\hat\epsilon]
-	&\approx \frac{\epsilon(1-\epsilon)}{\mu}
+	&\approx \frac{\epsilon(1-\epsilon)}{\mu}.
 \end{align*}
-com'è intuitivo, la varianza scende come $1/\mu$ cioè come il tempo di misurazione.
 
-Quindi come errore indicheremo $\sqrt{\operatorname{Var}[\hat\epsilon]\big|_{\epsilon=\hat\epsilon,\mu=\hat\mu}}$.
-Notiamo che questa notazione è poco utile quando $\epsilon$ è vicina a 0 o 1 oppure $\mu$ piccolo.
+\paragraph{Sviluppo asintotico in $\mu$}
+
+Dimostriamo lo sviluppo asintotico della funzione Ei usato precedentemente
+e calcoliamo anche i termini superiori al primo.
+L'integrale esponenziale è definito come
+\begin{equation*}
+	\operatorname{Ei}(x)
+	= - \fint_{-x}^\infty \de t \frac{e^t}t
+	= \fint_{-\infty}^x \de t \frac{e^t}t,
+\end{equation*}
+quindi la derivata è
+\begin{equation*}
+	\Ei'(x) = \frac{e^x}x.
+\end{equation*}
+
