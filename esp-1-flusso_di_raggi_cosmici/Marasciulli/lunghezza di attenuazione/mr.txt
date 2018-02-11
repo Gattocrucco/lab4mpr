@@ -1,16 +1,18 @@
 MEDIA PER RIGHE 
 
-chi quadro riga 4= 2.19780151744 +- 2
+chi quadro riga 4= 2.19780151744 +- 2.0
 p_value= 0.333237190517 
 
-chi quadro riga 3= 15.1805384009 +- 2
+chi quadro riga 3= 15.1805384009 +- 2.0
 p_value= 0.000505344996555 
 
-chi quadro riga 2= 4.35575390642 +- 2
+chi quadro riga 2= 4.35575390642 +- 2.0
 p_value= 0.113281778037 
 
-chi quadro riga 1= 1.43597739681 +- 2
+chi quadro riga 1= 1.43597739681 +- 2.0
 p_value= 0.487732246746 
 
-Ampiezza media= 643.285595042 +- 12.8332486023
-lunghezza di attenuazione media= 109.639774449 +- 16.8979911894  cm
+ampiezza media= 635.324439443 +- 10.4112504634
+lunghezza media= 141.286846347 +- 13.9070147187
+corr(A,lambda)= -0.658366947425 
+

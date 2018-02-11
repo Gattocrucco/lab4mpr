@@ -58,6 +58,18 @@ A & 656&13 \\
 \subsubsection{Media per righe}
 
 La seconda strategia adottata consiste nel fittare con la \eqref{exp} i conteggi di ogni riga separatamente e poi fare la media delle 4 lunghezze di attenuazione ottenute.
+Le media sono state ottenute in questo modo: siano $\langle a \rangle$ il vettore che contiene la media dei parametri del fit e $V_i$ le matrici di covarianza dei 4 fit; sono legati dalla relazione 
+
+\begin{equation*}
+\langle a \rangle = \left(\sum{V_i^{-1}} \right)^{-1}  \left(\sum{V_i^{-1} a_i} \right).
+\end{equation*}
+
+La correlazione tra $\langle N_0 \rangle$ e $\langle \lambda \rangle$ è stata calcolata usando la matrice $W=\left(\sum{V_i^{-1}} \right)^{-1}$ attraverso la relazione
+\begin{equation*}
+\text{corr}(\langle N_0 \rangle ,\langle \lambda \rangle)=\frac{W_{A_0 \lambda}}{\sqrt{ W_{\lambda \lambda} W_{A_0 A_0}}}
+\end{equation*}
+in cui il nome dei parametri indica l'elemento opportuno di quella matrice.
+
 In \autoref{4atte} è possibile vedere le 4 curve con le relative funzioni di fit, mentre la \autoref{tab:righe} contiene i risultati del fit.
 
 \begin{table}[h]
@@ -77,11 +89,7 @@ riga & \multicolumn{2}{c|}{$N_0$} & \multicolumn{2}{c|}{ $\lambda$ [\si{cm}] } &
 \end{table}
 
 
-La media dei parametri dei fit restituisce $\langle\lambda\rangle=\SI{110\pm17}{cm}$ e $\langle N_0\rangle=643\pm13$.
-\marginpar{Hai fatto la media pesata con $1/\sigma^2$?
-O hai usato tutta la matrice di convarianza?
-$\langle\mathbf{a}\rangle=(\sum_i V_i^{-1})^{-1}(\sum_i V_i^{-1}\mathbf a_i)$ \\ 
-\emph{Risposta:  media pesata con $1/\sigma^2$.}}
+La media dei parametri dei fit restituisce $\langle\lambda\rangle=\SI{141\pm14}{cm}$, $\langle N_0\rangle=635\pm10$ e corr$(\langle N_0 \rangle ,\langle \lambda \rangle)=-0.66$.
 
 \begin{figure}[h]
 \centering

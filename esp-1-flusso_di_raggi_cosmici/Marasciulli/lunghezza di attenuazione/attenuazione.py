@@ -41,7 +41,7 @@ py.title("Lunghezza di attenuazione",size=18)
 py.xlabel("distanza dalla guida di luce  (cm)")
 py.ylabel("conteggi PMT1")
 
-py.errorbar(asc,med(ord),xerr=0.2,yerr=err(ord),linestyle="",color="red",capsize=2,marker="")
+py.errorbar(asc,med(ord),xerr=0,yerr=err(ord),linestyle="",color="red",capsize=2,marker=".")
 z=py.linspace(-0.5,33,10**3)
 py.plot(z,att(z,*popt),color="blue")
 
@@ -66,7 +66,8 @@ print("MEDIA PER RIGHE \n")
 c=py.loadtxt("numeri_griglia.txt")
 x=array([32.5,23,13.7,3.5])-3.5 
 col=["red","green","blue","orange"]
-lista=["o","x","^",""]    # marker
+stile=["--","-","-","-"]
+lista=["o","v","^","x"]    # marker
 
 py.figure(2).set_tight_layout(True)
 py.rc("font",size=16)
@@ -79,15 +80,21 @@ py.ylabel("conteggi")
 
 A=array([]); dA=array([])
 l=array([]); dl=array([])
+matrici=[]; parametri=[]
 
 for i in range(len(c)):
     y=c[i]
     dy=sqrt(y)
+    
     # fit
     stime=[600,100]
     popt,pcov=curve_fit(att,x,y,stime,sigma=dy)
     Ai,li=popt
     dAi,dli=sqrt(pcov.diagonal())
+    
+    matrici.append(pcov)
+    parametri.append(popt)
+    
     # grafico
     A=py.append(A,Ai)
     dA=py.append(dA,dAi)
@@ -95,26 +102,45 @@ for i in range(len(c)):
     l=py.append(l,li)
     dl=py.append(dl,dli)
     
-    py.errorbar(x,y,xerr=0.2,yerr=dy,marker=lista[i],linestyle="",capsize=2,label="riga %d" %(4-i), color=col[i] )
+    py.errorbar(x,y,xerr=0,yerr=dy,marker=lista[i],linestyle="",capsize=2,label="riga %d" %(4-i), color=col[i], markersize=8 )
     z=py.linspace(-0.5,33,1000)
-    py.plot(z,att(z,*popt),color=col[i])
+    py.plot(z,att(z,*popt),color=col[i],linestyle=stile[i])
     # altri risultati
+    
     chi=py.sum( ((y-att(x,*popt))/dy)**2 )
     dof=len(y)-len(popt)
     p=chdtrc(dof,chi)
     print("chi quadro riga %d=" %(4-i),chi,"+-",sqrt(2*dof))
     print("p_value=",p,"\n")
+
+    
     
 py.legend(loc="best",fontsize="small")
-py.show()
+#py.show()
 
-Am=py.average(A,weights=1/dA**2)
-dAm=astd(dA)
-lm=py.average(l,weights=1/dl**2)
-dlm=astd(dl)
+# veri errori e parametri
 
-print("Ampiezza media=",Am,"+-",dAm)
-print("lunghezza di attenuazione media=",lm,"+-",dlm," cm")
+pezzo1=[]
+pezzo2=[]
+for i in range(len(matrici)):
+    pezzo1.append(inv(matrici[i]))
+    pezzo2.append(inv(matrici[i])@parametri[i])
+    
+pezzo1=py.sum(pezzo1,axis=0)
+pezzo2=py.sum(pezzo2,axis=0)
+
+V=inv(pezzo1)
+pm=V@pezzo2
+
+# vera correlazione medie
+
+corV=V[0][1]/( sqrt(V[0][0]*V[1][1]) )
+errA=sqrt(V[0][0])
+errl=sqrt(V[1][1])
+
+print("ampiezza media=",pm[0],"+-",errA)
+print("lunghezza media=",pm[1],"+-",errl)
+print("corr(A,lambda)=",corV,"\n")
 
 #sys.stdout.close()
 #sys.stdout=sys.__stdout__
@@ -185,9 +211,10 @@ import statistics as stat
 
 colonna=["A","B","C","D"]
 riga=[1,2,3,4]
+rega=["1 +2.5 cm","2","3 +2.5 cm","4"]
 X=array([3.5,13.7,23,32.5])-3.5
 col=["red","green","blue","orange"]
-lista=["o","x","^",""]    # marker
+lista=["o","x","^","v"]    # marker
 
 #apertura grafico
 py.figure(4).set_tight_layout(True)
@@ -221,11 +248,14 @@ for i in range(len(riga)):
     orr*=1000
 
     # grafico
-    
-    py.errorbar(X,mode,xerr=0.2,yerr=orr,linestyle="",capsize=2,label="riga %d"%riga[i],marker=lista[i],color=col[i])
+    if i%2==0:
+        O=X+2.5
+    else:
+        O=X
+    py.errorbar(O,mode,xerr=0,yerr=orr,linestyle="",capsize=2,label="riga %s"%rega[i],marker=lista[i],color=col[i],markersize=7)
     
 
-py.legend(fontsize="small",loc="best")
+py.legend(fontsize="x-small",loc="lower left")
 py.show()
 
 #sys.stdout.close()
