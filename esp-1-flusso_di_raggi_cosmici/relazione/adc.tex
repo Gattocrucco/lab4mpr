@@ -77,5 +77,20 @@ costruiamo questo discriminatore sfruttando il fatto che il modulo \texttt{TTL-N
 non è altro che un discriminatore dove la soglia (positiva) è quella che distingue i livelli logici.
 Per avere due soglie diverse
 usiamo due attenuatori impostati con una differenza di attenuazione più piccola possibile.
-\marginpar{Forse dobbiamo parlare qui del problema che il nostro trigger non è detto
-triggeri come triggera l'amplificatore (da cui la foto incriminante).}
+
+\paragraph{Trigger dell'amplificatore}
+
+L'amplificatore ha un trigger interno.
+Non è detto che il trigger che abbiamo costruito per l'ADC e il trigger dell'amplificatore
+selezionino gli stessi segnali; analizziamo i due casi:
+\begin{itemize}
+	\item Un segnale viene selezionato dal nostro trigger ma non dall'amplificatore.
+	In questo caso la lettura dell'ADC sarà probabilmente 0.
+	In effetti negli istogrammi dei rilasci di energia si nota un picco a 0.
+	\item Un segnale viene amplificato ma non viene triggerato.
+	Questo è un problema se un altro segnale viene triggerato
+	mentre l'amplificatore sta ancora generando la forma in uscita per il segnale non triggerato.
+\end{itemize}
+Osservando a lungo con l'oscilloscopio il trigger e l'input dell'ADC,
+usando la funzione \texttt{STOP} per bloccare la schermata,
+ci convinciamo che ci sono casi in cui il trigger non è allineato con
