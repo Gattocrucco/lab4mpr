@@ -29,11 +29,14 @@ print('piombo: media = {}\nsenza piombo: media = {}'.format(mu1, mu2))
 
 ############ PLOT ############
 
-nbins = int(sqrt(min(len(data2), len(data1))))
-
+#nbins = int(sqrt(min(len(data2), len(data1))))
+nbins = 256
 # crea istogrammi
-MIN = min(min(data1), min(data2))
-MAX = max(max(data1), max(data2))
+#MIN = min(min(data1), min(data2))
+#MAX = max(max(data1), max(data2))
+
+MIN = 3.3/8192
+MAX = 3.3/8192*2049
 counts1, edges = histogram(data1, bins=nbins, range=(MIN, MAX))
 counts2, edges = histogram(data2, bins=nbins, range=(MIN, MAX))
 counts1 = counts1 / len(data1) / (MAX - MIN)
