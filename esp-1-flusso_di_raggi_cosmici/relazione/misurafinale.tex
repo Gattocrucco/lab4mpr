@@ -34,7 +34,7 @@ con un telo nero, un laminato di plastica e un'amaca.
 \end{figure}
 
 Usiamo il conteggio di due lastre (chiamate $A$ e $B$) in coincidenza per misurare il flusso
-\marginpar{Aggiungere tutti i link alle tabelle di dati, e usare i millivolt anziché i decimillivolt.}.
+\marginpar{Aggiungere tutti i link alle tabelle di dati, e usare i millivolt anziché i decimillivolt.}
 e tre lastre in coincidenza ($a$, $b$ e $c$) per misurare le efficienze di $A$ e $B$
 (vedi configurazione ``2'' in \autoref{fig:modmisfinale}).
 Usare solo due lastre in coincidenza ci permette di scegliere le lastre più vicine possibili nel nostro apparato
@@ -82,7 +82,80 @@ da avere almeno una misura di efficienza che non dipende dalla distribuzione ang
 
 \subsection{Fit}
 
-\marginpar{Fare i grafici dei residui.}
+Eseguiamo un fit ai minimi quadrati sui dati della misura finale
+per ricavare il flusso per unità di area orizzontale $\Phi$
+(vedi \autoref{sec:teogeom} per la notazione) e la distribuzione angolare.
+Per la distribuzione angolare prendiamo il modello $p(u) = (\alpha+1) u^\alpha$.
+Oltre a $\Phi$ e $\alpha$ ci sono i nuisance parameters $\epsilon_i$
+che sono le efficienze del PMA in ognuna delle misure di tipo ``eff''.
+Per ogni misura di tipo ``2'', ``2a'' e ``3'' calcoliamo il flusso;
+per ogni misura di tipo ``eff'' calcoliamo tre efficienze.
+Il vettore $\mathbf r$ dei residui è dato dalla differenza dei flussi con il parametro $\Phi$
+e dalla differenza delle triplette di efficienze con i parametri $\epsilon_i$ (uno per tripletta).
+La forma quadratica da minimizzare è
+\begin{equation*}
+	X = \mathbf r^\top V^{-1} \mathbf r,
+\end{equation*}
+dove $V$ è la matrice di covarianza di $\mathbf r$.
+La $V$ è calcolata con propagazione al primo ordine.
+Nei calcoli sottraiamo le coincidenze casuali con la formula al primo ordine
+dalle coincidenze a 2 e, quando i rate sono piuttosto alti, anche dalle coincidenze a~3.
+Teniamo conto di tutte le correlazioni, con queste eccezioni:
+\begin{itemize}
+	\item Non tutte le accettanze possono essere calcolate con lo stesso pivot;
+	il nostro codice non calcola la correlazione tra accettanze calcolate con pivot diversi
+	ma un algoritmo sceglie i pivot in modo che la maggior parte delle correlazioni venga calcolata.
+	L'incertezza del calcolo delle accettanze è comunque mantenuta più piccola delle altre.
+	\item Nel calcolo delle efficienze per le misure ``eff'' e ``2a''
+	non calcoliamo la correlazione tra i vari rapporti di conteggi;
+	tuttavia stimiamo che sia piccola.
+	Per le efficienze nelle misure ``2'' e ``3'' abbiamo calcolato
+	che la correlazione tra i rapporti di conteggi è nulla
+	(vedi \autoref{sec:vareff}).
+\end{itemize}
+
+\paragraph{Monte Carlo}
+
+Poiché il calcolo delle accettanze è un Monte Carlo che dipende da $\alpha$,
+dobbiamo fissare i campioni con cui eseguiamo il calcolo
+in modo che $X$ sia effettivamente una funzione di $\alpha$.
+Anche la distribuzione dei campioni dipende da $\alpha$,
+quindi prima della minimizzazione estraiamo dei campioni uniformi
+e poi nel fit applichiamo una statistica che dipende da $\alpha$ per ottenere la distribuzione.
+
+\paragraph{Covarianza della stima}
+
+Per stimare la matrice di covarianza della stima dei parametri
+usiamo il metodo standard di invertire la matrice di curvatura (l'hessiana) di $X/2$.
+Tuttavia $X$ non è derivabile con i metodi numerici standard rispetto ad $\alpha$ perché
+il calcolo Monte Carlo è per sua natura discreto.
+Allora calcoliamo la curvatura in questo modo:
+\begin{description}
+	\item[Termini diagonali]
+		Calcoliamo $X/2$ in 10 punti al variare del parametro rispetto al quale dobbiamo derivare intorno al minimo,
+		tenendo fissi gli altri nel minimo. I punti più lontani sono tali che 
+		Su questi punti facciamo il fit di una parabola $\frac12a(x-x_0)^2+y_0$;
+		il parametro $a$ è la curvatura.
+	\item[Termini fuori diagonale]
+		Siano $p$ e $q$ i due parametri rispetto a cui dobbiamo derivare;
+		siano $a_p$ e $a_q$ le curvature già calcolate.
+		Calcoliamo 10 punti intorno al minimo variando $(p,q)$ lungo la direzione $(1/\sqrt{a_p},1/\sqrt{a_q})$,
+		siano $(\mathbf p,\mathbf q)$ questi punti.
+		Fittiamo la parabola $\frac12a(x-x_0)^2+y_0$ dove $\mathbf x=\mathbf p\sqrt{a_p} + \mathbf q\sqrt{a_q}$.
+		Sia $a_{pq}$ il risultato per $a$, allora la derivata incrociata è data da
+		\begin{equation*}
+			\frac{\partial^2}{\partial p\partial q} \frac X2 = (2a_{pq} - 1)\sqrt{a_p}\sqrt{a_q}
+		\end{equation*}
+\end{description}
+
+\paragraph{Incertezza geometrica}
+
+L'incertezza geometrica (il cui calcolo è descritto in \autoref{sec:uncgeom})
+è lenta da calcolare, quindi la calcoliamo in un punto iniziale e la teniamo fissa durante la minimizzazione.
+Ripetiamo la minimizzazione due volte ricalcolando l'incertezza geometrica nel minimo trovato all'iterazione precedente;
+i due minimi vengono praticamente identici quindi siamo sicuri della convergenza.
+
+% \paragraph{}
 
 %--------------------------- TABELLONE ------------------------------
 
