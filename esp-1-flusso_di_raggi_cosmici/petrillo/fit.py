@@ -332,7 +332,7 @@ def f_fit(distr_par, options={}):
     
         efficiencies.append((effAab, effAbc, effAbd))
    
-    return fluxes2 + fluxes2a + fluxes3, efficiencies
+    return fluxes2, fluxes2a, fluxes3, efficiencies
 
 ####### minimize #######
 
@@ -366,7 +366,8 @@ def squares(parameters, args={}):
     efficiencies = parameters[2:]
     
     # note: memoizing on distr_par would have very little effect
-    fluxes, effs = f_fit(distr_par, args)
+    fluxes2, fluxes2a, fluxes3, effs = f_fit(distr_par, args)
+    fluxes = fluxes2 + fluxes2a + fluxes3
 
     vect = [flux - total_flux for flux in fluxes]
     for i in range(len(efficiencies)):
@@ -579,6 +580,55 @@ def curvature(p0, dps, n='auto', geom={}, fig=None):
                 ax.legend(fontsize='small')
     
     return curvature
+
+def res_plot(par, geom):
+    fluxes2, fluxes2a, fluxes3, effs = f_fit(par[1], {'geometry_factors': geom})
+    
+    fig = plt.figure('residuals')
+    fig.clf()
+    G = gridspec.GridSpec(5, 3)
+    
+    # fluxes plot
+    idxs = np.arange(len(fluxes2) + len(fluxes2a) + len(fluxes3))[::-1]
+    ax = fig.add_subplot(G[:,:-1])
+    ax.set_title('Flussi')
+    kwargs = dict(fmt='.', capsize=4)
+    ax.errorbar(unp.nominal_values(fluxes2), idxs[:len(fluxes2)], xerr=unp.std_devs(fluxes2), color='black', label='flussi "2"', **kwargs)
+    ax.errorbar(unp.nominal_values(fluxes2a), idxs[len(fluxes2):len(fluxes2)+len(fluxes2a)], xerr=unp.std_devs(fluxes2a), color='lightgray', label='flussi "2a"', **kwargs)
+    if len(fluxes3) > 0:
+        ax.errorbar(unp.nominal_values(fluxes3), idxs[-len(fluxes3):], xerr=unp.std_devs(fluxes3), color='darkgray', label='flussi "3"', **kwargs)
+    ax.set_yticks(idxs)
+    ax.set_yticklabels([
+        '%d&%d' % (data2['PMTA'][i], data2['PMTB'][i]) for i in range(len(fluxes2))
+    ] + [
+        '%d&%d' % (data2a['PMTA'][i], data2a['PMTB'][i]) for i in range(len(fluxes2a))
+    ] + [
+        '%d&%d&%d' % (data3['PMTA'][i], data3['PMTB'][i], data3['PMTC'][i]) for i in range(len(fluxes3))
+    ])
+    lims = ax.get_ylim()
+    ax.plot([par[0] * 100] * 2, lims, '-k', label='fit')
+    ax.set_ylim(lims)
+    ax.legend(loc=0, fontsize='small')
+    
+    # effs plot
+    idxs = np.arange(3)[::-1]
+    for i in range(len(effs)):
+        ax = fig.add_subplot(G[i,-1:])
+        if i == 0:
+            ax.set_title('Efficienze')
+        ax.errorbar(unp.nominal_values(effs[i]), idxs, xerr=unp.std_devs(effs[i]), fmt='.k', capsize=4)
+        ax.set_yticks(idxs)
+        ax.set_yticklabels([
+            '%d&%d' % (dataeff['PMTa'][i], dataeff['PMTb'][i]),
+            '%d&%d' % (dataeff['PMTb'][i], dataeff['PMTc'][i]),
+            '%d&%d' % (dataeff['PMTb'][i], dataeff['PMTd'][i])
+        ])
+        ax.set_ylim((-.5, 2.5))
+        lims = ax.get_ylim()
+        ax.plot([par[2+i]] * 2, lims, '-k')
+        ax.set_ylim(lims)
+    
+    fig.show()
 
 fit_options = dict(disp=True, xatol=1e-4, fatol=1e-3, initial_simplex=simplex)
 
