@@ -19,6 +19,8 @@
 \setlength{\marginparwidth}{95pt}
 \let\oldmarginpar\marginpar
 \renewcommand\marginpar[1]{\oldmarginpar{\scriptsize\sffamily #1}}
+\newcommand*\de{\mathrm{d}}
+\newcommand*\pdv[2]{\frac{\partial #1}{\partial #2}}
 
 \sisetup{%
 separate-uncertainty=true,
@@ -81,6 +83,8 @@ Esperienza 1. Flusso di raggi cosmici (base)}
 \input{cazzatelle}
 
 \input{misurafinale}
+
+\input{appendice}
 
 \input{bibliografia}
 

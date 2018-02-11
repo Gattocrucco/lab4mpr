@@ -1,0 +1,96 @@
+\section{Appendice}
+
+Chiamiamo $k_2$, $k_3$ le coincidenze a due e a tre rispettivamente..
+Assegnamo una distribuzione poissoniana a $k_2$ e binomiale a $k_3$ dato $k_2$:
+\begin{align*}
+	P(k_2;\mu)
+	&= \frac{\mu^{k_2}}{k_2!}e^{-\mu} \\
+	P(k_3|k_2;\epsilon)
+	&= \binom{k_2}{k_3} \epsilon^{k_3} (1-\epsilon)^{k_2-k_3}
+\end{align*}
+dove $\epsilon$ è l'efficienza del rivelatore interno.
+Calcoliamo la distribuzione congiunta:
+\begin{align*}
+	P(k_2,k_3;\mu,\epsilon)
+	&= P(k_2;\mu) P(k_3|k_2;\epsilon) = \\
+	&= \frac{e^{-\mu}}{k_3!(k_2-k_3)!} \big(\mu(1-\epsilon)\big)^{k_2} \left(\frac\epsilon{1-\epsilon}\right)^{k_3},
+	\quad k_3 \le k_2.
+\end{align*}
+Calcoliamo lo stimatore di massima verosimiglianza:
+\begin{align*}
+	L := \log P(k_2,k_3;\mu,\epsilon)
+	&= k_2 \big( \log\mu + \log(1-\epsilon) \big) + {}\\
+	&\phantom{{}={}}+ k_3 \big( \log\epsilon - \log(1-\epsilon) \big)
+	- \mu + f(k_2,k_3) \\
+	\pdv{L}{\epsilon}
+	&= \frac{k_3-k_2}{1-\epsilon} + \frac{k_3}\epsilon \implies \\
+	\implies \hat\epsilon
+	&= \frac{k_3}{k_2} \\
+	\pdv{L}{\mu}
+	&= \frac{k_2}{\mu} - 1 \implies \\
+	\implies \hat\mu
+	&= k_2
+\end{align*}
+Il risultato è quello intuitivo.
+Notiamo che $\hat\epsilon$ è definito per $k_2\neq 0$,
+infatti per $k_2=0$, ricordando che $k_3\le k_2$, si ha
+$L = -\mu + f(k_2,k_3)$ che non dipende da $\epsilon$.
+Restringiamo il dominio a $k_2\neq 0$,
+quindi ricalcoliamo la normalizzazione:
+\begin{align*}
+	P(k_2=0,k_3=0)
+	&= e^{-\mu} \implies \\
+	\implies P(k_2\neq 0,k_3)
+	&= \frac{P(k_2,k_3)}{1-e^{-\mu}}.
+\end{align*}
+Le proprietà di $\hat\mu$ sono immediate,
+studiamo $\hat\epsilon$.
+Calcoliamo il valore atteso:
+\begin{align*}
+	E[\hat\epsilon]
+	&= E \left[ \frac{k_3}{k_2} \right] = \\
+	&= \sum_{k_2\ge k_3} \frac{k_3}{k_2} P(k_2) P(k_3|k_2) = \\
+	&= \sum_{k_2=1}^\infty \frac{P(k_2)}{k_2}
+	\sum_{k_3=0}^{k_2} P(k_3|k_2) k_3 = \\
+	\intertext{riconosciamo che la seconda somma è la media della binomiale}
+	&= \sum_{k_2=1}^\infty \frac{P(k_2)}{k_2} k_2 \epsilon = \\
+	&= \epsilon \sum_{k_2=1}^\infty P(k_2)
+	= \epsilon,
+\end{align*}
+quindi $\hat\epsilon$ ha bias nullo.
+Calcoliamo la varianza:
+\begin{align*}
+	\operatorname{Var}[\hat\epsilon]
+	&= E[\hat\epsilon^2] - E[\epsilon]^2 \\
+	E[\hat\epsilon^2]
+	&= \sum_{k_2=1}^\infty \frac{P(k_2)}{k_2^2}
+	\sum_{k_3=0}^{k_2} P(k_3|k_2) k_3^2 = \\
+	\intertext{la seconda somma è $E[k_3^2|k_2]$}
+	&= \sum_{k_2=1}^\infty \frac{P(k_2)}{k_2^2}
+	\big (k_2\epsilon(1-\epsilon) + k_2^2\epsilon^2 \big) = \\
+	&= \epsilon(1-\epsilon) \sum_{k_2=1}^\infty \frac{\mu^{k_2}}{k_2k_2!}\frac{e^{-\mu}}{1-e^{-\mu}}
+	+ \epsilon^2 \sum_{k_2=1}^\infty P(k_2) = \\
+	&= \frac{\epsilon(1-\epsilon)}{e^{\mu}-1} \sum_{k_2=1}^\infty \frac{\mu^{k_2}}{k_2k_2!} + \epsilon^2.
+\end{align*}
+Si può dimostrare che\footnote{L'abbiamo calcolato con WolframAlpha.}
+\begin{align*}
+	\sum_{k_2=1}^\infty \frac{\mu^{k_2}}{k_2k_2!}
+	&= \operatorname{Ei}(\mu) - \log\mu - \gamma,
+\end{align*}
+dove Ei è la funzione integrale esponenziale che è già implementata nelle librerie standard
+e $\gamma$ è la costante di Eulero-Mascheroni $\approx 0.6$.
+Quindi infine
+\begin{align*}
+	\operatorname{Var}[\hat\epsilon]
+	&= \epsilon(1-\epsilon)\frac{\operatorname{Ei}(\mu) - \log\mu - \gamma}{e^\mu - 1}.
+\end{align*}
+Vediamo l'andamento per $\mu$ grande.
+Vale $\operatorname{Ei}(\mu) \approx e^{\mu}/\mu$, dunque
+\begin{align*}
+	\operatorname{Var}[\hat\epsilon]
+	&\approx \frac{\epsilon(1-\epsilon)}{\mu}
+\end{align*}
+com'è intuitivo, la varianza scende come $1/\mu$ cioè come il tempo di misurazione.
+
+Quindi come errore indicheremo $\sqrt{\operatorname{Var}[\hat\epsilon]\big|_{\epsilon=\hat\epsilon,\mu=\hat\mu}}$.
+Notiamo che questa notazione è poco utile quando $\epsilon$ è vicina a 0 o 1 oppure $\mu$ piccolo.
