@@ -495,7 +495,7 @@ def plot_curvature(x0, ix, sx, n=10, geom={}):
     ax.plot(np.sort(x), y[np.argsort(x)], '-k.')
     fig.show()
 
-def curvature(p0, dps, n='auto', geom={}, fig=None):
+def hessian(p0, dps, n='auto', geom={}, fig=None):
     """
     Parameters
     ----------
@@ -507,7 +507,7 @@ def curvature(p0, dps, n='auto', geom={}, fig=None):
     
     Returns
     -------
-    Curvature matrix (the inverse of the covariance) with uncertainties
+    Hessian (the inverse of the covariance) with uncertainties
     """
     # compute at p0 (eventually computing geometry uncertainty)
     args = dict(log=True, trace={}, geometry_factors=geom)
@@ -528,7 +528,7 @@ def curvature(p0, dps, n='auto', geom={}, fig=None):
     # compute diagonal elements
     for i in range(len(p0)):
         if n == 'auto':
-            N = 10 if i == 1 else 4
+            N = 20 if i == 1 else 4
         else:
             N = n
         # compute n points inside p0 +/- dps and find +3 chi^2 limits
@@ -591,13 +591,13 @@ def curvature(p0, dps, n='auto', geom={}, fig=None):
             x = x_i / sigma_i + x_j / sigma_j
             y = np.array(args['trace']['Qs'][-N:]) / 2
             fit_p0 = [
-                1/2, # corresponds to cij = 0
+                1, # corresponds to cij = 0
                 p0[i] / sigma_i + p0[j] / sigma_j,
                 Q0 / 2
             ]
             par, cov = optimize.curve_fit(parabola, x, y, p0=fit_p0)
             ctpp = un.ufloat(par[0], np.sqrt(cov[0,0]), tag='curv_%d+%d' % (i, j))
-            curvature[i, j] = (2 * ctpp - 1) * umath.sqrt(cii * cjj)
+            curvature[i, j] = (ctpp - 1) * umath.sqrt(cii * cjj)
             curvature[j, i] = curvature[i, j]
         
             # plot
@@ -700,8 +700,9 @@ trace3 = args['trace']
 geom3 = args['geometry_factors']
 
 print('computing covariance...')
-c = curvature(out3.x, [0.1,0.3,0.05,0.05,0.05,0.05,0.05], geom=geom3)
-cov = np.linalg.inv(unp.nominal_values(c))
+figcurv = figure('curvature')
+H = hessian(out3.x, [0.1,0.3,0.05,0.05,0.05,0.05,0.05], geom=geom3, fig=figcurv)
+cov = np.linalg.inv(unp.nominal_values(H))
 
 print('result:')
 print(lab.format_par_cov(out3.x, cov))
