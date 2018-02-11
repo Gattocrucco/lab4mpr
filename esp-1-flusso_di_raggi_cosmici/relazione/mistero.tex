@@ -3,6 +3,16 @@
 
 Quando abbiamo analizzato il file signal\_2000.dat ci siamo accorti del picco descritto nella \autoref{cenno}. Descriviamo le operazioni eseguite per capirne l'origine o cercare di delinearne la dipendenza dalle grandezze in gioco nel caso in cui non riuscissimo a scoprirne la causa.
 
+Iniziamo accorgendoci che le coincidenze a tre sono molto diverse da quelle a 2 e cambiamo le soglie per vedere se hanno una qualche influenza sui dati, ma non riscontriamo nulla. Pensiamo che la causa del fenomeno siano i retrigger, ma non notiamo nessun miglioramento dopo aver inserito un circuito di antiretrigger. Allora attacchiamo il preamplificatore al PMT4 per vedere se il problema era del PMT5: non notiamo differenze, però sospettiamo che a volte il trigger dell'amplificatore scatti quando quello che abbiamo costruito per l'ADC non lo fa.
+\marginpar{aggiungere foto?}
+Pensiamo che questi rumori facciano scattare le coincidenze a 2 ma non quelle a 3. Allora facciamo 4\&2\&$\neq$3 per vedere quali segnali fanno scattare una coincidenza a 2 ma non a 3. Scopriamo che sono segnali che non superano i \SI{200}{mV}, ovvero sono in quella zona che a \SI{2000}V è dominata dal rumore. Questo ci fa pensare che siano coincidenze casuali nonostante siano molto più frequenti di quanto calcolato con la formula al primo ordine $R_1 R_2 \Delta t$. 
+Modifichiamo il circuito di misura in modo da contare la differenza tra coincidenze a 2 e coincidenze a 3.
+A questo punto ripetiamo le misure precedenti ma senza ADC e non notiamo differenze.
+Poi ci accorgiamo che abbiamo fatto alcune misure tenendo collegato l'oscilloscopio, quindi le terminazioni inadatte hanno rovinato la lettura di alcuni segnali. Dopo averlo scollegato la situazione non è cambiata per niente. A questo punto ci viene in mente che un rumore correlato può venire soltanto dall'alimentatore ad alta tensione o direttamente dalla rete elettrica. Quindi facciamo le stesse misure di prima ma con un  \texttt{alimentatore HV NIM} e poi con entrambi gli alimentatori a nostra disposizione, ma senza risultati. Come ``ultima spiaggia'' ritardiamo molto il segnale di un PMT in modo che non possa mai essere in coincidenza a 2 con un altro a nostra scelta. I conteggi che otteniamo da questa ``coincidenza'' sono compatibili con le coincidenze casuali attese. 
+Infine copriamo l'apparato con un telo nero: i conteggi di alcuni PMT si dimezzano, ma la differenza tra coincidenze a 2 e a 3 rimane la stessa.
+
+Concludiamo che il rumore anomalo dipende solo dai conteggi dei singoli PMT.
+La \autoref{orrore} riporta i risultati di una serie di misure semplici da comprende con una breve occhiata e riassume in modo quantitativo la complicata situazione sopra descritta. 
 
 \begin{table}
 \centering
