@@ -83,16 +83,43 @@ Vale $\Ei(\mu) \approx e^{\mu}/\mu$, dunque
 
 \paragraph{Sviluppo asintotico in $\mu$}
 
-Dimostriamo lo sviluppo asintotico della funzione Ei usato precedentemente
+Dimostriamo lo sviluppo asintotico della funzione $\Ei$ usato precedentemente
 e calcoliamo anche i termini superiori al primo.
 L'integrale esponenziale è definito come
 \begin{equation*}
 	\operatorname{Ei}(x)
-	= - \fint_{-x}^\infty \de t \frac{e^t}t
+	= -\fint_{-x}^\infty \de t \frac{e^t}t
 	= \fint_{-\infty}^x \de t \frac{e^t}t,
 \end{equation*}
-quindi la derivata è
+quindi le derivate sono
+\begin{align*}
+	\Ei'(x) &= \frac{e^x}x, \\
+	\Ei''(x) &= \frac{xe^x - e^x}x^2 = e^x \big(x^{-1} + O(x^{-2})\big).
+\end{align*}
+Poiché all'ordine $x^{-1}$ $\Ei'=\Ei''$, vale anche $\Ei=\Ei'$:
 \begin{equation*}
-	\Ei'(x) = \frac{e^x}x.
+	\Ei(x) = e^x \big(x^{-1} + O(x^{-2}) \big).
 \end{equation*}
-
+Calcoliamo $\Ei(x)e^{-x}$ passando attraverso l'integrale:
+\begin{align*}
+	\int\de x\, \Ei(x) e^{-x}
+	&= \Ei(x)(-e^{-x}) + \int\de x\, \Ei'(x)e^{-x} = \\
+	&= -\Ei(x)e^{-x}  + \int\frac{\de x}x = \\
+	&= -\Ei(x)e^{-x} + \log x + C, \\
+	\Ei(x)e^{-x}
+	&= \dv{}{x} \int\de x\, \Ei(x)e^{-x} = \\
+	&= \dv{}{x} \left( -\frac1x + O\left(\frac1{x^2}\right) + \log x + C \right) = \\
+	&= \frac1x + \frac1{x^2} + O\left(\frac1{x^3}\right).
+\end{align*}
+Per induzione a vista si ottiene:
+\begin{align*}
+	\frac{\Ei(x)}x
+	&= \sum_{k=0}^N \frac{\de^k}{\de x^k} \frac{(-1)^k}{x} + O\left(\frac1{x^{N+2}}\right) = \\
+	&= \sum_{k=0}^N \frac{k!}{x^{1+k}} + O\left(\frac1{x^{N+2}}\right).
+\end{align*}
+La somma non converge per $N\to\infty$,
+è uno sviluppo che per ogni $N$ finito è utile per $x$ abbastanza grande.
+In particolare al secondo ordine
+\begin{equation*}
+	\frac{\Ei(x)}{e^x} = \frac1x + \frac1{x^2}.
+\end{equation*}
