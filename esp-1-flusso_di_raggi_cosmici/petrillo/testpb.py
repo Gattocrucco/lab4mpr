@@ -46,7 +46,7 @@ xlims = (-.01,1)
 
 # plot istogrammi insieme
 subplot(211)
-bar(edges[:-1], counts2, log=False, align='edge', width=(MAX-MIN)/nbins, color='lightgray', label='senza piombo')
+bar(edges[:-1], counts2, log=False, align='edge', width=(MAX-MIN)/nbins, color='gray', label='senza piombo')
 dup_edges = empty(2 * len(edges))
 dup_edges[2 * arange(len(edges))] = edges
 dup_edges[2 * arange(len(edges)) + 1] = edges
@@ -75,7 +75,7 @@ centers = edges[:-1] + (edges[1]-edges[0])/2
 def error(counts, data):
     return sqrt(counts*len(data) * (MAX - MIN)) / len(data) / (MAX - MIN)
 errors = sqrt(error(counts1, data1)**2 + error(counts2, data2)**2)
-errorbar(centers, counts1 - counts2, yerr=errors, fmt=',k', capsize=0)
+errorbar(centers, counts1 - counts2, yerr=errors, fmt=',k', capsize=0, ecolor='gray')
 legend(loc=0, fontsize='small')
 ylabel('densità [arb.un.$^{-1}$]')
 xlim(*xlims)

@@ -93,12 +93,12 @@ dataeffsigd = data3sigb
 # draw samples
 print('drawing samples for acceptances MC...')
 mcobj = mc.MC(*[mc.pmt(i+1) for i in range(6)])
-mcobj.random_samples(N=300000)
+mcobj.random_samples(N=50000)
 
 print('drawing samples for geometry uncertainty MC...')
 mcgeom = mc.MC(*[mc.pmt(i+1) for i in range(6)])
-mcgeom.random_samples(N=3000)
-mcgeom.sample_geometry(3000)
+mcgeom.random_samples(N=1000)
+mcgeom.sample_geometry(1000)
 
 # create list of expressions to compute
 mclist = []
@@ -167,7 +167,7 @@ while len(mclist) > 0:
 
 ####### fit function #######
 
-def f_fit(distr_par, options={}, lamda=1):
+def f_mc(distr_par, options={}):
     # compute rays
     distr = lambda x: x ** (1 / (1 + distr_par)) # vedi logbook:fit
     mcobj.ray(distr)
@@ -210,7 +210,10 @@ def f_fit(distr_par, options={}, lamda=1):
         options['geometry_factors'] = geometry_factors
     for key in geometry_factors.keys():
         mcexprs[key] *= geometry_factors[key]
+    
+    return mcexprs
 
+def f_res(mcexprs, lamda):
     # process data2
     fluxes2 = []
     for i in range(len(data2['clock'])):
@@ -363,6 +366,10 @@ def f_fit(distr_par, options={}, lamda=1):
    
     return fluxes2, fluxes2a, fluxes3, efficiencies
 
+def f_fit(distr_par, options={}, lamda=1):
+    mcexprs = f_mc(distr_par, options=options)
+    return f_res(mcexprs, lamda)
+    
 ####### minimize #######
 
 # p0 +/- dp0
@@ -391,14 +398,8 @@ a = [s[1] for s in simplex]
 ax.set_ylim(min(a), max(a))
 fig.show()
 
-def squares(parameters, args={}):
-    total_flux = parameters[0] * 100
-    distr_par = parameters[1]
-    efficiencies = parameters[2:-1]
-    lamda = 10 ** parameters[-1]
-    
-    # note: memoizing on distr_par would have very little effect
-    fluxes2, fluxes2a, fluxes3, effs = f_fit(distr_par, options=args, lamda=lamda)
+def residuals(total_flux, efficiencies, f_fit_result):
+    fluxes2, fluxes2a, fluxes3, effs = f_fit_result
     fluxes = fluxes2 + fluxes2a + fluxes3
 
     vect = [flux - total_flux for flux in fluxes]
@@ -406,6 +407,25 @@ def squares(parameters, args={}):
         vect += [eff - efficiencies[i] for eff in effs[i]]
     vect_nom = unp.nominal_values(vect)
     vect_cov = un.covariance_matrix(vect)
+    
+    return vect_nom, vect_cov
+
+def small_squares(x, kw):
+    total_flux = x[0] * 100
+    efficiencies = x[1:]
+    f_fit_result = kw['f_fit_result']
+    vect_nom, vect_cov = residuals(total_flux, efficiencies, f_fit_result)
+    cov_inv = np.linalg.inv(vect_cov)
+    return np.dot(vect_nom, np.dot(cov_inv, vect_nom))
+
+def squares(parameters, args={}):
+    total_flux = parameters[0] * 100
+    distr_par = parameters[1]
+    efficiencies = parameters[2:-1]
+    lamda = 10 ** parameters[-1]
+    
+    f_fit_result = f_fit(distr_par, options=args, lamda=lamda)
+    vect_nom, vect_cov = residuals(total_flux, efficiencies, f_fit_result)
     
     # eigenvalues, transf = linalg.eigh(vect_cov)
     # orth_vect = transf.T.dot(vect_nom)
@@ -549,7 +569,7 @@ def hessian(p0, dps, n='auto', geom={}, fig=None):
         x = x[s]
         y = y[s]
         f = interpolate.interp1d(x, y)
-        deltachi2 = 40 if i == 1 else 3
+        deltachi2 = 15 if i == 1 else 3
         L = optimize.bisect(lambda x: f(x) - (Q0 + deltachi2), x[0], p0[i])
         R = optimize.bisect(lambda x: f(x) - (Q0 + deltachi2), p0[i], x[-1])
         
@@ -580,7 +600,6 @@ def hessian(p0, dps, n='auto', geom={}, fig=None):
                 N = 10 if (i == 1 or j == 1) else 4
             else:
                 N = n
-        
             # compute N points along i, j scaled by 1 / sqrt(curvature)
             # conti sul quaderno alla data 2018-02-07
             cii = curvature[i,i]
@@ -672,11 +691,11 @@ def res_plot(par, geom, cov=None, p1=None, **kw):
     
     fig.show()
 
-fit_options = dict(disp=True, xatol=2e-4, fatol=2e-3, initial_simplex=simplex)
+fit_options = dict(disp=True, xatol=1e-3, fatol=1e-2, initial_simplex=simplex)
 
 print('computing geometrical uncertainty...')
 args = dict(log=True, plot=True, plotline=line, trace={})
-f_fit(p0[1], args, lamda=p0[-1])
+f_fit(p0[1], args, lamda=10**p0[-1])
 
 print('first (of 3) fit...')
 out1 = optimize.minimize(squares, p0, args=(args,), method='Nelder-Mead', options=fit_options)
@@ -685,7 +704,7 @@ geom1 = args['geometry_factors']
 
 print('recomputing geometrical uncertainty...')
 args.pop('geometry_factors')
-f_fit(out1.x[1], args, lamda=out1.x[-1])
+f_fit(out1.x[1], args, lamda=10**out1.x[-1])
 
 line, = ax.plot([p0[0]], [p0[1]], 'x', markersize=3)
 args['plotline'] = line
@@ -698,7 +717,7 @@ geom2 = args['geometry_factors']
 
 print('recomputing geometrical uncertainty...')
 args.pop('geometry_factors')
-f_fit(out2.x[1], args, lamda=out2.x[-1])
+f_fit(out2.x[1], args, lamda=10**out2.x[-1])
 
 line, = ax.plot([p0[0]], [p0[1]], 'x', markersize=2)
 args['plotline'] = line
@@ -709,9 +728,18 @@ out3 = optimize.minimize(squares, p0, args=(args,), method='Nelder-Mead', option
 trace3 = args['trace']
 geom3 = args['geometry_factors']
 
+print('perfectioning fit...')
+f_fit_result = f_fit(out3.x[1], args, lamda=10**out3.x[-1])
+out = optimize.minimize(small_squares, [out3.x[0]] + list(out3.x[2:-1]), args=(dict(f_fit_result=f_fit_result),))
+vect_nom, vect_cov = residuals(out.x[0], out.x[1:], f_fit_result)
+# hess = out.jac.T.dot(np.linalg.inv(vect_cov)).dot(out.jac)
+par0 = np.copy(out3.x)
+par0[0] = out.x[0]
+par0[2:-1] = out.x[1:]
+
 print('computing covariance...')
 figcurv = plt.figure('curvature')
-upar, H = hessian(out3.x, [0.1, 0.4] + [0.05] * len(dataeff['clock']) + [0.3], geom=geom3, fig=figcurv)
+upar, H = hessian(par0, [0.1, 0.4] + [0.05] * len(dataeff['clock']) + [0.3], geom=geom3, fig=figcurv)
 cov = np.linalg.inv(unp.nominal_values(H))
 par = unp.nominal_values(upar)
 
@@ -725,4 +753,4 @@ chisq = trace3['Qs'][-1]
 
 print('chi2 = %.1f (dof = %d), chi2/dof = %.1f' % (chisq, dof, chisq / dof))
 
-res_plot(out3.x, geom3, cov=cov)
+res_plot(par, geom3, cov=cov)
