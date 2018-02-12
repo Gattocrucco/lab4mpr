@@ -412,8 +412,10 @@ def residuals(total_flux, efficiencies, f_fit_result):
 
 def small_squares(x, kw):
     total_flux = x[0] * 100
-    efficiencies = x[1:]
-    f_fit_result = kw['f_fit_result']
+    efficiencies = x[1:-1]
+    lamda = 10 ** x[-1]
+    mcexprs = kw['mcexprs']
+    f_fit_result = f_res(mcexprs, lamda)
     vect_nom, vect_cov = residuals(total_flux, efficiencies, f_fit_result)
     cov_inv = np.linalg.inv(vect_cov)
     return np.dot(vect_nom, np.dot(cov_inv, vect_nom))
@@ -749,13 +751,13 @@ trace3 = args['trace']
 geom3 = args['geometry_factors']
 
 print('perfectioning fit...')
-f_fit_result = f_fit(out3.x[1], args, lamda=10**out3.x[-1])
-out = optimize.minimize(small_squares, [out3.x[0]] + list(out3.x[2:-1]), args=(dict(f_fit_result=f_fit_result),))
-vect_nom, vect_cov = residuals(out.x[0], out.x[1:], f_fit_result)
+mcexprs = f_mc(out3.x[1], args)
+out = optimize.minimize(small_squares, [out3.x[0]] + list(out3.x[2:]), args=(dict(mcexprs=mcexprs),))
+# vect_nom, vect_cov = residuals(out.x[0], out.x[1:], f_fit_result)
 # hess = out.jac.T.dot(np.linalg.inv(vect_cov)).dot(out.jac)
 par0 = np.copy(out3.x)
 par0[0] = out.x[0]
-par0[2:-1] = out.x[1:]
+par0[2:] = out.x[1:]
 
 print('computing covariance...')
 figcurv = plt.figure('curvature')
