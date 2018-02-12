@@ -121,7 +121,7 @@ L'integrale esponenziale è definito come
 quindi le derivate sono
 \begin{align*}
 	\Ei'(x) &= \frac{e^x}x, \\
-	\Ei''(x) &= \frac{xe^x - e^x}x^2 = e^x \big(x^{-1} + O(x^{-2})\big).
+	\Ei''(x) &= \frac{xe^x - e^x}{x^2} = e^x \big(x^{-1} + O(x^{-2})\big).
 \end{align*}
 Poiché all'ordine $x^{-1}$ $\Ei'=\Ei''$, vale anche $\Ei=\Ei'$:
 \begin{equation*}
@@ -140,7 +140,7 @@ Calcoliamo $\Ei(x)e^{-x}$ passando attraverso l'integrale:
 \end{align*}
 Per induzione a vista si ottiene:
 \begin{align*}
-	\frac{\Ei(x)}x
+	\frac{\Ei(x)}{e^x}
 	&= \sum_{k=0}^N \frac{\de^k}{\de x^k} \frac{(-1)^k}{x} + O\left(\frac1{x^{N+2}}\right) = \\
 	&= \sum_{k=0}^N \frac{k!}{x^{1+k}} + O\left(\frac1{x^{N+2}}\right).
 \end{align*}
