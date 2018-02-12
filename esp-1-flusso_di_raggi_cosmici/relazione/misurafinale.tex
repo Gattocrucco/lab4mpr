@@ -46,8 +46,6 @@ Complessivamente quindi questa misura è ottimizzata per il flusso totale.
 Il circuito è riportato in \autoref{fig:circuitomisdue}.
 I circuiti delle altre configurazioni sono in sostanza uguali.
 I dati sono riportati in \autoref{tab:data2}.
-\marginpar{Nel cerchio di antiretrigger includere anche i discriminatori secondo stadio
-per coerenza con i circuiti dell'ADC.}
 
 \subsubsection{Misure in coincidenza a 2 con distribuzione angolare}
 
@@ -68,7 +66,6 @@ usiamo tre lastre ($A$, $B$ e $C$) in coincidenza per misurare il flusso
 e due lastre ($a$ e $b$) esterne ad $A$, $B$ e $C$ per misurare l'efficienza di $A$, $B$ e $C$.
 In questo modo non dobbiamo preoccuparci del rumore sulle lastre con cui misuriamo il flusso.
 È interessante confrontare questa misura con una della configurazione ``2'' tale che $A_2=A_3$ e $B_2=C_3$.
-\marginpar{Modo più chiaro (sintetitico) di dirlo?}
 I dati sono riportati in \autoref{tab:data3}.
 
 \subsubsection{Misure di efficienza con distribuzione angolare}
@@ -179,6 +176,29 @@ abbiamo deciso (rischiosamente) di non usarla nel prefit e aggiungerla solo nel 
 \subsubsection{Risultato}
 \label{sec:risultato}
 
+Il fit si è rivelato problematico perché il risultato cambia più delle incertezze stimate
+se rieseguiamo il fit con nuovi campioni Monte Carlo.
+Può darsi che con un numero sufficiente di campioni diventi stabile,
+ma abbiamo raggiunto il limite della nostra potenza di calcolo.
+Riportiamo i risultati per un fit ``tipico'':
+in \autoref{tab:cov} c'è il risultato con la matrice di covarianza,
+in \autoref{fig:residui} c'è il grafico dei residui $\mathbf r$.
+È evidente che il fit ``non torna'' statisticamente.
+Facendo vari fit, decidiamo di dare queste stime%
+\footnote{In un certo senso questo è un montecarlo di fit.
+L'errore geometrico è calcolato con un montecarlo di montecarli,
+quindi abbiamo fatto un montecarlo di montecarli di montecarli.}:
+$\Phi=\SI{195(5)}{m^{-2}\,s^{-1}}$, $\alpha=\num{2.6(3)}$.
+
+\paragraph{Contributi alle incertezze}
+
+Abbiamo analizzato i vari contributi alla varianza di $\mathbf r$.
+Per le misure ``2'' e ``2a'' i principali contributi, alla pari,
+sono l'incertezza poissoniana sulle coincidenze a due e la geometria.
+Per la misura ``3'', che ha alta statistica, predomina la geometria.
+Per le misure ``eff'', quando l'efficienza è calcolata con lastre che circondano PMA
+conta più la statistica, negli altri casi la geometria.
+
 \begin{table}
 	\centering
 	\begin{tabular}{cc|ccc|c}
@@ -207,29 +227,6 @@ abbiamo deciso (rischiosamente) di non usarla nel prefit e aggiungerla solo nel 
 	La linea tratteggiata è il risultato del fit,
 	la banda grigia è l'incertezza calcolata dal fit.}
 \end{figure}
-
-Il fit si è rivelato problematico perché il risultato cambia più delle incertezze stimate
-se rieseguiamo il fit con nuovi campioni Monte Carlo.
-Può darsi che con un numero sufficiente di campioni diventi stabile,
-ma abbiamo raggiunto il limite della nostra potenza di calcolo.
-Riportiamo i risultati per un fit ``tipico'':
-in \autoref{tab:cov} c'è il risultato con la matrice di covarianza,
-in \autoref{fig:residui} c'è il grafico dei residui $\mathbf r$.
-È evidente che il fit ``non torna'' statisticamente.
-Facendo vari fit, decidiamo di dare queste stime%
-\footnote{In un certo senso questo è un montecarlo di fit.
-L'errore geometrico è calcolato con un montecarlo di montecarli,
-quindi abbiamo fatto un montecarlo di montecarli di montecarli.}:
-$\Phi=\SI{195(5)}{m^{-2}\,s^{-1}}$, $\alpha=\num{2.6(3)}$.
-
-\paragraph{Contributi alle incertezze}
-
-Abbiamo analizzato i vari contributi alla varianza di $\mathbf r$.
-Per le misure ``2'' e ``2a'' i principali contributi, alla pari,
-sono l'incertezza poissoniana sulle coincidenze a due e la geometria.
-Per la misura ``3'', che ha alta statistica, predomina la geometria.
-Per le misure ``eff'', quando l'efficienza è calcolata con lastre che circondano PMA
-conta più la statistica, negli altri casi la geometria.
 
 %--------------------------- TABELLONE ------------------------------
 
