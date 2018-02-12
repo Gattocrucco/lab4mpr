@@ -89,7 +89,8 @@ per ricavare il flusso per unità di area orizzontale $\Phi$
 (vedi \autoref{sec:teogeom} per la notazione) e la distribuzione angolare.
 Per la distribuzione angolare prendiamo il modello $p(u) = (\alpha+1) u^\alpha$.
 Oltre a $\Phi$ e $\alpha$ ci sono i nuisance parameters $\epsilon_i$
-che sono le efficienze del PMA in ognuna delle misure di tipo ``eff''.
+che sono le efficienze del PMA in ognuna delle misure di tipo ``eff'',
+e un parametro $\lambda$ che spieghiamo in seguito.
 Per ogni misura di tipo ``2'', ``2a'' e ``3'' calcoliamo il flusso;
 per ogni misura di tipo ``eff'' calcoliamo tre efficienze.
 Il vettore $\mathbf r$ dei residui è dato dalla differenza dei flussi con il parametro $\Phi$
@@ -100,8 +101,6 @@ La forma quadratica da minimizzare è
 \end{equation*}
 dove $V$ è la matrice di covarianza di $\mathbf r$.
 La $V$ è calcolata con propagazione al primo ordine.
-Nei calcoli sottraiamo le coincidenze casuali con la formula al primo ordine
-dalle coincidenze a 2 e, quando i rate sono piuttosto alti, anche dalle coincidenze a~3.
 Teniamo conto di tutte le correlazioni, con queste eccezioni:
 \begin{itemize}
 	\item Non tutte le accettanze possono essere calcolate con lo stesso pivot;
@@ -115,6 +114,14 @@ Teniamo conto di tutte le correlazioni, con queste eccezioni:
 	quando le lastre per calcolare l'efficienza sono esterne a quelle per misurare il flusso,
 	la correlazione tra i rapporti di conteggi è nulla (vedi \autoref{sec:rappcorr}).
 \end{itemize}
+
+\paragraph{Coincidenze casuali}
+
+Nei calcoli sottraiamo le coincidenze casuali con la formula al primo ordine
+dalle coincidenze a 2 e, quando i rate sono piuttosto alti, anche dalle coincidenze a~3.
+Poiché abbiamo riscontrato un rumore anomalo (\autoref{rumore}),
+moltiplichiamo tutti i calcoli di coincidenze casuali per il parametro di fit $\lambda$
+($\lambda^2$ per le coincidenze a 3).
 
 \paragraph{Monte Carlo}
 
@@ -156,7 +163,7 @@ Allora calcoliamo la curvatura in questo modo:
 L'incertezza geometrica (il cui calcolo è descritto in \autoref{sec:uncgeom})
 è lenta da calcolare, quindi la calcoliamo in un punto iniziale e la teniamo fissa durante la minimizzazione.
 Ripetiamo la minimizzazione due volte ricalcolando l'incertezza geometrica nel minimo trovato all'iterazione precedente;
-i due minimi vengono praticamente identici quindi siamo sicuri della convergenza.
+i due minimi vengono abbastanza vicini siamo sicuri della convergenza.
 
 \paragraph{Prefit}
 
@@ -168,6 +175,61 @@ In questo modo evitiamo di introdurre un bias scegliendo come fare il fit in bas
 Come misure di prefit abbiamo scelto quelle a statistica minore.
 Per la configurazione ``3'', purtroppo, abbiamo una sola misura;
 abbiamo deciso (rischiosamente) di non usarla nel prefit e aggiungerla solo nel fit finale.
+
+\subsubsection{Risultato}
+\label{sec:risultato}
+
+\begin{table}
+	\centering
+	\begin{tabular}{cc|ccc|c}
+		$\Phi$   & $\alpha$   & $\epsilon_1$ & $\epsilon_2$ & $\epsilon_3$ & $\log_{10}(\lambda)$ \\ \hline\hline
+		2.037(7) &   $-$44.1 \% &    $-$30.8 \% &    $-$51.1 \% &  $-$52.9 \% &   $-$38.6 \% \\
+		         & 2.421(18) &    $-$38.0 \% &    $-$52.4 \% &  $-$52.8 \% &   $-$36.4 \% \\ \hline
+		         &           & 0.9101(14) &    $-$63.2 \% &  $-$70.0 \% &   $-$47.1 \% \\
+		         &           &            & 0.9976(27) &  $-$40.1 \% &   $-$57.4 \% \\
+		         &           &            &            & 1.001(3) &   $-$67.6 \% \\ \hline
+		         &           &            &            &          & 0.229(19)
+	\end{tabular}
+	\caption{\label{tab:cov}
+	Risultato ``tipico'' di un fit
+	(varia più delle incertezze se si riestraggono i campioni Monte Carlo).
+	La tabella ha la forma di una matrice di covarianza;
+	sulla diagonale sono riportate le stime con l'incertezza,
+	fuori diagonale sono riportate le correlazioni.}
+\end{table}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{residuals}
+	\caption{\label{fig:residui}
+	Grafico dei residui per lo stesso fit della \autoref{tab:cov}.
+	L'ordine è lo stesso delle tabelle dei dati (righe con prefit=0).
+	La linea tratteggiata è il risultato del fit,
+	la banda grigia è l'incertezza calcolata dal fit.}
+\end{figure}
+
+Il fit si è rivelato problematico perché il risultato cambia più delle incertezze stimate
+se rieseguiamo il fit con nuovi campioni Monte Carlo.
+Può darsi che con un numero sufficiente di campioni diventi stabile,
+ma abbiamo raggiunto il limite della nostra potenza di calcolo.
+Riportiamo i risultati per un fit ``tipico'':
+in \autoref{tab:cov} c'è il risultato con la matrice di covarianza,
+in \autoref{fig:residui} c'è il grafico dei residui $\mathbf r$.
+È evidente che il fit ``non torna'' statisticamente.
+Facendo vari fit, decidiamo di dare queste stime%
+\footnote{In un certo senso questo è un montecarlo di fit.
+L'errore geometrico è calcolato con un montecarlo di montecarli,
+quindi abbiamo fatto un montecarlo di montecarli di montecarli.}:
+$\Phi=\SI{195(5)}{m^{-2}\,s^{-1}}$, $\alpha=\num{2.6(3)}$.
+
+\paragraph{Contributi alle incertezze}
+
+Abbiamo analizzato i vari contributi alla varianza di $\mathbf r$.
+Per le misure ``2'' e ``2a'' i principali contributi, alla pari,
+sono l'incertezza poissoniana sulle coincidenze a due e la geometria.
+Per la misura ``3'', che ha alta statistica, predomina la geometria.
+Per le misure ``eff'', quando l'efficienza è calcolata con lastre che circondano PMA
+conta più la statistica, negli altri casi la geometria.
 
 %--------------------------- TABELLONE ------------------------------
 
