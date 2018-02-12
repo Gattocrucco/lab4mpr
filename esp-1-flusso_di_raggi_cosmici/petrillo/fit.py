@@ -667,7 +667,17 @@ def res_plot(par, geom, cov=None, p1=None, **kw):
         '%d&%d&%d' % (data3['PMTA'][i], data3['PMTB'][i], data3['PMTC'][i]) for i in range(len(fluxes3))
     ])
     lims = ax.get_ylim()
-    ax.plot([par[0] * 100] * 2, lims, '-k', label='fit')
+    ax.plot([par[0] * 100] * 2, lims, '--k', label='fit')
+    if not (cov is None):
+        rect = patches.Rectangle(
+            (par[0] * 100 - np.sqrt(cov[0,0]) * 100, lims[0]),
+            2 * np.sqrt(cov[0,0]) * 100,
+            lims[1] - lims[0],
+            facecolor='lightgray',
+            edgecolor='none',
+            zorder=-1
+        )
+        ax.add_patch(rect)
     ax.set_ylim(lims)
     ax.legend(loc=0, fontsize='small')
     
@@ -686,7 +696,17 @@ def res_plot(par, geom, cov=None, p1=None, **kw):
         ])
         ax.set_ylim((-.5, 2.5))
         lims = ax.get_ylim()
-        ax.plot([par[2+i]] * 2, lims, '-k')
+        ax.plot([par[2+i]] * 2, lims, '--k')
+        if not (cov is None):
+            rect = patches.Rectangle(
+                (par[2+i] - np.sqrt(cov[2+i,2+i]), lims[0]),
+                2 * np.sqrt(cov[2+i,2+i]),
+                lims[1] - lims[0],
+                facecolor='lightgray',
+                edgecolor='none',
+                zorder=-1
+            )
+            ax.add_patch(rect)
         ax.set_ylim(lims)
     
     fig.show()
