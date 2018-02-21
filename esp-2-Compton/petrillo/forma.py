@@ -2,10 +2,11 @@ from pylab import *
 import glob, scanf
 import uncertainties as un
 from uncertainties import unumpy as unp
-import optimize
+import lab
 
 cut = (7400, 7850)
 fitcut = (-5, 5)
+angle_un = 0.1
 
 files = glob.glob('../histo/histo-20feb-ang*-?????.dat')
 file_fondo = glob.glob('../histo/histo-20feb-daunaltraparte-*.dat')[0]
@@ -35,16 +36,28 @@ rates = array(rates)
 bool_cut = logical_and(fitcut[0] <= angles, angles <= fitcut[1])
 fit_angles = angles[bool_cut]
 fit_rates = rates[bool_cut]
-def fit_fun(angle, norm, center, sigma):
-    return norm * exp(-1/2 * (angle - center)**2 / sigma**2)
-par, cov = optimize.curve_fit(fit_fun, fit_angles, unp.nominal_values(fit_rates), sigma=unp.std_devs(fit_rates), absolute_sigma=True)
+def fit_fun(angle, top, center, sigma):
+    return top * exp(-1/2 * (angle - center)**2 / sigma**2)
+out = lab.fit_curve(fit_fun, fit_angles, unp.nominal_values(fit_rates), dx=angle_un, dy=unp.std_devs(fit_rates), absolute_sigma=True, p0=(max(unp.nominal_values(fit_rates)), mean(fit_angles), (max(fit_angles) - min(fit_angles)) / 2))
+par = out.par
+cov = out.cov
+
+print('risultato del fit (top, center, sigma):')
+print(lab.format_par_cov(par, cov))
+print('center = %s °' % lab.xe(par[1], sqrt(cov[1,1]), pm=lab.unicode_pm))
+print('sigma = %s °' % lab.xe(par[2], sqrt(cov[2,2]), pm=lab.unicode_pm))
+print('chi2/dof = %.1f/%d' % (out.chisq, out.chisq_dof))
 
 figure('forma')
 clf()
-errorbar(angles, unp.nominal_values(rates), yerr=unp.std_devs(rates), fmt=',k', capsize=2)
-ylabel('tasso nei canali %d-%d [$s^{-1}$]\nfondo sottratto = %s $s^{-1}$' % (cut[0], cut[1], format(rate_fondo)))
+errorbar(angles, unp.nominal_values(rates), xerr=angle_un, yerr=unp.std_devs(rates), fmt=',k', capsize=2, label='dati')
+fa = linspace(min(fit_angles), max(fit_angles), 500)
+plot(fa, fit_fun(fa, *par), '-', color='gray', zorder=-10, label='fit gaussiano')
+ylabel('tasso nei canali %d-%d [$s^{-1}$]\n(fondo sottratto = %s $s^{-1}$)' % (cut[0], cut[1], format(rate_fondo)))
 xlabel('angolo [°]')
 title('forma del fascio')
 yscale('log')
+legend(loc=1)
 grid()
+tight_layout()
 show()
