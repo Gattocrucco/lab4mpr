@@ -36,15 +36,15 @@ counts = loadtxt(sys.argv[1], unpack=True)
 
 logscale = 'log' in sys.argv[1:]
 
-# cut = 1
-#
-# def partial_sum(a, n):
-#     out = zeros(len(a) // n)
-#     for i in range(n):
-#         out += a[i::n][:len(out)]
-#     return out
-#
-# counts = partial_sum(data, cut)
+cut = 1
+
+def partial_sum(a, n):
+    out = zeros(len(a) // n)
+    for i in range(n):
+        out += a[i::n][:len(out)]
+    return out
+
+counts = partial_sum(counts, cut)
 
 figure('histo')
 clf()
