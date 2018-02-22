@@ -8,8 +8,8 @@ cut = (7400, 7850)
 fitcut = (-5, 5)
 angle_un = 0.1
 
-files = glob.glob('../histo/histo-20feb-ang*-?????.dat')
-file_fondo = glob.glob('../histo/histo-20feb-daunaltraparte-*.dat')[0]
+files = glob.glob('../dati/histo-20feb-ang*-?????.dat')
+file_fondo = glob.glob('../dati/histo-20feb-daunaltraparte-*.dat')[0]
 
 # legge il fondo
 data_fondo = loadtxt(file_fondo, unpack=True)
