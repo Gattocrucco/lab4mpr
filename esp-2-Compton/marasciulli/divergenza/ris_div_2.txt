@@ -1,0 +1,10 @@
+DIVRGENZA ANGOLARE
+Divergenza angolare con tutto il collimatore uscito 
+
+risultato del fit (top, center, sigma):
+   930(4)    -5.7 %   -39.2 %
+           -0.30(3)     9.6 %
+                      3.13(4)
+center = -0.30 ± 0.03 °
+sigma = 3.13 ± 0.04 °
+chi2/dof = 7.2/7

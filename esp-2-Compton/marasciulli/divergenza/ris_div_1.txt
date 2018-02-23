@@ -1,0 +1,10 @@
+DIVRGENZA ANGOLARE
+Prima misura di divergenza angolare 
+
+risultato del fit (top, center, sigma):
+  1088(6)    -7.1 %    -28.4 %
+           -0.13(3)     -1.7 %
+                     2.458(25)
+center = -0.13 ± 0.03 °
+sigma = 2.458 ± 0.025 °
+chi2/dof = 4.0/8
