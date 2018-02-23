@@ -27,5 +27,5 @@ with open(filename, 'r') as logfile:
 
 values.resize(i)
 npyfilename = filename.replace('.log', '.npy')
-print('saving as uint16 array in file %s' % npyfilename)
+print('saving as uint16 array in file %s' % (npyfilename,))
 np.save(npyfilename, values)

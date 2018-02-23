@@ -76,9 +76,10 @@ def histo(datasets, figname='histo', logscale=False, cut=1, **kw):
             yscale('symlog', linthreshy=1, linscaley=1/5, subsy=[2, 3, 4, 5, 6, 7, 8, 9])
     xlabel('canale ADC')
     ylabel('conteggio')
-    xticks(arange(9) * 1000 / cut, ['%dk' % i for i in range(9)])
-    legend(loc=0, fontsize='small')
+    # xticks(arange(9) * 1000 / cut, ['%dk' % i for i in range(9)])
+    legend(loc=1, fontsize='small')
     minorticks_on()
+    grid()
     show()
 
 if __name__ == '__main__':
