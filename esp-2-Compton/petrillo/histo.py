@@ -3,6 +3,13 @@ import numpy as np
 from matplotlib import pyplot as plt
 import sys
 
+cut = 1
+
+# utilizzo:
+# histo.py filename.dat       # --> file istogramma
+# histo.py filename.npy/.log  # --> file con tutti i campioni, istogramma da calcolare
+# histo.py filename.xxx log   # --> scala verticale logaritmica
+
 def bar_line(edges, counts, ax=None, **kwargs):
     """
     Draw histogram with solid skyline.
@@ -31,21 +38,36 @@ def bar_line(edges, counts, ax=None, **kwargs):
     if ax is None:
         ax = plt.gca()
     return ax.plot(dup_edges, dup_counts, **kwargs)
-
-counts = loadtxt(sys.argv[1], unpack=True)
-
-logscale = 'log' in sys.argv[1:]
-
-cut = 1
-
+    
 def partial_sum(a, n):
-    out = zeros(len(a) // n)
+    out = np.zeros(len(a) // n)
     for i in range(n):
         out += a[i::n][:len(out)]
     return out
 
+# read command line
+filename = sys.argv[1]
+logscale = 'log' in sys.argv[2:]
+
+# load file
+print('loading file...')
+if filename.endswith('.dat'):
+    counts = np.loadtxt(filename, unpack=True, dtype='int32')
+elif filename.endswith('.log') or filename.endswith('.npy'):
+    if filename.endswith('.log'):
+        samples = np.loadtxt(filename, unpack=True, converters={0: lambda s: int(s, base=16)}, dtype='uint16')
+    else:
+        samples = np.load(filename)
+    
+    print('converting samples to counts...')
+    counts = np.bincount(samples, minlength=2**13)
+else:
+    raise ValueError('filename %s is neither .dat, .log or .npy' % (filename,))
+
+# eventually merge bins
 counts = partial_sum(counts, cut)
 
+# plot histogram
 figure('histo')
 clf()
 bar_line(arange(len(counts) + 1) - 0.5, counts, color='black', linewidth=.25)
