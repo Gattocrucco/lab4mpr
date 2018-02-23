@@ -46,7 +46,7 @@ def partial_sum(a, n):
         out += a[i::n][:len(out)]
     return out
 
-def histo(datasets, figname='histo', logscale=False, cut=1):
+def histo(datasets, figname='histo', logscale=False, cut=1, **kw):
     """
     Plot histograms(s) of dataset(s).
     
@@ -71,12 +71,12 @@ def histo(datasets, figname='histo', logscale=False, cut=1):
             raise ValueError('data for label %s not recognised as samples or histogram' % label)
         if cut > 1:
             counts = partial_sum(counts, cut)
-        bar_line(arange(len(counts) + 1) - 0.5, counts, linewidth=.25, label='%s, N=%s' % (label, lab.num2si(np.sum(counts), format='%.3g')))
+        bar_line(arange(len(counts) + 1) - 0.5, counts, label='%s, N=%s' % (label, lab.num2si(np.sum(counts), format='%.3g')), **kw)
         if logscale:
             yscale('symlog', linthreshy=1, linscaley=1/5, subsy=[2, 3, 4, 5, 6, 7, 8, 9])
     xlabel('canale ADC')
     ylabel('conteggio')
-    xticks(arange(9) * 1000, ['%dk' % i for i in range(9)])
+    xticks(arange(9) * 1000 / cut, ['%dk' % i for i in range(9)])
     legend(loc=0, fontsize='small')
     minorticks_on()
     show()
@@ -102,4 +102,4 @@ if __name__ == '__main__':
         raise ValueError('filename %s is neither .dat, .log or .npy' % (filename,))
 
     # plot histogram
-    histo({filename: counts}, logscale=logscale, cut=cut)
+    histo({filename: counts}, logscale=logscale, cut=cut, linewidth=.25, color='black')
