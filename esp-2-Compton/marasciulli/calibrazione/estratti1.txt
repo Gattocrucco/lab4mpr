@@ -1,0 +1,21 @@
+# Raccolgo i risultati dei precedenti fit per
+# trovare il fattore di conversione dell'ADC.
+
+# Suppongo che non si sia scalibrata nel frattempo.
+# Questa la faccio con le acquisizioni senza trigger.
+
+# Formato dati: elemento commentato; 
+# digit , errore digit | valore in MeV , errore in MeV
+
+# sodio 2
+7058.38129149  2.803	1.275  0.0005063984
+# sodio 1
+2914.40805649  0.75390	0.546  0.0001412397
+# americio
+341.151785122  0.39400	0.059  6.81399117667e-05
+# cobalto 1
+6501.6 1.3	1.17750275831  0.000221
+# cobalto 2
+7354.6 1.5	1.332  0.00026697890
+# cesio
+3815.01779173  0.946441	0.662  0.00016423

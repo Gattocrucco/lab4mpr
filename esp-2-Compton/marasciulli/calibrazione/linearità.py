@@ -8,11 +8,11 @@ from scipy.odr import odrpack
 
 scrivi=False
 if scrivi==True:
-    sys.stdout=open("lin_trig.txt","w")
+    sys.stdout=open("lin_trig1.txt","w")
     
 print("LINEARITà CON TRIGGER \n")
     
-x,dx,y,dy=loadtxt("estratti_trigger.txt",unpack=True)
+x,dx,y,dy=loadtxt("estratti_trigger1.txt",unpack=True)
 
 # fit odr
 def retta(par,X):
