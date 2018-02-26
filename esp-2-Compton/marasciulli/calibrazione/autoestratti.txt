@@ -1,0 +1,4 @@
+# file da usare nella linearità
+# formato dei dati:
+# valore nominale	centro	err_centro	larghezza	err_larghezza	corr
+

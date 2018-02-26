@@ -1,7 +1,7 @@
 ## PROGRAMMA CHE FA GLI ISTOGRAMMI IN UNITA' FISICHE
 
 cartella=r"C:\Users\andre\Desktop\ANDREA\Laboratorio 4\compton\dati"
-nome="22feb-na-trigger"
+nome="22feb-anti"
 file=cartella+"/histo-"+nome+".dat"
 
 fis=True

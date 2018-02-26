@@ -3,7 +3,7 @@ import lab
 
 cartella="dati/"
 data="22feb-"
-nome="co-notrigger"; #noto=1.173
+nome="ce-notrigger"; noto=0.662
 file=cartella+"histo-"+data+nome+".dat"
 el="cobalto"
 sce="senza" # scegliere tra 'con' e 'senza'
@@ -29,8 +29,8 @@ for j in range(len(grezzi)):
 conv=massimo/len(dati)
 X=arange(len(dati))*conv
 
-sin=236
-dex=545
+sin=3470
+dex=4000
 taglio=logical_and(X>=sin,X<=dex)
 
 # fit
@@ -86,6 +86,12 @@ print("centro=",mu*fis,"+-",dmu*fis,"MeV")
 print("largh=",sig*fis,"+-",dsig*fis,"MeV")
 print("pendenza=",m/fis,"+-",dm/fis,"1/MeV")
 
+# cose da scrivere nel file della linearità
+'''
+registro=open("calibrazione/autoestratti.txt","a")
+print("%f \t %f \t %f \t %f \t %f \t %f" %(noto,mu,dmu,sig,dsig,cor(1,2,pcov)),file=registro )
+registro.close()
+'''
 if scrivi==True:
     sys.stdout.close()
     sys.stdout=sys.__stdout__

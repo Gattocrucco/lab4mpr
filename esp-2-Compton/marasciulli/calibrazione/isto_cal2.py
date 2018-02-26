@@ -81,6 +81,13 @@ print("largh 1=",sig1*fis,"+-",dsig1*fis,"MeV")
 print("picco 2=",mu2*fis,"+-",dmu2*fis,"MeV")
 print("largh 2=",sig2*fis,"+-",dsig2*fis,"MeV")
 
+# cose da scrivere nel file della linearità
+'''
+registro=open("calibrazione/autoestratti.txt","a")
+print("%f \t %f \t %f \t %f \t %f \t %f" %(noto,mu,dmu,sig,dsig,cor(1,2,pcov)),file=registro )
+registro.close()
+'''
+
 if scrivi==True:
     sys.stdout.close()
     sys.stdout=sys.__stdout__
