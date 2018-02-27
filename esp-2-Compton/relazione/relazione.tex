@@ -1,0 +1,63 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+
+\usepackage[margin=4.2cm, top=1.5cm, bottom=2.5cm]{geometry}
+
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{esint}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage[font={sf}]{caption}
+\usepackage{subcaption}
+\usepackage{pdflscape}
+\usepackage{makecell}
+\usepackage{float}
+
+\setlength{\marginparwidth}{95pt}
+\let\oldmarginpar\marginpar
+\renewcommand\marginpar[1]{\oldmarginpar{\scriptsize\sffamily #1}}
+\newcommand*\de{\mathrm{d}}
+\newcommand*\pdv[2]{\frac{\partial #1}{\partial #2}}
+\newcommand*\dv[2]{\frac{\de #1}{\de #2}}
+\DeclareMathOperator\Ei{Ei}
+
+\sisetup{%
+separate-uncertainty=true,
+multi-part-units=single,
+exponent-product=\cdot}
+
+\frenchspacing
+
+\title{Relazione di laboratorio:\\
+Esperienza 2. Scattering Compton}
+\author{Andrea Marasciulli
+\and Giacomo Petrillo
+\and Roberto Ribatti}
+\date{15 febbraio -- 9 marzo 2018}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+	CIPPA LIPPA
+\end{abstract}
+
+{\small \tableofcontents}
+
+%\input{introduzione.tex}
+
+\section{Teoria}
+
+\input{spettrometria_gamma}
+
+\section{Misura e analisi}
+
+%\input{bibliografia}
+
+\end{document}

@@ -1,0 +1,12 @@
+\select@language {italian}
+\select@language {italian}
+\contentsline {section}{\numberline {1}Teoria}{1}{section.1}
+\contentsline {section}{\numberline {2}Spettrometria $\gamma $ con gli scintillatori}{1}{section.2}
+\contentsline {paragraph}{Assorbimento fotoelettrico}{1}{section*.2}
+\contentsline {paragraph}{Scattering Rayleigh}{2}{section*.3}
+\contentsline {paragraph}{Scattering Compton}{2}{section*.4}
+\contentsline {subsection}{\numberline {2.1}Risposta del detector}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Efficienza}{2}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Linearit\IeC {\`a}}{2}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Risoluzione}{2}{subsection.2.4}
+\contentsline {section}{\numberline {3}Misura e analisi}{2}{section.3}
