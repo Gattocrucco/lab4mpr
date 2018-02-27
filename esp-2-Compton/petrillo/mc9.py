@@ -75,35 +75,65 @@ def energy_calibration(E):
     return E
 
 @nb.jit(nopython=True, cache=True)
-def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=0, beam_center=0, nai_distance=20, nai_radius=2, energy_cal=True, energy_res=True):
+def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=0, beam_center=0, nai_distance=20, nai_radius=2, energy_cal=True, energy_res=True, acc_bounds=True):
     beam_sigma *= np.pi / 180
     beam_center *= np.pi / 180
     theta_0 *= np.pi / 180
     
+    # axes of the source
     X = np.array([1., 0, 0])
     Y = np.array([0, 1., 0])
     Z = np.array([0, 0, 1.])
+    
+    # axes of the NaI
     z = Z * np.cos(theta_0) + X * np.sin(theta_0)
     y = Y
     x = X * np.cos(theta_0) - Z * np.sin(theta_0)
     
-    kn_max = klein_nishina(energy, 1)
-
     if seed >= 0:
         np.random.seed(seed)
     out_energy = np.empty(N)
     i = 0
     count = 0
     while i < N:
+        # angular coordinates of the beam photon
         theta_f = np.random.normal(loc=beam_center, scale=beam_sigma)
         phi_f = np.random.uniform(0, 2 * np.pi)
         
+        # axes of the beam photon
         z_f = Z * np.cos(theta_f) + np.sin(theta_f) * (X * np.cos(phi_f) + Y * np.sin(phi_f))
         y_f = cross(z_f, X)
         x_f = cross(y_f, z_f)
         
+        if acc_bounds:
+            # compute acceptance limits for theta of the compton photon
+            cos_theta_rel = np.dot(z, z_f)
+            sin_theta_rel = np.sqrt(1 - cos_theta_rel**2)
+            cos_vartheta = nai_distance / np.sqrt(nai_distance**2 + nai_radius**2)
+            sin_vartheta = nai_radius / np.sqrt(nai_distance**2 + nai_radius**2)
+            cos_theta_plus = cos_theta_rel * cos_vartheta - sin_theta_rel * sin_vartheta
+            cos_theta_minus = cos_theta_rel * cos_vartheta + sin_theta_rel * sin_vartheta
+            if -cos_vartheta <= cos_theta_rel <= cos_vartheta:
+                # the NaI do not overlap the z_f axis
+                cos_theta_min = min(cos_theta_plus, cos_theta_minus)
+                cos_theta_max = max(cos_theta_plus, cos_theta_minus)
+            elif cos_theta_rel > cos_vartheta:
+                # NaI in front of beam
+                cos_theta_min = min(cos_theta_plus, cos_theta_minus)
+                cos_theta_max = 1
+            else:
+                # NaI behind beam
+                cos_theta_min = -1
+                cos_theta_max = max(cos_theta_plus, cos_theta_minus)
+        else:
+            cos_theta_min = -1
+            cos_theta_max = 1
+        
+        # extract theta of compton photon with von neumann
         while 1:
-            cos_theta_candidate = np.random.uniform(-1, 1)
+            cos_theta_candidate = np.random.uniform(cos_theta_min, cos_theta_max)
+            # to compute kn_max I assume that klein_nishina has only one minimum
+            kn_max = max(klein_nishina(energy, cos_theta_min), klein_nishina(energy, cos_theta_max))
             von_neumann = np.random.uniform(0, kn_max)
             if von_neumann <= klein_nishina(energy, cos_theta_candidate):
                 break
@@ -126,16 +156,16 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=0, beam_center=0, nai_dist
             i += 1
         count += 1
     
-    return out_energy
+    return out_energy, count
 
-N = 1000
-energy = mc(1.33, theta_0=10, N=N, beam_sigma=0, seed=1, energy_res=True)
-energy2 = mc(1.17, theta_0=10, N=N, beam_sigma=0, energy_res=True)
+N = 10000
+energy, count = mc(1.33, theta_0=45, N=N, beam_sigma=0, seed=1, acc_bounds=True)
+energy2, count2 = mc(1.33, theta_0=45, N=N, beam_sigma=0, acc_bounds=False)
 
 figure('mc9')
 clf()
-hist(concatenate([energy, energy2]), bins='sqrt', histtype='step', label='1.33 + 1.17, N=%d' % (N,))
-# hist(energy2, bins='sqrt', histtype='step', label='acc %.2g' % (N / count2,))
+hist(concatenate([energy]), bins='sqrt', histtype='step', label='N=%d' % (N,), density=True)
+hist(energy2, bins='sqrt', histtype='step', label='no acc bounds', density=True)
 # theta = np.linspace(0, np.pi, 1000)
 # kn = klein_nishina(0.662, theta)
 # plot(np.cos(theta), kn, '-k', label='E=.662')
