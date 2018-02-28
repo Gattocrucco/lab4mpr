@@ -30,7 +30,8 @@ def logtonpy(filename, printevery=-1):
     return values
 
 if __name__ == '__main__':
-    values = logtonpy(sys.argv[1], printevery=100000)
+    filename = sys.argv[1]
+    values = logtonpy(filename, printevery=100000)
 
     npyfilename = filename.replace('.log', '.npy')
     print('saving as uint16 array in file %s' % (npyfilename,))
