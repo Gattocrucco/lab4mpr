@@ -82,6 +82,38 @@ def energy_calibration(E):
 
 @nb.jit(nopython=True, cache=True)
 def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=0, beam_center=0, nai_distance=20, nai_radius=2, energy_cal=True, energy_res=True, acc_bounds=True):
+    """
+    Simulate Compton scattering on the target and energy measurement of scattered photon with NaI.
+    
+    Parameters
+    ----------
+    energy : float
+        Energy of beam photons, in MeV.
+    theta_0 : float
+        Position of NaI as polar angle from experiment axis, in degrees.
+    N : integer
+        Number of output montecarlo samples.
+    seed : integer
+        Seed for random numbers generation. If negative, the state of the generator is left unchanged.
+    beam_sigma : float
+        Width of the beam as gaussian standard deviation, in degrees.
+    beam_center : float
+        Center of the beam as polar angle from experiment axis, in degrees.
+    nai_distance : float
+        Distance of the NaI from the target.
+    nai_radius : float
+        Radius of the NaI, in the same units as nai_distance.
+    energy_cal : bool
+        If True, apply energy calibration of the NaI.
+    energy_res : bool
+        If True, simulate energy resolution of the NaI.
+    acc_bounds : bool
+        If False, disable quick bounds on NaI shape that speed up montecarlo.
+    
+    Returns
+    -------
+    Array of N simulated energy readouts from NaI.
+    """
     beam_sigma *= np.pi / 180
     beam_center *= np.pi / 180
     theta_0 *= np.pi / 180
