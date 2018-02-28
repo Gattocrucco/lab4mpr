@@ -5,6 +5,7 @@ from uncertainties import unumpy as unp
 import lab
 
 # TODO: aggiungere il fit del fondo, anche se già così il chi2 torna (fondo molto piccolo nel taglio)
+# deconvolvere la forma del NaI
 
 cut = (7400, 7850)
 fitcut = (-5, 5)
