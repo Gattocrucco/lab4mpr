@@ -1,0 +1,12 @@
+relazione.pdf
+
+# LaTeX files
+*.aux
+*.fdb_latexmk
+*.fls
+*.latexmk.log
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.watcher_pid
