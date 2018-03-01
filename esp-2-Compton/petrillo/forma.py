@@ -2,15 +2,22 @@ from pylab import *
 import glob, scanf
 import uncertainties as un
 from uncertainties import unumpy as unp
+from uncertainties import umath
 import lab
 import numpy as np
+from scipy import integrate
+import numba as nb
 
-# TODO: aggiungere il fit del fondo, anche se già così il chi2 torna (fondo molto piccolo nel taglio)
-# deconvolvere la forma del NaI
+####### PARAMETERS #######
 
-cut = (5500, 8040)
-fitcut = (-4, 4)
-angle_un = 0.1
+L = 40 # distanza del NaI
+R = 2 # raggio del NaI
+
+cut = (5500, 8040) # canali dell'ADC da usare
+fitcut = (-4, 4) # intervallo di angoli da usare nel fit finale
+angle_un = 0.1 # incertezza sulle misure di angoli
+
+####### LOAD FILES #######
 
 files = glob.glob('../dati/histo-20feb-ang*-?????.dat')
 file_fondo = glob.glob('../dati/histo-20feb-daunaltraparte-*.dat')[0]
@@ -36,10 +43,9 @@ for file in files:
 angles = array(angles)
 rates = array(rates)
 
-# fit
-bool_cut = logical_and(fitcut[0] <= angles, angles <= fitcut[1])
-fit_angles = angles[bool_cut]
-fit_rates = rates[bool_cut]
+####### FIT #######
+
+# fit segnale + fondo
 
 def fit_signal(angle, top, center, sigma):
     return top * exp(-1/2 * (angle - center)**2 / sigma**2)
@@ -48,13 +54,19 @@ def fit_bkg(angle, top, center, sigma):
 def fit_fun(angle, top, center, sigma, bkg_top, bkg_center, bkg_sigma):
     return fit_signal(angle, top, center, sigma) + fit_bkg(angle, bkg_top, bkg_center, bkg_sigma)
 p0 = [
-    max(unp.nominal_values(fit_rates)), np.mean(fit_angles), 2.5,
-    1/10 * max(unp.nominal_values(fit_rates)), np.mean(fit_angles), 15
+    max(unp.nominal_values(rates)), np.mean(angles), 2.5,
+    1/10 * max(unp.nominal_values(rates)), np.mean(angles), 15
 ]
 out_pre = lab.fit_curve(fit_fun, angles, unp.nominal_values(rates), dx=angle_un, dy=unp.std_devs(rates), absolute_sigma=True, p0=p0)
 
 print('risultato del prefit  (signal, bkg) x (top, center, sigma):')
 print(lab.format_par_cov(out_pre.par, out_pre.cov))
+
+bool_cut = logical_and(fitcut[0] <= angles, angles <= fitcut[1])
+fit_angles = angles[bool_cut]
+fit_rates = rates[bool_cut]
+
+# fit segnale con fondo fissato a quello ricavato dal fit precedente
 
 def fit_signal_only(angle, *p):
     return fit_signal(angle, *p) + fit_bkg(angle, *out_pre.par[3:])
@@ -68,6 +80,8 @@ print(lab.format_par_cov(par, cov))
 print('center = %s °' % lab.xe(par[1], sqrt(cov[1,1]), pm=lab.unicode_pm))
 print('sigma = %s °' % lab.xe(par[2], sqrt(cov[2,2]), pm=lab.unicode_pm))
 print('chi2/dof = %.1f/%d' % (out.chisq, out.chisq_dof))
+
+# grafico
 
 figure('forma')
 clf()
@@ -90,3 +104,28 @@ legend(loc=1, fontsize='small')
 grid()
 tight_layout()
 show()
+
+####### DECONVOLUTION #######
+
+def integrand_mu0(theta):
+    return np.sqrt(1 - (L/R)**2 * np.tan(theta)**2)
+
+def integrand_mu1(theta):
+    return integrand_mu0(theta) * theta
+
+def integrand_mu2(theta):
+    return integrand_mu0(theta) * theta**2
+
+right = np.arctan(R / L)
+left = -right
+
+mu0, dmu0 = integrate.quad(integrand_mu0, left, right)
+mu1, dmu1 = integrate.quad(integrand_mu1, left, right)
+mu2, dmu2 = integrate.quad(integrand_mu2, left, right)
+
+sigma2_nai = mu2/mu0 - (mu1/mu0)**2
+sigma2_nai *= (180 / np.pi)**2
+
+sigma_beam = umath.sqrt(un.ufloat(par[2], np.sqrt(cov[2,2]), 'beam sigma')**2 - sigma2_nai)
+
+print('sigma nai = {:g}\nsigma beam = {:P}'.format(np.sqrt(sigma2_nai), sigma_beam))
