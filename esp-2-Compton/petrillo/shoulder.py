@@ -30,7 +30,7 @@ fig = plt.figure('shoulder')
 fig.clf()
 ax = fig.add_subplot(111)
 
-e = np.linspace(0.511, 1.33 - float(out_photon_energy(1.33, -1).subs(m_e, 0.511)), 500)
+e = np.linspace(0, 1.33 - float(out_photon_energy(1.33, -1).subs(m_e, 0.511)), 500)
 ax.plot(e, pdf(e), '-k')
 
 fig.show()

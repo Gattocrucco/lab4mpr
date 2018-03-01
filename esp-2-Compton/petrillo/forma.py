@@ -128,4 +128,4 @@ sigma2_nai *= (180 / np.pi)**2
 
 sigma_beam = umath.sqrt(un.ufloat(par[2], np.sqrt(cov[2,2]), 'beam sigma')**2 - sigma2_nai)
 
-print('sigma nai = {:g}\nsigma beam = {:P}'.format(np.sqrt(sigma2_nai), sigma_beam))
+print('\nsigma nai = {:g} °\nsigma beam = {:P} °'.format(np.sqrt(sigma2_nai), sigma_beam))
