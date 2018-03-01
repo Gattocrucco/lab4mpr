@@ -7,7 +7,7 @@ import lab
 # TODO: aggiungere il fit del fondo, anche se già così il chi2 torna (fondo molto piccolo nel taglio)
 # deconvolvere la forma del NaI
 
-cut = (7400, 7850)
+cut = (2000, 8040)
 fitcut = (-5, 5)
 angle_un = 0.1
 
@@ -34,7 +34,7 @@ for file in files:
     angles.append(angle)
 angles = array(angles)
 rates = array(rates)
-    
+
 # fit
 bool_cut = logical_and(fitcut[0] <= angles, angles <= fitcut[1])
 fit_angles = angles[bool_cut]
@@ -56,7 +56,7 @@ clf()
 errorbar(angles, unp.nominal_values(rates), xerr=angle_un, yerr=unp.std_devs(rates), fmt=',k', capsize=2, label='dati')
 fa = linspace(min(fit_angles), max(fit_angles), 500)
 plot(fa, fit_fun(fa, *par), '-', color='gray', zorder=-10, label='fit gaussiano')
-ylabel('tasso nei canali %d-%d [$s^{-1}$]\n(fondo sottratto = %s $s^{-1}$)' % (cut[0], cut[1], format(rate_fondo)))
+ylabel('tasso nei canali %d-%d [$s^{-1}$]\n(fondo sottratto = %s $s^{-1}$)' % (cut[0], cut[1], '{:P}'.format(rate_fondo)))
 xlabel('angolo [°]')
 title('forma del fascio')
 yscale('log')

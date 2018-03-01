@@ -17,7 +17,7 @@ def make_von_neumann(density, domain, max_cycles=100000):
     right = domain[1]
     
     if not isinstance(density, nb.targets.registry.CPUDispatcher):
-        density = nb.jit(density, nopython=True)
+        density = nb.jit(density, nb.float64(nb.float64), nopython=True)
     
     @nb.jit(nb.float64(), nopython=True)
     def von_neumann():
