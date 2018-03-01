@@ -1,6 +1,6 @@
 relazione.pdf
 
-# LaTeX files
+
 *.aux
 *.fdb_latexmk
 *.fls
