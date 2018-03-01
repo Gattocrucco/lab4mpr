@@ -30,14 +30,11 @@ def bar_line(edges, counts, ax=None, **kwargs):
     -------
     Return value from ax.plot.
     """
-    dup_edges = np.empty(2 * len(edges))
-    dup_edges[2 * np.arange(len(edges))] = edges
-    dup_edges[2 * np.arange(len(edges)) + 1] = edges
-    dup_counts = np.zeros(2 * len(edges))
-    dup_counts[2 * np.arange(len(edges) - 1) + 1] = counts
-    dup_counts[2 * np.arange(len(edges) - 1) + 2] = counts
+    dup_edges = np.concatenate([[edges[0]], edges, [edges[-1]]])
+    dup_counts = np.concatenate([[0], [counts[0]], counts, [0]])
     if ax is None:
         ax = plt.gca()
+    kwargs.update(drawstyle='steps')
     return ax.plot(dup_edges, dup_counts, **kwargs)
     
 def partial_sum(a, n):
