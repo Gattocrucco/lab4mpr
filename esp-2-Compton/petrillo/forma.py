@@ -3,12 +3,13 @@ import glob, scanf
 import uncertainties as un
 from uncertainties import unumpy as unp
 import lab
+import numpy as np
 
 # TODO: aggiungere il fit del fondo, anche se già così il chi2 torna (fondo molto piccolo nel taglio)
 # deconvolvere la forma del NaI
 
-cut = (2000, 8040)
-fitcut = (-5, 5)
+cut = (5500, 8040)
+fitcut = (-4, 4)
 angle_un = 0.1
 
 files = glob.glob('../dati/histo-20feb-ang*-?????.dat')
@@ -39,9 +40,26 @@ rates = array(rates)
 bool_cut = logical_and(fitcut[0] <= angles, angles <= fitcut[1])
 fit_angles = angles[bool_cut]
 fit_rates = rates[bool_cut]
-def fit_fun(angle, top, center, sigma):
+
+def fit_signal(angle, top, center, sigma):
     return top * exp(-1/2 * (angle - center)**2 / sigma**2)
-out = lab.fit_curve(fit_fun, fit_angles, unp.nominal_values(fit_rates), dx=angle_un, dy=unp.std_devs(fit_rates), absolute_sigma=True, p0=(max(unp.nominal_values(fit_rates)), mean(fit_angles), (max(fit_angles) - min(fit_angles)) / 2))
+def fit_bkg(angle, top, center, sigma):
+    return top * exp(-1/2 * (angle - center)**2 / sigma**2)
+def fit_fun(angle, top, center, sigma, bkg_top, bkg_center, bkg_sigma):
+    return fit_signal(angle, top, center, sigma) + fit_bkg(angle, bkg_top, bkg_center, bkg_sigma)
+p0 = [
+    max(unp.nominal_values(fit_rates)), np.mean(fit_angles), 2.5,
+    1/10 * max(unp.nominal_values(fit_rates)), np.mean(fit_angles), 15
+]
+out_pre = lab.fit_curve(fit_fun, angles, unp.nominal_values(rates), dx=angle_un, dy=unp.std_devs(rates), absolute_sigma=True, p0=p0)
+
+print('risultato del prefit  (signal, bkg) x (top, center, sigma):')
+print(lab.format_par_cov(out_pre.par, out_pre.cov))
+
+def fit_signal_only(angle, *p):
+    return fit_signal(angle, *p) + fit_bkg(angle, *out_pre.par[3:])
+
+out = lab.fit_curve(fit_signal_only, fit_angles, unp.nominal_values(fit_rates), dx=angle_un, dy=unp.std_devs(fit_rates), absolute_sigma=True, p0=out_pre.par[:3])
 par = out.par
 cov = out.cov
 
@@ -53,14 +71,22 @@ print('chi2/dof = %.1f/%d' % (out.chisq, out.chisq_dof))
 
 figure('forma')
 clf()
-errorbar(angles, unp.nominal_values(rates), xerr=angle_un, yerr=unp.std_devs(rates), fmt=',k', capsize=2, label='dati')
-fa = linspace(min(fit_angles), max(fit_angles), 500)
-plot(fa, fit_fun(fa, *par), '-', color='gray', zorder=-10, label='fit gaussiano')
-ylabel('tasso nei canali %d-%d [$s^{-1}$]\n(fondo sottratto = %s $s^{-1}$)' % (cut[0], cut[1], '{:P}'.format(rate_fondo)))
+errorbar(angles, unp.nominal_values(rates), xerr=angle_un, yerr=unp.std_devs(rates), fmt=',k', capsize=2, label='dati $-$ fondo c.\nfondo c. = %s $s^{-1}$' % ('{:P}'.format(rate_fondo),))
+yscale('log')
+x = xlim()
+y = ylim()
+fa = linspace(min(angles), max(angles), 500)
+ffa = linspace(min(fit_angles), max(fit_angles), 500)
+plot(fa, fit_fun(fa, *out_pre.par), '-.', color='gray', zorder=-10, label='fit segnale+fondo p.')
+plot(fa, fit_signal(fa, *out_pre.par[:3]), ':', color='darkgray', zorder=-8, label='  segnale')
+plot(fa, fit_bkg(fa, *out_pre.par[3:]), '--', color='darkgray', zorder=-9, label='  fondo p.')
+plot(ffa, fit_signal_only(ffa, *par), '-', color='gray', zorder=-7, label='fit segnale (fondo fissato)')
+xlim(x)
+ylim(y)
+ylabel('tasso nei canali %d-%d [$s^{-1}$]' % (cut[0], cut[1]))
 xlabel('angolo [°]')
 title('forma del fascio')
-yscale('log')
-legend(loc=1)
+legend(loc=1, fontsize='small')
 grid()
 tight_layout()
 show()
