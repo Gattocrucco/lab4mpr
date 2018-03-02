@@ -97,7 +97,7 @@ def energy_nai(E, res=True, cal=True):
     return E
 
 @nb.jit(nopython=True, cache=True)
-def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_distance=20, nai_radius=2, acc_bounds=True):
+def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_distance=20, nai_radius=2, acc_bounds=True, max_secondary_cos_theta=1):
     """
     Simulate Compton scattering on the target and energy measurement of scattered photon with NaI.
     
@@ -218,8 +218,8 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_dist
             
             # extract theta of secondary compton photon
             while 1:
-                cos_theta_candidate = np.random.uniform(-1, 1)
-                kn_max = max(klein_nishina(primary_photon, -1), klein_nishina(primary_photon, 1))
+                cos_theta_candidate = np.random.uniform(-1, max_secondary_cos_theta)
+                kn_max = max(klein_nishina(primary_photon, -1), klein_nishina(primary_photon, max_secondary_cos_theta))
                 von_neumann = np.random.uniform(0, kn_max)
                 if von_neumann <= klein_nishina(primary_photon, cos_theta_candidate):
                     break
@@ -237,7 +237,8 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_dist
     return primary_photons, secondary_electrons
 
 if __name__ == '__main__':
-    primary, secondary = mc(1.33, theta_0=0, N=1000000, beam_sigma=0, seed=1)
+    N=100000
+    primary, secondary = mc(1.33, theta_0=90, N=N, beam_sigma=2, seed=1, max_secondary_cos_theta=1)
     
     kw = dict(res=True, cal=True)
     primary = energy_nai(primary, **kw)
