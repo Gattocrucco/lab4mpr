@@ -1,97 +1,135 @@
 ## CALIBRAZIONE CON LE SORGENTI
+import pylab as plt
+import numpy as np
+from pylab import *
+from scipy.optimize import curve_fit
+from scipy.special import chdtrc
 import lab
 
-cartella="dati/"
-data="22feb-"
-nome="ce-notrigger"; noto=0.662
-file=cartella+"histo-"+data+nome+".dat"
-el="cobalto"
-sce="senza" # scegliere tra 'con' e 'senza'
+cartella ="esp-2-Compton/dati/cal/"
+data ="22feb-"
+elements= [["cs","Cs 137", 0.662, [3700,4000]],
+           ["am","Am 241", 0.059, [320,380]],
+           ["na","Na 22",  0.511, [2900,3100]],
+           ["na","Na 22",  1.2, [7100,7500]],
+           ["co","Co 60", "1.17,1.33", [6450,7850]]]
 
-scrivi=False
-if scrivi==True:
-    sys.stdout=open("calibrazione/%s_%s_trigger.txt"%(el,sce),"w")
-
-grezzi=loadtxt(file,unpack=True)
-
-# creazione istogramma
-print("CALIBRAZIONE \n")
-
-nbin=350
-massimo=8192
-lbin=massimo//nbin+1
-
-dati=zeros(nbin)
-for j in range(len(grezzi)):
-    indice=j//lbin
-    dati[int(indice)]+=grezzi[j]
-
-conv=massimo/len(dati)
-X=arange(len(dati))*conv
-
-sin=3470
-dex=4000
-taglio=logical_and(X>=sin,X<=dex)
-
-# fit
-
-def distr(x,N,u,sigma,m,q):
-    return N*e**(-1*((x-u)**2)/(2*sigma**2)) + m*x+q
+#definition______________________________________
+def bar_line(edges, counts, ax=None, **kwargs):
+    dup_edges = np.empty(2 * len(edges))
+    dup_edges[2 * np.arange(len(edges))] = edges
+    dup_edges[2 * np.arange(len(edges)) + 1] = edges
+    dup_counts = np.zeros(2 * len(edges))
+    dup_counts[2 * np.arange(len(edges) - 1) + 1] = counts
+    dup_counts[2 * np.arange(len(edges) - 1) + 2] = counts
+    if ax is None:
+        ax = plt.gca()
+    return ax.plot(dup_edges, dup_counts, **kwargs)
     
-def gaus2(x,N1,u1,sigma1,N2,u2,sigma2):
-    return N1*e**(-1*((x-u1)**2)/(2*sigma1**2)) + N2*e**(-1*((x-u2)**2)/(2*sigma2**2))
+def distr(x,N,u,sigma,m,q):
+        return N*np.e**(-1*((x-u)**2)/(2*sigma**2)) + (m*x+q +abs(m*x+q))/2
+    
+def gaus2(x,N1,u1,sigma1,N2,u2,sigma2,m,q):
+        return N1*np.e**(-1*((x-u1)**2)/(2*sigma1**2)) + N2*e**(-1*((x-u2)**2)/(2*sigma2**2)) + (m*x+q +abs(m*x+q))/2
+        
 
-dy=sqrt(dati[taglio])
+#____________________________________________________
 
-val=[10**4,(sin+dex)/2,(dex-sin)/2,1,1]
-popt,pcov=curve_fit(distr,X[taglio]+0.5,dati[taglio],sigma=dy,p0=val)
-n,mu,sig,m,q=popt
-dn,dmu,dsig,dm,dq=sqrt(pcov.diagonal())
-print("norm=",n,"+-",dn)
-print("centro=",mu,"+-",dmu," digit")
-print("largh=",sig,"+-",dsig," digit")
-print("pendenza=",m,"+-",dm," 1/digit")
-print("intercetta=",q,"+-",dq)
-print("")
-
-fis=noto/mu
-
-# grafico
-
-figure(1).set_tight_layout(True)
-rc("font",size=14)
-title("Calibrazione %s %s trigger"%(el,sce),size=16)
-grid(color="black",linestyle=":")
-minorticks_on()
-
-xlabel("energia [MeV]")
-ylabel("conteggi")
-
-bar(X*fis,dati,width=lbin*fis)
-#errorbar(X[taglio],dati[taglio],yerr=dy,color="black",linestyle="",capsize=2,markersize=2,marker="o")
-z=linspace(sin,dex,1000)
-plot(z*fis,distr(z,*popt),color="red",linewidth=2)
-show()
-
-# altro
-chi=sum( (( dati[taglio]-distr(X[taglio],*popt) )/dy)**2 )
-dof=len(dati[taglio])-len(popt)
-
-print("chi quadro=",chi,"+-",sqrt(2*dof))
-print("p=",chdtrc(dof,chi)*100,"% \n")
-print("matrice di covarianza")
-print(lab.format_par_cov(popt,pcov),"\n")
-
-print("centro=",mu*fis,"+-",dmu*fis,"MeV")
-print("largh=",sig*fis,"+-",dsig*fis,"MeV")
-print("pendenza=",m/fis,"+-",dm/fis,"1/MeV")
-
-# cose da scrivere nel file della linearità
-'''
-registro=open("calibrazione/autoestratti.txt","a")
-print("%f \t %f \t %f \t %f \t %f \t %f" %(noto,mu,dmu,sig,dsig,cor(1,2,pcov)),file=registro )
-registro.close()
-'''
-if scrivi==True:
-    sys.stdout.close()
-    sys.stdout=sys.__stdout__
+for a in elements[::]:
+    nome=a[0]
+    el=a[1]
+    file=cartella+"histo-"+data+nome+".dat"
+    energy = a[2]
+    sin=a[3][0]
+    dex=a[3][1]
+    
+    Y = loadtxt(file,unpack=True)
+    X = arange(len(Y)+1)
+    
+    _Y = Y[sin:dex]
+    _X = arange(dex-sin)+0.5+sin
+    _dy=sqrt(_Y)
+    
+    # creazione istogramma   
+    if(nome == "co"):
+        val=[10**2,(3*sin+dex)/4,(dex-sin)/4,10**2,(sin+3*dex)/4,(dex-sin)/4,-0.1,0]
+        popt,pcov=curve_fit(gaus2,_X,_Y,sigma=_dy,p0=val, maxfev=10000)
+        # val = popt
+        # sin = int(popt[1]-1.4*abs(popt[2]))
+        # dex = int(popt[4]+1.8*abs(popt[5]))
+        # _Y = Y[sin:dex]
+        # _X = arange(dex-sin)+0.5+sin
+        # _dy=sqrt(_Y)
+        #popt,pcov=curve_fit(gaus2,_X,_Y,sigma=_dy,p0=val, maxfev=10000)
+        
+    else:
+        val=[10**3,(sin+dex)/2,(dex-sin)/2,0,0]
+        popt,pcov=curve_fit(distr,_X,_Y,sigma=_dy,p0=val, maxfev=10000)
+        val = popt
+        sin = int(popt[1]-1.8*abs(popt[2]))
+        dex = int(popt[1]+1.8*abs(popt[2]))
+        _Y = Y[sin:dex]
+        _X = arange(dex-sin)+0.5+sin
+        _dy=sqrt(_Y)
+        popt,pcov=curve_fit(distr,_X,_Y,sigma=_dy,p0=val, maxfev=10000)
+        
+    
+    #plot______________________________________________________
+    
+    #plot su tutto lo spettro
+    figure(el+"_spectrum").set_tight_layout(True)
+    
+    rc("font",size=14)
+    title("Calibrazione", size=16)
+    grid(color="black",linestyle=":")
+    minorticks_on()
+    xlabel("energia [digit]")
+    ylabel("conteggi")
+    
+    #bar(X*fis,Y,width=lbin*fis)
+    if(energy!=elements[3][2]):
+        bar_line(X, Y)
+    
+    z=linspace(sin,dex,1000)
+    if(nome=="co"):
+        plot(z,gaus2(z,*popt),color="red",linewidth=3)
+    else:
+        plot(z,distr(z,*popt),color="red",linewidth=3)
+    
+    #zoom sulla gaussiana    
+    figure(el+"_"+str(energy)+"MeV").set_tight_layout(True)
+    rc("font",size=14)
+    title("Fit fotopicco a "+str(energy)+"MeV nello spettro "+el, size=16)
+    grid(color="black",linestyle=":")
+    minorticks_on()
+    xlabel("energia [digit]")
+    ylabel("conteggi")
+    
+    errorbar(_X,_Y, _dy, linestyle="", marker=".", color="black")
+    if(nome=="co"):
+        plot(z,gaus2(z,*popt),color="red",linewidth=4)
+    else:
+        plot(z,distr(z,*popt),color="red",linewidth=4)
+    show()
+      
+    # print result_____________________________________________
+    if(nome=="co"):
+        chi=sum( (( _Y-gaus2(_X,*popt) )/_dy)**2 )
+    else:
+        chi=sum( (( _Y-distr(_X,*popt) )/_dy)**2 )
+    
+    dof=len(_Y)-len(popt)
+#    n,mu,sig,m,q=popt
+#    dn,dmu,dsig,dm,dq=sqrt(pcov.diagonal())
+#    print("norm=",n,"+-",dn)
+#    print("centro=",mu,"+-",dmu," digit")
+#    print("largh=",sig,"+-",dsig," digit")
+#    print("pendenza=",m,"+-",dm," 1/digit")
+#    print("intercetta=",q,"+-",dq)
+#    print("")
+    print("_____________________________________________\n")
+    print("FIT "+el+" riga "+str(energy)+"MeV\n")
+    print("chi/ndof=",chi,"+-",sqrt(2*dof)," / ",dof)
+    print("p=",chdtrc(dof,chi)*100,"% \n")
+    print("result")
+    print(lab.format_par_cov(popt,pcov),"\n")
