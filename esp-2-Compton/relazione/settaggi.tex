@@ -27,13 +27,14 @@ Poniamo uno scintillatore plastico (PMT1) davanti alla sorgente in modo che i ra
 
 Prima di esporre i risultati ottenuti, illustriamo il funzionamento del circuito adoperato.\\
 Vogliamo acquisire i segnali ogni volta che l'uscita negativa di breve durata (qualche \si{ns}) del PMT2 supera una certa soglia. L'ampiezza tipica di questo segnale vale \SI{20}{mV}, perciò deve essere amplificata per poter essere letta dal discriminatore a nostra disposizione che ha una soglia minima di \SI{35}{mV}. Colleghiamo allora questa uscita ad una amplificatore 10x 
-\marginpar{spero che gradiscano la notazione ``10x''}
+\marginpar{spero che gradiscano la notazione ``10x'' \\  ci vuole anche il disegno}
 e mandiamo poi il segnale al solito discriminatore con soglia al minimo.
 
-Per registrare il segnale dobbiamo provvedere alla costruzione di un trigger per l'ADC che, come specificato dalla documentazione, deve partire almeno \SI{200}{ns} prima del picco e deve terminare almeno \SI{200}{ns} dopo. Usando l'oscilloscopio, ritardiamo il segnale del discriminatore e lo allunghiamo attraverso l'uso di un modulo \texttt{gate \& delay} non retriggerabile. Scegliamo di farlo durare \SI{500}{ns} prima e dopo il picco del formatore.
-\marginpar{dobbiamo misurarlo perché non c'è scritto nel logbook}
+Per registrare il segnale dobbiamo provvedere alla costruzione di un trigger per l'ADC che, come specificato dalla documentazione, deve partire almeno \SI{200}{ns} prima del picco e deve terminare almeno \SI{200}{ns} dopo. Usando l'oscilloscopio, ritardiamo il segnale del discriminatore e lo allunghiamo attraverso l'uso di un modulo \texttt{gate \& delay} non retriggerabile. Scegliamo di farlo durare \SI{550}{ns} prima e dopo il picco del formatore.
+
 Colleghiamo il cavo coassiale che trasmette l'uscita del formatore all'ingresso ``gate'' dell'ADC facendo un parallelo con un tappino da \SI{50}{\Omega} perché questo ingresso ha una impedenza alta e il nostro accorgimento evita la deformazione del segnale.
 Modifichiamo il file di configurazione in modo che l'ADC acquisisca soltanto quando il trigger è attivo. Notiamo che la soglia appena utilizzata elimina tutti i segnali inferiori ai 1000 digit. 
 
 \subsubsection{Risultati} % titolo provvisorio
 \marginpar{inserire grafici, misure e risultati dopo averli analizzati}
+Files: 16-feb angoli: un'occhiata veloce evidenzia lo spostamento compton
