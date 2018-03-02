@@ -1,15 +1,9 @@
 from pylab import *
 import numpy as np
 from matplotlib import pyplot as plt
-import sys
+import argparse
 import lab
-
-cut = 1
-
-# utilizzo:
-# histo.py filename.dat       # --> file istogramma
-# histo.py filename.npy/.log  # --> file con tutti i campioni, istogramma da calcolare
-# histo.py filename.xxx log   # --> scala verticale logaritmica
+import logtonpy
 
 def bar_line(edges, counts, ax=None, **kwargs):
     """
@@ -30,14 +24,11 @@ def bar_line(edges, counts, ax=None, **kwargs):
     -------
     Return value from ax.plot.
     """
-    dup_edges = np.empty(2 * len(edges))
-    dup_edges[2 * np.arange(len(edges))] = edges
-    dup_edges[2 * np.arange(len(edges)) + 1] = edges
-    dup_counts = np.zeros(2 * len(edges))
-    dup_counts[2 * np.arange(len(edges) - 1) + 1] = counts
-    dup_counts[2 * np.arange(len(edges) - 1) + 2] = counts
+    dup_edges = np.concatenate([[edges[0]], edges, [edges[-1]]])
+    dup_counts = np.concatenate([[0], [counts[0]], counts, [0]])
     if ax is None:
         ax = plt.gca()
+    kwargs.update(drawstyle='steps')
     return ax.plot(dup_edges, dup_counts, **kwargs)
     
 def partial_sum(a, n):
@@ -46,21 +37,30 @@ def partial_sum(a, n):
         out += a[i::n][:len(out)]
     return out
 
-def histo(datasets, figname='histo', logscale=False, cut=1, **kw):
+def histo(datasets, ax=None, logscale=False, cut=1, **kw):
     """
     Plot histograms(s) of dataset(s).
     
     Parameters
     ----------
     datasets : dictionary
-        <label>=<data>.
-    figname : string, defaults to 'histo'
-        Name of the figure window.
+        <label>=<dataset>.
+    ax : subplot or None
+        If None, create new figure.
     logscale : bool, defaults to False
         If True, use vertical log scale.
+    cut : integer >= 1
+        Rebinning.
+    
+    Returns
+    -------
+    Subplot object, either given or created.
     """
-    figure(figname)
-    clf()
+    if ax is None:
+        fig = plt.figure('histo')
+        fig.clf()
+        ax = fig.add_subplot(111)
+        show = True
     for label in datasets.keys():
         data = datasets[label]
         if data.dtype == np.dtype('uint16'):
@@ -71,36 +71,47 @@ def histo(datasets, figname='histo', logscale=False, cut=1, **kw):
             raise ValueError('data for label %s not recognised as samples or histogram' % label)
         if cut > 1:
             counts = partial_sum(counts, cut)
-        bar_line(arange(len(counts) + 1) - 0.5, counts, label='%s, N=%s' % (label, lab.num2si(np.sum(counts), format='%.3g')), **kw)
+        bar_line(arange(0, 2**13 + 1, cut) - 0.5, counts, label='%s, N=%s' % (label, lab.num2si(np.sum(counts), format='%.3g')), ax=ax, **kw)
         if logscale:
             yscale('symlog', linthreshy=1, linscaley=1/5, subsy=[2, 3, 4, 5, 6, 7, 8, 9])
-    xlabel('canale ADC')
-    ylabel('conteggio')
-    # xticks(arange(9) * 1000 / cut, ['%dk' % i for i in range(9)])
-    legend(loc=1, fontsize='small')
-    minorticks_on()
-    grid()
-    show()
+    ax.set_xlabel('canale ADC')
+    ax.set_ylabel('conteggio')
+    ax.legend(loc=1, fontsize='small')
+    ax.minorticks_on()
+    ax.grid()
+    if show:
+        fig.show()
+    
+    return ax
 
 if __name__ == '__main__':
     # read command line
-    filename = sys.argv[1]
-    logscale = 'log' in sys.argv[2:]
+    parser = argparse.ArgumentParser(description='Plot histograms of ADC dataset(s).')
+    parser.add_argument('-l', '--log', action='store_true', default=False, help='use logarithmic vertical scale')
+    parser.add_argument('-r', '--rebin', default=1, type=int, help='rebin merging groups of REBIN bins')
+    parser.add_argument(metavar='file', nargs='+', help='.dat or .log/.npy file', dest='filenames')
+    args = parser.parse_args()
 
     # load file
-    print('loading file...')
-    if filename.endswith('.dat'):
-        counts = np.loadtxt(filename, unpack=True, dtype='int32')
-    elif filename.endswith('.log') or filename.endswith('.npy'):
-        if filename.endswith('.log'):
-            samples = np.loadtxt(filename, unpack=True, converters={0: lambda s: int(s, base=16)}, dtype='uint16')
-        else:
-            samples = np.load(filename)
+    datasets = {}
+    for filename in args.filenames:
+        print('loading {}...'.format(filename))
+        if filename.endswith('.dat'):
+            counts = np.loadtxt(filename, unpack=True, dtype='int32')
+        elif filename.endswith('.log') or filename.endswith('.npy'):
+            if filename.endswith('.log'):
+                samples = logtonpy.logtonpy(filename)
+            else:
+                samples = np.load(filename)
     
-        print('converting samples to counts...')
-        counts = np.bincount(samples, minlength=2**13)
-    else:
-        raise ValueError('filename %s is neither .dat, .log or .npy' % (filename,))
+            print('converting samples to counts...')
+            counts = np.bincount(samples, minlength=2**13)
+        else:
+            raise ValueError('filename %s is neither .dat, .log or .npy' % (filename,))
+        datasets[filename] = counts
 
     # plot histogram
-    histo({filename: counts}, logscale=logscale, cut=cut, linewidth=.25, color='black')
+    kw = dict(logscale=args.log, cut=args.rebin, linewidth=min(.25 * args.rebin, 1))
+    if len(datasets) == 1:
+        kw.update(color='black')
+    histo(datasets, **kw)

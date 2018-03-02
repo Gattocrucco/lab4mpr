@@ -17,7 +17,7 @@ def make_von_neumann(density, domain, max_cycles=100000):
     right = domain[1]
     
     if not isinstance(density, nb.targets.registry.CPUDispatcher):
-        density = nb.jit(density, nopython=True)
+        density = nb.jit(density, nb.float64(nb.float64), nopython=True)
     
     @nb.jit(nb.float64(), nopython=True)
     def von_neumann():
@@ -50,7 +50,11 @@ def versor(a):
     """
     return a / np.sqrt(np.sum(a ** 2))
 
-@nb.jit(nb.float64(nb.float64, nb.float64), nopython=True, cache=True)
+@nb.jit('f8(f8,f8)', nopython=True, cache=True)
+def compton_photon_energy(E, cos_theta):
+    return E / (1 + E / m_e * (1 - cos_theta))
+
+@nb.jit('f8(f8,f8)', nopython=True, cache=True)
 def klein_nishina(E, cos_theta):
     """
     E = photon energy [MeV]
@@ -58,10 +62,9 @@ def klein_nishina(E, cos_theta):
     
     from https://en.wikipedia.org/wiki/Klein–Nishina_formula
     """
-    P = 1 / (1 + E / m_e * (1 - cos_theta))
+    P = compton_photon_energy(E, cos_theta) / E
     return 1/2 * P**2 * (P + P**-1 - (1 - cos_theta**2))
 
-@nb.jit(nb.float64(nb.float64), nopython=True)
 def energy_sigma(E):
     """
     E = energy [MeV]
@@ -71,7 +74,6 @@ def energy_sigma(E):
     """
     return (2.27 + 7.28 * E ** -0.29 - 2.41 * E ** 0.21) * E / (100 * 2.35)
 
-@nb.jit(nb.float64(nb.float64), nopython=True)
 def energy_calibration(E):
     """
     E = energy [MeV]
@@ -80,8 +82,22 @@ def energy_calibration(E):
     """
     return E
 
+@nb.jit('f8[:](u4)', nopython=True, cache=True)
+def random_normal(n):
+    out = np.empty(n)
+    for i in range(len(out)):
+        out[i] = np.random.normal()
+    return out
+
+def energy_nai(E, res=True, cal=True):
+    if res:
+        E += random_normal(len(E)) * energy_sigma(E)
+    if cal:
+        E = energy_calibration(E)
+    return E
+
 @nb.jit(nopython=True, cache=True)
-def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=0, beam_center=0, nai_distance=20, nai_radius=2, energy_cal=True, energy_res=True, acc_bounds=True):
+def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_distance=20, nai_radius=2, acc_bounds=True, max_secondary_cos_theta=1):
     """
     Simulate Compton scattering on the target and energy measurement of scattered photon with NaI.
     
@@ -103,16 +119,15 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=0, beam_center=0, nai_dist
         Distance of the NaI from the target.
     nai_radius : float
         Radius of the NaI, in the same units as nai_distance.
-    energy_cal : bool
-        If True, apply energy calibration of the NaI.
-    energy_res : bool
-        If True, simulate energy resolution of the NaI.
     acc_bounds : bool
         If False, disable quick bounds on NaI shape that speed up montecarlo.
     
     Returns
     -------
-    Array of N simulated energy readouts from NaI.
+    primary_photons :
+        Energies of Compton photons from target hitting the NaI.
+    secondary_electrons :
+        Kinetical energies of electrons emitted from Compton in the NaI.
     """
     beam_sigma *= np.pi / 180
     beam_center *= np.pi / 180
@@ -130,7 +145,8 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=0, beam_center=0, nai_dist
     
     if seed >= 0:
         np.random.seed(seed)
-    out_energy = np.empty(N)
+    primary_photons = np.empty(N)
+    secondary_electrons = np.empty(N)
     i = 0
     count = 0
     while i < N:
@@ -198,28 +214,40 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=0, beam_center=0, nai_dist
         radius2 = nai_distance**2 * (1 - rho_z**2) / rho_z**2
         
         if radius2 <= nai_radius**2 and rho_z >= 0:
-            out_energy[i] = energy / (1 + energy / m_e * (1 - cos_theta))
-            if energy_res:
-                out_energy[i] += np.random.normal(loc=0, scale=energy_sigma(out_energy[i]))
-            if energy_cal:
-                out_energy[i] = energy_calibration(out_energy[i])
+            primary_photon = compton_photon_energy(energy, cos_theta)
+            
+            # extract theta of secondary compton photon
+            while 1:
+                cos_theta_candidate = np.random.uniform(-1, max_secondary_cos_theta)
+                kn_max = max(klein_nishina(primary_photon, -1), klein_nishina(primary_photon, max_secondary_cos_theta))
+                von_neumann = np.random.uniform(0, kn_max)
+                if von_neumann <= klein_nishina(primary_photon, cos_theta_candidate):
+                    break
+            cos_theta = cos_theta_candidate
+            
+            secondary_photon = compton_photon_energy(primary_photon, cos_theta)
+            secondary_electron = primary_photon - secondary_photon
+            
+            primary_photons[i] = primary_photon
+            secondary_electrons[i] = secondary_electron
+
             i += 1
         count += 1
-    
-    return out_energy, count
+        
+    return primary_photons, secondary_electrons
 
 if __name__ == '__main__':
-    from matplotlib.pyplot import *
-    N = 10000
-    energy, count = mc(1.33, theta_0=0, N=N, beam_sigma=0, seed=1, acc_bounds=True, energy_res=False)
-    energy2, count2 = mc(1.33, theta_0=0, N=N, beam_sigma=0, acc_bounds=False, energy_res=False)
+    N=100000
+    primary, secondary = mc(1.33, theta_0=90, N=N, beam_sigma=2, seed=1, max_secondary_cos_theta=1)
+    
+    kw = dict(res=True, cal=True)
+    primary = energy_nai(primary, **kw)
+    secondary = energy_nai(secondary, **kw)
 
+    from matplotlib.pyplot import *
     figure('mc9')
     clf()
-    hist(np.concatenate([energy]), bins='sqrt', histtype='step', label='N=%d' % (N,), density=True)
-    hist(energy2, bins='sqrt', histtype='step', label='no acc bounds', density=True)
-    # theta = np.linspace(0, np.pi, 1000)
-    # kn = klein_nishina(0.662, theta)
-    # plot(np.cos(theta), kn, '-k', label='E=.662')
+    hist(primary, bins='sqrt', histtype='step', label='primary', density=True)
+    hist(secondary, bins='sqrt', histtype='step', label='secondary', density=True)
     legend(loc=1)
     show()

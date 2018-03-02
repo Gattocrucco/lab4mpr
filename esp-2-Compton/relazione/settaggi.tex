@@ -1,0 +1,39 @@
+\subsection{Punto di lavoro del PMT2}
+
+\subsubsection{Circuito di misura}
+\marginpar{aggiungere disegno?}
+Analizziamo i segnali del PMT2 per trovare il miglior punto di lavoro per le nostre esigenze. Prendiamo l'uscita positiva preamplificata dalla base del PMT stesso e la colleghiamo ad un formatore che restituisce un segnale di forma simile ad una  Gaussiana il cui picco è proporzionale all'energia immagazzinata. Questa è poi inviata ad un ADC a 13 bit che legge qualsiasi segnale superi una certa soglia interna.
+
+Bisogna specificare che l'ADC in questione ha due modi di salvare le acquisizioni ed essi possono essere abilitati o disabilitati mediante un file di configurazione. Si può scegliere di salvare tutti i dati acquisiti in ordine di tempo in formato esadecimale%
+\footnote{Chiameremo questo file \emph{log} come la sua estensione.}
+oppure avere un file di testo con 8192 righe in cui il numero scritto in ogni riga è l'occorrenza del relativo valore in \emph{digit}%
+\footnote{Chiameremo questo file \emph{istogramma} per non confonderlo con il precedente.}.
+
+\subsubsection{Ricerca delle condizioni ottimali}
+
+Facciamo questo test ponendo il PMT2 a varie distanze di fronte al collimatore.
+\marginpar{sto supponendo che la descrizione dell'apparato sia stata fatta in una sezione precedente}
+Ci accorgiamo, guardando l'istogramma, che è molto sensibile alle variazioni della tensione  di alimentazione. Per esempio, passando da \SI{600}V a \SI{575}V, l'energia acquisita si dimezza. Portiamo il fotopicco del cobalto ad \SI{1.33}{MeV} vicino al nostro fondoscala variando il guadagno del formatore in modo da poter analizzare il più ampio intervallo possibile di energia al di sotto di esso. Abbiamo operato questa scelta perché è il fotopicco più energetico rispetto alle altre sorgenti radioattive che useremo in seguito per calibrare il PMT2. Avendo esso una forma Gaussiana, abbiamo fatto in modo che la sua coda non finisse troppo vicina al fondoscala dell'ADC in modo da poterla fittare senza problemi. \marginpar{ci contesteranno il verbo ``fittare''?}
+Dopo varie prove decidiamo di alimentare il PMT2 a \SI{650}V.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Scintillatore plastico}
+
+Poniamo uno scintillatore plastico (PMT1) davanti alla sorgente in modo che i raggi $\gamma$ dei fotopicchi possano interagire con gli elettroni della targhetta e subire scattering Compton. Guardiamo allora i segnali del PMT2 a vari angoli.
+
+
+\subsubsection{Trigger}
+
+Prima di esporre i risultati ottenuti, illustriamo il funzionamento del circuito adoperato.\\
+Vogliamo acquisire i segnali ogni volta che l'uscita negativa di breve durata (qualche \si{ns}) del PMT2 supera una certa soglia. L'ampiezza tipica di questo segnale vale \SI{20}{mV}, perciò deve essere amplificata per poter essere letta dal discriminatore a nostra disposizione che ha una soglia minima di \SI{35}{mV}. Colleghiamo allora questa uscita ad una amplificatore 10x 
+\marginpar{spero che gradiscano la notazione ``10x''}
+e mandiamo poi il segnale al solito discriminatore con soglia al minimo.
+
+Per registrare il segnale dobbiamo provvedere alla costruzione di un trigger per l'ADC che, come specificato dalla documentazione, deve partire almeno \SI{200}{ns} prima del picco e deve terminare almeno \SI{200}{ns} dopo. Usando l'oscilloscopio, ritardiamo il segnale del discriminatore e lo allunghiamo attraverso l'uso di un modulo \texttt{gate \& delay} non retriggerabile. Scegliamo di farlo durare \SI{500}{ns} prima e dopo il picco del formatore.
+\marginpar{dobbiamo misurarlo perché non c'è scritto nel logbook}
+Colleghiamo il cavo coassiale che trasmette l'uscita del formatore all'ingresso ``gate'' dell'ADC facendo un parallelo con un tappino da \SI{50}{\Omega} perché questo ingresso ha una impedenza alta e il nostro accorgimento evita la deformazione del segnale.
+Modifichiamo il file di configurazione in modo che l'ADC acquisisca soltanto quando il trigger è attivo. Notiamo che la soglia appena utilizzata elimina tutti i segnali inferiori ai 1000 digit. 
+
+\subsubsection{Risultati} % titolo provvisorio
+\marginpar{inserire grafici, misure e risultati dopo averli analizzati}

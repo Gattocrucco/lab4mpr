@@ -1,12 +1,18 @@
 \select@language {italian}
 \select@language {italian}
-\contentsline {section}{\numberline {1}Teoria}{1}{section.1}
-\contentsline {section}{\numberline {2}Spettrometria $\gamma $ con gli scintillatori}{1}{section.2}
-\contentsline {paragraph}{Assorbimento fotoelettrico}{1}{section*.2}
+\contentsline {section}{\numberline {1}Teoria}{2}{section.1}
+\contentsline {section}{\numberline {2}Spettrometria $\gamma $ con gli scintillatori}{2}{section.2}
+\contentsline {paragraph}{Assorbimento fotoelettrico}{2}{section*.2}
 \contentsline {paragraph}{Scattering Rayleigh}{2}{section*.3}
 \contentsline {paragraph}{Scattering Compton}{2}{section*.4}
 \contentsline {subsection}{\numberline {2.1}Risposta del detector}{2}{subsection.2.1}
-\contentsline {subsection}{\numberline {2.2}Efficienza}{2}{subsection.2.2}
-\contentsline {subsection}{\numberline {2.3}Linearit\IeC {\`a}}{2}{subsection.2.3}
-\contentsline {subsection}{\numberline {2.4}Risoluzione}{2}{subsection.2.4}
-\contentsline {section}{\numberline {3}Misura e analisi}{2}{section.3}
+\contentsline {subsection}{\numberline {2.2}Efficienza}{3}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Linearit\IeC {\`a}}{3}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Risoluzione}{3}{subsection.2.4}
+\contentsline {section}{\numberline {3}Misura e analisi}{3}{section.3}
+\contentsline {subsection}{\numberline {3.1}Punto di lavoro del PMT2}{3}{subsection.3.1}
+\contentsline {subsubsection}{\numberline {3.1.1}Circuito di misura}{3}{subsubsection.3.1.1}
+\contentsline {subsubsection}{\numberline {3.1.2}Ricerca delle condizioni ottimali}{3}{subsubsection.3.1.2}
+\contentsline {subsection}{\numberline {3.2}Scintillatore plastico}{3}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Trigger}{4}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Risultati}{4}{subsubsection.3.2.2}
