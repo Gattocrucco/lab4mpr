@@ -1,5 +1,5 @@
 *.aux
-*.log
+
 *.synctex.gz
 *.lb
 esp-0-preliminare/petrillo/__pycache__/lab.cpython-36.pyc
