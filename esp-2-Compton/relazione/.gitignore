@@ -1,5 +1,3 @@
-relazione.pdf
-
 *.aux
 *.fdb_latexmk
 *.fls
@@ -9,3 +7,4 @@ relazione.pdf
 *.synctex.gz
 *.toc
 *.watcher_pid
+relazione.pdf
