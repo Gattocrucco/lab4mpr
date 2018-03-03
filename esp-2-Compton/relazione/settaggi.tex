@@ -36,5 +36,39 @@ Colleghiamo il cavo coassiale che trasmette l'uscita del formatore all'ingresso 
 Modifichiamo il file di configurazione in modo che l'ADC acquisisca soltanto quando il trigger è attivo. Notiamo che la soglia appena utilizzata elimina tutti i segnali inferiori ai 1000 digit. 
 
 \subsubsection{Risultati} % titolo provvisorio
-\marginpar{inserire grafici, misure e risultati dopo averli analizzati}
-Files: 16-feb angoli: un'occhiata veloce evidenzia lo spostamento compton
+
+Abbiamo analizzato gli spettri a \SI{0}{\degree}, \SI{15}{\degree}, \SI{30}{\degree}, \SI{45}{\degree}, \SI{75}{\degree} e \SI{90}{\degree}. Riportiamo in \autoref{4ang} i più significativi.
+Nel grafico a \SI{0}{\degree} possiamo notare i fotopicchi del cobalto accompagnati dalla spalla Compton  dell'elettrone che è generata da un'altra diffusione Compton all'interno del NaI dopo che questo è stato ionizzato dai fotoni dei fotopicchi.
+Nei grafici successivi si nota un vistoso picco a basse energie dovuto allo scattering di raggi $\gamma$ con le pareti della stanza che poi finiscono nel nostro rivelatore.
+\marginpar{spiegare meglio questa situazione}
+Gli ultimi due grafici evidenziano un calo della statistica all'aumentare dell'angolo come atteso dalla formula \autoref{diff} della sezione d'urto differenziale. Il fondo cambia: non mostra più la spalla Compton e diminuisce circa linearmente prima di raggiungere i fotopicchi.
+\marginpar{ho messo un autoref ad una formula che sarà in qualche punto della teoria}
+
+\begin{figure}[h]
+\centering
+
+\subfloat
+{\includegraphics[width= 16 em]{0g}} \qquad
+\subfloat
+{\includegraphics[width= 16 em]{15g}} \\
+
+\subfloat
+{\includegraphics[width= 16 em]{45g}} \qquad
+\subfloat
+{\includegraphics[width= 16 em]{90g}}
+
+\caption{Spettri raccolti dal PMT2 a diversi angoli rispetto allo scintillatore plastico.}
+\label{4ang}
+\end{figure}
+
+Abbiamo poi confrontato lo spettro a \SI{45}{\degree} con o senza scintillatore plastico, ma non abbiamo notato nessuna differenza. Abbiamo anche verificato che, come atteso, il rate di eventi diminuisce all'aumentare della distanza.
+\marginpar{forse alcune di queste considerazioni sono stupide, ma è più facile togliere che aggiungere}
+
+L'ultima acquisizione di questa serie è diversa rispetto alle altre: lo scintillatore cristallino è stato schermato lateralmente e superiormente per ridurre il backscattering. L'istogramma di \autoref{casetta} mostra come questo fenomeno sia evidentemente diventato più raro.
+
+\begin{figure}
+\centering
+\includegraphics[width=25 em]{45gs}
+\caption{Spettro energetico del PMT2 con schermaggio superiore e laterale.}
+\label{casetta}
+\end{figure}
