@@ -1,6 +1,7 @@
 import numba as nb
 import numpy as np
 from scipy import optimize
+import calibration
 
 def make_von_neumann(density, domain, max_cycles=100000):
     """
@@ -63,23 +64,6 @@ def klein_nishina(E, cos_theta, m_e):
     P = compton_photon_energy(E, cos_theta, m_e) / E
     return 1/2 * P**2 * (P + P**-1 - (1 - cos_theta**2))
 
-def energy_sigma(E):
-    """
-    E = energy [MeV]
-    energy resolution of NaI + PMT
-    TO BE MODIFIED
-    also: find the reference
-    """
-    return (2.27 + 7.28 * E ** -0.29 - 2.41 * E ** 0.21) * E / (100 * 2.35)
-
-def energy_calibration(E):
-    """
-    E = energy [MeV]
-    TO BE MODIFIED
-    returns non-calibrated energy
-    """
-    return E
-
 @nb.jit('f8[:](u4)', nopython=True, cache=True)
 def random_normal(n):
     out = np.empty(n)
@@ -87,12 +71,10 @@ def random_normal(n):
         out[i] = np.random.normal()
     return out
 
-def energy_nai(E, res=True, cal=True):
-    if res:
-        E += random_normal(len(E)) * energy_sigma(E)
-    if cal:
-        E = energy_calibration(E)
-    return E
+def energy_nai(E, *a, **k):
+    E_cal = calibration.energy_calibration(*a, **k)(E)
+    sigma = calibration.energy_sigma(*a, **k)(E)
+    return E_cal + random_normal(len(E)) * sigma
 
 @nb.jit(nopython=True, cache=True)
 def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_distance=40, nai_radius=2.54, m_e=0.511, acc_bounds=True, max_secondary_cos_theta=1):
@@ -241,12 +223,11 @@ def mc_cal(*args, **kwargs):
     return p, s
 
 if __name__ == '__main__':
-    N=1000000
+    N=100000
     primary, secondary = mc(1.33, theta_0=45, N=N, seed=1)
     
-    kw = dict(res=True, cal=True)
-    primary = energy_nai(primary, **kw)
-    secondary = energy_nai(secondary, **kw)
+    primary = energy_nai(primary)
+    secondary = energy_nai(secondary)
 
     from matplotlib.pyplot import *
     figure('mc9')

@@ -28,7 +28,8 @@ for date in unique_dates:
     
     p0, _ = lab.fit_linear(nom_energy, adc_energy, dy=adc_energy_unc)
     out = lab.fit_curve(lambda x, m, q: m * x + q, nom_energy, adc_energy, dy=adc_energy_unc, p0=p0, absolute_sigma=False)
-    print('{}: m = {}, q = {}, chi2/ndof = {:.1f}/{}'.format(date, *lab.xe(out.par, np.sqrt(np.diag(out.cov))), out.chisq, out.chisq_dof))
+    if __name__ == '__main__':
+        print('{}: m = {}, q = {}, chi2/ndof = {:.1f}/{}'.format(date, *lab.xe(out.par, np.sqrt(np.diag(out.cov))), out.chisq, out.chisq_dof))
     scale_factor_cal = out.chisq / out.chisq_dof
     ms[date] = out.par[0]
     qs[date] = out.par[1]
@@ -43,7 +44,8 @@ for date in unique_dates:
         ax_cal.grid()
 
     out = lab.fit_curve(energy_sigma_fit, nom_energy, adc_sigma, dy=adc_sigma_unc, p0=1, absolute_sigma=False)
-    print('       ampl = {}, chi2/ndof = {:.1f}/{}'.format(lab.xe(out.par[0], np.sqrt(out.cov[0,0])), out.chisq, out.chisq_dof))
+    if __name__ == '__main__':
+        print('       ampl = {}, chi2/ndof = {:.1f}/{}'.format(lab.xe(out.par[0], np.sqrt(out.cov[0,0])), out.chisq, out.chisq_dof))
     scale_factor_res = out.chisq / out.chisq_dof
     ams[date] = out.par[0]
     
