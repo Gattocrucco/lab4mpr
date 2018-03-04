@@ -111,7 +111,10 @@ if __name__ == '__main__':
         datasets[filename] = counts
 
     # plot histogram
+    figure(1)
     kw = dict(logscale=args.log, cut=args.rebin, linewidth=min(.25 * args.rebin, 1))
     if len(datasets) == 1:
         kw.update(color='black')
     histo(datasets, **kw)
+    print("cacca")
+    show()
