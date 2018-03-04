@@ -9,11 +9,11 @@ import copy
 
 cartella ="cal/"
 date =["22feb","26feb","27feb"]
-elements0= [["cs","Cs 137", [0.662], [3700,4000], 5e2],
-           ["am","Am 241", [0.060], [320,380], 1e4],
-           ["na","Na 22",  [0.511], [2900,3100],5e2],
-           ["na","Na 22",  [1.275], [7100,7400],1e1],
-           ["co","Co 60", [1.173,1.333], [6450,7850],1e2]]
+elements0= [["cs","Cs137", [0.662], [3700,4000], 5e2],
+           ["am","Am241", [0.060], [320,380], 1e4],
+           ["na","Na22",  [0.511], [2900,3100],5e2],
+           ["na","Na22",  [1.275], [7100,7400],1e1],
+           ["co","Co60", [1.173,1.333], [6450,7850],1e2]]
 
 
 
@@ -37,7 +37,10 @@ def gaus2(x,N1,u1,sigma1,N2,u2,sigma2,m,q):
         
 
 #____________________________________________________
-
+file_print=open("cal/cal.txt","w")
+print("#data elemento energia [Mev] media[digit] sigma[digit] err_media[digit] err_sigma[digit] cov(media,sigma)",file=file_print)
+        
+              
 for data in date:
     #if data != '26feb': continue
     for b in arange(len(elements0)):
@@ -90,8 +93,8 @@ for data in date:
             _Y = Y[sin:dex]
             _X = arange(dex-sin)+0.5+sin 
             _dy=sqrt(_Y)
-            popt,pcov=curve_fit(distr,_X,_Y,sigma=_dy,p0=val, maxfev=10000)
-            out = lab.fit_curve(distr,_X,_Y,dy=_dy,p0=val, method="odrpack", pfix=[0,0])
+            #popt,pcov=curve_fit(distr,_X,_Y,sigma=_dy,p0=val, maxfev=10000)
+            out = lab.fit_curve(distr,_X,_Y,dy=_dy,p0=val, method="odrpack")
             popt,pcov = out.par, out.cov
             
         
@@ -116,6 +119,8 @@ for data in date:
             plot(z,gaus2(z,*popt),color="red",linewidth=3)
         else:
             plot(z,distr(z,*popt),color="red",linewidth=3)
+        savefig("cal/plot/"+data+"_"+el+".pdf",bbox_inches='tight')
+        savefig("cal/plot/"+data+"_"+el+".png",bbox_inches='tight')
         
         #zoom sulla gaussiana    
         
@@ -132,6 +137,8 @@ for data in date:
             plot(z,gaus2(z,*popt),color="red",linewidth=4)
         else:
             plot(z,distr(z,*popt),color="red",linewidth=4)
+        savefig("cal/plot/"+data+"_"+el+"_"+str(energy[0])+".pdf",bbox_inches='tight')
+        savefig("cal/plot/"+data+"_"+el+"_"+str(energy[0])+".png",bbox_inches='tight')
           
         # print result_____________________________________________
         if(nome=="co"):
@@ -155,11 +162,11 @@ for data in date:
         print("result")
         print(lab.format_par_cov(popt,pcov),"\n")
         
-        file_print=open("/cal/cal.txt","a")
         if(nome=="co"):
-            print("%s \t %s \t %f \t %f \t %f \t %f \t %f \t %f" %(data, el, energy[0],popt[1],popt[2],sqrt(pcov[1][1]),sqrt(pcov[2][2]),pcov[1][2]),file=file_print)
-            print("%s \t %s \t %f \t %f \t %f \t %f \t %f \t %f" %(data, el, energy[1],popt[4],popt[5],sqrt(pcov[4][4]),sqrt(pcov[5][5]),pcov[4][5]),file=file_print)
+            print("%s \t %s \t %f \t %f \t %f \t %f \t %f \t %f" %(data, el, energy[0],popt[1],abs(popt[2]),sqrt(pcov[1][1]),sqrt(pcov[2][2]),pcov[1][2]),file=file_print)
+            print("%s \t %s \t %f \t %f \t %f \t %f \t %f \t %f" %(data, el, energy[1],popt[4],abs(popt[5]),sqrt(pcov[4][4]),sqrt(pcov[5][5]),pcov[4][5]),file=file_print)
         else:
-            print("%s \t %s \t %f \t %f \t %f \t %f \t %f \t %f" %(data, el, energy[0],popt[1],popt[2],sqrt(pcov[1][1]),sqrt(pcov[2][2]),pcov[1][2]),file=file_print)
-        file_print.close()
+            print("%s \t %s \t %f \t %f \t %f \t %f \t %f \t %f" %(data, el, energy[0],popt[1],abs(popt[2]),sqrt(pcov[1][1]),sqrt(pcov[2][2]),pcov[1][2]),file=file_print)
+
+file_print.close()
     
