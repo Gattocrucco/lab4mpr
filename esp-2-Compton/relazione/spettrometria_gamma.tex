@@ -1,5 +1,6 @@
 \section{Spettrometria $\gamma$ con gli scintillatori}
 Un punto cruciale di questa esperienza é...
+\marginpar{la frase l'hai lasciata a metà perché vuoi aggiungere qualcosa in seguito?}
 
 I principali meccanismi di interazione dei fotoni con la materia sono:
 \begin{itemize}
@@ -9,27 +10,32 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
 	\item produzione di coppie.
 \end{itemize}
  Di questi, gli ultimi 3 sono i modi nel quale i fotoni sono rivelati.
- Gli scintillatori rivelano le particelle che gli attraversano producendo luce in funzione dell'energia rilasciata all'interno: t
+ Gli scintillatori rivelano le particelle che li attraversano producendo luce in funzione dell'energia rilasciata all'interno: t
+ \marginpar{Quella `t' ha un qualche significato?}
  
  La sezione d'urto di questi processi varia con l'energia dei fotoni e col numero atomico del materiale con cui interagiscono.
- Per qualsiasi numero atomico è vero che il processo predominante a basse energie ($< \SI{10}{keV}$) è l'assorbimento fotoelettrico mentre ad alte energie (($< \SI{100}{MeV}$) domina la produzione di coppie. Ad energie intermedie l'interazione principale è lo scattering Compton, il cui effetto diventa via via più importante al diminuire del numero atomico. 
+ Per qualsiasi numero atomico è vero che il processo predominante a basse energie ($< \SI{10}{keV}$) è l'assorbimento fotoelettrico, mentre ad alte energie ($< \SI{100}{MeV}$) domina la produzione di coppie. Ad energie intermedie l'interazione principale è lo scattering Compton, il cui effetto diventa via via più importante al diminuire del numero atomico. 
  
  Il nostro rivelatore è un cristallo di NaI per il quale sono riportate le sezioni d'urto al variare dell'energia in \autoref{cross_section_NaI}.
  Come è chiaro dal grafico gli unici processi rilevanti nel range di energie di interesse ($\SI{100}{keV} \sim \SI{1.5}{MeV}$) sono l'assorbimento fotoelettrico e lo scattering Compton.
  
+\marginpar{Preferirei indicare l'energia cinetica con $T_e$ per non confonderla con l'energia totale. \`E  vero che hai scritto che quella è l'energia cinetica, ma la notazione standard migliora le cose.}
  \paragraph{Assorbimento fotoelettrico}
  Il fotone incidente è completamente assorbito e ionizza l'atomo estraendo quindi un elettrone con energia cinetica pari a $E_e = E_{\gamma} - E_b$ dove $E_{\gamma}$ è l'energia del fotone incidente e $E_b$ è l'energia di legame, solitamente piccola se paragonata a $E_{\gamma}$. Il risultato finale è una particella carica nello scintillatore con (praticamente) la stessa energia del fotone incidente.
+
+
  
  \paragraph{Scattering Rayleigh}
- Nello scattering Rayleigh l'intero atomo funge da bersaglio perciò dopo l'urto il fotone cambia direzione e l'atomo rincula per conservare il momento. Data la grande massa dell'atomo (rispetto all'energia del fotone) l'energia scambiata è trascurabile e il fotone uscente ha praticamente la stessa energia iniziale. E' chiaro quindi che i fotoni non potranno essere rivelati in uno scintillatore con questo meccanismo perché nessuna energia è stata rilasciata all'interno.
+ Nello scattering Rayleigh l'intero atomo funge da bersaglio, perciò dopo l'urto il fotone cambia direzione e l'atomo rincula per conservare il momento. Data la grande massa dell'atomo (rispetto all'energia del fotone) l'energia scambiata è trascurabile e il fotone uscente ha praticamente la stessa energia iniziale. \`E chiaro quindi che i fotoni non potranno essere rivelati in uno scintillatore con questo meccanismo perché nessuna energia è stata rilasciata all'interno.
  
  \paragraph{Scattering Compton}
  Se il fotone è abbastanza energetico può urtare un singolo elettrone. Per fotoni di questo tipo l'energia di legame può essere trascurata e si può trattare l'elettrone come libero. Il risultato di questo scattering è 
  
  \subsection{Risposta del detector}
- Se il detector fosse abbastanza esteso tutta l'energia dei fotoni, indipendentemente dalla complessità dell'interazione, verrebbe rilasciata nel rivelatore. Per una sorgente di fotoni ad una energia fissata, come potrebbe essere una sorgente di raggi $\gamma$\footnote{I raggi $\gamma$ delle sorgenti radioattive hanno tipicamente larghezze $\Gamma << \SI{1}{eV}$ e possono quindi considerarsi mono-energetici.} come il Cs-137, lo spettro energetico prodotto da un tale scintillatore sarebbe un singolo fotopicco all'energia dei fotoni $\gamma$ con una larghezza dovuta essenzialmente alla risoluzione dello strumento, come analizzeremo nel seguito.
+ Se il detector fosse abbastanza esteso, tutta l'energia dei fotoni, indipendentemente dalla complessità dell'interazione, verrebbe rilasciata nel rivelatore. Per una sorgente di fotoni ad una energia fissata, come potrebbe essere una sorgente di raggi $\gamma$\footnote{I raggi $\gamma$ delle sorgenti radioattive hanno tipicamente larghezze $\Gamma \ll \SI{1}{eV}$ e possono quindi considerarsi mono-energetici.} come il Cs-137, lo spettro energetico prodotto da un tale scintillatore sarebbe un singolo fotopicco all'energia dei fotoni $\gamma$ con una larghezza dovuta essenzialmente alla risoluzione dello strumento, come analizzeremo nel seguito.
+ \marginpar{proporrei $^{137}$Cs}
  
- Nel nostro caso disponiamo di un rivelatore $2"\times2"$ e a partire dal noto grafico in FONTE che ci da la lunghezza di radiazione al variare dell'energia del fotone in vari materiali e semplice calcolare che per il nostro rivelatore di NaI la lunghezza di radiazione vale $\sim \SI{5}{cm}$, quindi paragonabile alla dimensione del cristallo, ne segue che solo il $\sim 60\%$ dei fotoni interagisce nel cristallo\footnote{E l'efficienza varia con l'energia come vedremo nel seguito}, per cui l'approssimazione di detector esteso non è applicabile.
+ Nel nostro caso disponiamo di un rivelatore $2"\times2"$ e, a partire dal noto grafico in FONTE che ci dà la lunghezza di radiazione al variare dell'energia del fotone in vari materiali, è semplice calcolare che per il nostro rivelatore di NaI la lunghezza di radiazione vale $\sim \SI{5}{cm}$, quindi paragonabile alla dimensione del cristallo, ne segue che solo il $\sim 60\%$ dei fotoni interagisce nel cristallo\footnote{E l'efficienza varia con l'energia come vedremo nel seguito}, per cui l'approssimazione di detector esteso non è applicabile.
  Lo spettro prodotto sarà la somma di molti effetti:
  \begin{itemize}
  	\item l'assorbimento fotoelettrico produrrà un fotopicco all'energia dei fotoni incidenti;
