@@ -2,8 +2,6 @@ import numba as nb
 import numpy as np
 from scipy import optimize
 
-m_e = 0.511 # electron mass [MeV]
-
 def make_von_neumann(density, domain, max_cycles=100000):
     """
     density = positive function float -> float
@@ -50,19 +48,19 @@ def versor(a):
     """
     return a / np.sqrt(np.sum(a ** 2))
 
-@nb.jit('f8(f8,f8)', nopython=True, cache=True)
-def compton_photon_energy(E, cos_theta):
+@nb.jit('f8(f8,f8,f8)', nopython=True, cache=True)
+def compton_photon_energy(E, cos_theta, m_e):
     return E / (1 + E / m_e * (1 - cos_theta))
 
-@nb.jit('f8(f8,f8)', nopython=True, cache=True)
-def klein_nishina(E, cos_theta):
+@nb.jit('f8(f8,f8,f8)', nopython=True, cache=True)
+def klein_nishina(E, cos_theta, m_e):
     """
     E = photon energy [MeV]
     cos_theta = cosine of polar angle
     
     from https://en.wikipedia.org/wiki/Klein–Nishina_formula
     """
-    P = compton_photon_energy(E, cos_theta) / E
+    P = compton_photon_energy(E, cos_theta, m_e) / E
     return 1/2 * P**2 * (P + P**-1 - (1 - cos_theta**2))
 
 def energy_sigma(E):
@@ -97,7 +95,7 @@ def energy_nai(E, res=True, cal=True):
     return E
 
 @nb.jit(nopython=True, cache=True)
-def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_distance=20, nai_radius=2, acc_bounds=True, max_secondary_cos_theta=1):
+def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_distance=40, nai_radius=2.54, m_e=0.511, acc_bounds=True, max_secondary_cos_theta=1):
     """
     Simulate Compton scattering on the target and energy measurement of scattered photon with NaI.
     
@@ -201,9 +199,9 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_dist
         while 1:
             cos_theta_candidate = np.random.uniform(cos_theta_min, cos_theta_max)
             # to compute kn_max I assume that klein_nishina has only one minimum
-            kn_max = max(klein_nishina(energy, cos_theta_min), klein_nishina(energy, cos_theta_max))
+            kn_max = max(klein_nishina(energy, cos_theta_min, m_e), klein_nishina(energy, cos_theta_max, m_e))
             von_neumann = np.random.uniform(0, kn_max)
-            if von_neumann <= klein_nishina(energy, cos_theta_candidate):
+            if von_neumann <= klein_nishina(energy, cos_theta_candidate, m_e):
                 break
         cos_theta = cos_theta_candidate
         sin_theta = np.sqrt(1 - cos_theta**2)
@@ -214,18 +212,18 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_dist
         radius2 = nai_distance**2 * (1 - rho_z**2) / rho_z**2
         
         if radius2 <= nai_radius**2 and rho_z >= 0:
-            primary_photon = compton_photon_energy(energy, cos_theta)
+            primary_photon = compton_photon_energy(energy, cos_theta, m_e)
             
             # extract theta of secondary compton photon
             while 1:
                 cos_theta_candidate = np.random.uniform(-1, max_secondary_cos_theta)
-                kn_max = max(klein_nishina(primary_photon, -1), klein_nishina(primary_photon, max_secondary_cos_theta))
+                kn_max = max(klein_nishina(primary_photon, -1, m_e), klein_nishina(primary_photon, max_secondary_cos_theta, m_e))
                 von_neumann = np.random.uniform(0, kn_max)
-                if von_neumann <= klein_nishina(primary_photon, cos_theta_candidate):
+                if von_neumann <= klein_nishina(primary_photon, cos_theta_candidate, m_e):
                     break
             cos_theta = cos_theta_candidate
             
-            secondary_photon = compton_photon_energy(primary_photon, cos_theta)
+            secondary_photon = compton_photon_energy(primary_photon, cos_theta, m_e)
             secondary_electron = primary_photon - secondary_photon
             
             primary_photons[i] = primary_photon
@@ -236,9 +234,15 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_dist
         
     return primary_photons, secondary_electrons
 
+def mc_cal(*args, **kwargs):
+    p, s = mc(*args, **kwargs)
+    p = energy_nai(p)
+    s = energy_nai(s)
+    return p, s
+
 if __name__ == '__main__':
-    N=100000
-    primary, secondary = mc(1.33, theta_0=90, N=N, beam_sigma=2, seed=1, max_secondary_cos_theta=1)
+    N=1000000
+    primary, secondary = mc(1.33, theta_0=45, N=N, seed=1)
     
     kw = dict(res=True, cal=True)
     primary = energy_nai(primary, **kw)
