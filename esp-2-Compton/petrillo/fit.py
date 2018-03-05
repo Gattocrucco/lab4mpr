@@ -9,7 +9,7 @@ pb, sb = mc9.mc_cached(1.17, theta_0=40, N=100000, seed=1)
 
 samples = np.concatenate([pa, sa, pb, sb])
 
-counts = np.bincount(np.asarray(samples, dtype='u2'), minlength=2**13)[:2**13]
+counts = np.bincount(np.asarray(np.floor(samples), dtype='u2'), minlength=2**13)[:2**13]
 
 fig = plt.figure('fit')
 fig.clf()

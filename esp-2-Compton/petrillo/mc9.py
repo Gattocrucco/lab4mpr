@@ -19,9 +19,9 @@ def make_von_neumann(density, domain, max_cycles=100000):
     right = domain[1]
     
     if not isinstance(density, nb.targets.registry.CPUDispatcher):
-        density = nb.jit(density, nb.float64(nb.float64), nopython=True)
+        density = nb.jit('f8(f8)', nopython=True)(density)
     
-    @nb.jit(nb.float64(), nopython=True)
+    @nb.jit('f8', nopython=True)
     def von_neumann():
         i = 0
         while i < max_cycles:
@@ -34,7 +34,7 @@ def make_von_neumann(density, domain, max_cycles=100000):
     
     return von_neumann
 
-@nb.jit(nb.float64[3](nb.float64[3], nb.float64[3]), nopython=True, cache=True)
+@nb.jit('f8[3](f8[3],f8[3])', nopython=True, cache=True)
 def cross(a, b):
     """
     cross product a x b
@@ -45,7 +45,7 @@ def cross(a, b):
         a[0]*b[1] - a[1]*b[0]
     ])
 
-@nb.jit(nb.float64[3](nb.float64[3]), nopython=True, cache=True)
+@nb.jit('f8[3](f8[3])', nopython=True, cache=True)
 def versor(a):
     """
     normalize a (returns a / |a|)

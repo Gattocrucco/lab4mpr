@@ -71,9 +71,9 @@ def histo(datasets, ax=None, logscale=False, cut=1, **kw):
             raise ValueError('data for label %s not recognised as samples or histogram' % label)
         if cut > 1:
             counts = partial_sum(counts, cut)
-        bar_line(arange(0, 2**13 + 1, cut) - 0.5, counts, label='%s, N=%s' % (label, lab.num2si(np.sum(counts), format='%.3g')), ax=ax, **kw)
+        bar_line(arange(0, 2**13 + 1, cut), counts, label='%s, N=%s' % (label, lab.num2si(np.sum(counts), format='%.3g')), ax=ax, **kw)
         if logscale:
-            yscale('symlog', linthreshy=1, linscaley=1/5, subsy=[2, 3, 4, 5, 6, 7, 8, 9])
+            ax.set_yscale('symlog', linthreshy=1, linscaley=1/5, subsy=[2, 3, 4, 5, 6, 7, 8, 9])
     ax.set_xlabel('canale ADC')
     ax.set_ylabel('conteggio')
     ax.legend(loc=1, fontsize='small')
@@ -116,5 +116,4 @@ if __name__ == '__main__':
     if len(datasets) == 1:
         kw.update(color='black')
     histo(datasets, **kw)
-    print("cacca")
     show()
