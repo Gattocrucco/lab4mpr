@@ -80,7 +80,7 @@ def energy_nai(E, *a, **k):
     return E_cal + random_normal(len(E)) * sigma
 
 @nb.jit(nopython=True, cache=True)
-def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_distance=40, nai_radius=2.54, m_e=0.511, acc_bounds=True, max_secondary_cos_theta=1):
+def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=1.74, beam_center=0, nai_distance=40, nai_radius=2.54, m_e=0.511, acc_bounds=True, max_secondary_cos_theta=1):
     """
     Simulate Compton scattering on the target and energy measurement of scattered photon with NaI.
     
