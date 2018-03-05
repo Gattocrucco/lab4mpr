@@ -237,10 +237,22 @@ def mc_cached(*args, **kwargs):
     
     Keyword arguments
     -----------------
+    The argument <seed> must be specified and be >= 0,
+    otherwise the result depends on the internal state
+    of the sampler and can not be uniquely determined
+    from the arguments.
+    
     Additionally to those of mc, it recognises:
+    
     calibration : bool (default: True)
         Apply calibration.
     """
+    
+    if not ('seed' in kwargs):
+        raise ValueError('Argument <seed> not specified.')
+    if kwargs['seed'] < 0:
+        raise ValueError('Argument seed={} must be >= 0.'.format(kwargs['seed']))
+    
     # load or create database
     database_file = 'mc9_cache.pickle'
     if os.path.exists(database_file):
@@ -277,7 +289,7 @@ def mc_cached(*args, **kwargs):
 
 if __name__ == '__main__':
     N=100000
-    primary, secondary = mc_cached(1.33, theta_0=0, N=N, seed=1)
+    primary, secondary = mc_cached(1.33, theta_0=0, N=N, seed=0)
     
     from matplotlib.pyplot import *
     figure('mc9')
