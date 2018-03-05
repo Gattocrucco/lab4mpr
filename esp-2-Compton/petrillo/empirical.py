@@ -84,14 +84,8 @@ class EmpiricalSecondary(object):
 
 if __name__ == '__main__':
     import mc9
-    import os
     
-    filename = 'empirical-test.npy'
-    if not os.path.exists(filename):
-        print('running mc9...')
-        _, samples = mc9.mc_cal(1.33, theta_0=0, N=1000000)
-        np.save(filename, samples)
-    samples = np.load(filename)
+    _, samples = mc9.mc_cached(1.33, theta_0=45, N=1000000)
     
     empirical = EmpiricalSecondary(samples, plot=True)
     
