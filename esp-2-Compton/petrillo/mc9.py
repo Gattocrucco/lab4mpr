@@ -2,6 +2,9 @@ import numba as nb
 import numpy as np
 from scipy import optimize
 import calibration
+import os
+import pickle
+import lab
 
 def make_von_neumann(density, domain, max_cycles=100000):
     """
@@ -99,6 +102,8 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_dist
         Distance of the NaI from the target.
     nai_radius : float
         Radius of the NaI, in the same units as nai_distance.
+    m_e : float
+        Electron mass, in MeV.
     acc_bounds : bool
         If False, disable quick bounds on NaI shape that speed up montecarlo.
     
@@ -217,18 +222,63 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_dist
     return primary_photons, secondary_electrons
 
 def mc_cal(*args, **kwargs):
+    """
+    Same as mc, but applies calibration.
+    """
     p, s = mc(*args, **kwargs)
     p = energy_nai(p)
     s = energy_nai(s)
     return p, s
 
+def mc_cached(*args, **kwargs):
+    """
+    Calls mc and saves results so that if called again
+    with the same parameters it will not run again the Monte Carlo.
+    
+    Keyword arguments
+    -----------------
+    Additionally to those of mc, it recognises:
+    calibration : bool (default: True)
+        Apply calibration.
+    """
+    # load or create database
+    database_file = 'mc9_cache.pickle'
+    if os.path.exists(database_file):
+        with open(database_file, 'rb') as file:
+            database = pickle.load(file)
+    else:
+        database = {}
+        
+    calibration = kwargs.pop('calibration', True)
+    
+    # get result from cache or compute and save
+    hashable_args = (args, frozenset(kwargs.items()))
+    if hashable_args in database:
+        data_file = database[hashable_args]
+        data = np.load(data_file)
+        p = data['primary']
+        s = data['secondary']
+    else:
+        p, s = mc(*args, **kwargs)
+        new_file = lab.nextfilename('mc9_cache', '.npz')
+        np.savez(new_file, primary=p, secondary=s)
+        database[hashable_args] = new_file
+    
+    # save database
+    with open(database_file, 'wb') as file:
+        pickle.dump(database, file)
+    
+    # apply calibration
+    if calibration:
+        p = energy_nai(p)
+        s = energy_nai(s)
+    
+    return p, s
+
 if __name__ == '__main__':
     N=100000
-    primary, secondary = mc(1.33, theta_0=45, N=N, seed=1)
+    primary, secondary = mc_cached(1.33, theta_0=0, N=N, seed=1)
     
-    primary = energy_nai(primary)
-    secondary = energy_nai(secondary)
-
     from matplotlib.pyplot import *
     figure('mc9')
     clf()
