@@ -15,8 +15,8 @@ countsa = np.bincount(np.asarray(np.floor(np.concatenate([pa, sa])), dtype='u2')
 countsb = np.bincount(np.asarray(np.floor(np.concatenate([pb, sb])), dtype='u2'), minlength=2**13)[:2**13]
 counts = np.bincount(np.asarray(np.floor(np.concatenate([pb, sb, pa, sa])), dtype='u2'), minlength=2**13)[:2**13]
 
-empa = empirical.EmpiricalSecondary(sa)
-empb = empirical.EmpiricalSecondary(sb)
+empa = empirical.EmpiricalSecondary(sa, symb=True)
+empb = empirical.EmpiricalSecondary(sb, symb=True)
 
 def fit_fun_a(e, N1, mu1, sigma1, Ns1, scale1, N2, mu2, sigma2, Ns2, scale2):
     gaus1 = N1 / (sp.sqrt(2 * np.pi) * sigma1) * sp.exp(-1/2 * (e - mu1)**2 / sigma1**2)
@@ -33,11 +33,16 @@ def fit_fun(e, *p):
 
 p0 = [len(pa), np.mean(pa), np.std(pa), len(sa), 1, len(pb), np.mean(pb), np.std(pb), len(sb), 1]
 
-# for i in range(len(p0)):
-#     p0[i] = np.random.uniform(0.98 * p0[i], 1.02 * p0[i])
+for i in range(len(p0)):
+    p0[i] = np.random.uniform(0.97 * p0[i], 1.03 * p0[i])
+
+cut = edges[:-1] >= 100
+fit_x = edges[:-1][cut] + 0.5
+fit_y = counts[cut]
+fit_dy = np.where(fit_y > 0, np.sqrt(fit_y), 1)
 
 model = lab.CurveModel(fit_fun, symb=True, npar=len(p0))
-out = lab.fit_curve(model, edges[:-1] + 0.5, counts, dy=np.where(counts > 0, np.sqrt(counts), 1), p0=p0, print_info=1, method='auto')
+out = lab.fit_curve(model, fit_x, fit_y, dy=fit_dy, p0=p0, print_info=3, method='linodr', ftol=1e-14, xtol=1e-10)
 
 fig = plt.figure('fit')
 fig.clf()
@@ -49,9 +54,9 @@ modelb = lab.CurveModel(fit_fun_b, symb=True)
 histo.bar_line(edges, countsa, ax=ax)
 histo.bar_line(edges, countsb, ax=ax)
 histo.bar_line(edges, counts, ax=ax)
-ax.plot(edges, model.f()(edges, *p0), '-k')
-ax.plot(edges, model.f()(edges, *out.par), '-r')
-ax.plot(edges, modela.f()(edges, *out.par), '--r', linewidth=0.5)
-ax.plot(edges, modelb.f()(edges, *out.par), '--r', linewidth=0.5)
+ax.plot(fit_x,  model.f()(fit_x, *p0), '-k')
+ax.plot(fit_x,  model.f()(fit_x, *out.par), '-r')
+ax.plot(fit_x, modela.f()(fit_x, *out.par), '--r', linewidth=0.5)
+ax.plot(fit_x, modelb.f()(fit_x, *out.par), '--r', linewidth=0.5)
 
 fig.show()
