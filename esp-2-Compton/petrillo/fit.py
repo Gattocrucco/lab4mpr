@@ -6,6 +6,7 @@ import histo
 import lab
 import sympy as sp
 
+print('monte carlo...')
 pa, sa = mc9.mc_cached(1.33, theta_0=0, N=1000000, seed=0)
 pb, sb = mc9.mc_cached(1.17, theta_0=0, N=1000000, seed=1)
 
@@ -15,6 +16,7 @@ countsa = np.bincount(np.asarray(np.floor(np.concatenate([pa, sa])), dtype='u2')
 countsb = np.bincount(np.asarray(np.floor(np.concatenate([pb, sb])), dtype='u2'), minlength=2**13)[:2**13]
 counts = np.bincount(np.asarray(np.floor(np.concatenate([pb, sb, pa, sa])), dtype='u2'), minlength=2**13)[:2**13]
 
+print('empirical...')
 empa = empirical.EmpiricalSecondary(sa, symb=True)
 empb = empirical.EmpiricalSecondary(sb, symb=True)
 
@@ -34,7 +36,7 @@ def fit_fun(e, *p):
 p0 = [len(pa), np.mean(pa), np.std(pa), len(sa), 1, len(pb), np.mean(pb), np.std(pb), len(sb), 1]
 
 for i in range(len(p0)):
-    p0[i] = np.random.uniform(0.97 * p0[i], 1.03 * p0[i])
+    p0[i] = np.random.uniform(0.95 * p0[i], 1.05 * p0[i])
 
 cut = edges[:-1] >= 100
 fit_x = edges[:-1][cut] + 0.5
@@ -42,7 +44,7 @@ fit_y = counts[cut]
 fit_dy = np.where(fit_y > 0, np.sqrt(fit_y), 1)
 
 model = lab.CurveModel(fit_fun, symb=True, npar=len(p0))
-out = lab.fit_curve(model, fit_x, fit_y, dy=fit_dy, p0=p0, print_info=3, method='linodr', ftol=1e-14, xtol=1e-10)
+out = lab.fit_curve(model, fit_x, fit_y, dy=fit_dy, p0=p0, print_info=1)
 
 fig = plt.figure('fit')
 fig.clf()

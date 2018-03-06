@@ -67,17 +67,20 @@ def klein_nishina(E, cos_theta, m_e):
     P = compton_photon_energy(E, cos_theta, m_e) / E
     return 1/2 * P**2 * (P + P**-1 - (1 - cos_theta**2))
 
-@nb.jit('f8[:](u4)', nopython=True, cache=True)
-def random_normal(n):
+@nb.jit('f8[:](u4,i8)', nopython=True, cache=True)
+def random_normal(n, seed=-1):
     out = np.empty(n)
+    if seed >= 0:
+        np.random.seed(seed)
     for i in range(len(out)):
         out[i] = np.random.normal()
     return out
 
 def energy_nai(E, *a, **k):
+    seed = k.pop('seed', -1)
     E_cal = calibration.energy_calibration(*a, **k)(E)
     sigma = calibration.energy_sigma(*a, **k)(E)
-    return E_cal + random_normal(len(E)) * sigma
+    return E_cal + random_normal(len(E), seed=seed) * sigma
 
 @nb.jit(nopython=True, cache=True)
 def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=1.74, beam_center=0, nai_distance=40, nai_radius=2.54, m_e=0.511, acc_bounds=True, max_secondary_cos_theta=1):
@@ -282,8 +285,8 @@ def mc_cached(*args, **kwargs):
     
     # apply calibration
     if calibration:
-        p = energy_nai(p)
-        s = energy_nai(s)
+        p = energy_nai(p, seed=4000000000 + kwargs['seed'])
+        s = energy_nai(s, seed=2000000000 + kwargs['seed'])
     
     return p, s
 
