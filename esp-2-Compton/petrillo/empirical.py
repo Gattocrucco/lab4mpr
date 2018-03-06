@@ -85,7 +85,7 @@ class EmpiricalSecondary(object):
 if __name__ == '__main__':
     import mc9
     
-    _, samples = mc9.mc_cached(1.33, theta_0=45, N=1000000)
+    _, samples = mc9.mc_cached(1.33, theta_0=45, N=1000000, seed=0)
     
     empirical = EmpiricalSecondary(samples, plot=True)
     
