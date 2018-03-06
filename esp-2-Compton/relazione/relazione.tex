@@ -17,6 +17,7 @@
 \usepackage{makecell}
 \usepackage{float}
 \usepackage{subfig}
+\usepackage{wasysym}
 
 \setlength{\marginparwidth}{95pt}
 \let\oldmarginpar\marginpar
@@ -25,11 +26,11 @@
 \newcommand*\pdv[2]{\frac{\partial #1}{\partial #2}}
 \newcommand*\dv[2]{\frac{\de #1}{\de #2}}
 \DeclareMathOperator\Ei{Ei}
-\newcommand\cs{$^{137}$Cs}
-\newcommand\co{$^{60}$Co}
-\newcommand\na{$^{22}$Na}
-\newcommand\am{$^{241}$Am}
-\newcommand\sr{$^{90}$Sr}
+\newcommand\cs{$^{137} \text{Cs}$}
+\newcommand\co{$^{60}\text{Co}$}
+\newcommand\na{$^{22}\text{Na}$}
+\newcommand\am{$^{241}\text{Am}$}
+\newcommand\sr{$^{90}\text{Sr}$}
 
 \sisetup{%
 separate-uncertainty=true,
@@ -50,9 +51,8 @@ Esperienza 2. Scattering Compton}
 \maketitle
 
 \begin{abstract}
-	Misuriamo la massa dell'elettrone attraverso la diffusione Compton dei fotopicchi del cobalto e lo studio delle corrispondenti spalle Compton.
-	Per evitare correlazioni con le esperienze successive,
-	alla fine dell'esperimento distruggiamo l'ADC.
+	Misuriamo la massa dell'elettrone attraverso la diffusione Compton dei fotopicchi del cobalto e lo studio delle corrispondenti spalle Compton. Nelle simulazioni Monte Carlo non trascuriamo la sezione d'urto dei fotoni sull'aria, che si rivelerà essere decisiva per la misura della massa dell'elettrone.
+	Per evitare correlazioni con le esperienze successive, alla fine dell'esperimento distruggiamo l'ADC.
 \end{abstract}
 
 {\small \tableofcontents}
