@@ -1,19 +1,14 @@
 \subsection{Punto di lavoro del PMT2}
 
-\subsubsection{Circuito di misura}
-\marginpar{aggiungere disegno?}
-Analizziamo i segnali del PMT2 per trovare il miglior punto di lavoro per le nostre esigenze. Prendiamo l'uscita positiva preamplificata dalla base del PMT stesso e la colleghiamo ad un formatore che restituisce un segnale di forma simile ad una  Gaussiana il cui picco è proporzionale all'energia immagazzinata. Questa è poi inviata ad un ADC a 13 bit che legge qualsiasi segnale superi una certa soglia interna.
+Vogliamo trovare un buon punto di lavoro per il PMT2 che è alimentato con tensioni positive fino a $\sim \SI{800}{V}$. 
 
-Bisogna specificare che l'ADC in questione ha due modi di salvare le acquisizioni ed essi possono essere abilitati o disabilitati mediante un file di configurazione. Si può scegliere di salvare tutti i dati acquisiti in ordine di tempo in formato esadecimale%
-\footnote{Chiameremo questo file \emph{log} come la sua estensione.}
-oppure avere un file di testo con 8192 righe in cui il numero scritto in ogni riga è l'occorrenza del relativo valore in \emph{digit}%
-\footnote{Chiameremo questo file \emph{istogramma} per non confonderlo con il precedente.}.
+Mandiamo il segnale preamplificato del PMT2 all'amplificatore e la sua uscita all'ADC in modalità automatica.
 
-\subsubsection{Ricerca delle condizioni ottimali}
+Osservando l'istogramma dei campionamenti e notiamo che la risposta dello spettrometro è molto sensibile alle variazioni della tensione di alimentazione: da \SI{600}V a \SI{575}V, il valore in uscita si dimezza. 
 
-Facciamo questo test ponendo il PMT2 a varie distanze di fronte al collimatore.
-\marginpar{sto supponendo che la descrizione dell'apparato sia stata fatta in una sezione precedente}
-Ci accorgiamo, guardando l'istogramma, che è molto sensibile alle variazioni della tensione  di alimentazione. Per esempio, passando da \SI{600}V a \SI{575}V, l'energia acquisita si dimezza. Portiamo il fotopicco del cobalto ad \SI{1.33}{MeV} vicino al nostro fondoscala variando il guadagno del formatore in modo da poter analizzare il più ampio intervallo possibile di energia al di sotto di esso. Abbiamo operato questa scelta perché è il fotopicco più energetico rispetto alle altre sorgenti radioattive che useremo in seguito per calibrare il PMT2. Avendo esso una forma Gaussiana, abbiamo fatto in modo che la sua coda non finisse troppo vicina al fondoscala dell'ADC in modo da poterla fittare senza problemi. \marginpar{ci contesteranno il verbo ``fittare''?}
+Scegliamo di alimentare il PMT2 alla tensione consigliata di \SI{650}V. A questa tensione e con un fattore di amplificazione di $\times 1.5$ dell'amplificatore il fotopicco generato dai fotoni più energetici tra le sorgenti a disposizione (ovvero il picco a \SI{1.33}{MeV} del \co) si trovi vicino al fondo scala (rimanendo comunque fittabile) 
+
+Portiamo il fotopicco del cobalto ad \SI{1.33}{MeV} vicino al nostro fondoscala variando il guadagno del formatore in modo da poter analizzare il più ampio intervallo possibile di energia al di sotto di esso. Abbiamo operato questa scelta perché è il fotopicco più energetico rispetto alle altre sorgenti radioattive che useremo in seguito per calibrare il PMT2. Avendo esso una forma Gaussiana, abbiamo fatto in modo che la sua coda non finisse troppo vicina al fondoscala dell'ADC in modo da poterla fittare senza problemi. \marginpar{ci contesteranno il verbo ``fittare''?}
 Dopo varie prove decidiamo di alimentare il PMT2 a \SI{650}V.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

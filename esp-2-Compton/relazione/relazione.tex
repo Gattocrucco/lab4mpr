@@ -16,7 +16,7 @@
 \usepackage{pdflscape}
 \usepackage{makecell}
 \usepackage{float}
-%\usepackage{subfig}
+\usepackage{subfig}
 
 \setlength{\marginparwidth}{95pt}
 \let\oldmarginpar\marginpar
@@ -25,6 +25,11 @@
 \newcommand*\pdv[2]{\frac{\partial #1}{\partial #2}}
 \newcommand*\dv[2]{\frac{\de #1}{\de #2}}
 \DeclareMathOperator\Ei{Ei}
+\newcommand\cs{$^{137}$Cs}
+\newcommand\co{$^{60}$Co}
+\newcommand\na{$^{22}$Na}
+\newcommand\am{$^{241}$Am}
+\newcommand\sr{$^{90}$Sr}
 
 \sisetup{%
 separate-uncertainty=true,
@@ -59,6 +64,8 @@ Esperienza 2. Scattering Compton}
 \section{Teoria}
 
 \input{spettrometria_gamma}
+
+\input{strumentazione}
 
 \section{Misura e analisi}
 
