@@ -9,7 +9,7 @@ def gauss(x, mu, sigma):
     return sp.exp(-1/2 * (x - mu)**2 / sigma**2)
 
 def log_gauss(x, s, scale):
-    x = sp.Piecewise((x, x > 0), (scale * 1e-15, True))
+    x = sp.Piecewise((x, x > 0), (scale * 1e-15 * sp.exp(s), True))
     return 1 / (x / scale) * sp.exp(-1/2 * (sp.log(x / scale) / s)**2)
 
 def fermi(x, x0, scale):
@@ -33,7 +33,7 @@ _empirical_secondary = sp.lambdify(syms, empirical_secondary(*syms))
 
 class EmpiricalSecondary(object):
 
-    def __init__(self, samples, plot=False):
+    def __init__(self, samples, plot=False, symb=False):
         """
         samples is <secondary> output from mc9.mc
         """
@@ -73,7 +73,10 @@ class EmpiricalSecondary(object):
             
             ax_di.plot(edges[:-1], norm_counts - _empirical_secondary(edges[:-1], *p), '-k')
 
-        model = lab.CurveModel(empirical_secondary, symb=True, npar=11)
+        if symb:
+            model = lab.CurveModel(empirical_secondary, symb=True, npar=11)
+        else:
+            model = lab.CurveModel(_empirical_secondary, symb=False, npar=11)
         out = lab.fit_curve(model, edges[:-1] + (edges[1] - edges[0]) / 2, norm_counts, dy=np.where(counts > 0, np.sqrt(counts), 1) * norm_factor, p0=p, print_info=plot)
         
         if plot:
@@ -87,18 +90,23 @@ class EmpiricalSecondary(object):
             fig.show()
         
         self._parameters = out.par
+        self._fun = empirical_secondary if symb else _empirical_secondary
     
     def __call__(self, x, scale):
-        return 1/scale * empirical_secondary(x, scale * self._parameters[0], *self._parameters[1:])
+        return 1/scale * self._fun(x, scale * self._parameters[0], *self._parameters[1:])  
 
 if __name__ == '__main__':
     import mc9
     
     _, samples = mc9.mc_cached(1.33, theta_0=45, N=1000000, seed=0)
     
-    empirical = EmpiricalSecondary(samples, plot=True)
-    syms = sp.symbols('x s')
-    _empirical = sp.lambdify(syms, empirical(*syms))
+    symb = True
+    empirical = EmpiricalSecondary(samples, plot=True, symb=symb)
+    if symb:
+        syms = sp.symbols('x s')
+        _empirical = sp.lambdify(syms, empirical(*syms))
+    else:
+        _empirical = empirical
     
     fig = plt.figure('empirical-test')
     fig.clf()
