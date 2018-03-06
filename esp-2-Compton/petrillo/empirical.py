@@ -1,26 +1,8 @@
 import numpy as np
-import mc9
-import os
 from scipy import stats
 import matplotlib.pyplot as plt
 import histo
 import lab
-
-if not os.path.exists('empirical.npz'):
-    print('running mc9...')
-    kw = dict(beam_sigma=2, nai_distance=40, nai_radius=2.54, N=1000000)
-    p1, s1 = mc9.mc_cal(1.33, theta_0=45, seed=1, **kw)
-    p2, s2 = mc9.mc_cal(1.33, theta_0=45, m_e=0.4, **kw)
-    p3, s3 = mc9.mc_cal(1.33, theta_0=45, m_e=0.6, **kw)
-    print('saving in empirical.npz...')
-    primary = [p1, p2, p3]
-    secondary = [s1, s2, s3]
-    np.savez('empirical.npz', primary=primary, secondary=secondary)
-else:
-    print('loading empirical.npz...')
-    data = np.load('empirical.npz')
-    primary = data['primary']
-    secondary = data['secondary']
 
 def gauss(x, mu, sigma):
     return np.exp(-1/2 * (x - mu)**2 / sigma**2)
@@ -34,40 +16,86 @@ def fermi(x, x0, scale):
 def slope(x, x0, slope):
     return 1 + slope * (x - x0)
 
+f1 = lambda e, *p: p[1] * gauss(e, p[0], p[0] * p[2])
+f2 = lambda e, *p: p[1] * p[3] * fermi(e, p[0] * p[4], p[0] * p[5]) * slope(e, p[0] * p[4], 1/p[0] * p[6])
+f3 = lambda e, *p: p[1] * p[7] * log_gauss(-(e - p[0] * p[8]) + p[0] * p[9], p[10] / p[9], p[0] * p[9])
+
 def empirical_secondary(e, *p):
-    amplitude = p[0]
-    f1 = gauss(e, p[1], p[2])
-    f2 = p[3] * fermi(e, p[4], p[5]) * slope(e, p[4], p[6])
-    f3 = p[7] * log_gauss(-(e - p[8]) + p[9], p[10] / p[9], p[9])
-    return amplitude * (f1 + f2 + f3)
+    return f1(e, *p) + f2(e, *p) + f3(e, *p)
 
-fig = plt.figure('empirical')
-fig.clf()
+class EmpiricalSecondary(object):
 
-ax = fig.add_subplot(211)
-ax_di = fig.add_subplot(212)
+    def __init__(self, samples, plot=False):
+        """
+        samples is <secondary> output from mc9.mc
+        """
+        if plot:
+            fig = plt.figure('empirical')
+            fig.clf()
 
-for i in range(len(secondary)):
-    counts, edges = np.histogram(secondary[i], bins='sqrt')
-    norm_factor = 1 / (np.mean(counts) * (edges[-1] - edges[0]))
-    norm_counts = counts * norm_factor
-    histo.bar_line(edges, norm_counts, ax=ax, label='{}'.format(i))
-    if i != 0: continue
-    p = (2.55, 0.53, 0.035, 0.49, 0.44, 0.02, -1, 0.43, 0.45, 0.15, 0.04)
-    ax.plot(edges, p[0] * gauss(edges, p[1], p[2]), '--k')
-    ax.plot(edges, p[0] * p[3] * fermi(edges, p[4], p[5]) * slope(edges, p[4], p[6]), '--k')
-    ax.plot(edges, p[0] * p[7] * log_gauss(-(edges - p[8]) + p[9], p[10] / p[9], p[9]), '--k')
-    ax.plot(edges, empirical_secondary(edges, *p), '-k')
+            ax = fig.add_subplot(211)
+            ax_di = fig.add_subplot(212)
 
-    ax_di.plot(edges[:-1], norm_counts - empirical_secondary(edges[:-1], *p), '-k')
+        counts, edges = np.histogram(samples, bins='sqrt')
+        norm_factor = 1 / (np.mean(counts) * (edges[-1] - edges[0]))
+        norm_counts = counts * norm_factor
+        if plot:
+            histo.bar_line(edges, norm_counts, ax=ax)
+            x = ax.get_xlim()
+            y = ax.get_ylim()
 
-    out = lab.fit_curve(empirical_secondary, edges[:-1] + (edges[1] - edges[0]) / 2, norm_counts, dy=np.where(counts > 0, np.sqrt(counts), 1) * norm_factor, p0=p, print_info=1)
+        # estimate initial parameters
+        p = [np.nan, np.nan, np.nan, np.nan, 0.83, 0.04, np.nan, 0.43, 0.85, 0.3, 0.07]
+        idx = np.argmax(counts[len(counts) // 2:]) + len(counts) // 2
+        p[1] = norm_counts[idx] # maximum of the gaussian
+        p[0] = edges[idx] # mean of the gaussian
+        idx_hwhm = np.sum(norm_counts[idx:] >= p[1] / 2) + idx
+        p[2] = (edges[idx_hwhm] - p[0]) / (1.17 * p[0]) # sd / mean of the gaussian
+        par, _ = lab.fit_linear(edges[:len(counts) // 3], norm_counts[:len(counts) // 3])
+        p[3] = (par[0] * p[0] * p[4] + par[1]) / p[1] # amplitude of f2
+        p[6] = par[0] * p[0] / (p[1] * p[3]) # slope at left
 
-    ax.plot(edges, out.par[0] * gauss(edges, out.par[1], out.par[2]), '--r')
-    ax.plot(edges, out.par[0] * out.par[3] * fermi(edges, out.par[4], out.par[5]) * slope(edges, out.par[4], out.par[6]), '--r')
-    ax.plot(edges, out.par[0] * out.par[7] * log_gauss(-(edges - out.par[8]) + out.par[9], out.par[10] / out.par[9], out.par[9]), '--r')
-    ax.plot(edges, empirical_secondary(edges, *out.par), '-r')
+        if plot:
+            ax.plot(edges, f1(edges, *p), '--k', linewidth=0.5)
+            ax.plot(edges, f2(edges, *p), '--k', linewidth=0.5)
+            ax.plot(edges, f3(edges, *p), '--k', linewidth=0.5)
+            ax.plot(edges, empirical_secondary(edges, *p), '-k')
+            ax.set_xlim(x)
+            ax.set_ylim(y)
+            
+            ax_di.plot(edges[:-1], norm_counts - empirical_secondary(edges[:-1], *p), '-k')
 
-    ax_di.plot(edges[:-1], norm_counts - empirical_secondary(edges[:-1], *out.par), '-r')
+        out = lab.fit_curve(empirical_secondary, edges[:-1] + (edges[1] - edges[0]) / 2, norm_counts, dy=np.where(counts > 0, np.sqrt(counts), 1) * norm_factor, p0=p, print_info=plot)
+        
+        if plot:
+            ax.plot(edges, f1(edges, *out.par), '--r', linewidth=0.5)
+            ax.plot(edges, f2(edges, *out.par), '--r', linewidth=0.5)
+            ax.plot(edges, f3(edges, *out.par), '--r', linewidth=0.5)
+            ax.plot(edges, empirical_secondary(edges, *out.par), '-r')
 
-fig.show()
+            ax_di.plot(edges[:-1], norm_counts - empirical_secondary(edges[:-1], *out.par), '-r')
+
+            fig.show()
+        
+        self._parameters = out.par
+    
+    def __call__(self, x, scale):
+        return 1/scale * empirical_secondary(x, scale * self._parameters[0], *self._parameters[1:])
+
+if __name__ == '__main__':
+    import mc9
+    
+    _, samples = mc9.mc_cached(1.33, theta_0=45, N=1000000)
+    
+    empirical = EmpiricalSecondary(samples, plot=True)
+    
+    fig = plt.figure('empirical-test')
+    fig.clf()
+    ax = fig.add_subplot(111)
+    fx = np.linspace(np.min(samples), np.max(samples), 500)
+    ax.plot(fx, empirical(fx, 1), label='scale = 1')
+    ax.plot(fx * 2, empirical(fx * 2, 2), label='scale = 2')
+    ax.plot(fx / 2, empirical(fx / 2, 1/2), label='scale = 1/2')
+    ax.legend()
+    fig.show()
+    

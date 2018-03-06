@@ -1,6 +1,10 @@
 import numba as nb
 import numpy as np
 from scipy import optimize
+import calibration
+import os
+import pickle
+import lab
 
 def make_von_neumann(density, domain, max_cycles=100000):
     """
@@ -15,9 +19,9 @@ def make_von_neumann(density, domain, max_cycles=100000):
     right = domain[1]
     
     if not isinstance(density, nb.targets.registry.CPUDispatcher):
-        density = nb.jit(density, nb.float64(nb.float64), nopython=True)
+        density = nb.jit('f8(f8)', nopython=True)(density)
     
-    @nb.jit(nb.float64(), nopython=True)
+    @nb.jit('f8', nopython=True)
     def von_neumann():
         i = 0
         while i < max_cycles:
@@ -30,7 +34,7 @@ def make_von_neumann(density, domain, max_cycles=100000):
     
     return von_neumann
 
-@nb.jit(nb.float64[3](nb.float64[3], nb.float64[3]), nopython=True, cache=True)
+@nb.jit('f8[3](f8[3],f8[3])', nopython=True, cache=True)
 def cross(a, b):
     """
     cross product a x b
@@ -41,7 +45,7 @@ def cross(a, b):
         a[0]*b[1] - a[1]*b[0]
     ])
 
-@nb.jit(nb.float64[3](nb.float64[3]), nopython=True, cache=True)
+@nb.jit('f8[3](f8[3])', nopython=True, cache=True)
 def versor(a):
     """
     normalize a (returns a / |a|)
@@ -63,23 +67,6 @@ def klein_nishina(E, cos_theta, m_e):
     P = compton_photon_energy(E, cos_theta, m_e) / E
     return 1/2 * P**2 * (P + P**-1 - (1 - cos_theta**2))
 
-def energy_sigma(E):
-    """
-    E = energy [MeV]
-    energy resolution of NaI + PMT
-    TO BE MODIFIED
-    also: find the reference
-    """
-    return (2.27 + 7.28 * E ** -0.29 - 2.41 * E ** 0.21) * E / (100 * 2.35)
-
-def energy_calibration(E):
-    """
-    E = energy [MeV]
-    TO BE MODIFIED
-    returns non-calibrated energy
-    """
-    return E
-
 @nb.jit('f8[:](u4)', nopython=True, cache=True)
 def random_normal(n):
     out = np.empty(n)
@@ -87,15 +74,13 @@ def random_normal(n):
         out[i] = np.random.normal()
     return out
 
-def energy_nai(E, res=True, cal=True):
-    if res:
-        E += random_normal(len(E)) * energy_sigma(E)
-    if cal:
-        E = energy_calibration(E)
-    return E
+def energy_nai(E, *a, **k):
+    E_cal = calibration.energy_calibration(*a, **k)(E)
+    sigma = calibration.energy_sigma(*a, **k)(E)
+    return E_cal + random_normal(len(E)) * sigma
 
 @nb.jit(nopython=True, cache=True)
-def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_distance=40, nai_radius=2.54, m_e=0.511, acc_bounds=True, max_secondary_cos_theta=1):
+def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=1.74, beam_center=0, nai_distance=40, nai_radius=2.54, m_e=0.511, acc_bounds=True, max_secondary_cos_theta=1):
     """
     Simulate Compton scattering on the target and energy measurement of scattered photon with NaI.
     
@@ -117,6 +102,8 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_dist
         Distance of the NaI from the target.
     nai_radius : float
         Radius of the NaI, in the same units as nai_distance.
+    m_e : float
+        Electron mass, in MeV.
     acc_bounds : bool
         If False, disable quick bounds on NaI shape that speed up montecarlo.
     
@@ -235,19 +222,75 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=2, beam_center=0, nai_dist
     return primary_photons, secondary_electrons
 
 def mc_cal(*args, **kwargs):
+    """
+    Same as mc, but applies calibration.
+    """
     p, s = mc(*args, **kwargs)
     p = energy_nai(p)
     s = energy_nai(s)
     return p, s
 
-if __name__ == '__main__':
-    N=1000000
-    primary, secondary = mc(1.33, theta_0=45, N=N, seed=1)
+def mc_cached(*args, **kwargs):
+    """
+    Calls mc and saves results so that if called again
+    with the same parameters it will not run again the Monte Carlo.
     
-    kw = dict(res=True, cal=True)
-    primary = energy_nai(primary, **kw)
-    secondary = energy_nai(secondary, **kw)
+    Keyword arguments
+    -----------------
+    The argument <seed> must be specified and be >= 0,
+    otherwise the result depends on the internal state
+    of the sampler and can not be uniquely determined
+    from the arguments.
+    
+    Additionally to those of mc, it recognises:
+    
+    calibration : bool (default: True)
+        Apply calibration.
+    """
+    
+    if not ('seed' in kwargs):
+        raise ValueError('Argument <seed> not specified.')
+    if kwargs['seed'] < 0:
+        raise ValueError('Argument seed={} must be >= 0.'.format(kwargs['seed']))
+    
+    # load or create database
+    database_file = 'mc9_cache.pickle'
+    if os.path.exists(database_file):
+        with open(database_file, 'rb') as file:
+            database = pickle.load(file)
+    else:
+        database = {}
+        
+    calibration = kwargs.pop('calibration', True)
+    
+    # get result from cache or compute and save
+    hashable_args = (args, frozenset(kwargs.items()))
+    if hashable_args in database:
+        data_file = database[hashable_args]
+        data = np.load(data_file)
+        p = data['primary']
+        s = data['secondary']
+    else:
+        p, s = mc(*args, **kwargs)
+        new_file = lab.nextfilename('mc9_cache', '.npz')
+        np.savez(new_file, primary=p, secondary=s)
+        database[hashable_args] = new_file
+    
+    # save database
+    with open(database_file, 'wb') as file:
+        pickle.dump(database, file)
+    
+    # apply calibration
+    if calibration:
+        p = energy_nai(p)
+        s = energy_nai(s)
+    
+    return p, s
 
+if __name__ == '__main__':
+    N=100000
+    primary, secondary = mc_cached(1.33, theta_0=0, N=N, seed=0)
+    
     from matplotlib.pyplot import *
     figure('mc9')
     clf()

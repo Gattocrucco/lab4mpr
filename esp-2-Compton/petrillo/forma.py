@@ -11,7 +11,7 @@ import numba as nb
 ####### PARAMETERS #######
 
 L = 40 # distanza del NaI
-R = 2 # raggio del NaI
+R = 2.54 # raggio del NaI
 
 cut = (5500, 8040) # canali dell'ADC da usare
 fitcut = (-4, 4) # intervallo di angoli da usare nel fit finale
