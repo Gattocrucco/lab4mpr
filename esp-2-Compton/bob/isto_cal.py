@@ -15,8 +15,6 @@ elements0= [["cs","Cs137", [0.662], [3700,4000], 5e2],
            ["na","Na22",  [1.275], [7100,7400],1e1],
            ["co","Co60", [1.173,1.333], [6450,7850],1e2]]
 
-
-
 #definition______________________________________
 def bar_line(edges, counts, ax=None, **kwargs):
     dup_edges = np.empty(2 * len(edges))
@@ -30,11 +28,13 @@ def bar_line(edges, counts, ax=None, **kwargs):
     return ax.plot(dup_edges, dup_counts, **kwargs)
     
 def distr(x,N,u,sigma,m,q):
-        return N*np.e**(-1*((x-u)**2)/(2*sigma**2)) + (m*x+q +abs(m*x+q))/2
+    return N*np.e**(-1*((x-u)**2)/(2*sigma**2)) + (m*x+q +abs(m*x+q))/2
     
 def gaus2(x,N1,u1,sigma1,N2,u2,sigma2,m,q):
-        return N1*np.e**(-1*((x-u1)**2)/(2*sigma1**2)) + N2*e**(-1*((x-u2)**2)/(2*sigma2**2)) + (m*x+q +abs(m*x+q))/2
-        
+    return N1*np.e**(-1*((x-u1)**2)/(2*sigma1**2)) + N2*e**(-1*((x-u2)**2)/(2*sigma2**2)) + (m*x+q +abs(m*x+q))/2
+    
+def fondo(x,m,q):
+    return (m*x+q +abs(m*x+q))/2
 
 #____________________________________________________
 file_print=open("cal/cal.txt","w")
@@ -42,9 +42,9 @@ print("#data elemento energia [Mev] media[digit] sigma[digit] err_media[digit] e
         
               
 for data in date:
-    #if data != '26feb': continue
+    #if data != '27feb': continue
     for b in arange(len(elements0)):
-         #if b != 3: continue
+        #if b != 1: continue
         elements = copy.deepcopy(elements0)
         a = elements[b]
         ref0=loadtxt(cartella+"histo-22feb-"+a[0]+".dat",unpack=True)
@@ -77,8 +77,8 @@ for data in date:
             val=[a[4],(3*sin+dex)/4,(dex-sin)/4,10**2,(sin+3*dex)/4,(dex-sin)/4,0,0]
             popt,pcov=curve_fit(gaus2,_X,_Y,sigma=_dy,p0=val, maxfev=10000)
             val = popt
-            sin = abs(int(popt[1]-1.5*abs(popt[2])))
-            dex = abs(int(popt[4]+1.8*abs(popt[5])))
+            sin = abs(int(popt[1]-1.6*abs(popt[2])))
+            dex = abs(int(popt[4]+1.6*abs(popt[5])))
             _Y = Y[sin:dex]
             _X = arange(dex-sin)+0.5+sin
             _dy=sqrt(_Y)
@@ -88,8 +88,8 @@ for data in date:
             val=[a[4],(sin+dex)/2,(dex-sin)/2,0,0]
             popt,pcov=curve_fit(distr,_X,_Y,sigma=_dy,p0=val, maxfev=10000)
             val = popt
-            sin = abs(int(abs(popt[1])-1.8*abs(popt[2])))
-            dex = abs(int(abs(popt[1])+1.8*abs(popt[2])))
+            sin = abs(int(abs(popt[1])-1.6*abs(popt[2])))
+            dex = abs(int(abs(popt[1])+1.6*abs(popt[2])))
             _Y = Y[sin:dex]
             _X = arange(dex-sin)+0.5+sin 
             _dy=sqrt(_Y)
@@ -101,7 +101,7 @@ for data in date:
         #plot______________________________________________________
         
         #plot su tutto lo spettro
-        figure(data+" "+el+"_spectrum").set_tight_layout(True)
+        figure(data+" "+el+"_spectrum",figsize=(9, 4), dpi=150).set_tight_layout(True)
         
         rc("font",size=14)
         title("Calibrazione %s del %s" %(data, el), size=16)
@@ -112,33 +112,44 @@ for data in date:
         
         #bar(X*fis,Y,width=lbin*fis)
         if(energy!=elements[3][2]):
-            bar_line(X, Y)
+            k=32
+            n_bin = len(Y)//k
+            Y_rebin = np.zeros(n_bin)
+            for i in arange(n_bin):
+                mean=0
+                for j in arange(k):
+                    mean += Y[i*k+j]
+                Y_rebin[i] = mean/k
+            X_rebin = arange(n_bin+1)*k
+            bar_line(X_rebin, Y_rebin, linewidth=1)
         
         z=linspace(sin,dex,1000)
         if(nome=="co"):
-            plot(z,gaus2(z,*popt),color="red",linewidth=3)
+            plot(z,gaus2(z,*popt),color="red",linewidth=1)
+            #plot(z,fondo(z,popt[6],popt[7]))
         else:
-            plot(z,distr(z,*popt),color="red",linewidth=3)
-        savefig("cal/plot/"+data+"_"+el+".pdf",bbox_inches='tight')
-        savefig("cal/plot/"+data+"_"+el+".png",bbox_inches='tight')
+            plot(z,distr(z,*popt),color="red",linewidth=1)
+            #plot(z,fondo(z,popt[3],popt[4]), color="blue")
+        savefig("cal/plot/"+data+"_"+el+".pdf")
+        savefig("cal/plot/"+data+"_"+el+".png")
         
         #zoom sulla gaussiana    
         
-        figure(data+" "+el+"_"+str(energy[0])+"MeV").set_tight_layout(True)
+        figure(data+" "+el+"_"+str(energy[0])+"MeV", figsize=(9, 4), dpi=150).set_tight_layout(True)
         rc("font",size=14)
-        title("Fit fotopicco a "+str(energy)+"MeV nello spettro "+el, size=16)
+        title("Fit fotopicco a "+str(energy)+"MeV nello spettro del "+el, size=16)
         grid(color="black",linestyle=":")
         minorticks_on()
         xlabel("energia [digit]")
         ylabel("conteggi")
         
-        errorbar(_X,_Y, _dy, linestyle="", marker=".", color="black")
+        errorbar(_X,_Y, _dy, linestyle="", marker=".", markersize=2, color="black",linewidth=1)
         if(nome=="co"):
-            plot(z,gaus2(z,*popt),color="red",linewidth=4)
+            plot(z,gaus2(z,*popt),color="red",linewidth=2)
         else:
-            plot(z,distr(z,*popt),color="red",linewidth=4)
-        savefig("cal/plot/"+data+"_"+el+"_"+str(energy[0])+".pdf",bbox_inches='tight')
-        savefig("cal/plot/"+data+"_"+el+"_"+str(energy[0])+".png",bbox_inches='tight')
+            plot(z,distr(z,*popt),color="red",linewidth=2)
+        savefig("cal/plot/"+data+"_"+el+"_"+str(energy[0])+".pdf")
+        savefig("cal/plot/"+data+"_"+el+"_"+str(energy[0])+".png")
           
         # print result_____________________________________________
         if(nome=="co"):
