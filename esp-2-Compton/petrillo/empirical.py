@@ -3,15 +3,17 @@ from scipy import stats
 import matplotlib.pyplot as plt
 import histo
 import lab
+import sympy as sp
 
 def gauss(x, mu, sigma):
-    return np.exp(-1/2 * (x - mu)**2 / sigma**2)
+    return sp.exp(-1/2 * (x - mu)**2 / sigma**2)
 
 def log_gauss(x, s, scale):
-    return np.where(x > 0, 1 / (x / scale) * np.exp(-1/2 * (np.log(x / scale) / s)**2), 0)
+    x = sp.Piecewise((x, x > 0), (scale * 1e-15, True))
+    return 1 / (x / scale) * sp.exp(-1/2 * (sp.log(x / scale) / s)**2)
 
 def fermi(x, x0, scale):
-    return 1 / (1 + np.exp((x - x0) / scale))
+    return 1 / (1 + sp.exp((x - x0) / scale))
 
 def slope(x, x0, slope):
     return 1 + slope * (x - x0)
@@ -22,6 +24,12 @@ f3 = lambda e, *p: p[1] * p[7] * log_gauss(-(e - p[0] * p[8]) + p[0] * p[9], p[1
 
 def empirical_secondary(e, *p):
     return f1(e, *p) + f2(e, *p) + f3(e, *p)
+
+syms = sp.symbols('x p0:11')
+_f1 = sp.lambdify(syms, f1(*syms))
+_f2 = sp.lambdify(syms, f2(*syms))
+_f3 = sp.lambdify(syms, f3(*syms))
+_empirical_secondary = sp.lambdify(syms, empirical_secondary(*syms))
 
 class EmpiricalSecondary(object):
 
@@ -56,24 +64,25 @@ class EmpiricalSecondary(object):
         p[6] = par[0] * p[0] / (p[1] * p[3]) # slope at left
 
         if plot:
-            ax.plot(edges, f1(edges, *p), '--k', linewidth=0.5)
-            ax.plot(edges, f2(edges, *p), '--k', linewidth=0.5)
-            ax.plot(edges, f3(edges, *p), '--k', linewidth=0.5)
-            ax.plot(edges, empirical_secondary(edges, *p), '-k')
+            ax.plot(edges, _f1(edges, *p), '--k', linewidth=0.5)
+            ax.plot(edges, _f2(edges, *p), '--k', linewidth=0.5)
+            ax.plot(edges, _f3(edges, *p), '--k', linewidth=0.5)
+            ax.plot(edges, _empirical_secondary(edges, *p), '-k')
             ax.set_xlim(x)
             ax.set_ylim(y)
             
-            ax_di.plot(edges[:-1], norm_counts - empirical_secondary(edges[:-1], *p), '-k')
+            ax_di.plot(edges[:-1], norm_counts - _empirical_secondary(edges[:-1], *p), '-k')
 
-        out = lab.fit_curve(empirical_secondary, edges[:-1] + (edges[1] - edges[0]) / 2, norm_counts, dy=np.where(counts > 0, np.sqrt(counts), 1) * norm_factor, p0=p, print_info=plot)
+        model = lab.CurveModel(empirical_secondary, symb=True, npar=11)
+        out = lab.fit_curve(model, edges[:-1] + (edges[1] - edges[0]) / 2, norm_counts, dy=np.where(counts > 0, np.sqrt(counts), 1) * norm_factor, p0=p, print_info=plot)
         
         if plot:
-            ax.plot(edges, f1(edges, *out.par), '--r', linewidth=0.5)
-            ax.plot(edges, f2(edges, *out.par), '--r', linewidth=0.5)
-            ax.plot(edges, f3(edges, *out.par), '--r', linewidth=0.5)
-            ax.plot(edges, empirical_secondary(edges, *out.par), '-r')
+            ax.plot(edges, _f1(edges, *out.par), '--r', linewidth=0.5)
+            ax.plot(edges, _f2(edges, *out.par), '--r', linewidth=0.5)
+            ax.plot(edges, _f3(edges, *out.par), '--r', linewidth=0.5)
+            ax.plot(edges, _empirical_secondary(edges, *out.par), '-r')
 
-            ax_di.plot(edges[:-1], norm_counts - empirical_secondary(edges[:-1], *out.par), '-r')
+            ax_di.plot(edges[:-1], norm_counts - _empirical_secondary(edges[:-1], *out.par), '-r')
 
             fig.show()
         
@@ -88,14 +97,16 @@ if __name__ == '__main__':
     _, samples = mc9.mc_cached(1.33, theta_0=45, N=1000000, seed=0)
     
     empirical = EmpiricalSecondary(samples, plot=True)
+    syms = sp.symbols('x s')
+    _empirical = sp.lambdify(syms, empirical(*syms))
     
     fig = plt.figure('empirical-test')
     fig.clf()
     ax = fig.add_subplot(111)
     fx = np.linspace(np.min(samples), np.max(samples), 500)
-    ax.plot(fx, empirical(fx, 1), label='scale = 1')
-    ax.plot(fx * 2, empirical(fx * 2, 2), label='scale = 2')
-    ax.plot(fx / 2, empirical(fx / 2, 1/2), label='scale = 1/2')
+    ax.plot(fx, _empirical(fx, 1), label='scale = 1')
+    ax.plot(fx * 2, _empirical(fx * 2, 2), label='scale = 2')
+    ax.plot(fx / 2, _empirical(fx / 2, 1/2), label='scale = 1/2')
     ax.legend()
     fig.show()
     
