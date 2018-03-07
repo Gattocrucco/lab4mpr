@@ -330,13 +330,13 @@ def mc_cached(*args, **kwargs):
     return p, s, wp, ws
 
 if __name__ == '__main__':
-    N=100000
-    p, s, wp, ws = mc_cached(1.33, theta_0=90, N=N, seed=0)
+    N=1000000
+    p, s, wp, ws = mc_cached(1.33, theta_0=60, N=N, seed=0)
     
     from matplotlib.pyplot import *
     figure('mc9')
     clf()
-    hist(p, bins=int(np.sqrt(N)), weights=wp / (N * (np.max(wp) - np.min(wp))), histtype='step', label='photoel')
-    hist(s, bins=int(np.sqrt(N)), weights=ws / (N * (np.max(ws) - np.min(ws))), histtype='step', label='compton')
+    hist(p, bins=int(np.sqrt(N)), weights=wp / (N * (np.max(p) - np.min(p))), histtype='step', label='photoel')
+    hist(s, bins=int(np.sqrt(N)), weights=ws / (N * (np.max(s) - np.min(s))), histtype='step', label='compton')
     legend(loc=1)
     show()
