@@ -7,18 +7,19 @@ import lab
 import sympy as sp
 
 print('monte carlo...')
-pa, sa = mc9.mc_cached(1.33, theta_0=50, N=1000000, seed=0)
-pb, sb = mc9.mc_cached(1.17, theta_0=50, N=1000000, seed=1)
+pa, sa, wpa, wsa = mc9.mc_cached(1.33, theta_0=0, N=1000000, seed=0)
+pb, sb, wpb, wsb = mc9.mc_cached(1.17, theta_0=0, N=1000000, seed=1)
 
-edges = np.arange(2**13 + 1)
+def hist_adc(a, weights=None):
+	return empirical.histogram(a, bins=2**13, range=(0, 2**13), weights=weights)
 
-countsa = np.bincount(np.asarray(np.floor(np.concatenate([pa, sa])), dtype='u2'), minlength=2**13)[:2**13]
-countsb = np.bincount(np.asarray(np.floor(np.concatenate([pb, sb])), dtype='u2'), minlength=2**13)[:2**13]
-counts = np.bincount(np.asarray(np.floor(np.concatenate([pb, sb, pa, sa])), dtype='u2'), minlength=2**13)[:2**13]
+countsa, _, _ = hist_adc(np.concatenate([pa, sa]), np.concatenate([wpa, wsa]))
+countsb, _, _ = hist_adc(np.concatenate([pb, sb]), np.concatenate([wpb, wsb]))
+counts, edges, unc_counts = hist_adc(np.concatenate([pa, sa, pb, sb]), np.concatenate([wpa, wsa, wpb, wsb]))
 
 print('empirical...')
-empa = empirical.EmpiricalSecondary(sa, symb=True)
-empb = empirical.EmpiricalSecondary(sb, symb=True)
+empa = empirical.EmpiricalSecondary(sa, wsa, symb=True)
+empb = empirical.EmpiricalSecondary(sb, wsb, symb=True)
 
 def fit_fun_a(e, N1, mu1, sigma1, Ns1, scale1, N2, mu2, sigma2, Ns2, scale2):
     gaus1 = N1 / (sp.sqrt(2 * np.pi) * sigma1) * sp.exp(-1/2 * (e - mu1)**2 / sigma1**2)
@@ -34,7 +35,7 @@ def fit_fun(e, *p):
     return fit_fun_a(e, *p) + fit_fun_b(e, *p)
 
 print('fit...')
-p0 = [len(pa), np.mean(pa), np.std(pa), len(sa), 1, len(pb), np.mean(pb), np.std(pb), len(sb), 1]
+p0 = [np.sum(wpa), np.mean(pa), np.std(pa), np.sum(wsa), 1, np.sum(wpb), np.mean(pb), np.std(pb), np.sum(wsb), 1]
 bounds = [
 	 [0,       -np.inf,     0,          0,       0, 0,       -np.inf,     0,          0,       0],
 	 [np.inf] * len(p0)
@@ -46,7 +47,7 @@ for i in range(len(p0)):
 cut = edges[:-1] >= 100
 fit_x = edges[:-1][cut] + 0.5
 fit_y = counts[cut]
-fit_dy = np.where(fit_y > 0, np.sqrt(fit_y), 1)
+fit_dy = unc_counts[cut]
 
 model = lab.CurveModel(fit_fun, symb=True, npar=len(p0))
 out = lab.fit_curve(model, fit_x, fit_y, dy=fit_dy, p0=p0, print_info=1, bounds=bounds)
@@ -65,5 +66,6 @@ ax.plot(fit_x,  model.f()(fit_x, *p0), '-k')
 ax.plot(fit_x,  model.f()(fit_x, *out.par), '-r')
 ax.plot(fit_x, modela.f()(fit_x, *out.par), '--r', linewidth=0.5)
 ax.plot(fit_x, modelb.f()(fit_x, *out.par), '--r', linewidth=0.5)
+ax.grid()
 
 fig.show()
