@@ -7,11 +7,11 @@ Scegliamo di alimentare il PMT2 alla tensione consigliata di \SI{650}V. A questa
 
 \paragraph{Stabilità della risposta del PMT2}
 Osservando l'istogramma dei campionamenti e notiamo che la risposta dello spettrometro è molto sensibile alle variazioni della tensione di alimentazione: da \SI{600}V a \SI{575}V, il valore in uscita si dimezza.
-Il manuale dell'alimentatore riporta una stabilità del $0.5\permil$ su \SI{24}h e del $1\permil$ su un mese. Volendo fare una stima otteniamo variazioni del $2/25 \times 600/1000 = 5\%$ in un mese, la metà in \SI{24}h. Sembra quindi che la stabilità della risposta del nostro spettrometro sia un limite importante nella nostra misura per cui nel seguito analizzeremo approfonditamente questo parametro.
+Il manuale dell'alimentatore riporta una stabilità dello $0.5\permil$ su \SI{24}h e dell' $1\permil$ su un mese. Volendo fare una stima otteniamo variazioni del $2/25 \times 600/1000 = 5\%$ in un mese, la metà in \SI{24}h. Sembra quindi che la stabilità della risposta del nostro spettrometro sia un limite importante nella nostra misura per cui nel seguito analizzeremo approfonditamente questo parametro.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \paragraph{Interazione con il bersaglio}
-Poniamo lo scintillatore plastico (PMT1) davanti alla sorgente in modo che i raggi $\gamma$ possano interagire e subire scattering Compton. Osserviamo il l'istogramma dei campionamenti del nostro spettrometro a vari angoli rispetto al bersaglio mentre l'ADC campiona in modalità automatica. 
+Poniamo lo scintillatore plastico (PMT1) davanti alla sorgente in modo che i raggi $\gamma$ possano interagire e subire scattering Compton. Osserviamo l'istogramma dei campionamenti del nostro spettrometro a vari angoli rispetto al bersaglio mentre l'ADC campiona in modalità automatica. 
 Come è possibile vedere dalla \autoref{4ang} a piccolo angolo, quando lo spettrometro è direttamente attraversato dai fotoni che non interagiscono con il bersaglio, lo spettro è praticamente indistinguibile da quello acquisito senza bersaglio. A grandi angoli dovremmo vedere i fotoni che hanno fatto scattering Compton sul bersaglio e che dovrebbero riprodurre un circa lo stesso spettro ma traslato a energie minori, tuttavia come è chiaro dalla  \autoref{4ang} i fotoni che interagiscono sul muro subito dietro lo spettrometro o sul ferro (?CIPPALIPPA) del collimatore sovrastano in statistica il segnale che vorremmo osservare.\marginpar{Ci mettiamo una breve spiegazione della forma degli spettri o fottesega? (Bob)}
 
 \begin{figure}[h]
@@ -44,7 +44,7 @@ L'ultima acquisizione di questa serie è diversa rispetto alle altre: lo scintil
 \label{casetta}
 \end{figure}
 
-\paragraph{Trigger esterno} Prima di esporre i risultati ottenuti, illustriamo il funzionamento del circuito adoperato.\\
+\paragraph{Trigger esterno} Prima di esporre i risultati ottenuti illustriamo il funzionamento del circuito adoperato.\\
 Vogliamo acquisire i segnali ogni volta che l'uscita negativa di breve durata (qualche \si{ns}) del PMT2 supera una certa soglia. L'ampiezza tipica di questo segnale vale \SI{20}{mV}, perciò deve essere amplificata per poter essere letta dal discriminatore a nostra disposizione che ha una soglia minima di \SI{35}{mV}. Colleghiamo allora questa uscita ad una amplificatore 10x 
 \marginpar{spero che gradiscano la notazione ``10x'' \\  ci vuole anche il disegno}
 e mandiamo poi il segnale al solito discriminatore con soglia al minimo.
