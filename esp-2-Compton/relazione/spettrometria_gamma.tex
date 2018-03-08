@@ -6,6 +6,13 @@ Riassumiamo il principio di misura dell'energia del nostro spettrometro:
 	\item i fotoni raggiungono il fotomoltiplicatore dopo essere stati riflessi sulle pareti del cristallo (rivestite di materiale riflettente) e nella guida ottica;
 	\item il fotomoltiplicatore amplifica il segnale dei fotoni e produce in uscita un segnale (negativo e di breve durata: $\sim \SI{10}{\nano s}$) di picco proporzionale al numero di fotoni;
 	\item la base del fotomoltiplicatore in dotazione fornisce anche un segnale pre-amplificato positivo a bassa impedenza (perciò di lunga durata $\sim \SI{1}{\micro s}$);
+	\marginpar{Cosa vuol dire <<segnale a bassa impedenza>>?
+	Se è il segnale di uscita è quello preamplificato
+	quindi è banale dire che ha in qualche senso bassa impedenza di uscita
+	e non implica che duri molto;
+	se è il segnale in ingresso l'impedenza in ingresso del preamplificatore è invece alta
+	e questo implica che il segnale duri più a lungo.\\
+	\emph{Petrillo}}
 	\item questo segnale viene riconosciuto dal formatore/amplificatore che produce in uscita un segnale gaussiano di durata nota ($\SI{10}{\micro s}$) e di picco proporzionale all'energia rilasciata;
 	\item l'output dell'amplificatore va all'ADC (tipicamente triggerato da un segnale esterno) che campiona sul massimo del segnale in una finestra temporale imposta dal trigger e converte il segnale in tensione in un segnale digitale a 13 bit.
 \end{itemize}
@@ -15,6 +22,11 @@ Ciascuno di questi processi sarà caratterizzato da una:
     \item una \emph{distribuzione di risposta}: la distribuzione degli output a input fissato (ad esempio la distribuzione dei fotoni prodotti ad una energia fissata, queste ci aspettiamo avranno generalmente un forma a campana, in prima approssimazione gaussiana).
 \end{itemize}
 La misura finale avrà per funzione di risposta la composizione di tutte queste funzioni di risposta e per distribuzione di risposta la convoluzione delle distribuzioni di risposta (quest'ultima determinerà la risoluzione sperimentale).
+\marginpar{Non è una convoluzione:
+$p(x_0)=\int\de x_1 p(x_0|x_1) p(x_1)
+=\int \de x_1 p(x_0|x_1) \int \de x_2 p(x_1|x_2)
+=\int \de x_1 \dotsm \de x_n p(x_0|x_1)\dotsm p(x_{n-1}|x_n)$.\\
+\emph{Petrillo}}
 
 Nella nostra esperienza lo spettrometro dovrà misurare l'energia di fotoni $\gamma$ che, essendo neutri, devono prima interagire con la materia del rivelatore e trasferire tutta o parte della loro energia a particelle cariche, delle quali sarà poi misurabile l'energia nel modo descritto sopra. Bisogna quindi analizzare le interazioni fotone-materia per modelizzare gli spettri che andremo poi ad osservare.
 
@@ -36,6 +48,8 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  
  \paragraph{Scattering Compton}
  Se il fotone è abbastanza energetico può urtare un singolo elettrone. Per fotoni di questo tipo l'energia di legame può essere in prima approssimazione trascurata e si può trattare l'elettrone come libero. Nello stato finale troviamo il fotone che è stato deviato di un certo angolo $\theta$ rispetto alla sua direzione iniziale e ha ceduto parte della sua energia all'elettrone. La relazione tra energia del fotone dopo lo scattering e angolo è:
+ \marginpar{Quella che qui chiami $E$ prima era $E_\gamma$.\\
+ \emph{Petrillo}}
  \begin{equation}
  \label{energia_compton}
  E' = \frac{E}{1+\frac{E}{m_ec^2}(1-\cos(\theta))}   
@@ -47,6 +61,9 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  \frac{d\sigma}{d\cos(\theta)} = \frac{\pi}{m_e^2} \cdot\left(\frac{E'}{E}\right)^2 \cdot \left(\frac{E}{E'} + \frac{E'}{E} - \sin^2(\theta)\right)
  \end{equation}
  dove $\frac{E'}{E}$ contiene implicitamente l'angolo: $\frac{E'}{E} = \frac{1}{E(1-\cos(\theta))/(m_ec)}$
+ \marginpar{La formula di $E'/E$ è sbagliata,
+ comunque mi sembra ridondante riportarla.\\
+ \emph{Petrillo}}
  
  \paragraph{Produzione di coppie}
  
