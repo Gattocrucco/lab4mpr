@@ -5,6 +5,7 @@ import calibration
 import os
 import pickle
 import lab
+import cross as cs # conflict with cross()
 
 def make_von_neumann(density, domain, max_cycles=100000):
     """
@@ -83,7 +84,7 @@ def energy_nai(E, *a, **k):
     return E_cal + random_normal(len(E), seed=seed) * sigma
 
 @nb.jit(nopython=True, cache=True)
-def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=1.74, beam_center=0, nai_distance=40, nai_radius=2.54, m_e=0.511, acc_bounds=True, max_secondary_cos_theta=1):
+def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=1.74, beam_center=-0.09, nai_distance=40, nai_radius=2.54, nai_depth=5.08, nai_density=3.667, m_e=0.511, acc_bounds=True, geometry_3d=True, max_secondary_cos_theta=1):
     """
     Simulate Compton scattering on the target and energy measurement of scattered photon with NaI.
     
@@ -102,21 +103,33 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=1.74, beam_center=0, nai_d
     beam_center : float
         Center of the beam as polar angle from experiment axis, in degrees.
     nai_distance : float
-        Distance of the NaI from the target.
+        Distance of the NaI from the target, in cm.
     nai_radius : float
-        Radius of the NaI, in the same units as nai_distance.
+        Radius of the NaI, in cm.
+    nai_depth : float
+        Depth of the NaI, i.e. distance from side facing the target to the other side, in cm.
+    nai_density : float
+        Density of NaI, in g/cm^3.
     m_e : float
         Electron mass, in MeV.
+    geometry_3d : bool
+        If False, use a simplified 2d model of the NaI without keeping into account
+        interaction probabilities of the photon.
     acc_bounds : bool
         If False, disable quick bounds on NaI shape that speed up montecarlo.
     
     Returns
     -------
-    primary_photons :
+    primary_photons : (N) float array
         Energies of Compton photons from target hitting the NaI.
-    secondary_electrons :
+    secondary_electrons : (N) float array
         Kinetical energies of electrons emitted from Compton in the NaI.
+    weights_pp : (N) float array
+    weights_se : (N) float array
+        Weights of primary photons and secondary electron samples, respectively.
+        See for example numpy.histogram for the meaning.
     """
+    # convert from degrees to radians
     beam_sigma *= np.pi / 180
     beam_center *= np.pi / 180
     theta_0 *= np.pi / 180
@@ -131,10 +144,18 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=1.74, beam_center=0, nai_d
     y = Y
     x = X * np.cos(theta_0) - Z * np.sin(theta_0)
     
+    # seed
     if seed >= 0:
         np.random.seed(seed)
+    
     primary_photons = np.empty(N)
     secondary_electrons = np.empty(N)
+    if geometry_3d:
+        weights_pp = np.empty(N)
+        weights_se = np.empty(N)
+    else:
+        weights_pp = np.ones(N)
+        weights_se = np.ones(N)
     i = 0
     count = 0
     while i < N:
@@ -186,10 +207,10 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=1.74, beam_center=0, nai_d
         x_f = versor(cross(y_f, z_f))
         
         # extract theta of compton photon with von neumann
+        # to compute kn_max I assume that klein_nishina has only one minimum
+        kn_max = max(klein_nishina(energy, cos_theta_min, m_e), klein_nishina(energy, cos_theta_max, m_e))
         while 1:
             cos_theta_candidate = np.random.uniform(cos_theta_min, cos_theta_max)
-            # to compute kn_max I assume that klein_nishina has only one minimum
-            kn_max = max(klein_nishina(energy, cos_theta_min, m_e), klein_nishina(energy, cos_theta_max, m_e))
             von_neumann = np.random.uniform(0, kn_max)
             if von_neumann <= klein_nishina(energy, cos_theta_candidate, m_e):
                 break
@@ -199,15 +220,34 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=1.74, beam_center=0, nai_d
         
         rho = z_f * cos_theta + sin_theta * (x_f * np.cos(phi) + y_f * np.sin(phi))
         rho_z = np.dot(rho, z)
-        radius2 = nai_distance**2 * (1 - rho_z**2) / rho_z**2
+        radius = nai_distance * np.sqrt(1 - rho_z**2) / rho_z
         
-        if radius2 <= nai_radius**2 and rho_z >= 0:
+        # condition: the photon intersects the front face of the NaI
+        if 0 <= radius <= nai_radius:
             primary_photon = compton_photon_energy(energy, cos_theta, m_e)
             
+            if geometry_3d:
+                # compute the length of the trajectory of the photon inside the NaI
+                # (assuming it wouldn't interact)
+                radius_back = (nai_distance + nai_depth) / nai_distance * radius
+                l = np.sqrt(nai_depth**2 + (radius_back - radius)**2)
+                if radius_back > nai_radius:
+                    l *= (nai_radius - radius) / (radius_back - radius)
+            
+                # compute probabilities of interaction
+                lambda_total   = cs.total  (primary_photon)
+                lambda_photoel = cs.photoel(primary_photon)
+                lambda_compton = cs.compton(primary_photon)
+                p = 1 - np.exp(-l * lambda_total * nai_density)
+                weights_pp[i] = p * lambda_photoel / lambda_total
+                weights_se[i] = p * lambda_compton / lambda_total
+                # weights_pp[i] = 1 - np.exp(-l * cs.photoel(primary_photon) * nai_density)
+                # weights_se[i] = 1 - np.exp(-l * cs.compton(primary_photon) * nai_density)
+            
             # extract theta of secondary compton photon
+            kn_max = max(klein_nishina(primary_photon, -1, m_e), klein_nishina(primary_photon, max_secondary_cos_theta, m_e))
             while 1:
                 cos_theta_candidate = np.random.uniform(-1, max_secondary_cos_theta)
-                kn_max = max(klein_nishina(primary_photon, -1, m_e), klein_nishina(primary_photon, max_secondary_cos_theta, m_e))
                 von_neumann = np.random.uniform(0, kn_max)
                 if von_neumann <= klein_nishina(primary_photon, cos_theta_candidate, m_e):
                     break
@@ -222,16 +262,16 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=1.74, beam_center=0, nai_d
             i += 1
         count += 1
         
-    return primary_photons, secondary_electrons
+    return primary_photons, secondary_electrons, weights_pp, weights_se
 
 def mc_cal(*args, **kwargs):
     """
     Same as mc, but applies calibration.
     """
-    p, s = mc(*args, **kwargs)
+    p, s, wp, ws = mc(*args, **kwargs)
     p = energy_nai(p)
     s = energy_nai(s)
-    return p, s
+    return p, s, wp, ws
 
 def mc_cached(*args, **kwargs):
     """
@@ -249,6 +289,8 @@ def mc_cached(*args, **kwargs):
     
     calibration : bool (default: True)
         Apply calibration.
+    date : str (default: '22feb')
+        Label of calibration data.
     """
     
     if not ('seed' in kwargs):
@@ -257,7 +299,10 @@ def mc_cached(*args, **kwargs):
         raise ValueError('Argument seed={} must be >= 0.'.format(kwargs['seed']))
     
     # load or create database
-    database_file = 'mc9_cache.pickle'
+    directory = 'mc9_cache'
+    database_file = '{}/mc9_cache.pickle'.format(directory)
+    if not os.path.exists(directory):
+        os.mkdir(directory)
     if os.path.exists(database_file):
         with open(database_file, 'rb') as file:
             database = pickle.load(file)
@@ -265,6 +310,7 @@ def mc_cached(*args, **kwargs):
         database = {}
         
     calibration = kwargs.pop('calibration', True)
+    date = kwargs.pop('date', '22feb')
     
     # get result from cache or compute and save
     hashable_args = (args, frozenset(kwargs.items()))
@@ -273,10 +319,12 @@ def mc_cached(*args, **kwargs):
         data = np.load(data_file)
         p = data['primary']
         s = data['secondary']
+        wp = data['weights_p']
+        ws = data['weights_s']
     else:
-        p, s = mc(*args, **kwargs)
-        new_file = lab.nextfilename('mc9_cache', '.npz')
-        np.savez(new_file, primary=p, secondary=s)
+        p, s, wp, ws = mc(*args, **kwargs)
+        new_file = lab.nextfilename('mc9_cache', '.npz', prepath=directory)
+        np.savez(new_file, primary=p, secondary=s, weights_p=wp, weights_s=ws)
         database[hashable_args] = new_file
     
     # save database
@@ -285,19 +333,19 @@ def mc_cached(*args, **kwargs):
     
     # apply calibration
     if calibration:
-        p = energy_nai(p, seed=4000000000 + kwargs['seed'])
-        s = energy_nai(s, seed=2000000000 + kwargs['seed'])
+        p = energy_nai(p, seed=4000000000 + kwargs['seed'], date=date)
+        s = energy_nai(s, seed=2000000000 + kwargs['seed'], date=date)
     
-    return p, s
+    return p, s, wp, ws
 
 if __name__ == '__main__':
     N=100000
-    primary, secondary = mc_cached(1.33, theta_0=0, N=N, seed=0)
+    p, s, wp, ws = mc(1.33, theta_0=0, N=N, seed=0)
     
     from matplotlib.pyplot import *
     figure('mc9')
     clf()
-    hist(primary, bins='sqrt', histtype='step', label='primary', density=True)
-    hist(secondary, bins='sqrt', histtype='step', label='secondary', density=True)
+    hist(p, bins=int(np.sqrt(N)), weights=wp / (N * (np.max(p) - np.min(p))), histtype='step', label='photoel')
+    hist(s, bins=int(np.sqrt(N)), weights=ws / (N * (np.max(s) - np.min(s))), histtype='step', label='compton')
     legend(loc=1)
     show()

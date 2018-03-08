@@ -5,6 +5,32 @@ import histo
 import lab
 import sympy as sp
 
+def histogram(a, bins=10, range=None, weights=None, density=None):
+    """
+    Same as numpy.histogram, apart from extra return value.
+    
+    Returns
+    -------
+    hist
+    bin_edges
+    unc_hist :
+        Uncertainty of hist
+    """
+    hist, bin_edges = np.histogram(a, bins=bins, range=range, weights=weights, density=density)
+    
+    if weights is None and not density:
+        unc_hist = np.where(hist > 0, np.sqrt(hist), 1)
+    elif weights is None:
+        counts, _ = np.histogram(a, bins=bins, range=range)
+        unc_hist = np.where(counts > 0, np.sqrt(counts), 1) / (len(a) * np.diff(bin_edges))
+    else:
+        unc_hist, _ = np.histogram(a, bins=bins, range=range, weights=weights ** 2)
+        unc_hist = np.where(unc_hist > 0, np.sqrt(unc_hist), 1)
+        if density:
+            unc_hist /= (np.sum(weights) * np.diff(bin_edges))
+    
+    return hist, bin_edges, unc_hist
+
 def gauss(x, mu, sigma):
     return sp.exp(-1/2 * (x - mu)**2 / sigma**2)
 
@@ -33,9 +59,10 @@ _empirical_secondary = sp.lambdify(syms, empirical_secondary(*syms))
 
 class EmpiricalSecondary(object):
 
-    def __init__(self, samples, plot=False, symb=False):
+    def __init__(self, samples, weights, plot=False, symb=False):
         """
-        samples is <secondary> output from mc9.mc
+        samples is <secondary_electrons> output from mc9.mc
+        weights is <weights_se>
         """
         if plot:
             fig = plt.figure('empirical')
@@ -44,22 +71,23 @@ class EmpiricalSecondary(object):
             ax = fig.add_subplot(211)
             ax_di = fig.add_subplot(212)
 
-        counts, edges = np.histogram(samples, bins='sqrt')
-        norm_factor = 1 / (np.mean(counts) * (edges[-1] - edges[0]))
-        norm_counts = counts * norm_factor
+        counts, edges, unc_counts = histogram(samples, bins=int(np.sqrt(len(samples))), weights=weights, density=True)
         if plot:
-            histo.bar_line(edges, norm_counts, ax=ax)
+            line, = histo.bar_line(edges, counts, ax=ax)
+            # color = line.get_color()
+            # histo.bar_line(edges, counts - unc_counts, ax=ax, linewidth=.5, color=color)
+            # histo.bar_line(edges, counts + unc_counts, ax=ax, linewidth=.5, color=color)
             x = ax.get_xlim()
             y = ax.get_ylim()
 
         # estimate initial parameters
-        p = [np.nan, np.nan, np.nan, np.nan, 0.83, 0.04, np.nan, 0.43, 0.85, 0.3, 0.07]
+        p = [np.nan, np.nan, np.nan, np.nan, 0.83, 0.04, np.nan, 0.35, 0.85, 0.3, 0.1]
         idx = np.argmax(counts[len(counts) // 2:]) + len(counts) // 2
-        p[1] = norm_counts[idx] # maximum of the gaussian
+        p[1] = counts[idx] # maximum of the gaussian
         p[0] = edges[idx] # mean of the gaussian
-        idx_hwhm = np.sum(norm_counts[idx:] >= p[1] / 2) + idx
+        idx_hwhm = np.sum(counts[idx:] >= p[1] / 2) + idx
         p[2] = (edges[idx_hwhm] - p[0]) / (1.17 * p[0]) # sd / mean of the gaussian
-        par, _ = lab.fit_linear(edges[:len(counts) // 3], norm_counts[:len(counts) // 3])
+        par, _ = lab.fit_linear(edges[:len(counts) // 3], counts[:len(counts) // 3])
         p[3] = (par[0] * p[0] * p[4] + par[1]) / p[1] # amplitude of f2
         p[6] = par[0] * p[0] / (p[1] * p[3]) # slope at left
 
@@ -71,13 +99,13 @@ class EmpiricalSecondary(object):
             ax.set_xlim(x)
             ax.set_ylim(y)
             
-            ax_di.plot(edges[:-1], norm_counts - _empirical_secondary(edges[:-1], *p), '-k')
+            ax_di.plot(edges[:-1], counts - _empirical_secondary(edges[:-1], *p), '-k')
 
         if symb:
             model = lab.CurveModel(empirical_secondary, symb=True, npar=11)
         else:
             model = lab.CurveModel(_empirical_secondary, symb=False, npar=11)
-        out = lab.fit_curve(model, edges[:-1] + (edges[1] - edges[0]) / 2, norm_counts, dy=np.where(counts > 0, np.sqrt(counts), 1) * norm_factor, p0=p, print_info=plot)
+        out = lab.fit_curve(model, edges[:-1] + (edges[1] - edges[0]) / 2, counts, dy=unc_counts, p0=p, print_info=plot)
         
         if plot:
             ax.plot(edges, _f1(edges, *out.par), '--r', linewidth=0.5)
@@ -85,7 +113,7 @@ class EmpiricalSecondary(object):
             ax.plot(edges, _f3(edges, *out.par), '--r', linewidth=0.5)
             ax.plot(edges, _empirical_secondary(edges, *out.par), '-r')
 
-            ax_di.plot(edges[:-1], norm_counts - _empirical_secondary(edges[:-1], *out.par), '-r')
+            ax_di.plot(edges[:-1], counts - _empirical_secondary(edges[:-1], *out.par), '-r')
 
             fig.show()
         
@@ -98,10 +126,10 @@ class EmpiricalSecondary(object):
 if __name__ == '__main__':
     import mc9
     
-    _, samples = mc9.mc_cached(1.33, theta_0=45, N=1000000, seed=0)
+    _, samples, _, weights = mc9.mc_cached(1.33, theta_0=90, N=1000000, seed=0)
     
     symb = True
-    empirical = EmpiricalSecondary(samples, plot=True, symb=symb)
+    empirical = EmpiricalSecondary(samples, weights, plot=True, symb=symb)
     if symb:
         syms = sp.symbols('x s')
         _empirical = sp.lambdify(syms, empirical(*syms))
