@@ -52,4 +52,6 @@ e mandiamo poi il segnale al solito discriminatore con soglia al minimo.
 Per registrare il segnale dobbiamo provvedere alla costruzione di un trigger per l'ADC che, come specificato dalla documentazione, deve partire almeno \SI{200}{ns} prima del picco e deve terminare almeno \SI{200}{ns} dopo. Usando l'oscilloscopio, ritardiamo il segnale del discriminatore e lo allunghiamo attraverso l'uso di un modulo \texttt{gate \& delay} non retriggerabile. Scegliamo di farlo durare \SI{550}{ns} prima e dopo il picco del formatore.
 
 Colleghiamo il cavo coassiale che trasmette l'uscita del formatore all'ingresso ``gate'' dell'ADC facendo un parallelo con un tappino da \SI{50}{\Omega} perché questo ingresso ha una impedenza alta e il nostro accorgimento evita la deformazione del segnale.
-Modifichiamo il file di configurazione in modo che l'ADC acquisisca soltanto quando il trigger è attivo. Notiamo che la soglia appena utilizzata elimina tutti i segnali inferiori ai 1000 digit. 
+Modifichiamo il file di configurazione in modo che l'ADC acquisisca soltanto quando il trigger è attivo. Notiamo che la soglia appena utilizzata elimina tutti i segnali inferiori ai 1000 digit.
+\marginpar{Quale soglia?\\
+\emph{Petrillo}}

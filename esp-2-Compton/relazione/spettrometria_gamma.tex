@@ -28,7 +28,7 @@ $p(x_0)=\int\de x_1 p(x_0|x_1) p(x_1)
 =\int \de x_1 \dotsm \de x_n p(x_0|x_1)\dotsm p(x_{n-1}|x_n)$.\\
 \emph{Petrillo}}
 
-Nella nostra esperienza lo spettrometro dovrà misurare l'energia di fotoni $\gamma$ che, essendo neutri, devono prima interagire con la materia del rivelatore e trasferire tutta o parte della loro energia a particelle cariche, delle quali sarà poi misurabile l'energia nel modo descritto sopra. Bisogna quindi analizzare le interazioni fotone-materia per modelizzare gli spettri che andremo poi ad osservare.
+Nella nostra esperienza lo spettrometro dovrà misurare l'energia di fotoni $\gamma$ che, essendo neutri, devono prima interagire con la materia del rivelatore e trasferire tutta o parte della loro energia a particelle cariche, delle quali sarà poi misurabile l'energia nel modo descritto sopra. Bisogna quindi analizzare le interazioni fotone-materia per modellizzare gli spettri che andremo poi ad osservare.
 
 \subsubsection{Interazione fotone-materia}
 I principali meccanismi di interazione dei fotoni con la materia sono:
@@ -60,7 +60,7 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  \label{klein-nishina}
  \frac{d\sigma}{d\cos(\theta)} = \frac{\pi}{m_e^2} \cdot\left(\frac{E'}{E}\right)^2 \cdot \left(\frac{E}{E'} + \frac{E'}{E} - \sin^2(\theta)\right)
  \end{equation}
- dove $\frac{E'}{E}$ contiene implicitamente l'angolo: $\frac{E'}{E} = \frac{1}{E(1-\cos(\theta))/(m_ec)}$
+ dove $\frac{E'}{E}$ contiene implicitamente l'angolo: $\frac{E'}{E} = \frac{1}{E(1-\cos(\theta))/(m_ec)}$.
  \marginpar{La formula di $E'/E$ è sbagliata,
  comunque mi sembra ridondante riportarla.\\
  \emph{Petrillo}}
@@ -73,7 +73,7 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  \end{figure}
 
  \paragraph{Produzione di coppie}
- Il fotone $\gamma$ può fare scattering con un fotone del campo e.m. del nucleo (o meno probabilmente di un elettrone) e produrre una coppia $e^+e^-$. Aaffinchè questo processo sia accessibile cinematicamente l'energia del fotone deve essere $> \SI{1.02}{MeV}$, quindi questo processo è possibile per i fotoni del \co\;  e del \na, tuttavia come vederemo questo processo è largamente trascurabile a queste energie, rispetto agli altri in gioco.
+ Il fotone $\gamma$ può fare scattering con un fotone del campo e.m. del nucleo (o meno probabilmente di un elettrone) e produrre una coppia $e^+e^-$. Affinché questo processo sia accessibile cinematicamente l'energia del fotone deve essere $> \SI{1.02}{MeV}$, quindi questo processo è possibile per i fotoni del \co\;  e del \na, tuttavia come vedremo questo processo è largamente trascurabile a queste energie, rispetto agli altri in gioco.
  
  \subsubsection{Sezione d'urto fotone-materia}
  La sezione d'urto fotone-materia per ciascuno dei processi prima descritti dipenderà dallo Z del materiale. In generale a basse energie ($ < \SI{10}{keV}$) sarà dominante l'assorbimento fotoelettrico, ad alte energie ($>\SI{100}{MeV}$) predominerà la produzione di coppie mentre lo scattering Compton sarà dominante in un range intermedio. L'estensione di questo range è maggiore al diminuire di Z come è chiaro dalla \autoref{fig:photon_cross_section_pdg}.
@@ -85,7 +85,7 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  \end{figure}
 
  \paragraph{Scelta del materiale per bersaglio e spettrometro}
- Nella nostra esperienza il bersaglio sarà di carbonio, mentre lo spettrometro è un cristallo di NaI ($\text{Z}(\text{Na})=11$, $\text{Z}(\text{I})=53$). Questa scelta è giustificata dal fatto che nel carbonio, all'energia dei fotoni del \co\; la sezione d'urto dell'assorbimento fotoelettrico è ampiamente trascurabile e l'energia del fotone è più facilmente misurabile dai fotopicchi associati all'assorbimento fotoelettrico. Sarà perciò preferibile usare il cristallo di NaI come spettrometro poichè a $\sim{1}{MeV}$ il rapporto tra sezione d'urto Compton e sezione d'urto dell'assorbimento fotoelettrico vale $\sim 20$, (come si può vedere anche in \autoref{fig:photon_cross_section_xcom})questo è sufficiente per rendere i fotopicchi chiaramente visibili con la risoluzione strumentale. Inoltre scegliendo il carbonio per il bersaglio  sarà garantito che tutti i fotoni che interagiranno nel carbonio lo faranno per effetto Compton.
+ Nella nostra esperienza il bersaglio sarà di carbonio, mentre lo spettrometro è un cristallo di NaI ($\text{Z}(\text{Na})=11$, $\text{Z}(\text{I})=53$). Questa scelta è giustificata dal fatto che nel carbonio, all'energia dei fotoni del \co\; la sezione d'urto dell'assorbimento fotoelettrico è ampiamente trascurabile e l'energia del fotone è più facilmente misurabile dai fotopicchi associati all'assorbimento fotoelettrico. Sarà perciò preferibile usare il cristallo di NaI come spettrometro poiché a $\sim\SI{1}{MeV}$ il rapporto tra sezione d'urto Compton e sezione d'urto dell'assorbimento fotoelettrico vale $\sim 20$, (come si può vedere anche in \autoref{fig:photon_cross_section_xcom}) questo è sufficiente per rendere i fotopicchi chiaramente visibili con la risoluzione strumentale. Inoltre scegliendo il carbonio per il bersaglio  sarà garantito che tutti i fotoni che interagiranno nel carbonio lo faranno per effetto Compton.
  
   \begin{figure}[h]
  	\centering
@@ -94,7 +94,10 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  \end{figure}
  
  \subsubsection{Risposta del detector}
- \paragraph{Grande detector} Se il detector fosse abbastanza esteso, tutta l'energia dei fotoni, indipendentemente dalla complessità dell'interazione, verrebbe rilasciata nel rivelatore. Per una sorgente di fotoni ad una energia fissata, come potrebbe essere una sorgente di raggi $\gamma$\footnote{I raggi $\gamma$ delle sorgenti radioattive hanno tipicamente larghezze $\Gamma \ll \SI{1}{eV}$ e possono quindi considerarsi mono-energetici per i nostri scopi.}, ad esempio il \cs, lo spettro energetico prodotto da un tale scintillatore sarebbe un singolo fotopicco all'energia dei fotoni $\gamma$ (vedi \autoref{fig.spettrometro_grosso} con una larghezza dovuta essenzialmente alla risoluzione dello strumento, come analizzeremo nel seguito.
+ \paragraph{Grande detector} Se il detector fosse abbastanza esteso, tutta l'energia dei fotoni, indipendentemente dalla complessità dell'interazione, verrebbe rilasciata nel rivelatore. Per una sorgente di fotoni ad una energia fissata, come potrebbe essere una sorgente di raggi $\gamma$\footnote{I raggi $\gamma$ delle sorgenti radioattive hanno tipicamente larghezze $\Gamma \ll \SI{1}{eV}$ e possono quindi considerarsi mono-energetici per i nostri scopi.},
+ \marginpar{Non si dice monocromatici piuttosto che mono-energetici?\\
+ \emph{Petrillo}}
+ ad esempio il \cs, lo spettro energetico prodotto da un tale scintillatore sarebbe un singolo fotopicco all'energia dei fotoni $\gamma$ (vedi \autoref{fig.spettrometro_grosso} con una larghezza dovuta essenzialmente alla risoluzione dello strumento, come analizzeremo nel seguito.
  
  \begin{figure}[h]
  	\centering
