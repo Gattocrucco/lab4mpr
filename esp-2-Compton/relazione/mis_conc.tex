@@ -12,6 +12,8 @@ Il segnale del PMT1  viene ritardato di \SI{22}{ns} per essere messo in tempo co
 
 L'uscita del modulo di coincidenza è poi portata ad un modulo \texttt{gate \& delay} che la ritarda e la allunga per avere un segnale di trigger con le stesse caratteristiche della sezione precedente.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Caratteristiche geometriche del fascio}
 
 \subsubsection{Accorgimenti sperimentali}
@@ -27,7 +29,39 @@ Per misurare meglio gli angoli abbiamo stampato un goniometro che abbiamo posizi
 
 \subsubsection{Analisi dei dati e risultati}
 
+\marginpar{lascio a Jack l'onore di scrivere tutto quello che ha fatto (Andrea)}
+
+\begin{table}
+\centering
+
+\begin{tabular}{|c|c|}
+\hline
+angolo [\si{\degree}] & rate [\si{s^{-1}}] \\
+\hline
+$ 0 $ & $ 3788\pm11 $ \\ 
+
+$ 1 $ & $ 3422\pm10 $ \\ 
+$ 2 $ & $ 2690 \pm 9 $ \\ 
+$ 3 $ & $ 1926 \pm 8 $ \\ 
+$ 4 $ & $ 1156 \pm 6 $ \\ 
+
+$ -1 $ & $ 3517\pm11 $ \\ 
+$ -2 $ & $ 2843 \pm 9 $ \\ 
+$ -3 $ & $ 2087 \pm 8 $ \\ 
+$ -4 $ & $ 1306 \pm 6 $ \\ 
+\hline
+\end{tabular}
+
+\caption{Dati considerati nel fit per determinare la forma del fascio. L'errore sugli angoli è 0.1$^{\circ}$.}
+\label{tabfo}
+\end{table}
+
+\begin{figure}
+\centering
+\includegraphics[width=25 em]{forma}
+\caption{Fit della forma del fascio e relativo fondo.}
+\label{forma}
+\end{figure}
 
 
-\marginpar{qui ci va l'analisi dati dopo che Jack avrà deciso come fittare le 2 log(gaussiane)}
 
