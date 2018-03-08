@@ -70,3 +70,8 @@ def energy_calibration(date='22feb'):
     def fun(E):
         return ms[date] * E + qs[date]
     return fun
+
+def energy_inverse_calibration(date='22feb'):
+    def fun(digit):
+        return (digit - qs[date]) / ms[date]
+    return fun
