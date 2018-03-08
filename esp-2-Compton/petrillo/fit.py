@@ -5,11 +5,14 @@ import matplotlib.pyplot as plt
 import histo
 import lab
 import sympy as sp
+from uncertainties import unumpy as unp
+import calibration
 
-theta_0s =   [15                           , 0                              , 61.75                              , 45]
-files =      ['../dati/histo-27feb-e15.dat', '../dati/histo-23feb-notte.dat', '../dati/histo-22feb-stralunga.dat', '../dati/histo-20feb-notte.dat']
-calib_date = ['27feb'                      , '22feb'                        , '22feb'                            , '22feb']
-fitcuts =    [(3000, 8000)                 , (3000, 8000)                   , (1500, 4500)                       , (2000, 6000)]
+theta_0s =   [15                           , 7                     , 61.75                              , 45]
+files =      ['../dati/histo-27feb-e15.dat', '../dati/log-neve.npy', '../dati/histo-22feb-stralunga.dat', '../dati/histo-20feb-notte.dat']
+calib_date = ['27feb'                      , '27feb'               , '22feb'                            , '20feb']
+fitcuts =    [(3000, 8000)                 , (3000, 8000)          , (1500, 4500)                       , (2000, 6000)]
+Ls         = [40                           , 40                    , 71.5 + 62.8 - 16                   , 40]
 
 # def hist_adc(a, weights=None):
 # 	return empirical.histogram(a, bins=2**13, range=(0, 2**13), weights=weights)
@@ -17,18 +20,26 @@ fitcuts =    [(3000, 8000)                 , (3000, 8000)                   , (1
 fig = plt.figure('fit')
 fig.clf()
 
+centers_133 = []
+centers_117 = []
+
 for i in range(len(files)):
 	filename = files[i]
 	theta_0 = theta_0s[i]
 	fitcut = fitcuts[i]
 	
 	print('FILE {}'.format(filename))
+	
 	print('loading data...')
-	counts = np.loadtxt(filename, unpack=True)
+	if filename.endswith('.dat'):
+		counts = np.loadtxt(filename, unpack=True)
+	elif filename.endswith('.npy'):
+		samples = np.load(filename)
+		counts = np.bincount(samples, minlength=2**13)
 
 	print('monte carlo...')
-	pa, sa, wpa, wsa = mc9.mc_cached(1.33, theta_0=theta_0, N=1000000, seed=0, date=calib_date[i])
-	pb, sb, wpb, wsb = mc9.mc_cached(1.17, theta_0=theta_0, N=1000000, seed=1, date=calib_date[i])
+	pa, sa, wpa, wsa = mc9.mc_cached(1.33, theta_0=theta_0, N=1000000, seed=0, nai_distance=Ls[i], date=calib_date[i])
+	pb, sb, wpb, wsb = mc9.mc_cached(1.17, theta_0=theta_0, N=1000000, seed=1, nai_distance=Ls[i], date=calib_date[i])
 	wsa /= 7
 	wsb /= 7
 
@@ -62,13 +73,13 @@ for i in range(len(files)):
 	fit_dy = np.where(fit_y > 0, np.sqrt(fit_y), 1)
 
 	# estimate initial parameters
-	total = np.sum(counts) * rebin
+	total = np.sum(counts[100:8000]) * rebin
 	mc_total = np.sum(wpa) + np.sum(wsa) + np.sum(wpb) + np.sum(wsb)
 	ratio = total / mc_total
 	p0 = [np.sum(wpa) * ratio, np.mean(pa), np.std(pa), np.sum(wsa) * ratio, 1, np.sum(wpb) * ratio, np.mean(pb), np.std(pb), np.sum(wsb) * ratio, 1, np.max(counts[100:len(counts) // 2]), 1500]
 	bounds = [
-		 [0, -np.inf, 0, 0, 0, 0, -np.inf, 0, 0, 0, 0, 0],
-		 [np.inf] * len(p0)
+		 [0, -np.inf, 0, 0, 0, 0, -np.inf, 0, 0, 0, 0, 100],
+		 [np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf]
 	]
 
 	# for i in range(len(p0)):
@@ -76,18 +87,20 @@ for i in range(len(files)):
 
 	model = lab.CurveModel(fit_fun, symb=True, npar=len(p0))
 	try:
-		out = lab.fit_curve(model, fit_x, fit_y, dy=fit_dy, p0=p0, print_info=1, bounds=bounds)
+		out = lab.fit_curve(model, fit_x, fit_y, dy=fit_dy, p0=p0, print_info=3, method='linodr', bounds=bounds)
 		par = out.par
-	except RuntimeError:
+	except:
 		par = p0
 		print('fit failed!')
 
+	print('plot...')
 	modela = lab.CurveModel(fit_fun_a, symb=True)
 	modelb = lab.CurveModel(fit_fun_b, symb=True)
 	modelc = lab.CurveModel(fit_fun_c, symb=True)
 
 	ax = fig.add_subplot(len(files) // 2, 2, i + 1)
-	histo.bar_line(edges, histo.partial_sum(counts, rebin), ax=ax, label=filename.split('/')[-1])
+	rebin_counts = histo.partial_sum(counts, rebin)
+	histo.bar_line(edges, rebin_counts, ax=ax, label=filename.split('/')[-1])
 	ax.plot(fit_x,  model.f()(fit_x, *p0), '-k')
 	ax.plot(fit_x,  model.f()(fit_x, *par), '-r')
 	ax.plot(fit_x, modela.f()(fit_x, *par), '--r', linewidth=0.5)
@@ -95,5 +108,39 @@ for i in range(len(files)):
 	ax.plot(fit_x, modelc.f()(fit_x, *par), '--r', linewidth=0.5)
 	ax.grid()
 	ax.legend(fontsize='small', loc=2)
+	ymax = np.max(rebin_counts[15:1000])
+	ax.set_ylim((-ymax * 0.05, ymax * 1.05))
+	
+	centers_133.append(out.upar[1])
+	centers_117.append(out.upar[6])
+	
+def fun_energy(E_0, m_e, theta_0):
+	return E_0 / (1 + E_0 / m_e * (1 - np.cos(np.radians(theta_0))))
+
+for i in range(len(calib_date)):
+	centers_133[i] = calibration.energy_inverse_calibration(calib_date[i])(centers_133[i])
+	centers_117[i] = calibration.energy_inverse_calibration(calib_date[i])(centers_117[i])
+
+def fit_fun(theta_0s, m_e):
+	return np.concatenate([fun_energy(1.33, m_e, theta_0s[:4]), fun_energy(1.17, m_e, theta_0s[4:])])
+
+fit_x = np.concatenate([theta_0s, theta_0s])
+fit_dx = np.ones(fit_x.shape) * 0.1
+fit_uy = np.concatenate([centers_133, centers_117])
+fit_y = unp.nominal_values(fit_uy)
+fit_dy = unp.std_devs(fit_uy)
+
+out = lab.fit_curve(fit_fun, fit_x, fit_y, dx=fit_dx, dy=fit_dy, p0=0.511, print_info=1, absolute_sigma=False)
+
+fig2 = plt.figure('fit_result')
+fig2.clf()
+ax = fig2.add_subplot(111)
+
+ft = np.linspace(np.min(theta_0s), np.max(theta_0s), 500)
+ax.errorbar(theta_0s, unp.nominal_values(centers_133), yerr=unp.std_devs(centers_133), fmt='.', label='1.33')
+ax.errorbar(theta_0s, unp.nominal_values(centers_117), yerr=unp.std_devs(centers_117), fmt='.', label='1.17')
+ax.plot(ft, fun_energy(1.33, out.par[0], ft))
+ax.plot(ft, fun_energy(1.17, out.par[0], ft))
 
 fig.show()
+fig2.show()

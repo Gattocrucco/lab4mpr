@@ -105,7 +105,7 @@ class EmpiricalSecondary(object):
             model = lab.CurveModel(empirical_secondary, symb=True, npar=11)
         else:
             model = lab.CurveModel(_empirical_secondary, symb=False, npar=11)
-        out = lab.fit_curve(model, edges[:-1] + (edges[1] - edges[0]) / 2, counts, dy=unc_counts, p0=p, print_info=plot)
+        out = lab.fit_curve(model, edges[:-1] + (edges[1] - edges[0]) / 2, counts, dy=unc_counts, p0=p, print_info=plot, maxit=100)
         
         if plot:
             ax.plot(edges, _f1(edges, *out.par), '--r', linewidth=0.5)
@@ -126,7 +126,7 @@ class EmpiricalSecondary(object):
 if __name__ == '__main__':
     import mc9
     
-    _, samples, _, weights = mc9.mc_cached(1.33, theta_0=90, N=1000000, seed=0)
+    _, samples, _, weights = mc9.mc_cached(1.17, theta_0=61.75, N=1000000, nai_distance=71.5 + 62.8 - 16, seed=0)
     
     symb = True
     empirical = EmpiricalSecondary(samples, weights, plot=True, symb=symb)

@@ -26,19 +26,21 @@ for date in unique_dates:
     labels_date = labels[dates == date]
     nom_energy, adc_energy, adc_sigma, adc_energy_unc, adc_sigma_unc, adc_energy_sigma_cov = data_date
     
-    p0, _ = lab.fit_linear(nom_energy, adc_energy, dy=adc_energy_unc)
-    out = lab.fit_curve(lambda x, m, q: m * x + q, nom_energy, adc_energy, dy=adc_energy_unc, p0=p0, absolute_sigma=False)
+    offset = len(np.unique(labels_date)) > 1
+    par, cov = lab.fit_linear(nom_energy, adc_energy, dy=adc_energy_unc, offset=offset, absolute_sigma=False)
+    chisq = np.sum((adc_energy - (nom_energy * par[0] + par[1]))**2 / adc_energy_unc**2)
+    chisq_dof = len(adc_energy) - (2 if offset else 1)
     if __name__ == '__main__':
-        print('{}: m = {}, q = {}, chi2/ndof = {:.1f}/{}'.format(date, *lab.xe(out.par, np.sqrt(np.diag(out.cov))), out.chisq, out.chisq_dof))
-    scale_factor_cal = out.chisq / out.chisq_dof
-    ms[date] = out.par[0]
-    qs[date] = out.par[1]
+        print('{}: m = {}, q = {}, chi2/ndof = {:.1f}/{}'.format(date, *lab.xe(par, np.sqrt(np.diag(cov))), chisq, chisq_dof))
+    scale_factor_cal = chisq / chisq_dof
+    ms[date] = par[0]
+    qs[date] = par[1]
     
     if __name__ == '__main__':
         ec = ax_cal.errorbar(nom_energy, adc_energy, yerr=adc_energy_unc, fmt='.', label=date)
         color = ec.lines[0].get_color()
         fx = np.linspace(np.min(nom_energy), np.max(nom_energy), 500)
-        ax_cal.plot(fx, out.par[0] * fx + out.par[1], '-', color=color)
+        ax_cal.plot(fx, par[0] * fx + par[1], '-', color=color)
         ax_cal.set_ylabel('peak center [digit]')
         ax_cal.legend()
         ax_cal.grid()
@@ -67,4 +69,9 @@ def energy_sigma(date='22feb'):
 def energy_calibration(date='22feb'):
     def fun(E):
         return ms[date] * E + qs[date]
+    return fun
+
+def energy_inverse_calibration(date='22feb'):
+    def fun(digit):
+        return (digit - qs[date]) / ms[date]
     return fun
