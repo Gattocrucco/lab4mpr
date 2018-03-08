@@ -207,10 +207,10 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=1.74, beam_center=-0.09, n
         x_f = versor(cross(y_f, z_f))
         
         # extract theta of compton photon with von neumann
+        # to compute kn_max I assume that klein_nishina has only one minimum
+        kn_max = max(klein_nishina(energy, cos_theta_min, m_e), klein_nishina(energy, cos_theta_max, m_e))
         while 1:
             cos_theta_candidate = np.random.uniform(cos_theta_min, cos_theta_max)
-            # to compute kn_max I assume that klein_nishina has only one minimum
-            kn_max = max(klein_nishina(energy, cos_theta_min, m_e), klein_nishina(energy, cos_theta_max, m_e))
             von_neumann = np.random.uniform(0, kn_max)
             if von_neumann <= klein_nishina(energy, cos_theta_candidate, m_e):
                 break
@@ -234,7 +234,7 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=1.74, beam_center=-0.09, n
                 if radius_back > nai_radius:
                     l *= (nai_radius - radius) / (radius_back - radius)
             
-                # # compute probabilities of interaction
+                # compute probabilities of interaction
                 lambda_total   = cs.total  (primary_photon)
                 lambda_photoel = cs.photoel(primary_photon)
                 lambda_compton = cs.compton(primary_photon)
@@ -245,9 +245,9 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=1.74, beam_center=-0.09, n
                 # weights_se[i] = 1 - np.exp(-l * cs.compton(primary_photon) * nai_density)
             
             # extract theta of secondary compton photon
+            kn_max = max(klein_nishina(primary_photon, -1, m_e), klein_nishina(primary_photon, max_secondary_cos_theta, m_e))
             while 1:
                 cos_theta_candidate = np.random.uniform(-1, max_secondary_cos_theta)
-                kn_max = max(klein_nishina(primary_photon, -1, m_e), klein_nishina(primary_photon, max_secondary_cos_theta, m_e))
                 von_neumann = np.random.uniform(0, kn_max)
                 if von_neumann <= klein_nishina(primary_photon, cos_theta_candidate, m_e):
                     break
@@ -289,6 +289,8 @@ def mc_cached(*args, **kwargs):
     
     calibration : bool (default: True)
         Apply calibration.
+    date : str (default: '22feb')
+        Label of calibration data.
     """
     
     if not ('seed' in kwargs):
@@ -308,6 +310,7 @@ def mc_cached(*args, **kwargs):
         database = {}
         
     calibration = kwargs.pop('calibration', True)
+    date = kwargs.pop('date', '22feb')
     
     # get result from cache or compute and save
     hashable_args = (args, frozenset(kwargs.items()))
@@ -330,14 +333,14 @@ def mc_cached(*args, **kwargs):
     
     # apply calibration
     if calibration:
-        p = energy_nai(p, seed=4000000000 + kwargs['seed'])
-        s = energy_nai(s, seed=2000000000 + kwargs['seed'])
+        p = energy_nai(p, seed=4000000000 + kwargs['seed'], date=date)
+        s = energy_nai(s, seed=2000000000 + kwargs['seed'], date=date)
     
     return p, s, wp, ws
 
 if __name__ == '__main__':
     N=100000
-    p, s, wp, ws = mc_cached(1.33, theta_0=0, N=N, seed=0)
+    p, s, wp, ws = mc(1.33, theta_0=0, N=N, seed=0)
     
     from matplotlib.pyplot import *
     figure('mc9')
