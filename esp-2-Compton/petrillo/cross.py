@@ -30,9 +30,11 @@ def explog(f):
 
 log_compton = interp(np.log(data[0]), np.log(data[2]))
 log_photoel = interp(np.log(data[0]), np.log(data[3]))
+log_total   = interp(np.log(data[0]), np.log(np.sum(data[1:], axis=0)))
 
 compton = explog(log_compton)
 photoel = explog(log_photoel)
+total   = explog(log_total  )
 
 if __name__ == '__main__':
     fig = plt.figure('cross')
@@ -44,8 +46,10 @@ if __name__ == '__main__':
     ax.plot(data[0], data[3], '.', label='photoel')
     ax.plot(e, [compton(E) for E in e], label='compton')
     ax.plot(e, [photoel(E) for E in e], label='photoel')
+    ax.plot(e, [total  (E) for E in e], label='total'  )
     ax.legend()
     ax.set_xscale('log')
     ax.set_yscale('log')
+    ax.grid()
 
     fig.show()

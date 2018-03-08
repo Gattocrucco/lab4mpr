@@ -234,9 +234,15 @@ def mc(energy, theta_0=0, N=1000, seed=-1, beam_sigma=1.74, beam_center=-0.09, n
                 if radius_back > nai_radius:
                     l *= (nai_radius - radius) / (radius_back - radius)
             
-                # compute probabilities of interaction
-                weights_pp[i] = 1 - np.exp(-l * cs.photoel(primary_photon) * nai_density)
-                weights_se[i] = 1 - np.exp(-l * cs.compton(primary_photon) * nai_density)
+                # # compute probabilities of interaction
+                lambda_total   = cs.total  (primary_photon)
+                lambda_photoel = cs.photoel(primary_photon)
+                lambda_compton = cs.compton(primary_photon)
+                p = 1 - np.exp(-l * lambda_total * nai_density)
+                weights_pp[i] = p * lambda_photoel / lambda_total
+                weights_se[i] = p * lambda_compton / lambda_total
+                # weights_pp[i] = 1 - np.exp(-l * cs.photoel(primary_photon) * nai_density)
+                # weights_se[i] = 1 - np.exp(-l * cs.compton(primary_photon) * nai_density)
             
             # extract theta of secondary compton photon
             while 1:
@@ -330,8 +336,8 @@ def mc_cached(*args, **kwargs):
     return p, s, wp, ws
 
 if __name__ == '__main__':
-    N=1000000
-    p, s, wp, ws = mc_cached(1.33, theta_0=60, N=N, seed=0)
+    N=100000
+    p, s, wp, ws = mc_cached(1.33, theta_0=0, N=N, seed=0)
     
     from matplotlib.pyplot import *
     figure('mc9')
