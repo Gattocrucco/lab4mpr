@@ -42,9 +42,9 @@ print("#data elemento energia [Mev] media[digit] sigma[digit] err_media[digit] e
         
               
 for data in date:
-    #if data != '27feb': continue
+    if data != '27feb': continue
     for b in arange(len(elements0)):
-        #if b != 1: continue
+        if b != 1: continue
         elements = copy.deepcopy(elements0)
         a = elements[b]
         ref0=loadtxt(cartella+"histo-22feb-"+a[0]+".dat",unpack=True)
