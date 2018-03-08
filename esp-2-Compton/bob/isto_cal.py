@@ -8,7 +8,7 @@ import lab
 import copy
 
 cartella ="cal/"
-date =["22feb","26feb","27feb"]
+date =["20feb", "22feb","26feb","27feb"]
 elements0= [["cs","Cs137", [0.662], [3700,4000], 5e2],
            ["am","Am241", [0.0595], [320,380], 1e4],
            ["na","Na22",  [0.511], [2900,3100],5e2],
@@ -42,13 +42,17 @@ print("#data elemento energia [Mev] media[digit] sigma[digit] err_media[digit] e
         
               
 for data in date:
-    #if data != '27feb': continue
     for b in arange(len(elements0)):
-        #if b != 1: continue
+        # if b != 4 or data != '20feb': continue
+        if data == '20feb' and b != 4:
+            continue
         elements = copy.deepcopy(elements0)
         a = elements[b]
         ref0=loadtxt(cartella+"histo-22feb-"+a[0]+".dat",unpack=True)
-        ref1=loadtxt(cartella+"histo-"+data+"-"+a[0]+".dat",unpack=True)
+        if data == '20feb':
+            ref1=loadtxt("../dati/histo-20feb-ang0-31471.dat",unpack=True)
+        else:
+            ref1=loadtxt(cartella+"histo-"+data+"-"+a[0]+".dat",unpack=True)
         ref0_max_ind = np.argmax(ref0)
         ref1_max_ind = np.argmax(ref1)
         ref0_max = max(ref0)
@@ -65,7 +69,7 @@ for data in date:
         sin=a[3][0]
         dex=a[3][1]
         
-        Y = loadtxt(file,unpack=True)
+        Y = ref1
         X = arange(len(Y)+1)
         
         _Y = Y[sin:dex]
@@ -82,7 +86,8 @@ for data in date:
             _Y = Y[sin:dex]
             _X = arange(dex-sin)+0.5+sin
             _dy=sqrt(_Y)
-            popt,pcov=curve_fit(gaus2,_X,_Y,sigma=_dy,p0=val, maxfev=10000)
+            out = lab.fit_curve(gaus2,_X,_Y,dy=_dy,p0=val, method="odrpack")
+            popt,pcov = out.par, out.cov
             
         else:
             val=[a[4],(sin+dex)/2,(dex-sin)/2,0,0]
