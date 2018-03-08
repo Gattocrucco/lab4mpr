@@ -1,4 +1,4 @@
-\subsection{Spettrometria $\gamma$ con gli scintillatori}
+\subsection{Spettrometria $\gamma$}
 Riassumiamo il principio di misura dell'energia del nostro spettrometro:
 \begin{itemize}
 	\item particelle cariche attraversano il cristallo scintillatore rilasciando energia all'interno per eccitazione/ionizzazione degli elettroni dello stesso;
@@ -64,28 +64,66 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  \marginpar{La formula di $E'/E$ è sbagliata,
  comunque mi sembra ridondante riportarla.\\
  \emph{Petrillo}}
+ La sezione d'urto differenziale è graficata in \autoref{fig:klein-nishina} ed è da qui evidente come all'energia di $\sim \SI{1}{MeV}$ è molto più probabile che il fotone sia deviato poco.
  
+ \begin{figure}[h]
+ 	\centering
+ 	\includegraphics[width=16em]{klein-nishina}
+ 	\caption{\label{fig:klein-nishina}Sezione d'urto in funzione dell'angolo di scattering Compton}
+ \end{figure}
+
  \paragraph{Produzione di coppie}
+ Il fotone $\gamma$ può fare scattering con un fotone del campo e.m. del nucleo (o meno probabilmente di un elettrone) e produrre una coppia $e^+e^-$. Aaffinchè questo processo sia accessibile cinematicamente l'energia del fotone deve essere $> \SI{1.02}{MeV}$, quindi questo processo è possibile per i fotoni del \co\;  e del \na, tuttavia come vederemo questo processo è largamente trascurabile a queste energie, rispetto agli altri in gioco.
  
+ \subsubsection{Sezione d'urto fotone-materia}
+ La sezione d'urto fotone-materia per ciascuno dei processi prima descritti dipenderà dallo Z del materiale. In generale a basse energie ($ < \SI{10}{keV}$) sarà dominante l'assorbimento fotoelettrico, ad alte energie ($>\SI{100}{MeV}$) predominerà la produzione di coppie mentre lo scattering Compton sarà dominante in un range intermedio. L'estensione di questo range è maggiore al diminuire di Z come è chiaro dalla \autoref{fig:photon_cross_section_pdg}.
  
- Di questi, gli ultimi 3 sono i modi nel quale i fotoni possono essere rivelati.
-  
- \subsection{Risposta del detector}
- Se il detector fosse abbastanza esteso, tutta l'energia dei fotoni, indipendentemente dalla complessità dell'interazione, verrebbe rilasciata nel rivelatore. Per una sorgente di fotoni ad una energia fissata, come potrebbe essere una sorgente di raggi $\gamma$\footnote{I raggi $\gamma$ delle sorgenti radioattive hanno tipicamente larghezze $\Gamma \ll \SI{1}{eV}$ e possono quindi considerarsi mono-energetici.} come il \cs, lo spettro energetico prodotto da un tale scintillatore sarebbe un singolo fotopicco all'energia dei fotoni $\gamma$ con una larghezza dovuta essenzialmente alla risoluzione dello strumento, come analizzeremo nel seguito.
+  \begin{figure}[h]
+ 	\centering
+ 	\includegraphics[width=16em]{cross_section_photon_pdg}
+ 	\caption{\label{fig:photon_cross_section_pdg}Sezione d'urto in funzione dell'energia per i vari processi nel carbonio e nel piombo FONTE CIPPLIPPA}
+ \end{figure}
+
+ \paragraph{Scelta del materiale per bersaglio e spettrometro}
+ Nella nostra esperienza il bersaglio sarà di carbonio, mentre lo spettrometro è un cristallo di NaI ($\text{Z}(\text{Na})=11$, $\text{Z}(\text{I})=53$). Questa scelta è giustificata dal fatto che nel carbonio, all'energia dei fotoni del \co\; la sezione d'urto dell'assorbimento fotoelettrico è ampiamente trascurabile e l'energia del fotone è più facilmente misurabile dai fotopicchi associati all'assorbimento fotoelettrico. Sarà perciò preferibile usare il cristallo di NaI come spettrometro poichè a $\sim{1}{MeV}$ il rapporto tra sezione d'urto Compton e sezione d'urto dell'assorbimento fotoelettrico vale $\sim 20$, (come si può vedere anche in \autoref{fig:photon_cross_section_xcom})questo è sufficiente per rendere i fotopicchi chiaramente visibili con la risoluzione strumentale. Inoltre scegliendo il carbonio per il bersaglio  sarà garantito che tutti i fotoni che interagiranno nel carbonio lo faranno per effetto Compton.
  
- Nel nostro caso disponiamo di un rivelatore $2"\times2"$ e, a partire dal noto grafico in FONTE che ci dà la lunghezza di radiazione al variare dell'energia del fotone in vari materiali, è semplice calcolare che per il nostro rivelatore di NaI la lunghezza di radiazione vale $\sim \SI{5}{cm}$, quindi paragonabile alla dimensione del cristallo, ne segue che solo il $\sim 60\%$ dei fotoni interagisce nel cristallo\footnote{E l'efficienza varia con l'energia come vedremo nel seguito}, per cui l'approssimazione di detector esteso non è applicabile.
- Lo spettro prodotto sarà la somma di molti effetti:
+  \begin{figure}[h]
+ 	\centering
+ 	\includegraphics[width=28em]{photon_cross_section_xcom}
+ 	\caption{\label{fig:photon_cross_section_xcom}Sezione d'urto in funzione dell'energia per i vari processi nel NaI FONTE CIPPALIAPPA}
+ \end{figure}
+ 
+ \subsubsection{Risposta del detector}
+ \paragraph{Grande detector} Se il detector fosse abbastanza esteso, tutta l'energia dei fotoni, indipendentemente dalla complessità dell'interazione, verrebbe rilasciata nel rivelatore. Per una sorgente di fotoni ad una energia fissata, come potrebbe essere una sorgente di raggi $\gamma$\footnote{I raggi $\gamma$ delle sorgenti radioattive hanno tipicamente larghezze $\Gamma \ll \SI{1}{eV}$ e possono quindi considerarsi mono-energetici per i nostri scopi.}, ad esempio il \cs, lo spettro energetico prodotto da un tale scintillatore sarebbe un singolo fotopicco all'energia dei fotoni $\gamma$ (vedi \autoref{fig.spettrometro_grosso} con una larghezza dovuta essenzialmente alla risoluzione dello strumento, come analizzeremo nel seguito.
+ 
+ \begin{figure}[h]
+ 	\centering
+ 	\includegraphics[width=28em]{spettrometro_grosso}
+ 	\caption{\label{fig:spettrometro_grsso}Risposta di un detector di grandi dimensioni per fotoni mono-energetici}
+ \end{figure}
+
+ \paragraph{Piccolo detector}Nel caso opposto di un detector di piccole dimensioni (e trascurando la produzione di coppie, per i motivi detti sopra) i fotoni potranno interagire una sola volta, facendo effetto fotoelettrico o Compton in proporzione alla sezione d'urto. I fotoni che fanno effetto fotoelettrico produrranno un segnale alla loro energia (che non sarà una delta ma sarà allargato dalla risoluzione strumentale) come visto prima, mentre i fotoni che faranno fotoelettrico si produrranno uno spettro come quello predetto dalla sezione d'urto di Klein-Nishina (la spalla Compton sarà meno definita perché convoluta con la risoluzione strumentale). Il risultato finale sarà simile a quelli in \autoref{spettrometro_piccolo}
+ 
+  \begin{figure}[h]
+ 	\centering
+ 	\includegraphics[width=28em]{spettrometro_piccolo}
+ 	\caption{\label{fig:spettrometro_piccolo}Risposta di un detector di piccole dimensioni per fotoni mono-energetici}
+ \end{figure}
+ 
+ \paragraph{Detector di dimensioni intermedie}Nel nostro caso disponiamo di un rivelatore $2"\times2"$ e, a partire dal grafico in FONTE che ci dà la lunghezza di radiazione al variare dell'energia del fotone in vari materiali, è semplice calcolare che per il nostro rivelatore la lunghezza di radiazione:$\sim \SI{5}{cm}$, quindi paragonabile alla dimensione del cristallo, ne segue che il $\sim 60\%$ dei fotoni interagisce nel cristallo. Ci troviamo quindi in una situazione intermedia per cui in pratica lo spettro sarà simile a quello in \autoref{spettrometro_piccolo}, ma il rapporto tra gli eventi Compton e quelli fotoelettrico non sarà uguale al rapporto tra le sezioni d'urto: è infatti importante il contributo di quei fotoni che dopo aver fatto Compton fanno fotoelettrico\footnote{Questo processo è favorito a basse energie e i fotoni perdono energia facendo Compton} (quando ancora si trovano nello spettrometro): questi finiranno nel fotopicco poiché tutta l'energia è rilasciata nello scintillatore. 
+ 
+ Lo spettro finale prodotto sarà la somma di molti effetti:
  \begin{itemize}
  	\item l'assorbimento fotoelettrico produrrà un fotopicco all'energia dei fotoni incidenti;
- 	\item i fotoni che fanno scattering Compton rilasceranno solo parte della loro energia producendo il caratteristico profilo...
- 	\item i fotoni che fanno scattering Compton sui materiali che circondano il detector possono tornare nello stesso producendo un picco, detto di backscattering nella regione a basse energie.
- 	\item spesso sarà visibile un picco all'energia caratteristica dei raggi X emessi dell'assorbitore, in questo caso gli atomi di sodio e iodio che costituiscono il rivelatore. 
+ 	\item i fotoni che fanno scattering Compton rilasceranno solo parte della loro energia producendo il caratteristico profilo predetto dalla  formula di Klein-Nishina;
+ 	\item i fotoni che fanno scattering Compton sui materiali che circondano il detector possono tornare nello stesso producendo un picco, detto di backscattering nella regione a basse energie;
+ 	\item spesso potrebbe essere visibile un picco all'energia caratteristica dei raggi X emessi dai materiali circostanti (ad esempio lo stesso spettrometro).
  \end{itemize}
   
  
- \subsection{Efficienza}
+ \subsubsection{Efficienza}
  
- \subsection{Linearità}
+ \subsubsection{Linearità}
  Un rivelatore di radiazione ideale dovrebbe essere perfettamente lineare 
  \subsection{Risoluzione}
  
