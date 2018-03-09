@@ -139,7 +139,7 @@ Lo spettro finale atteso (per una sorgente che emetta un solo fotone e uno spett
 
  \begin{figure}[h]
 	\centering
-	\includegraphics[width=28em]{spettrometro_intermedio}
+	\includegraphics[width=35em]{spettrometro_intermedio}
 	\caption{\label{fig:spettrometro_intermedio}Risposta di un detector di dimensioni intermedie (come il nostro) per fotoni mono-energetici.}
  \end{figure}
 
@@ -154,7 +154,7 @@ Lo spettro finale atteso (per una sorgente che emetta un solo fotone e uno spett
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  \subsubsection{Risposta del detector e calibrazione}
  Poiché ci troviamo nel caso descritto in \autoref{par:spettrometro_intermedio} non è possibile misurare l'energia di un singolo fotone $\gamma$ con il nostro apparato; l'unico modo per effettuare una misura di energia è supporre una certa distribuzione di energia della sorgente\footnote{I fotoni prodotti dalle nostre sorgenti radioattive sono monocromatici ai nostri scopi, lo stesso non si può dire dei fotoni secondari prodotti dallo scattering Compton sul nostro bersaglio e del quale vogliamo misurare l'energia, per questi dovremo ricavare la distribuzione in energia.} e fittare con uno spettro atteso.
- Il modo più semplice è fittare il fotopicco che per sua natura sarà centrato all'energia dei fotoni incidenti (a meno di una correzione dovuta all'energia di legame che non è trascurabile a basse energie), alternativamente si può fittare la spalla Compton, che tuttavia è molto più difficile da modellizzare e dipende dalla massa dell'elettrone, la cui misura è l'obiettivo di questa esperienza.  
+ Il modo più semplice è fittare il fotopicco che per sua natura sarà centrato all'energia dei fotoni incidenti (a meno di una correzione dovuta all'energia di legame che non è trascurabile a basse energie), alternativamente si può fittare la spalla Compton, che tuttavia è molto più difficile da modellizzare e dipende dalla massa dell'elettrone, la cui misura è l'obiettivo di questa esperienza. Nel seguito quindi quando ci riferiremo a funzioni e distribuzioni di risposta ci riferiremo alla sola posizione e forma del fotopicco.
 
  \paragraph{Efficienza}
  In definitiva un fotone che attraversa il cristallo di NaI può: 
@@ -171,22 +171,24 @@ Lo spettro finale atteso (per una sorgente che emetta un solo fotone e uno spett
  Nella misura dell'energia dei fotoni secondari, l'efficienza di rivelazione nel NaI è anche correlata all'angolo di scattering poiché i fotoni che deviano di un angolo piccolo cedono poca energia agli elettroni del bersaglio, perciò l'efficienza di rivelazione nel bersaglio diminuisce e conseguentemente quella della coincidenza.
  
  \paragraph{Funzione di risposta (linearità)}
- Un rivelatore di radiazione ideale dovrebbe essere lineare. Come già detto la funzione di risposta del nostro spettrometro è la composizione delle funzioni di risposta dei singoli processi che la compongono.
+ Un rivelatore di radiazione ideale dovrebbe essere lineare. Come già detto la funzione di risposta del nostro spettrometro è la composizione delle funzioni di risposta dei singoli processi prima elencati e ci aspettiamo che alcune di queste devino da un comportamento puramente lineare, ad esempio
  \begin{itemize}
- 	\item La funzione di risposta associata all'interazione dei fotoni per effetto fotoelettrico è affine come visto in \autoref{eq:fotoelettrico}, dove per $E_b$ prendiamo l'energia di legame media.
- 	\item 
+ 	\item la funzione di risposta associata all'interazione dei fotoni per effetto fotoelettrico è affine come visto in \autoref{eq:fotoelettrico}, dove per $E_b$ prendiamo l'energia di legame media;
+ 	\item è noto che la luce di scintillazione per i detector in NaI non è proporzionale all'energia depositata, come mostrato in figura \autoref{fig:linearità}.
  \end{itemize}
- \'E noto che la funzione di risposta 
+ Poiché l'energie che andremo a misurare saranno tutte nel range $\sim$\SI{500}keV-\SI{1300}{keV}, range nel quale la risposta dello scintillatore è ragionevolmente lineare decidiamo di fittare la risposta dello spettrometro con una retta a intercetta libera, usando tutti i fotopicchi a disposizione tranne quello del \am\; che emette fotoni a \SI{60}keV, lontani dalla regione di interesse e di linearità.
  
-  In the case of NaI(Tl) detectors, it was recognized early that the
- scintillation light is not proportional to the deposited energy. Fig. 5.20 shows the relative light
- yield for fully stopped electrons as a function of the electron energy.
- 
-\marginpar{Coooosaaaaaaaaaaa??}
+ \begin{figure}[h]
+	\centering
+	\includegraphics[width=15em]{linearita}
+	\caption{\label{fig:linearità}Numero relativo di fotoni emessi dal cristallo di NaI(Tl) vs energia degli elettroni FONTE CIPPALIPPA}
+ \end{figure}
  
  \paragraph{Distribuzione di risposta (risoluzione)}
+ La distribuzione di risposta sarà quindi la forma del fotopicco. Per sorgenti monocromatiche e trascurando momentaneamente il fondo della spalla Compton (della cui modellazione discuteremo più avanti) decidiamo di considerare un modello gaussiano.
  
- \paragraph{Calibrazione} %aggiungi nota sull'americio
+ \paragraph{Calibrazione}
+ Con calibrazione intendiamo il fit della funzione di risposta...
  
  
  
