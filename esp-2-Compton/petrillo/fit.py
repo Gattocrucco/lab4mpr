@@ -9,12 +9,14 @@ from uncertainties import unumpy as unp
 import uncertainties as un
 import calibration
 import collections
+import bias
 
-theta_0s =   [15                           , 7                     , 61.75                              , 45]
-files =      ['../dati/histo-27feb-e15.dat', '../dati/log-neve.npy', '../dati/histo-22feb-stralunga.dat', '../dati/histo-20feb-notte.dat']
-calib_date = ['27feb'                      , '27feb'               , '22feb'                            , '20feb']
-fitcuts =    [(3000, 8000)                 , (3000, 8000)          , (1500, 4500)                       , (2000, 6000)]
-Ls         = [40                           , 40                    , 71.5 + 62.8 - 16                   , 40]
+theta_0s =   [15                         , 15                         , 7                     , 61.75                              , 45]
+files =      ['../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-neve.npy', '../dati/histo-22feb-stralunga.dat', '../dati/histo-20feb-notte.dat']
+logcut     = [(0, 1/2)                   , (1/2, 1)                   , (0, 1/5)              , None                               , None                           ]
+calib_date = ['26feb'                    , '27feb'                    , '27feb'               , '22feb'                            , '20feb']
+fitcuts =    [(3000, 8000)               , (3000, 8000)               , (3000, 8000)          , (1500, 4500)                       , (2000, 6000)]
+Ls         = [40                         , 40                         , 40                    , 71.5 + 62.8 - 16                   , 40]
 
 # def hist_adc(a, weights=None):
 # 	return empirical.histogram(a, bins=2**13, range=(0, 2**13), weights=weights)
@@ -55,7 +57,11 @@ for i in range(len(files)):
 		counts = np.loadtxt(filename, unpack=True)
 	elif filename.endswith('.npy'):
 		samples = np.load(filename)
-		counts = np.bincount(samples[:len(samples) // 5], minlength=2**13)
+		if not (logcut is None):
+			cutl = int(np.floor(logcut[i][0] * len(samples)))
+			cutr = int(np.floor(logcut[i][1] * len(samples)))
+			samples = samples[cutl:cutr]
+		counts = np.bincount(samples, minlength=2**13)
 
 	print('monte carlo...')
 	pa, sa, wpa, wsa = mc9.mc_cached(1.33, theta_0=theta_0, N=1000000, seed=0, nai_distance=Ls[i], date=calib_date[i])
@@ -118,7 +124,7 @@ for i in range(len(files)):
 	modelb = lab.CurveModel(fit_fun_b, symb=True)
 	modelc = lab.CurveModel(fit_fun_c, symb=True)
 
-	ax = fig.add_subplot(len(files) // 2, 2, i + 1)
+	ax = fig.add_subplot(len(files) // 2 + (1 if len(files) % 2 else 0), 2, i + 1)
 	rebin_counts = histo.partial_sum(counts, rebin)
 	histo.bar_line(edges, rebin_counts, ax=ax, label=filename.split('/')[-1])
 	ax.plot(fit_x,  model.f()(fit_x, *p0), '-k')
@@ -144,16 +150,21 @@ for i in range(len(calib_date)):
 	centers_117[i] = calibration.energy_inverse_calibration(calib_date[i], unc=True)(centers_117[i])
 
 utheta_0s = np.array([un.ufloat(t, 0.1, tag='angle') for t in theta_0s]) - un.ufloat(-0.09, 0.04, tag='forma')
-m_133 = [(1 - un.umath.cos(un.umath.radians(utheta_0s[i]))) / (1 / centers_133[i] - 1 / 1.33) for i in range(len(utheta_0s))]
-m_117 = [(1 - un.umath.cos(un.umath.radians(utheta_0s[i]))) / (1 / centers_117[i] - 1 / 1.17) for i in range(len(utheta_0s))]
+m_133 = np.array([(1 - un.umath.cos(un.umath.radians(utheta_0s[i]))) / (1 / centers_133[i] - 1 / 1.33) for i in range(len(utheta_0s))])
+m_117 = np.array([(1 - un.umath.cos(un.umath.radians(utheta_0s[i]))) / (1 / centers_117[i] - 1 / 1.17) for i in range(len(utheta_0s))])
+
+biases = np.array([bias.bias_double(1.33, 1.17, theta_0s[i], calib_date[i]) for i in range(len(theta_0s))])
+
+m_133 -= biases[:,0]
+m_117 -= biases[:,1]
 
 fig2 = plt.figure('fit_result')
 fig2.clf()
 ax = fig2.add_subplot(111)
 
-ax.errorbar(np.arange(4) - 0.1, unp.nominal_values(m_133), yerr=unp.std_devs(m_133), fmt='.', label='1.33')
-ax.errorbar(np.arange(4) + 0.1, unp.nominal_values(m_117), yerr=unp.std_devs(m_117), fmt='.', label='1.17')
-ax.set_xticks(np.arange(4))
+ax.errorbar(np.arange(len(theta_0s)) - 0.1, unp.nominal_values(m_133), yerr=unp.std_devs(m_133), fmt='.', label='1.33')
+ax.errorbar(np.arange(len(theta_0s)) + 0.1, unp.nominal_values(m_117), yerr=unp.std_devs(m_117), fmt='.', label='1.17')
+ax.set_xticks(np.arange(len(theta_0s)))
 ax.set_xticklabels(theta_0s)
 ax.legend(loc=1)
 
