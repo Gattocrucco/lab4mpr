@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import lab
+import uncertainties as un
 
 filename = '../bob/cal/cal.txt'
 
@@ -33,8 +34,7 @@ for date in unique_dates:
     if __name__ == '__main__':
         print('{}: m = {}, q = {}, chi2/ndof = {:.1f}/{}'.format(date, *lab.xe(par, np.sqrt(np.diag(cov))), chisq, chisq_dof))
     scale_factor_cal = chisq / chisq_dof
-    ms[date] = par[0]
-    qs[date] = par[1]
+    ms[date], qs[date] = un.correlated_values(par, cov, tags=['calibration'] * 2)
     
     if __name__ == '__main__':
         ec = ax_cal.errorbar(nom_energy, adc_energy, yerr=adc_energy_unc, fmt='.', label=date)
@@ -49,7 +49,7 @@ for date in unique_dates:
     if __name__ == '__main__':
         print('       ampl = {}, chi2/ndof = {:.1f}/{}'.format(lab.xe(out.par[0], np.sqrt(out.cov[0,0])), out.chisq, out.chisq_dof))
     scale_factor_res = out.chisq / out.chisq_dof
-    ams[date] = out.par[0]
+    ams[date] = un.ufloat(out.par[0], np.sqrt(out.cov[0,0]), tag='resolution')
     
     if __name__ == '__main__':
         ax_res.errorbar(nom_energy, adc_sigma, yerr=adc_sigma_unc, fmt='.', color=color)
@@ -61,17 +61,30 @@ for date in unique_dates:
 if __name__ == '__main__':
     fig.show()
 
-def energy_sigma(date='22feb'):
+def energy_sigma(date='22feb', unc=False):
+    a = ams[date]
+    if not unc:
+        a = a.n
     def fun(E):
-        return energy_sigma_fit(E, ams[date])
+        return energy_sigma_fit(E, a)
     return fun
 
-def energy_calibration(date='22feb'):
+def energy_calibration(date='22feb', unc=False):
+    m = ms[date]
+    q = qs[date]
+    if not unc:
+        m = m.n
+        q = q.n
     def fun(E):
-        return ms[date] * E + qs[date]
+        return m * E + q
     return fun
 
-def energy_inverse_calibration(date='22feb'):
+def energy_inverse_calibration(date='22feb', unc=False):
+    m = ms[date]
+    q = qs[date]
+    if not unc:
+        m = m.n
+        q = q.n
     def fun(digit):
-        return (digit - qs[date]) / ms[date]
+        return (digit - q) / m
     return fun
