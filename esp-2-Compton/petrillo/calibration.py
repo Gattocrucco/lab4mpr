@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import lab
 import uncertainties as un
 
+print('calibration...')
+
 filename = '../bob/cal/cal.txt'
 
 data = np.loadtxt(filename, unpack=True, usecols=(2,3,4,5,6,7))
@@ -27,13 +29,19 @@ for date in unique_dates:
     labels_date = labels[dates == date]
     nom_energy, adc_energy, adc_sigma, adc_energy_unc, adc_sigma_unc, adc_energy_sigma_cov = data_date
     
-    offset = len(np.unique(labels_date)) > 1
-    par, cov = lab.fit_linear(nom_energy, adc_energy, dy=adc_energy_unc, offset=offset, absolute_sigma=False)
-    chisq = np.sum((adc_energy - (nom_energy * par[0] + par[1]))**2 / adc_energy_unc**2)
-    chisq_dof = len(adc_energy) - (2 if offset else 1)
+    # offset = len(np.unique(labels_date)) > 1
+    # offset = True
+    # par, cov = lab.fit_linear(nom_energy, adc_energy, dy=adc_energy_unc, offset=offset, absolute_sigma=False)
+    # chisq = np.sum((adc_energy - (nom_energy * par[0] + par[1]))**2 / adc_energy_unc**2)
+    # chisq_dof = len(adc_energy) - (2 if offset else 1)
+    # if __name__ == '__main__':
+    #     print('{}: m = {}, q = {}, chi2/ndof = {:.1f}/{}'.format(date, *lab.xe(par, np.sqrt(np.diag(cov))), chisq, chisq_dof))
+    # scale_factor_cal = chisq / chisq_dof
+    out = lab.fit_curve(lambda x, m, q: m * x + q, nom_energy, adc_energy, dy=adc_energy_unc, absolute_sigma=False, p0=[4000, 10])
+    par, cov = out.par, out.cov
     if __name__ == '__main__':
-        print('{}: m = {}, q = {}, chi2/ndof = {:.1f}/{}'.format(date, *lab.xe(par, np.sqrt(np.diag(cov))), chisq, chisq_dof))
-    scale_factor_cal = chisq / chisq_dof
+        print('{}: m = {}, q = {}, chi2/ndof = {:.1f}/{}'.format(date, *lab.xe(par, np.sqrt(np.diag(cov))), out.chisq, out.chisq_dof))
+    scale_factor_cal = out.chisq / out.chisq_dof
     ms[date], qs[date] = un.correlated_values(par, cov, tags=['calibration'] * 2)
     
     if __name__ == '__main__':
