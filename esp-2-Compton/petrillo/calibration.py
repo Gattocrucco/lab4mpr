@@ -77,13 +77,14 @@ for i in range(len(unique_dates)):
     labels_date = labels[dates == date]
     nom_energy, adc_energy, adc_sigma, adc_energy_unc, adc_sigma_unc, _, _ = data_date
         
+    m = par[2 * i]
+    q = par[2 * i + 1]
+    c = cov[np.ix_((2*i,2*i+1),(2*i,2*i+1))]
+
     if __name__ == '__main__':
         ec = ax_cal.errorbar(nom_energy, adc_energy, yerr=adc_energy_unc, fmt='.', label=date)
         color = ec.lines[0].get_color()
         fx = np.linspace(np.min(nom_energy), np.max(nom_energy), 500)
-        m = par[2 * i]
-        q = par[2 * i + 1]
-        c = cov[np.ix_((2*i,2*i+1),(2*i,2*i+1))]
         ax_cal.plot(fx, m * fx + q, '-', color=color)
         print('{}: m = {}, q = {}'.format(date, *lab.xe([m,q], np.sqrt(np.diag(c)))))
     
