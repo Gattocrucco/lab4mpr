@@ -42,19 +42,23 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
 \end{itemize}
   
  \paragraph{Assorbimento fotoelettrico}
- Il fotone incidente è completamente assorbito e ionizza l'atomo, ovvero estrae un elettrone di energia cinetica $T_e = E_{\gamma} - E_b$, dove $E_{\gamma}$ è l'energia del fotone incidente e $E_b$ è l'energia di legame, solitamente piccola se paragonata a $E_{\gamma}$. Nel nostro caso l'energia di legame vale al massimo $\sim \SI{33}{keV}$ per gli elettroni 1s dello iodio, da confrontarsi con l'energia dei fotoni $\gamma$ del \co\;: \SI{1.17}{MeV} e \SI{1.33}{MeV}. Il risultato finale è una particella carica nello scintillatore con approssimativamente la stessa energia del fotone incidente.
+ Il fotone incidente è completamente assorbito e ionizza l'atomo, ovvero estrae un elettrone di energia cinetica 
+ \begin{equation} \label{eq:fotoelettrico}
+ T_e = E_{\gamma} - E_b
+ \end{equation} 
+ dove $E_{\gamma}$ è l'energia del fotone incidente e $E_b$ è l'energia di legame, solitamente piccola se paragonata a $E_{\gamma}$. Nel nostro caso l'energia di legame vale al massimo $\sim \SI{33}{keV}$ per gli elettroni 1s dello iodio, da confrontarsi con l'energia dei fotoni $\gamma$ del \co\;: \SI{1.17}{MeV} e \SI{1.33}{MeV}. Il risultato finale è una particella carica nello scintillatore con approssimativamente la stessa energia del fotone incidente.
  Un elettrone con energia cinetica di $\SI{1}{MeV}$ ha un range in NaI di $\sim \SI{2}{mm}$ FONTE CIPPA LIPPA, questo vuol dire che questi fotoni perdono tutta la loro energia nel nostro rivelatore (un cilindro retto $\sim \SI{5}{cm} \times \SI{5}{cm}$). 
 
  \paragraph{Scattering Rayleigh}
  Nello scattering Rayleigh l'intero atomo funge da bersaglio, perciò dopo l'urto il fotone cambia direzione e l'atomo rincula per conservare il momento. Data la grande massa dell'atomo (rispetto all'energia del fotone) l'energia scambiata è trascurabile e il fotone uscente ha praticamente la stessa energia iniziale. \`E chiaro quindi che i fotoni non potranno essere rivelati in uno scintillatore con questo meccanismo perché nessuna energia viene rilasciata all'interno.
  
  \paragraph{Scattering Compton}
- Se il fotone è abbastanza energetico può urtare un singolo elettrone. Per fotoni di questo tipo l'energia di legame può essere in prima approssimazione trascurata e si può trattare l'elettrone come libero. Nello stato finale troviamo il fotone che è stato deviato di un certo angolo $\theta$ rispetto alla sua direzione iniziale e ha ceduto parte della sua energia all'elettrone. La relazione tra energia del fotone dopo lo scattering e angolo è:
+ Se il fotone è abbastanza energetico può urtare un singolo elettrone. Per fotoni di questo tipo l'energia di legame può essere in prima approssimazione trascurata e si può trattare l'elettrone come libero. Nello stato finale troviamo il fotone che è stato deviato di un certo angolo $\theta$ rispetto alla sua direzione iniziale e ha ceduto parte della sua energia all'elettrone. La relazione tra energia del fotone dopo lo scattering e angolo è\footnote{Useremo la convenzione $e = c = 1$.}.:
  \marginpar{Quella che qui chiami $E$ prima era $E_\gamma$.\\
  \emph{Petrillo}}
  \begin{equation}
- \label{energia_compton}
- E' = \frac{E}{1+\frac{E}{m_ec^2}(1-\cos(\theta))}   
+ \label{energia_compton} 
+ E' = \frac{E}{1+\frac{E}{m_e}(1-\cos(\theta))} 
  \end{equation}
  Quello che misureremo nello spettroscopio sarà l'energia ceduta all'elettrone cioè $E-E'$. Quando un fotone fa scattering Compton nel nostro spettroscopio non abbiamo modo di conoscere l'angolo di scattering e non è possibile da una singola misura ricavare l'energia del fotone incidente.
  La sezione d'urto differenziale di questo processo (anche nota come formula di Klein–Nishina) è:
@@ -62,10 +66,7 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  \label{klein-nishina}
  \frac{d\sigma}{d\cos(\theta)} = \frac{\pi}{m_e^2} \cdot\left(\frac{E'}{E}\right)^2 \cdot \left(\frac{E}{E'} + \frac{E'}{E} - \sin^2(\theta)\right)
  \end{equation}
- dove $\frac{E'}{E}$ contiene implicitamente l'angolo: $\frac{E'}{E} = \frac{1}{E(1-\cos(\theta))/(m_ec)}$.
- \marginpar{La formula di $E'/E$ è sbagliata,
- comunque mi sembra ridondante riportarla.\\
- \emph{Petrillo}}
+ dove $\frac{E'}{E}$ contiene implicitamente l'angolo (vedi \autoref{energia_compton})
  La sezione d'urto differenziale è graficata in \autoref{fig:klein-nishina} ed è da qui evidente come all'energia di $\sim \SI{1}{MeV}$ è molto più probabile che il fotone sia deviato poco.
  
  \begin{figure}[h]
@@ -79,7 +80,7 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
- \subsubsection{Sezione d'urto fotone-materia}
+ \subsubsection{Sezione d'urto fotone-materia} \label{efficiency}
  La sezione d'urto fotone-materia per ciascuno dei processi prima descritti dipenderà dallo Z del materiale. In generale a basse energie ($ < \SI{10}{keV}$) sarà dominante l'assorbimento fotoelettrico, ad alte energie ($>\SI{100}{MeV}$) predominerà la produzione di coppie mentre lo scattering Compton sarà dominante in un range intermedio. L'estensione di questo range è maggiore al diminuire di Z come è chiaro dalla \autoref{fig:photon_cross_section_pdg}.
  
   \begin{figure}[h]
@@ -98,7 +99,7 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  \end{figure}
  
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- \subsubsection{Risposta del detector}
+ \subsubsection{Spettri attesi e dimensione del detector}
  \paragraph{Grande detector} Se il detector fosse abbastanza esteso, tutta l'energia dei fotoni, indipendentemente dalla complessità dell'interazione, verrebbe rilasciata nel rivelatore. Per una sorgente di fotoni ad una energia fissata, come potrebbe essere una sorgente di raggi $\gamma$\footnote{I raggi $\gamma$ delle sorgenti radioattive hanno tipicamente larghezze $\Gamma \ll \SI{1}{eV}$ e possono quindi considerarsi mono-energetici per i nostri scopi.},
  \marginpar{Non si dice monocromatici piuttosto che mono-energetici?\\
  \emph{Petrillo}}
@@ -110,7 +111,7 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  	\caption{\label{fig:spettrometro_grsso}Risposta di un detector di grandi dimensioni per fotoni mono-energetici}
  \end{figure}
 
- \paragraph{Piccolo detector}Nel caso opposto di un detector di piccole dimensioni i fotoni potranno interagire una sola volta, facendo effetto fotoelettrico o Compton\footnote{Stiamo trascurando la produzione di coppie, per i motivi detti sopra} in proporzione alla sezione d'urto. I fotoni che fanno effetto fotoelettrico produrranno un segnale alla loro energia (che non sarà una delta ma sarà allargato dalla risoluzione strumentale) come visto prima, mentre i fotoni che faranno fotoelettrico si produrranno uno spettro come quello predetto dalla sezione d'urto di Klein-Nishina (la spalla Compton sarà meno definita perché convoluta con la risoluzione strumentale). Il risultato finale sarà simile a quelli in \autoref{spettrometro_piccolo}
+ \paragraph{Piccolo detector}Nel caso opposto di un detector di piccole dimensioni i fotoni potranno interagire una sola volta, facendo effetto fotoelettrico o Compton\footnote{Stiamo trascurando la produzione di coppie, per i motivi detti sopra} in proporzione alla sezione d'urto. I fotoni che fanno effetto fotoelettrico produrranno un segnale alla loro energia (che non sarà una delta ma sarà allargato dalla risoluzione strumentale) come visto prima, mentre i fotoni che faranno fotoelettrico si produrranno uno spettro come quello predetto dalla sezione d'urto di Klein-Nishina (la spalla Compton sarà meno definita perché convoluta con la risoluzione strumentale). Il risultato finale sarà simile a quelli in \autoref{fig:spettrometro_piccolo}
  
   \begin{figure}[h]
  	\centering
@@ -118,9 +119,10 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  	\caption{\label{fig:spettrometro_piccolo}Risposta di un detector di piccole dimensioni per fotoni mono-energetici}
  \end{figure}
  
- \paragraph{Detector di dimensioni intermedie}Nel nostro caso disponiamo di un rivelatore $2"\times2"$ e, a partire dal grafico in FONTE che ci dà la lunghezza di radiazione al variare dell'energia del fotone in vari materiali, è semplice calcolare che per il nostro rivelatore la lunghezza di radiazione:$\sim \SI{5}{cm}$, quindi paragonabile alla dimensione del cristallo, ne segue che il $\sim 60\%$ dei fotoni interagisce nel cristallo almeno una volta. Ci troviamo quindi in una situazione intermedia per cui in pratica lo spettro sarà simile a quello in \autoref{spettrometro_piccolo}, ma il rapporto tra gli eventi Compton e quelli fotoelettrico non sarà uguale al rapporto tra le sezioni d'urto: è infatti importante il contributo di quei fotoni che dopo aver fatto Compton fanno fotoelettrico\footnote{Questa doppia interazione è anche favorita dal fatto che i fotoni che hanno fatto scattering Compton hanno perso energia e l'effetto fotoelettrico ha sezione d'urto maggiore al diminuire dell'energia} (quando ancora si trovano nello spettrometro): questi produrranno un segnale all'energia del fotopicco poiché tutta l'energia del fotone iniziale è rilasciata nello scintillatore. 
+ \paragraph{Detector di dimensioni intermedie}\label{par:spettrometro_intermedio}
+ Nel nostro caso disponiamo di un rivelatore $2"\times2"$ e, a partire dal grafico in FONTE che ci dà la lunghezza di radiazione al variare dell'energia del fotone in vari materiali, è semplice calcolare che per il nostro rivelatore la lunghezza di radiazione:$\sim \SI{5}{cm}$, quindi paragonabile alla dimensione del cristallo, ne segue che il $\sim 60\%$ dei fotoni interagisce nel cristallo almeno una volta. Ci troviamo quindi in una situazione intermedia per cui in pratica lo spettro sarà simile a quello in \autoref{fig:spettrometro_piccolo}, ma il rapporto tra gli eventi Compton e quelli fotoelettrico non sarà uguale al rapporto tra le sezioni d'urto: è infatti importante il contributo di quei fotoni che dopo aver fatto Compton fanno fotoelettrico\footnote{Questa doppia interazione è anche favorita dal fatto che i fotoni che hanno fatto scattering Compton hanno perso energia e l'effetto fotoelettrico ha sezione d'urto maggiore al diminuire dell'energia} (quando ancora si trovano nello spettrometro): questi produrranno un segnale all'energia del fotopicco poiché tutta l'energia del fotone iniziale è rilasciata nello scintillatore. 
  
- Lo spettro finale prodotto sarà la somma di molti effetti riassunti in \autoref{spettrometro_intermedio}:
+ Lo spettro finale prodotto sarà la somma di molti effetti riassunti in \autoref{fig:spettrometro_intermedio}:
  \begin{itemize}
  	\item l'assorbimento fotoelettrico produrrà un fotopicco all'energia dei fotoni incidenti;
  	\item i fotoni che fanno scattering Compton rilasceranno solo parte della loro energia producendo il caratteristico profilo predetto dalla  formula di Klein-Nishina;
@@ -128,7 +130,7 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  	\item spesso potrebbe essere visibile un picco all'energia caratteristica dei raggi X emessi dai materiali circostanti (ad esempio lo stesso spettrometro);
  	\item se la soergente decade $\beta^+$ (come il \na) sarà visibile un fotopicco a \SI{511}keV dovuto ai fotoni $\gamma$ prodotti nell'annichilazione del positrone con la materia circostante.
  \end{itemize}
-Lo spettro finale atteso (per una sorgente che emetta un solo fotone e uno spettrometro di dimensioni intermedie) è schematizzato in \autoref{fig:spettrometro_intermedio} e si può confrontare con un tipico spettro acquisito con il nostro spettrometro in \autoref{spettro_tipico} (si tratta del \cs\; che emette un fotone a \SI{662}keV)
+Lo spettro finale atteso (per una sorgente che emetta un solo fotone e uno spettrometro di dimensioni intermedie) è schematizzato in \autoref{fig:spettrometro_intermedio} e si può confrontare con un tipico spettro acquisito con il nostro spettrometro in \autoref{fig:spettro_tipico} (si tratta del \cs\; che emette un fotone a \SI{662}keV)
 
  \begin{figure}[h]
 	\centering
@@ -136,15 +138,44 @@ Lo spettro finale atteso (per una sorgente che emetta un solo fotone e uno spett
 	\caption{\label{fig:spettrometro_intermedio}Risposta di un detector di dimensioni intermedie (come il nostro) per fotoni mono-energetici}
  \end{figure}
 
+ \begin{figure}[h]
+	\centering
+	\includegraphics[width=28em]{spettro_tipico}
+	\caption{\label{fig:spettro_tipico}Un tipico spettro (\cs) acquisito con il nostro rivelatore. Si possono notare da sinistra verso destra: il picco dei raggi X, quello del backscattering, la spalla Compton e il fotopicco principale}
+\end{figure}
+
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- \subsubsection{Risposta del detector}
- 
+ \subsubsection{Risposta del detector e calibrazione}
+ Poiché ci troviamo nel caso descritto in \autoref{par:spettrometro_intermedio} non è possibile misurare l'energia di un singolo fotone $\gamma$ con il nostro apparato, l'unico modo per effettuare una misura di energia è supporre una certa distribuzione di energia della sorgente\footnote{I fotoni prodotti dalle nostre sorgenti radioattive sono monocromatici ai nostri scopi, lo stesso non si può dire dei fotoni secondari prodotti dallo scattering Compton sul nostro bersaglio e del quale vogliamo misurare l'energia, per questi dovremo ricavare la distribuzione in energia.} e fittare con uno spettro atteso.
+ Il modo più semplice è fittare il fotopicco che per sua natura sarà centrato all'energia dei fotoni incidenti (a meno di una correzione dovuta all'energia di legame che non è trascurabile a basse energie), alternativamente si può fittare la spalla Compton, che tuttavia è molto più difficile da modellizzare e dipende dalla massa dell'elettrone, la cui misura è l'obiettivo di questa esperienza.  
+
  \paragraph{Efficienza}
+ In definitiva un fotone che attraversa il cristallo di NaI può: 
+ \begin{itemize}
+ 	\item non interagire con probabilità $e^{-\frac{L}{\lambda}}$ dove $L$ è la distanza percorsa nel cristallo (che sarà dell'ordine dei \SI{5}{cm}) e $\lambda$ è la lunghezza di attenuazione (che nel nostro caso è dell'ordine dei \SI{5}{cm}).
+ 	\item fare effetto Compton con probabilità $(1-e^{-\frac{L}{\lambda}})\cdot \frac{\sigma_{C}(E)}{\sigma_{tot}(E)}$ dove $\sigma_{C}(E)$ è la sezione d'urto Compton all'energia $E$ e $\sigma_{tot}(E)$ è la sezione d'urto totale alla stessa energia.
+ 	\item fare effetto fotoelettrico con probabilità $(1-e^{-\frac{L}{\lambda}})\cdot \frac{\sigma_{ph}(E)}{\sigma_{tot}(E)}$.
+ \end{itemize}
+ Il fotone uscente dal Compton ha quindi le stesse possibilità di interazione ma con probabilità calcolate alla nuova energia e sulla nuova distanza percorsa.\marginpar{questo è un po' una ripetizione di roba già detta, ma mi sembrava il caso di ricapitolare (Bob)}
+ Il fatto che le sezioni d'urto cambino al variare dell'energia\footnote{Sopratutto quella dell'effetto fotoelettrico che nella regione di energie di interesse è molto ripida come si vede in \autoref{fig:photon_cross_section_xcom}.} e quindi l'efficienza di rivelazione produrrà una deformazione della spettro osservato.
+ 
+ Nella misura dell'energia dei fotoni secondari, l'efficienza di rivelazione nel NaI è anche correlata all'angolo di scattering poiché i fotoni che deviano di un angolo piccolo cedono poca energia agli elettroni del bersaglio, perciò l'efficienza di rivelazione nel bersaglio diminuisce e conseguentemente quella della coincidenza.
  
  \paragraph{Funzione di risposta (linearità)}
- Un rivelatore di radiazione ideale dovrebbe essere perfettamente lineare 
+ Un rivelatore di radiazione ideale dovrebbe essere lineare. Come già detto la funzione di risposta del nostro spettrometro è la composizione delle funzioni di risposta dei singoli processi che la compongono.
+ \begin{itemize}
+ 	\item La funzione di risposta associata all'interazione dei fotoni per effetto fotoelettrico è affine come visto in \autoref{eq:fotoelettrico}, dove per $E_b$ prendiamo l'energia di legame media.
+ 	\item 
+ \end{itemize}
+ \'E noto che la funzione di risposta 
+ 
+  In the case of NaI(Tl) detectors, it was recognized early that the
+ scintillation light is not proportional to the deposited energy. Fig. 5.20 shows the relative light
+ yield for fully stopped electrons as a function of the electron energy.
  
  \paragraph{Distribuzione di risposta (risoluzione)}
+ 
+ \paragraph{Calibrazione} %aggiungi nota sull'americio
  
  
  
