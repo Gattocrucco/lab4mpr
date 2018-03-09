@@ -2,28 +2,36 @@ import numpy as np
 import matplotlib.pyplot as plt
 import lab
 import uncertainties as un
+from scipy import optimize
 
 print('calibration...')
 
 filename = '../bob/cal/cal.txt'
 
+# empirical model for resolution
 def energy_sigma_fit(E, ampl):
     return ampl * (2.27 + 7.28 * E ** -0.29 - 2.41 * E ** 0.21) * E / (100 * 2.35)
-    
+
+# load data
 data = np.loadtxt(filename, unpack=True, usecols=(2,3,4,5,6,7,8))
 dates, labels = np.loadtxt(filename, unpack=True, usecols=(0,1), dtype=str)
 
+# set up figure
 if __name__ == '__main__':
     fig = plt.figure('calibration')
     fig.clf()
-
+    
     ax_cal = fig.add_subplot(211)
     ax_res = fig.add_subplot(212)
 
+# calibrations are identified by date
 unique_dates = np.unique(dates)
 
+# function to fit all calibrations simultaneously
 def fit_fun(x, *p):
-    y = []
+    # x is actually ignored
+    y = np.empty(len(dates))
+    n = 0
     for i in range(len(unique_dates)):
         date = unique_dates[i]
         nom_energy = data[0, dates == date]
@@ -31,12 +39,15 @@ def fit_fun(x, *p):
         m = p[2 * i]
         q = p[2 * i + 1]
         
-        y.append(m * nom_energy + q)
-    return np.array(y)
+        y[n:n + len(nom_energy)] = m * nom_energy + q
+        n += len(nom_energy)
+    return y
 
+# data containers for the fit
 y = []
-covy = np.empty(len(dates), len(dates))
-        
+covy = np.zeros((len(dates), len(dates)))
+
+# fill data containers, with the same ordering of fit_fun
 for i in range(len(unique_dates)):
     date = unique_dates[i]
     data_date = data[:, dates == date]
@@ -44,55 +55,62 @@ for i in range(len(unique_dates)):
     nom_energy, adc_energy, _, adc_energy_unc, _, _, co60_cov = data_date
     
     for j in range(len(y), len(y) + len(adc_energy)):
-        covy[j,j] = adc_energy_unc ** 2
-    
-    
+        covy[j,j] = adc_energy_unc[j - len(y)] ** 2
+    idxs = np.arange(len(y), len(y) + len(adc_energy), dtype=int)[labels_date == 'Co60']
+    covy[idxs[0], idxs[1]] = co60_cov[co60_cov != 0]
+    covy[idxs[1], idxs[0]] = covy[idxs[0], idxs[1]]
     
     y += list(adc_energy)
+    
+y = np.array(y)
 
-for date in unique_dates:
+# run fit
+p0 = [5000, 10] * len(unique_dates)
+par, cov = optimize.curve_fit(fit_fun, None, y, sigma=covy, p0=p0, absolute_sigma=False)
+
+# plot calibrations and fit resolutions separately
+# also fills results containers for interface
+ms, qs, ams = {}, {}, {}
+for i in range(len(unique_dates)):
+    date = unique_dates[i]
     data_date = data[:, dates == date]
     labels_date = labels[dates == date]
-    nom_energy, adc_energy, adc_sigma, adc_energy_unc, adc_sigma_unc, adc_energy_sigma_cov = data_date
-    
-    # offset = len(np.unique(labels_date)) > 1
-    # offset = True
-    # par, cov = lab.fit_linear(nom_energy, adc_energy, dy=adc_energy_unc, offset=offset, absolute_sigma=False)
-    # chisq = np.sum((adc_energy - (nom_energy * par[0] + par[1]))**2 / adc_energy_unc**2)
-    # chisq_dof = len(adc_energy) - (2 if offset else 1)
-    # if __name__ == '__main__':
-    #     print('{}: m = {}, q = {}, chi2/ndof = {:.1f}/{}'.format(date, *lab.xe(par, np.sqrt(np.diag(cov))), chisq, chisq_dof))
-    # scale_factor_cal = chisq / chisq_dof
-    out = lab.fit_curve(lambda x, m, q: m * x + q, nom_energy, adc_energy, dy=adc_energy_unc, absolute_sigma=False, p0=[4000, 10])
-    par, cov = out.par, out.cov
-    if __name__ == '__main__':
-        print('{}: m = {}, q = {}, chi2/ndof = {:.1f}/{}'.format(date, *lab.xe(par, np.sqrt(np.diag(cov))), out.chisq, out.chisq_dof))
-    scale_factor_cal = out.chisq / out.chisq_dof
-    ms[date], qs[date] = un.correlated_values(par, cov, tags=['calibration'] * 2)
-    
+    nom_energy, adc_energy, adc_sigma, adc_energy_unc, adc_sigma_unc, _, _ = data_date
+        
     if __name__ == '__main__':
         ec = ax_cal.errorbar(nom_energy, adc_energy, yerr=adc_energy_unc, fmt='.', label=date)
         color = ec.lines[0].get_color()
         fx = np.linspace(np.min(nom_energy), np.max(nom_energy), 500)
-        ax_cal.plot(fx, par[0] * fx + par[1], '-', color=color)
-        ax_cal.set_ylabel('peak center [digit]')
-        ax_cal.legend()
-        ax_cal.grid()
-
+        m = par[2 * i]
+        q = par[2 * i + 1]
+        c = cov[np.ix_((2*i,2*i+1),(2*i,2*i+1))]
+        ax_cal.plot(fx, m * fx + q, '-', color=color)
+        print('{}: m = {}, q = {}'.format(date, *lab.xe([m,q], np.sqrt(np.diag(c)))))
+    
+    # force different calibrations to be uncorrelated
+    # (actually true, but the fit is numerical)
+    m, q = un.correlated_values([m, q], c, tags=['calibration'] * 2)
+    ms[date] = m
+    qs[date] = q
+    
     out = lab.fit_curve(energy_sigma_fit, nom_energy, adc_sigma, dy=adc_sigma_unc, p0=1, absolute_sigma=False)
     if __name__ == '__main__':
         print('       ampl = {}, chi2/ndof = {:.1f}/{}'.format(lab.xe(out.par[0], np.sqrt(out.cov[0,0])), out.chisq, out.chisq_dof))
-    scale_factor_res = out.chisq / out.chisq_dof
     ams[date] = un.ufloat(out.par[0], np.sqrt(out.cov[0,0]), tag='resolution')
     
     if __name__ == '__main__':
         ax_res.errorbar(nom_energy, adc_sigma, yerr=adc_sigma_unc, fmt='.', color=color)
         ax_res.plot(fx, energy_sigma_fit(fx, *out.par), '-', color=color)
-        ax_res.set_ylabel('peak sigma [digit]')
-        ax_res.set_xlabel('nominal energy [MeV]')
-        ax_res.grid()
 
 if __name__ == '__main__':
+    ax_cal.set_ylabel('peak center [digit]')
+    ax_cal.grid()
+    ax_cal.legend()
+    
+    ax_res.set_ylabel('peak sigma [digit]')
+    ax_res.set_xlabel('nominal energy [MeV]')
+    ax_res.grid()
+    
     fig.show()
 
 def energy_sigma(date='22feb', unc=False):
