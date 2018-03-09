@@ -20,10 +20,35 @@ if __name__ == '__main__':
     ax_cal = fig.add_subplot(211)
     ax_res = fig.add_subplot(212)
 
-def fit_fun(unique_dates, )
 unique_dates = np.unique(dates)
-for date in unique_dates:
+
+def fit_fun(x, *p):
+    y = []
+    for i in range(len(unique_dates)):
+        date = unique_dates[i]
+        nom_energy = data[0, dates == date]
+        
+        m = p[2 * i]
+        q = p[2 * i + 1]
+        
+        y.append(m * nom_energy + q)
+    return np.array(y)
+
+y = []
+covy = np.empty(len(dates), len(dates))
+        
+for i in range(len(unique_dates)):
+    date = unique_dates[i]
+    data_date = data[:, dates == date]
+    labels_date = labels[dates == date]
+    nom_energy, adc_energy, _, adc_energy_unc, _, _, co60_cov = data_date
     
+    for j in range(len(y), len(y) + len(adc_energy)):
+        covy[j,j] = adc_energy_unc ** 2
+    
+    
+    
+    y += list(adc_energy)
 
 for date in unique_dates:
     data_date = data[:, dates == date]
