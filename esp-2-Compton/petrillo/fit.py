@@ -6,7 +6,9 @@ import histo
 import lab
 import sympy as sp
 from uncertainties import unumpy as unp
+import uncertainties as un
 import calibration
+import collections
 
 theta_0s =   [15                           , 7                     , 61.75                              , 45]
 files =      ['../dati/histo-27feb-e15.dat', '../dati/log-neve.npy', '../dati/histo-22feb-stralunga.dat', '../dati/histo-20feb-notte.dat']
@@ -16,6 +18,24 @@ Ls         = [40                           , 40                    , 71.5 + 62.8
 
 # def hist_adc(a, weights=None):
 # 	return empirical.histogram(a, bins=2**13, range=(0, 2**13), weights=weights)
+
+def errorsummary(x):
+    comps = x.error_components()
+    
+    tags = set(map(lambda v: v.tag, comps.keys()))
+    var = dict(zip(tags, [0] * len(tags)))
+    
+    for (v, sd) in comps.items():
+        var[v.tag] += sd ** 2
+    
+    tags = list(tags)
+    sds = np.sqrt(np.array([var[tag] for tag in tags]))
+    idx = np.argsort(sds)[::-1]
+    d = collections.OrderedDict()
+    for i in idx:
+        d[tags[i]] = sds[i]
+    
+    return d
 
 fig = plt.figure('fit')
 fig.clf()
@@ -35,7 +55,7 @@ for i in range(len(files)):
 		counts = np.loadtxt(filename, unpack=True)
 	elif filename.endswith('.npy'):
 		samples = np.load(filename)
-		counts = np.bincount(samples, minlength=2**13)
+		counts = np.bincount(samples[:len(samples) // 5], minlength=2**13)
 
 	print('monte carlo...')
 	pa, sa, wpa, wsa = mc9.mc_cached(1.33, theta_0=theta_0, N=1000000, seed=0, nai_distance=Ls[i], date=calib_date[i])
@@ -111,36 +131,31 @@ for i in range(len(files)):
 	ymax = np.max(rebin_counts[15:1000])
 	ax.set_ylim((-ymax * 0.05, ymax * 1.05))
 	
-	centers_133.append(out.upar[1])
-	centers_117.append(out.upar[6])
+	idx = np.array([1,6])
+	c133, c117 = un.correlated_values(out.par[idx], out.cov[np.ix_(idx,idx)], tags=['fit'] * 2)
+	centers_133.append(c133)
+	centers_117.append(c117)
 	
 def fun_energy(E_0, m_e, theta_0):
 	return E_0 / (1 + E_0 / m_e * (1 - np.cos(np.radians(theta_0))))
 
 for i in range(len(calib_date)):
-	centers_133[i] = calibration.energy_inverse_calibration(calib_date[i])(centers_133[i])
-	centers_117[i] = calibration.energy_inverse_calibration(calib_date[i])(centers_117[i])
+	centers_133[i] = calibration.energy_inverse_calibration(calib_date[i], unc=True)(centers_133[i])
+	centers_117[i] = calibration.energy_inverse_calibration(calib_date[i], unc=True)(centers_117[i])
 
-def fit_fun(theta_0s, m_e):
-	return np.concatenate([fun_energy(1.33, m_e, theta_0s[:4]), fun_energy(1.17, m_e, theta_0s[4:])])
-
-fit_x = np.concatenate([theta_0s, theta_0s])
-fit_dx = np.ones(fit_x.shape) * 0.1
-fit_uy = np.concatenate([centers_133, centers_117])
-fit_y = unp.nominal_values(fit_uy)
-fit_dy = unp.std_devs(fit_uy)
-
-out = lab.fit_curve(fit_fun, fit_x, fit_y, dx=fit_dx, dy=fit_dy, p0=0.511, print_info=1, absolute_sigma=False)
+utheta_0s = np.array([un.ufloat(t, 0.1, tag='angle') for t in theta_0s]) - un.ufloat(-0.09, 0.04, tag='forma')
+m_133 = [(1 - un.umath.cos(un.umath.radians(utheta_0s[i]))) / (1 / centers_133[i] - 1 / 1.33) for i in range(len(utheta_0s))]
+m_117 = [(1 - un.umath.cos(un.umath.radians(utheta_0s[i]))) / (1 / centers_117[i] - 1 / 1.17) for i in range(len(utheta_0s))]
 
 fig2 = plt.figure('fit_result')
 fig2.clf()
 ax = fig2.add_subplot(111)
 
-ft = np.linspace(np.min(theta_0s), np.max(theta_0s), 500)
-ax.errorbar(theta_0s, unp.nominal_values(centers_133), yerr=unp.std_devs(centers_133), fmt='.', label='1.33')
-ax.errorbar(theta_0s, unp.nominal_values(centers_117), yerr=unp.std_devs(centers_117), fmt='.', label='1.17')
-ax.plot(ft, fun_energy(1.33, out.par[0], ft))
-ax.plot(ft, fun_energy(1.17, out.par[0], ft))
+ax.errorbar(np.arange(4) - 0.1, unp.nominal_values(m_133), yerr=unp.std_devs(m_133), fmt='.', label='1.33')
+ax.errorbar(np.arange(4) + 0.1, unp.nominal_values(m_117), yerr=unp.std_devs(m_117), fmt='.', label='1.17')
+ax.set_xticks(np.arange(4))
+ax.set_xticklabels(theta_0s)
+ax.legend(loc=1)
 
 fig.show()
 fig2.show()
