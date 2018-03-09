@@ -7,7 +7,10 @@ print('calibration...')
 
 filename = '../bob/cal/cal.txt'
 
-data = np.loadtxt(filename, unpack=True, usecols=(2,3,4,5,6,7))
+def energy_sigma_fit(E, ampl):
+    return ampl * (2.27 + 7.28 * E ** -0.29 - 2.41 * E ** 0.21) * E / (100 * 2.35)
+    
+data = np.loadtxt(filename, unpack=True, usecols=(2,3,4,5,6,7,8))
 dates, labels = np.loadtxt(filename, unpack=True, usecols=(0,1), dtype=str)
 
 if __name__ == '__main__':
@@ -17,12 +20,10 @@ if __name__ == '__main__':
     ax_cal = fig.add_subplot(211)
     ax_res = fig.add_subplot(212)
 
+def fit_fun(unique_dates, )
 unique_dates = np.unique(dates)
-
-def energy_sigma_fit(E, ampl):
-    return ampl * (2.27 + 7.28 * E ** -0.29 - 2.41 * E ** 0.21) * E / (100 * 2.35)
-
-ms, qs, ams = {}, {}, {}
+for date in unique_dates:
+    
 
 for date in unique_dates:
     data_date = data[:, dates == date]
