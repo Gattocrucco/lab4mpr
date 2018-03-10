@@ -15,8 +15,9 @@ Il manuale dell'alimentatore riporta una stabilità dello \SI{0.5}{\permil} su \
 
 \subsubsection{Interazione con il bersaglio}
 
-Poniamo lo scintillatore plastico (PMT1) davanti alla sorgente in modo che i raggi~$\gamma$ possano interagire e subire scattering Compton. Osserviamo l'istogramma dei campionamenti del nostro spettrometro a vari angoli rispetto al bersaglio mentre l'ADC campiona in modalità automatica. 
-Come è possibile vedere dalla \autoref{4ang}, a piccolo angolo, quando lo spettrometro è direttamente attraversato dai fotoni che non interagiscono con il bersaglio, lo spettro è praticamente indistinguibile da quello acquisito senza bersaglio. A grandi angoli dovremmo vedere i fotoni che hanno fatto scattering Compton sul bersaglio e che dovrebbero riprodurre un circa lo stesso spettro ma traslato a energie minori, tuttavia come è chiaro dalla  \autoref{4ang} i fotoni che interagiscono sul muro subito dietro lo spettrometro o sul collimatore sovrastano in statistica il segnale che vorremmo osservare.
+Poniamo lo scintillatore plastico (PMT1) davanti alla sorgente in modo che i raggi~$\gamma$ possano interagire e subire scattering Compton. Osserviamo l'istogramma dei campionamenti del nostro spettrometro a vari angoli rispetto al bersaglio (ne riportiamo due in \autoref{4ang}) mentre l'ADC campiona in modalità automatica.
+Il range dei fotoni del \co\; nel bersaglio è $\sim\SI{10}{cm}$ e il suo spessore $\sim\SI{1}{cm}$, quindi solo il $10\%$ dei fotoni interagisce. 
+Se lo spettrometro si trova a piccolo angolo rispetto al bersaglio viene attraversato dai fotoni che non hanno interagito e lo spettro è sostanzialmente uguale a quello acquisito senza bersaglio. A grande angolo vorremmo vedere i fotoni che fanno Compton sul bersaglio e arrivano con un certo angolo di scattering sul rivelatore (producendo quindi uno spettro simile al precedente ma traslato a energie minori) ma i fotoni che non interagiscono proseguono sino al muro subito dietro lo spettrometro, una parte di questi fa scattering Compton o Rayleigh e può arrivare nello spettrometro, sovrastando in statistica il segnale che vorremmo osservare.
 
 \begin{figure}[h]
 	\centering
@@ -36,23 +37,26 @@ Come è possibile vedere dalla \autoref{4ang}, a piccolo angolo, quando lo spett
 Abbiamo poi confrontato lo spettro a \SI{45}{\degree} con o senza scintillatore plastico, ma non abbiamo notato nessuna differenza. Abbiamo anche verificato che, come atteso, il rate di eventi diminuisce all'aumentare della distanza.
 \marginpar{forse alcune di queste considerazioni sono stupide, ma è più facile togliere che aggiungere}
 
-L'ultima acquisizione di questa serie è diversa rispetto alle altre: lo scintillatore cristallino è stato schermato lateralmente e superiormente per ridurre il backscattering. L'istogramma di \autoref{casetta} mostra come questo fenomeno sia evidentemente diventato più raro.
+Proviamo a schermare lateralmente lo scintillatore cristallino per ridurre il fondo di backscattering e lo spettro in \autoref{casetta} mostra come effettivamente questo si riduca ma non a sufficienza da poter osservare il segnale. Si rende necessario l'uso di un trigger esterno per campionare sulla coincidenza di segnale tra PMT1 e PMT2.
 
 \begin{figure}
 \centering
 \includegraphics[width=25 em]{45gs}
-\caption{Spettro energetico del PMT2 con schermaggio superiore e laterale.}
+\caption{Spettro energetico del PMT2 con schermatura per ridurre il backscattering.}
 \label{casetta}
 \end{figure}
 
-\paragraph{Trigger esterno} Prima di esporre i risultati ottenuti illustriamo il funzionamento del circuito adoperato.\\
-Vogliamo acquisire i segnali ogni volta che l'uscita negativa di breve durata (qualche \si{ns}) del PMT2 supera una certa soglia. L'ampiezza tipica di questo segnale vale \SI{20}{mV}, perciò deve essere amplificata per poter essere letta dal discriminatore a nostra disposizione che ha una soglia minima di \SI{35}{mV}. Colleghiamo allora questa uscita ad una amplificatore 10x 
-\marginpar{spero che gradiscano la notazione ``10x'' \\  ci vuole anche il disegno}
-e mandiamo poi il segnale al solito discriminatore con soglia al minimo.
+\subsubsection{Trigger esterno}
+Per ottenere il segnale di trigger usiamo il circuito in \autoref{fig:trigger}:\marginpar{aggiungere figura?(Bob)}
+\begin{itemize}
+	\item il segnale "veloce" del PMT2 (quello non pre-amplificato con ampiezza di picco $\sim\SI{20}{mV}$) è prima amplificata di un fattore 10 attraverso un modulo di amplificazione lineare, quindi inviato ad un discriminatore con soglia a $\SI{35}{mV}$ (il minimo) in modo da ottenere una soglia efficace più bassa;
+	\item il segnale del PMT1 è inviato direttamente ad un discriminatore con soglia a $\SI{35}{mV}$ (il minimo);
+	\item entrambi gli output dei discriminatori vanno ad un sistema di anti-rettriger che impone un tempo morto di $\sim\SI{1}{\micro s}$ e produce segnali di durata $\sim\SI{30}{ns}$;
+	\item il segnale discriminato di uno dei PMT è ritardato di $\sim\SI{10}{ns}$ per compensare un ritardo asimmetrico dovuto al modulo di anti-retrigger;
+	\item facciamo la coincidenza dei due segnali così formati e mandiamo l'output al un modulo \texttt{gate \& delay}.
+	\item l'ADC richiede un segnale di trigger che parta almeno \SI{200}{ns} prima del picco e termini almeno \SI{200}{ns} dopo: usando l'oscilloscopio, regoliamo il modulo \texttt{gate \& delay} in modo da avere un segnale della durata di $\sim\SI{1}{\micro s}$ centrato sul picco del formatore.
+\end{itemize}
+Acquisiamo degli spettri di prova e verifichiamo che con le soglie impostate i primi $\sim1000$ canali dell'ADC non mostrano campionamenti.
 
-Per registrare il segnale dobbiamo provvedere alla costruzione di un trigger per l'ADC che, come specificato dalla documentazione, deve partire almeno \SI{200}{ns} prima del picco e deve terminare almeno \SI{200}{ns} dopo. Usando l'oscilloscopio, ritardiamo il segnale del discriminatore e lo allunghiamo attraverso l'uso di un modulo \texttt{gate \& delay} non retriggerabile. Scegliamo di farlo durare \SI{550}{ns} prima e dopo il picco del formatore.
-
-Colleghiamo il cavo coassiale che trasmette l'uscita del formatore all'ingresso ``gate'' dell'ADC facendo un parallelo con un tappino da \SI{50}{\Omega} perché questo ingresso ha una impedenza alta e il nostro accorgimento evita la deformazione del segnale.
-Modifichiamo il file di configurazione in modo che l'ADC acquisisca soltanto quando il trigger è attivo. Notiamo che la soglia appena utilizzata elimina tutti i segnali inferiori ai 1000 digit.
-\marginpar{Quale soglia?\\
-\emph{Petrillo}}
+\subsubsection{Punto di lavoro del PMT1}
+Il PMT1 può essere alimentato fino a \SI{1800}{V} e nel range \SI{1500}{V}-\SI{1700}{V} mostra circa lo stesso rate. Decidiamo di alimentarlo a \SI{1700}{V} per avere alta efficienza e mantenendo il rate ragionevole.
