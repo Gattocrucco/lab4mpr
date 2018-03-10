@@ -20,7 +20,7 @@ Riassumiamo il principio di misura dell'energia del nostro spettrometro:
 \end{itemize}
 Ciascuno di questi processi sarà caratterizzato da una:
 \begin{itemize}
-	\item\emph{funzione di risposta}: la funzione che da un certo input mi dà l'output medio (ad esempio energia della particella vs energia media rilasciata, energia rilasciata vs numero medio di fotoni prodotti, segnale in tensione vs digit, tutte in prima approssimazione lineari nel nostro range di lavoro\footnote{discuteremo nel seguito la validità di questa approssimazione});
+	\item\emph{funzione di risposta}: la funzione che da un certo input mi dà l'output medio (ad esempio energia della particella vs energia media rilasciata, energia rilasciata vs numero medio di fotoni prodotti, segnale in tensione vs digit, tutte in prima approssimazione lineari nel nostro range di lavoro\footnote{Discuteremo nel seguito la validità di questa approssimazione.});
     \item una \emph{distribuzione di risposta}: la distribuzione degli output a input fissato (ad esempio la distribuzione dei fotoni prodotti ad una energia fissata, queste ci aspettiamo avranno generalmente un forma a campana, in prima approssimazione gaussiana).
 \end{itemize}
 La misura finale avrà per funzione di risposta la composizione di tutte queste funzioni di risposta e per distribuzione di risposta la convoluzione delle distribuzioni di risposta (quest'ultima determinerà la risoluzione sperimentale).
@@ -60,16 +60,20 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  \emph{Petrillo}}
  \begin{equation}
  \label{energia_compton} 
- E' = \frac{E}{1+\frac{E}{m_e}(1-\cos(\theta))} 
+ E' = \frac{E}{1+\frac{E}{m_e}(1-\cos(\theta))}.
  \end{equation}
  Quello che misureremo nello spettroscopio sarà l'energia ceduta all'elettrone cioè $E-E'$. Quando un fotone fa scattering Compton nel nostro spettroscopio non abbiamo modo di conoscere l'angolo di scattering e non è possibile da una singola misura ricavare l'energia del fotone incidente.
  La sezione d'urto differenziale di questo processo (anche nota come formula di Klein–Nishina) è:
  \begin{equation}
  \label{klein-nishina}
- \frac{d\sigma}{d\cos(\theta)} = \frac{\pi\text{Z}}{m_e^2} \cdot\left(\frac{E'}{E}\right)^2 \cdot \left(\frac{E}{E'} + \frac{E'}{E} - \sin^2(\theta)\right)
+ \frac{d\sigma}{d\cos(\theta)} = \frac{\pi\text{Z}}{m_e^2} \cdot\left(\frac{E'}{E}\right)^2 \cdot \left(\frac{E}{E'} + \frac{E'}{E} - \sin^2(\theta)\right),
  \end{equation}
- dove $\frac{E'}{E}$ contiene implicitamente l'angolo (vedi \autoref{energia_compton})
- La sezione d'urto differenziale è graficata in \autoref{fig:klein-nishina} ed è da qui evidente come all'energia di $\sim \SI{1}{MeV}$ è molto più probabile che il fotone sia deviato poco, tuttavia esiste un angolo critico per cui l'energia ceduta dal fotone non è sufficiente a ionizzare e di fatti l'elettrone non può più considerarsi libero. L'energia di legame dell'orbitale K del carbonio (il materiale del nostro bersaglio) vale $E_b = \SI{0.277}{keV}$ e per i fotoni del \co\; l'angolo critico vale $\theta_c \simeq \SI{0.8}{\degree}$. 
+ dove $\frac{E'}{E}$ contiene implicitamente l'angolo attraverso la \eqref{energia_compton}.
+ La sezione d'urto differenziale è graficata in \autoref{fig:klein-nishina}
+ \marginpar{In che unità di misura è la sezione d'urto in figura?
+ Metterlo nella caption.\\
+ \emph{Petrillo}}
+ ed è da qui evidente come all'energia di $\sim \SI{1}{MeV}$ è molto più probabile che il fotone sia deviato poco, tuttavia esiste un angolo critico per cui l'energia ceduta dal fotone non è sufficiente a ionizzare e di fatti l'elettrone non può più considerarsi libero. L'energia di legame dell'orbitale K del carbonio (il materiale del nostro bersaglio) vale $E_b = \SI{0.277}{keV}$ e per i fotoni del \co\; l'angolo critico vale $\theta_c \simeq \SI{0.8}{\degree}$. 
  
  \begin{figure}[h]
  	\centering
@@ -87,18 +91,16 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  
   \begin{figure}[h]
  	\centering
- 	\includegraphics[width=20em]{cross_section_photon_pdg}
+ 	\includegraphics[width=\textwidth]{photon-matter-interaction}
  	\caption{\label{fig:photon_cross_section_pdg}Sezione d'urto in funzione dell'energia per i vari processi nel carbonio e nel piombo FONTE CIPPALIPPA.}
  \end{figure}
 
  \paragraph{Scelta del materiale per bersaglio e spettrometro}
- Nella nostra esperienza il bersaglio sarà di carbonio, mentre lo spettrometro è un cristallo di NaI ($\text{Z}(\text{Na})=11$, $\text{Z}(\text{I})=53$). Questa scelta è giustificata dal fatto che nel carbonio, all'energia dei fotoni del \co\; la sezione d'urto dell'assorbimento fotoelettrico è ampiamente trascurabile e l'energia del fotone è più facilmente misurabile dai fotopicchi associati all'assorbimento fotoelettrico. Sarà perciò preferibile usare il cristallo di NaI come spettrometro poiché a $\sim\SI{1}{MeV}$ il rapporto tra sezione d'urto Compton e sezione d'urto dell'assorbimento fotoelettrico vale circa 20, (come si può vedere anche in \autoref{fig:photon_cross_section_xcom}) questo è sufficiente per rendere i fotopicchi chiaramente visibili con la risoluzione strumentale. Inoltre scegliendo il carbonio per il bersaglio  sarà garantito che tutti i fotoni che interagiranno nel carbonio lo faranno per effetto Compton.
- 
- \marginpar{Non si legge un cazzo nella legenda di \autoref{fig:photon_cross_section_xcom} \\ (Andrea)}
- 
+ Nella nostra esperienza il bersaglio sarà di carbonio, mentre lo spettrometro è un cristallo di NaI ($\text{Z}(\text{Na})=11$, $\text{Z}(\text{I})=53$). Questa scelta è giustificata dal fatto che nel carbonio, all'energia dei fotoni del \co{}, la sezione d'urto dell'assorbimento fotoelettrico è ampiamente trascurabile e l'energia del fotone è più facilmente misurabile dai fotopicchi associati all'assorbimento fotoelettrico. Sarà perciò preferibile usare il cristallo di NaI come spettrometro poiché a $\sim\SI{1}{MeV}$ il rapporto tra sezione d'urto Compton e sezione d'urto dell'assorbimento fotoelettrico vale circa 20, come si può vedere in \autoref{fig:photon_cross_section_xcom}. Questo è sufficiente per rendere i fotopicchi chiaramente visibili con la risoluzione strumentale. Inoltre scegliendo il carbonio per il bersaglio  sarà garantito che tutti i fotoni che interagiranno nel carbonio lo faranno per effetto Compton.
+  
   \begin{figure}[h]
  	\centering
- 	\includegraphics[width=30em]{photon_cross_section_xcom}
+ 	\includegraphics[width=30em]{cross}
  	\caption{\label{fig:photon_cross_section_xcom}Sezione d'urto in funzione dell'energia per i vari processi nel NaI (densità $\rho = \SI{3.67}{g\;cm^3}$) FONTE CIPPALIPPA.}
  \end{figure}
  
