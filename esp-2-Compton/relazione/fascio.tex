@@ -1,5 +1,23 @@
 \subsection{Caratteristiche geometriche del fascio}
 
+\subsubsection{Accorgimenti sperimentali}
+
+Ci interessa misurare la divergenza angolare del fascio.
+Per farlo posizioniamo il PMT2 di fronte alla sorgente a vari angoli e triggeriamo sul PMT2 stesso. Lo scopo è disegnare un grafico dei rate in funzione dell'angolo.
+
+Per conoscere il tempo di acquisizione montiamo un circuito che, usando un timer,
+fa partire e fermare simultaneamente il trigger e il contatore.
+
+Per misurare meglio gli angoli abbiamo stampato un goniometro che abbiamo posizionato sotto il supporto trasparente della guida su cui scorre il PMT2. Infine abbiamo tracciato un segmento sulla parte trasparente che ci permette di capire a quale angolo posizioniamo il PMT2.
+Lo zero degli angoli è riferito al goniometro e otterremo il centro del fascio dalle misure.
+
+\subsubsection{Analisi dei dati e risultati}
+
+Scegliamo di misurare il rate solo in un certo intervallo di energia che contiene i due fotopicchi,
+per evitare di includere eventuali fondi a bassa energia che non provengono direttamente dalla sorgente.
+Facciamo anche una misura di <<fondo costante>> con il PMT2 posizionato in un punto non visibile dalla sorgente,
+ma con la sorgente aperta.
+
 \begin{table}
 	\centering
 
@@ -34,25 +52,6 @@
 	\label{forma}
 \end{figure}
 
-\subsubsection{Accorgimenti sperimentali}
-
-Ci interessa misurare la divergenza angolare del fascio.
-Per farlo posizioniamo il PMT2 di fronte alla sorgente a vari angoli e triggeriamo sul PMT2 stesso. Lo scopo è disegnare un grafico dei rate in funzione dell'angolo.
-
-Per conoscere il tempo di acquisizione montiamo un circuito che, usando un timer,
-fa partire e fermare simultaneamente il trigger e il contatore.
-
-Per misurare meglio gli angoli abbiamo stampato un goniometro che abbiamo posizionato sotto il supporto trasparente della guida su cui scorre il PMT2. Infine abbiamo tracciato un segmento sulla parte trasparente che ci permette di capire a quale angolo posizioniamo il PMT2.
-Lo zero degli angoli è riferito al goniometro e otterremo il centro del fascio dalle misure.
-
-\subsubsection{Analisi dei dati e risultati}
-
-Scegliamo di misurare il rate solo in un intervallo di energia che contiene i due fotopicchi,
-per evitare di includere eventuali fondi di raggi $\gamma$ che non provengono direttamente dalla sorgente.
-L'intervallo è abbastanza largo che il piccolo spostamento dei fotopicchi al variare dell'angolo del PMT2 non fa intersecare i fotopicchi con i bordi.
-Facciamo anche una misura di <<fondo costante>> con il PMT2 posizionato in un punto non visibile dalla sorgente,
-ma con la sorgente aperta.
-
 Le misure sono riportate in \autoref{tabfo}.
 La misura di fondo costante risulta praticamente trascurabile.
 In \autoref{forma} sono riportati i dati con sottratto il fondo costante.
@@ -62,7 +61,7 @@ e la interpretiamo come raggi che non provengono direttamente dalla sorgente
 perché si nota un'asimmetria rispetto al centro, che non c'è nella gaussiana stretta (il <<segnale>>)
 e che non corrisponde alla geometria cilindrica del collimatore.
 
-Se fittiamo una gaussiana per i dati dagli angoli \SI{-5}\degree{} a \SI5\degree{} otteniamo già un buon accordo.
+Se fittiamo una gaussiana per i dati degli angoli da \SI{-5}\degree{} a \SI5\degree{} otteniamo già un buon accordo.
 Tuttavia, vista la nostra interpretazione, riteniamo più sensato sottrarre il fondo piccato.
 A causa dell'asimmetria del fondo, se fittiamo le due gaussiane non otteniamo un buon accordo
 e la gaussiana di segnale viene fittata visibilmente peggio.

@@ -1,5 +1,16 @@
 \subsection{Calibrazione}\label{par:fondo1}
 
+Per calibrare la scala di energia dell'ADC usiamo le sorgenti ausiliarie.
+\marginpar{Aggiungere figura con tutti gli spettri e i fit di calibrazione per una certa data.\\
+\emph{Petrillo}}
+Poniamo una sorgente alla volta davanti allo spettrometro (con la sorgente principale chiusa e non visibile)
+e misuriamo lo spettro.
+Fittiamo i fotopicchi con gaussiane più un fondo modellato empiricamente con una retta tagliata alle ordinate negative
+(in modo che sia forzatamente positivo).
+Da ogni fotopicco otteniamo il centro e la deviazione standard.
+
+\paragraph{Scala dell'energia}
+
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{calibration}
@@ -22,19 +33,10 @@
 		\bottomrule
 	\end{tabular}
 	\caption{\label{tab:calibration}
-	Risultato della calibrazione.
+	Risultato della calibrazione;
 	$m$ e $q$ sono i parametri per calibrare la scala di energia,
 	$a$ è il parametro per calcolare la risoluzione.}
 \end{table}
-
-Per calibrare la scala di energia dell'ADC usiamo le sorgenti ausiliarie.
-Poniamo una sorgente alla volta davanti allo spettrometro (con la sorgente principale chiusa e non visibile)
-e misuriamo lo spettro.
-Fittiamo i fotopicchi con gaussiane più un fondo modellato empiricamente con una retta tagliata alle ordinate negative
-(in modo che sia forzatamente positivo).
-Da ogni fotopicco otteniamo il centro e la deviazione standard.
-
-\paragraph{Scala dell'energia}
 
 Fittiamo i centri in funzione dell'energia dei fotoni delle sorgenti con una retta $y=mx+q$,
 non includendo nel fit l'americio (quello a energia minore)

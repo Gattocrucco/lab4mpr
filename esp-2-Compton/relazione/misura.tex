@@ -5,12 +5,14 @@
 \begin{table}
 	\centering
 	\begin{tabular}{lllll}
+		\toprule
 		Data & Durata & Calibrazioni & Dati & Angolo \\
-		\hline
-		19--20 feb    & 20 ore & dopo, limitata & istogramma &           45.0\,\si{\degree} \\
+		\midrule
+		19--20 feb    & 20 ore & dopo, solo \co & istogramma &           45.0\,\si{\degree} \\
 		20--22 feb    & 40 ore & dopo           & istogramma &   61$\sfrac34$\,\si{\degree} \\
 		26--27 feb    & 22 ore & prima e dopo   & campioni   &           15.0\,\si{\degree} \\
-		27 feb--1 mar & 38 ore & prima          & campioni   & \phantom{1}7.0\,\si{\degree}   
+		27 feb--1 mar & 38 ore & prima          & campioni   & \phantom{1}7.0\,\si{\degree} \\
+		\bottomrule
 	\end{tabular}
 	\caption{\label{tab:misure}
 	Prese dati per ricavare la massa dell'elettrone.}
@@ -44,7 +46,8 @@ L'elenco delle misure è riportato in \autoref{tab:misure}.
 	\caption{\label{fig:empirical-test}
 	Simulazione della spalla Compton a \SI{45}{\degree} e fotone della sorgente a \SI{1.33}{MeV}
 	con diversi valori della massa dell'elettrone,
-	fittata con la funzione empirica con solo un parametro di scala libero.}
+	fittata con la funzione empirica con solo un parametro di scala libero
+	ed escludendo la parte sinistra della curva.}
 \end{figure}
 
 Per fare il fit della spalla Compton,
@@ -53,4 +56,4 @@ la simuliamo e fittiamo sulla simulazione una funzione empirica a 10 parametri
 per usarla sui dati blocchiamo tutti i parametri tranne un parametro di scala.
 In \autoref{fig:empirical-test} verifichiamo che,
 per valori della massa dell'elettrone di \SI{0.4}{MeV} e \SI{0.6}{MeV},
-la funzione descrive ancora sufficientemente bene la curva simulata.
+la funzione (ottenuta con massa \SI{0.511}{MeV}) descrive ancora sufficientemente bene la curva simulata.
