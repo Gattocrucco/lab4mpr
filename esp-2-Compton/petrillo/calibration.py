@@ -8,6 +8,9 @@ print('calibration...')
 
 filename = '../bob/cal/cal.txt'
 
+shapes = ['>', '^', 'v', 'x']
+colors = [[0.8]*3, [0.5]*3, [0.3]*3, [0]*3]
+
 # empirical model for resolution
 def energy_sigma_fit(E, ampl):
     return ampl * (2.27 + 7.28 * E ** -0.29 - 2.41 * E ** 0.21) * E / (100 * 2.35)
@@ -19,22 +22,26 @@ dates, labels = np.loadtxt(filename, unpack=True, usecols=(0,1), dtype=str)
 # set up figure
 if __name__ == '__main__':
     fig = plt.figure('calibration')
+    fig.set_tight_layout(True)
     fig.clf()
     
-    ax_cal = fig.add_subplot(211)
-    ax_res = fig.add_subplot(212)
+    ax_cal = fig.add_subplot(121)
+    ax_res = fig.add_subplot(122)
 
 # calibrations are identified by date
 unique_dates = np.unique(dates)
 
+L = np.sum(labels != 'Am241')
+
 # function to fit all calibrations simultaneously
 def fit_fun(x, *p):
     # x is actually ignored
-    y = np.empty(len(dates))
+    y = np.empty(L)
     n = 0
     for i in range(len(unique_dates)):
         date = unique_dates[i]
-        nom_energy = data[0, dates == date]
+        cond = (dates == date) & (labels != 'Am241')
+        nom_energy = data[0, cond]
         
         m = p[2 * i]
         q = p[2 * i + 1]
@@ -45,13 +52,14 @@ def fit_fun(x, *p):
 
 # data containers for the fit
 y = []
-covy = np.zeros((len(dates), len(dates)))
+covy = np.zeros((L, L))
 
 # fill data containers, with the same ordering of fit_fun
 for i in range(len(unique_dates)):
     date = unique_dates[i]
-    data_date = data[:, dates == date]
-    labels_date = labels[dates == date]
+    cond = (dates == date) & (labels != 'Am241')
+    data_date = data[:, cond]
+    labels_date = labels[cond]
     nom_energy, adc_energy, _, adc_energy_unc, _, _, co60_cov = data_date
     
     for j in range(len(y), len(y) + len(adc_energy)):
@@ -82,10 +90,11 @@ for i in range(len(unique_dates)):
     c = cov[np.ix_((2*i,2*i+1),(2*i,2*i+1))]
 
     if __name__ == '__main__':
-        ec = ax_cal.errorbar(nom_energy, adc_energy, yerr=adc_energy_unc, fmt='.', label=date)
-        color = ec.lines[0].get_color()
-        fx = np.linspace(np.min(nom_energy), np.max(nom_energy), 500)
-        ax_cal.plot(fx, m * fx + q, '-', color=color)
+        ax_cal.errorbar(nom_energy, adc_energy, yerr=adc_energy_unc, fmt=shapes[i], label=date, color=colors[i])
+        if date == '22feb':
+            nom_enegy_noam = nom_energy[labels_date != 'Am241']
+            fx = np.linspace(np.min(nom_enegy_noam), np.max(nom_enegy_noam), 500)
+            ax_cal.plot(fx, m * fx + q, '-', color=colors[i])
         print('{}: m = {}, q = {}'.format(date, *lab.xe([m,q], np.sqrt(np.diag(c)))))
     
     # force different calibrations to be uncorrelated
@@ -100,16 +109,19 @@ for i in range(len(unique_dates)):
     ams[date] = un.ufloat(out.par[0], np.sqrt(out.cov[0,0]), tag='resolution')
     
     if __name__ == '__main__':
-        ax_res.errorbar(nom_energy, adc_sigma, yerr=adc_sigma_unc, fmt='.', color=color)
-        ax_res.plot(fx, energy_sigma_fit(fx, *out.par), '-', color=color)
+        ax_res.errorbar(nom_energy, adc_sigma, yerr=adc_sigma_unc, fmt=shapes[i], color=colors[i])
+        if date == '22feb':
+            fx = np.linspace(np.min(nom_energy), np.max(nom_energy), 500)
+            ax_res.plot(fx, energy_sigma_fit(fx, *out.par), '-', color=colors[i])
 
 if __name__ == '__main__':
-    ax_cal.set_ylabel('peak center [digit]')
+    ax_cal.set_ylabel('centro del picco [digit]')
+    ax_cal.set_xlabel('energia nominale [MeV]')
     ax_cal.grid()
     ax_cal.legend()
     
-    ax_res.set_ylabel('peak sigma [digit]')
-    ax_res.set_xlabel('nominal energy [MeV]')
+    ax_res.set_ylabel('dev. st. del picco [digit]')
+    ax_res.set_xlabel('energia nominale [MeV]')
     ax_res.grid()
     
     fig.show()
