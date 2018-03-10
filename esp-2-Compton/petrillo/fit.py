@@ -11,7 +11,7 @@ import calibration
 import collections
 import bias
 
-theta_0s =   [15                         , 15                         , 7                     , 61.75                              , 45]
+theta_0s =   [15                         , 15                         , 7.4                    , 61.75                              , 45]
 files =      ['../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-neve.npy', '../dati/histo-22feb-stralunga.dat', '../dati/histo-20feb-notte.dat']
 logcut     = [(0, 1/2)                   , (1/2, 1)                   , (0, 1/5)              , None                               , None                           ]
 calib_date = ['26feb'                    , '27feb'                    , '27feb'               , '22feb'                            , '20feb']
