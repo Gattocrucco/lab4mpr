@@ -79,17 +79,17 @@ for i in range(len(files)):
     empa = empirical.EmpiricalSecondary(sa, wsa, symb=True)
     empb = empirical.EmpiricalSecondary(sb, wsb, symb=True)
 
-    def fit_fun_a(e, N1, mu1, sigma1, Ns1, scale1, f2, mu2, sigma2, Ns2, scale2, ampl, tau):
+    def fit_fun_a(e, N1, mu1, sigma1, Ns1, scale1, f2, mu1_mu2, sigma2, Ns2, scale2, ampl, tau):
         gaus1 = N1 / (sp.sqrt(2 * np.pi) * sigma1) * sp.exp(-1/2 * (e - mu1)**2 / sigma1**2)
         sh1 = Ns1 * empa(e, scale1)
         return gaus1 + sh1
     
-    def fit_fun_b(e, N1, mu1, sigma1, Ns1, scale1, f2, mu2, sigma2, Ns2, scale2, ampl, tau):
-        gaus2 = N1 * f2 / (sp.sqrt(2 * np.pi) * sigma2) * sp.exp(-1/2 * (e - mu2)**2 / sigma2**2)
+    def fit_fun_b(e, N1, mu1, sigma1, Ns1, scale1, f2, mu1_mu2, sigma2, Ns2, scale2, ampl, tau):
+        gaus2 = N1 * f2 / (sp.sqrt(2 * np.pi) * sigma2) * sp.exp(-1/2 * (e - mu1 + mu1_mu2)**2 / sigma2**2)
         sh2 = Ns2 * empb(e, scale2)
         return gaus2 + sh2
 
-    def fit_fun_c(e, N1, mu1, sigma1, Ns1, scale1, f2, mu2, sigma2, Ns2, scale2, ampl, tau):
+    def fit_fun_c(e, N1, mu1, sigma1, Ns1, scale1, f2, mu1_mu2, sigma2, Ns2, scale2, ampl, tau):
         return ampl * sp.exp(-e / tau)
 
     def fit_fun(e, *p):
@@ -110,11 +110,12 @@ for i in range(len(files)):
     ratio = total / mc_total
     p0 = [np.sum(wpa) * ratio, np.mean(pa), np.std(pa), np.sum(wsa) * ratio, 1, np.sum(wpb) * ratio, np.mean(pb), np.std(pb), np.sum(wsb) * ratio, 1, np.max(counts[100:len(counts) // 2]), 1500]
     p0[5] /= p0[0]
+    p0[6] = p0[1] - p0[6]
     pfix = np.zeros(len(p0), dtype=bool)
     if fixnorm[i]:
         pfix[5] = True
     bounds = [
-         [0, -np.inf, 0, 0, 0, 0, -np.inf, 0, 0, 0, 0, 100],
+         [0, -np.inf, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100],
          [np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf]
     ]
 
@@ -194,12 +195,14 @@ for i in range(len(files)):
 
     idx = np.array([1,6])
     if not bkg_sim[i]:
-        c133, c117 = un.correlated_values(out.par[idx], out.cov[np.ix_(idx,idx)], tags=['fit'] * 2)
+        c133, c133_c117 = un.correlated_values(out.par[idx], out.cov[np.ix_(idx,idx)], tags=['fit'] * 2)
+        c117 = c133 - c133_c117
     else:
         c133, c117 = np.nan, np.nan
     centers_133.append(c133)
     centers_117.append(c117)
-    c133_sim, c117_sim = un.correlated_values(out_sim.par[idx], out_sim.cov[np.ix_(idx,idx)], tags=['fit'] * 2)
+    c133_sim, c133_c117_sim = un.correlated_values(out_sim.par[idx], out_sim.cov[np.ix_(idx,idx)], tags=['fit'] * 2)
+    c117_sim = c133_sim - c133_c117_sim
     centers_133_sim.append(c133_sim)
     centers_117_sim.append(c117_sim)
 
