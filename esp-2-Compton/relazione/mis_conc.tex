@@ -18,49 +18,78 @@ L'uscita del modulo di coincidenza è poi portata ad un altro ingresso del modul
 
 \subsubsection{Accorgimenti sperimentali}
 
-Ci interessa misurare la divergenza angolare del fascio di cui terremo conto nel Monte Carlo in \autoref{simulazione}.
-\marginpar{mettere il label nella sezione opportuna}
+Ci interessa misurare la divergenza angolare del fascio.
 Per farlo posizioniamo il PMT2 di fronte alla sorgente a vari angoli e triggeriamo sul PMT2 stesso. Lo scopo è disegnare un grafico dei rate in funzione dell'angolo.
 
-Per fare questa misura colleghiamo una \texttt{time unit} che faremo partire a mano azionando la levetta \emph{start} e la bloccheremo spostando la levetta sulla posizione \emph{reset}. Impostando la manopola della durata temporale sulla posizione ``$\infty$'' abbiamo un segnale \texttt{NIM} costantemente a livello 1. Collegando l'uscita della \texttt{time unit} all'ingresso \emph{start} del contatore possiamo farlo partire quando vogliamo e possiamo fermare il contatore collegando l'\emph{end marker} all'ingresso \emph{stop} di quest'ultimo. 
-L'utilità di questo circuito sta nel fatto che, collegando un'altra uscita della \texttt{time unit} al modulo di coincidenze, è possibile attivare e disattivare il trigger dell'ADC ed il contatore contemporaneamente.
+Per conoscere il tempo di acquisizione montiamo un circuito che, usando un timer,
+fa partire e fermare simultaneamente il trigger e il contatore.
 
-Per misurare meglio gli angoli abbiamo stampato un goniometro che abbiamo posizionato sotto la guida su cui scorre il PMT2 e lo abbiamo ritagliato in modo che il centro dell'immagine corrisponda al perno di rotazione di tale guida. Infine abbiamo tracciato un segmento sulla parte trasparente che ci permette di capire a quale angolo posizioniamo il PMT.
+Per misurare meglio gli angoli abbiamo stampato un goniometro che abbiamo posizionato sotto il supporto trasparente della guida su cui scorre il PMT2. Infine abbiamo tracciato un segmento sulla parte trasparente che ci permette di capire a quale angolo posizioniamo il PMT2.
+Lo zero degli angoli è riferito al goniometro e otterremo il centro del fascio dalle misure.
 
 \subsubsection{Analisi dei dati e risultati}
 
-\marginpar{lascio a Jack l'onore di scrivere tutto quello che ha fatto (Andrea)}
+Scegliamo di misurare il rate solo in un intervallo di energia che contiene i due fotopicchi,
+per evitare di includere eventuali fondi di raggi $\gamma$ che non provengono direttamente dalla sorgente.
+L'intervallo è abbastanza largo che il piccolo spostamento dei fotopicchi al variare dell'angolo del PMT2 non fa intersecare i fotopicchi con i bordi.
+Facciamo anche una misura di <<fondo costante>> con il PMT2 posizionato in un punto non visibile dalla sorgente,
+ma con la sorgente aperta.
 
-\begin{table}[h]
-\centering
+Le misure sono riportate in \autoref{tabfo}.
+La misura di fondo costante risulta praticamente trascurabile.
+In \autoref{forma} sono riportati i dati con sottratto il fondo costante.
+Si nota che la forma sembra essere la somma di due gaussiane (che sono parabole in scala logaritmica).
+Chiamiamo la gaussiana più larga <<fondo piccato>>
+e la interpretiamo come raggi che non provengono direttamente dalla sorgente
+perché si nota un'asimmetria rispetto al centro, che non c'è nella gaussiana stretta (il <<segnale>>)
+e che non corrisponde alla geometria cilindrica del collimatore.
 
-\begin{tabular}{|c|c|}
-\hline
-angolo [\si{\degree}] & rate [\si{s^{-1}}] \\
-\hline
-$ 0 $ & $ 3788\pm11 $ \\ 
+Se fittiamo una gaussiana per i dati dagli angoli \SI{-5}\degree{} a \SI5\degree{} otteniamo già un buon accordo.
+Tuttavia, vista la nostra interpretazione, riteniamo più sensato sottrarre il fondo piccato.
+A causa dell'asimmetria del fondo, se fittiamo le due gaussiane non otteniamo un buon accordo
+e la gaussiana di segnale viene fittata visibilmente peggio.
+In sostanza: sappiamo modellare bene il segnale ma non il fondo.
+Allora estraiamo il fondo dal fit delle due gaussiane,
+lo sottraiamo e fittiamo la sola gaussiana di segnale da \SI{-4}\degree{} a \SI4\degree.
 
-$ 1 $ & $ 3422\pm10 $ \\ 
-$ 2 $ & $ 2690 \pm 9 $ \\ 
-$ 3 $ & $ 1926 \pm 8 $ \\ 
-$ 4 $ & $ 1156 \pm 6 $ \\ 
+La deviazione standard del segnale risulta \SI{2.52 \pm 0.03}{\degree},
+il centro \SI{-0.09 \pm 0.04}{\degree}.
+Dal segnale dobbiamo deconvolvere la forma dello scintillatore NaI,
+la cui deviazione standard è \SI{1.82 \pm 0.07}\degree, ottenuta sapendo che è un cilindro di raggio \SI{2}{''}
+e che dista \SI{40\pm 1.5}{cm} (l'incertezza sulla distanza è data dalla profondità dello scintillatore e dalla larghezza del collimatore).
+La deviazione standard della forma del fascio si ottiene semplicemente dalla sottrazione in quadratura
+e risulta \SI{1.73 \pm 0.09}{\degree}.
 
-$ -1 $ & $ 3517\pm11 $ \\ 
-$ -2 $ & $ 2843 \pm 9 $ \\ 
-$ -3 $ & $ 2087 \pm 8 $ \\ 
-$ -4 $ & $ 1306 \pm 6 $ \\ 
-\hline
-\end{tabular}
+\begin{table}
+	\centering
 
-\caption{Dati considerati nel fit per determinare la forma del fascio. L'errore sugli angoli è 0.1$^{\circ}$.}
-\label{tabfo}
+	\begin{tabular}{cc|cc|cc}
+		angolo [\si{\degree}] & rate [\si{s^{-1}}] & angolo [\si{\degree}] & rate [\si{s^{-1}}] & angolo [\si{\degree}] & rate [\si{s^{-1}}] \\
+		\hline
+			$-20$ & $102.8\,\pm\,1.1$ & $-4$ & $1310\,\pm\,6$  & $5$ & $544\,\pm\,4$       \\
+			$-15$ & $149.6\,\pm\,1.4$ & $-3$ & $2092\,\pm\,8$  & $6$ & $205.5\,\pm\,2.1$   \\
+			$-10$ & $191.4\,\pm\,1.7$ & $-2$ & $2847\,\pm\,9$  & $7$ & $173.2\,\pm\,1.9$   \\
+			$-9$ & $208.0\,\pm\,1.8$  & $-1$ & $3521\,\pm\,11$ & $8$ & $173.7\,\pm\,1.6$   \\
+			$-8$ & $215.2\,\pm\,1.8$  & $0$ & $3792\,\pm\,11$  & $9$ & $174.7\,\pm\,1.6$   \\
+			$-7$ & $228.3\,\pm\,2.2$  & $1$ & $3426\,\pm\,10$  & $10$ & $170.2\,\pm\,1.6$  \\
+			$-6$ & $298\,\pm\,3$      & $2$ & $2695\,\pm\,9$   & $15$ & $118.5\,\pm\,1.2$  \\
+			$-5$ & $680\,\pm\,5$      & $3$ & $1930\,\pm\,8$   & $20$ & $78.4\,\pm\,0.9$   \\
+			     &                  & $4$ & $1160\,\pm\,6$   &      &
+	\end{tabular}
+
+	\caption{Rate senza coincidenza nei canali dell'ADC 5500--8040
+	al variare dell'angolo del PMT2.
+	L'errore sugli angoli è 0.1$^{\circ}$.
+	Il fondo costante misurato è \SI{4.43\pm0.2}{s^{-1}}.}
+	\label{tabfo}
 \end{table}
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=25 em]{forma}
-\caption{Fit della forma del fascio e relativo fondo.}
-\label{forma}
+\begin{figure}
+	\centering
+	\includegraphics[width=32em]{forma}
+	\caption{Dati e fit della forma del fascio.
+	Nella legenda, <<fondo p.>> sta per <<fondo piccato>> e <<fondo c.>> per <<fondo costante>>.}
+	\label{forma}
 \end{figure}
 
 
