@@ -126,6 +126,8 @@ mu2, dmu2 = integrate.quad(integrand_mu2, left, right)
 sigma2_nai = mu2/mu0 - (mu1/mu0)**2
 sigma2_nai *= (180 / np.pi)**2
 
-sigma_beam = umath.sqrt(un.ufloat(par[2], np.sqrt(cov[2,2]), 'beam sigma')**2 - sigma2_nai)
+sigma_nai = un.ufloat(np.sqrt(sigma2_nai), np.sqrt(sigma2_nai) * 1.5 / 40, 'nai sigma')
 
-print('\nsigma nai = {:g} °\nsigma beam = {:P} °'.format(np.sqrt(sigma2_nai), sigma_beam))
+sigma_beam = umath.sqrt(un.ufloat(par[2], np.sqrt(cov[2,2]), 'beam sigma')**2 - sigma_nai**2)
+
+print('\nsigma nai = {:P} °\nsigma beam = {:P} °'.format(sigma_nai, sigma_beam))
