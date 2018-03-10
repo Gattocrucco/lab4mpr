@@ -17,6 +17,7 @@ logcut     = [(0, 1/2)                   , (1/2, 1)                   , (0, 1/5)
 calib_date = ['26feb'                    , '27feb'                    , '27feb'               , '22feb'                            , '20feb']
 fitcuts =    [(3000, 8000)               , (3000, 8000)               , (3000, 8000)          , (1500, 4500)                       , (2000, 6000)]
 Ls         = [40                         , 40                         , 40                    , 71.5 + 62.8 - 16                   , 40]
+fixnorm    = [False                      , False                      , False                 , True                               , True]
 
 # def hist_adc(a, weights=None):
 # 	return empirical.histogram(a, bins=2**13, range=(0, 2**13), weights=weights)
@@ -75,17 +76,17 @@ for i in range(len(files)):
 	empa = empirical.EmpiricalSecondary(sa, wsa, symb=True)
 	empb = empirical.EmpiricalSecondary(sb, wsb, symb=True)
 
-	def fit_fun_a(e, N1, mu1, sigma1, Ns1, scale1, N2, mu2, sigma2, Ns2, scale2, ampl, tau):
+	def fit_fun_a(e, N1, mu1, sigma1, Ns1, scale1, f2, mu2, sigma2, Ns2, scale2, ampl, tau):
 	    gaus1 = N1 / (sp.sqrt(2 * np.pi) * sigma1) * sp.exp(-1/2 * (e - mu1)**2 / sigma1**2)
 	    sh1 = Ns1 * empa(e, scale1)
 	    return gaus1 + sh1
     
-	def fit_fun_b(e, N1, mu1, sigma1, Ns1, scale1, N2, mu2, sigma2, Ns2, scale2, ampl, tau):
-	    gaus2 = N2 / (sp.sqrt(2 * np.pi) * sigma2) * sp.exp(-1/2 * (e - mu2)**2 / sigma2**2)
+	def fit_fun_b(e, N1, mu1, sigma1, Ns1, scale1, f2, mu2, sigma2, Ns2, scale2, ampl, tau):
+	    gaus2 = N1 * f2 / (sp.sqrt(2 * np.pi) * sigma2) * sp.exp(-1/2 * (e - mu2)**2 / sigma2**2)
 	    sh2 = Ns2 * empb(e, scale2)
 	    return gaus2 + sh2
 
-	def fit_fun_c(e, N1, mu1, sigma1, Ns1, scale1, N2, mu2, sigma2, Ns2, scale2, ampl, tau):
+	def fit_fun_c(e, N1, mu1, sigma1, Ns1, scale1, f2, mu2, sigma2, Ns2, scale2, ampl, tau):
 		return ampl * sp.exp(-e / tau)
 
 	def fit_fun(e, *p):
@@ -105,6 +106,10 @@ for i in range(len(files)):
 	mc_total = np.sum(wpa) + np.sum(wsa) + np.sum(wpb) + np.sum(wsb)
 	ratio = total / mc_total
 	p0 = [np.sum(wpa) * ratio, np.mean(pa), np.std(pa), np.sum(wsa) * ratio, 1, np.sum(wpb) * ratio, np.mean(pb), np.std(pb), np.sum(wsb) * ratio, 1, np.max(counts[100:len(counts) // 2]), 1500]
+	p0[5] /= p0[0]
+	pfix = np.zeros(len(p0), dtype=bool)
+	if fixnorm[i]:
+		pfix[5] = True
 	bounds = [
 		 [0, -np.inf, 0, 0, 0, 0, -np.inf, 0, 0, 0, 0, 100],
 		 [np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf]
@@ -115,7 +120,7 @@ for i in range(len(files)):
 
 	model = lab.CurveModel(fit_fun, symb=True, npar=len(p0))
 	try:
-		out = lab.fit_curve(model, fit_x, fit_y, dy=fit_dy, p0=p0, print_info=3, method='linodr', bounds=bounds)
+		out = lab.fit_curve(model, fit_x, fit_y, dy=fit_dy, p0=p0, pfix=pfix, print_info=3, method='linodr', bounds=bounds)
 		par = out.par
 	except:
 		par = p0
@@ -125,6 +130,8 @@ for i in range(len(files)):
 	p0_sim = np.copy(p0)
 	pfix = [3, 8]
 	p0_sim[pfix] = 0
+	if fixnorm[i]:
+		pfix += [5]
 	pfix += [4, 9]
 	# try:
 	out_sim = lab.fit_curve(model, fit_x, fit_y, dy=fit_dy, p0=p0_sim, pfix=pfix, print_info=3, method='linodr', bounds=bounds)
@@ -181,7 +188,7 @@ m_117 = np.array([(1 - un.umath.cos(un.umath.radians(utheta_0s[i]))) / (1 / cent
 m_133_sim = np.array([(1 - un.umath.cos(un.umath.radians(utheta_0s[i]))) / (1 / centers_133_sim[i] - 1 / 1.33) for i in range(len(utheta_0s))])
 m_117_sim = np.array([(1 - un.umath.cos(un.umath.radians(utheta_0s[i]))) / (1 / centers_117_sim[i] - 1 / 1.17) for i in range(len(utheta_0s))])
 
-biases = np.array([bias.bias_double(1.33, 1.17, theta_0s[i], calib_date[i]) for i in range(len(theta_0s))])
+biases = np.array([bias.bias_double(1.33, 1.17, theta_0s[i], calib_date[i], fixnorm=fixnorm[i]) for i in range(len(theta_0s))])
 
 m_133 -= biases[:,0]
 m_117 -= biases[:,1]
