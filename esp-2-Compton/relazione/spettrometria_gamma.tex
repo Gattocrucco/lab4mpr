@@ -5,16 +5,7 @@ Riassumiamo il principio di misura dell'energia del nostro spettrometro:
 	\item lo scintillatore produce luce in funzione dell'energia rilasciata ($\sim \SI{40}{fotoni \; keV^{-1}}$ nel NaI(Tl));
 	\item i fotoni raggiungono il fotomoltiplicatore dopo essere stati riflessi sulle pareti del cristallo (rivestite di materiale riflettente) e nella guida ottica;
 	\item il fotomoltiplicatore amplifica il segnale dei fotoni e produce in uscita un segnale (negativo e di breve durata: $\sim \SI{10}{\nano s}$) di picco proporzionale al numero di fotoni;
-	\item la base del fotomoltiplicatore in dotazione fornisce anche un segnale pre-amplificato positivo a bassa impedenza (perciò di lunga durata $\sim \SI{1}{\micro s}$);
-	\marginpar{Cosa vuol dire <<segnale a bassa impedenza>>?
-	Se è il segnale di uscita è quello preamplificato
-	quindi è banale dire che ha in qualche senso bassa impedenza di uscita
-	e non implica che duri molto;
-	se è il segnale in ingresso l'impedenza in ingresso del preamplificatore è invece alta
-	e questo implica che il segnale duri più a lungo.\\
-	\emph{Petrillo} \\
-	Sulla scheda è scritto il contrario\\
-	(Andrea)}
+	\item la base del fotomoltiplicatore in dotazione fornisce anche un segnale pre-amplificato positivo di lunga durata $\sim \SI{1}{\micro s}$;
 	\item questo segnale viene riconosciuto dal formatore/amplificatore che produce in uscita un segnale gaussiano di durata nota ($\SI{10}{\micro s}$) e di picco proporzionale all'energia rilasciata;
 	\item l'output dell'amplificatore va all'ADC (tipicamente triggerato da un segnale esterno) che campiona sul massimo del segnale in una finestra temporale imposta dal trigger e converte il segnale in tensione in un segnale digitale a 13 bit.
 \end{itemize}
@@ -23,13 +14,9 @@ Ciascuno di questi processi sarà caratterizzato da una:
 	\item\emph{funzione di risposta}: la funzione che da un certo input mi dà l'output medio (ad esempio energia della particella vs energia media rilasciata, energia rilasciata vs numero medio di fotoni prodotti, segnale in tensione vs digit, tutte in prima approssimazione lineari nel nostro range di lavoro\footnote{Discuteremo nel seguito la validità di questa approssimazione.});
     \item una \emph{distribuzione di risposta}: la distribuzione degli output a input fissato (ad esempio la distribuzione dei fotoni prodotti ad una energia fissata, queste ci aspettiamo avranno generalmente un forma a campana, in prima approssimazione gaussiana).
 \end{itemize}
-La misura finale avrà per funzione di risposta la composizione di tutte queste funzioni di risposta e per distribuzione di risposta la convoluzione delle distribuzioni di risposta (quest'ultima determinerà la risoluzione sperimentale).
-\marginpar{Non è una convoluzione:
-$p(x_0)=\int\de x_1 p(x_0|x_1) p(x_1)
+La misura finale avrà per funzione di risposta la composizione di tutte queste funzioni di risposta e per distribuzione di risposta  $p(x_0)=\int\de x_1 p(x_0|x_1) p(x_1)
 =\int \de x_1 p(x_0|x_1) \int \de x_2 p(x_1|x_2)
-=\int \de x_1 \dotsm \de x_n p(x_0|x_1)\dotsm p(x_{n-1}|x_n)$.\\
-\emph{Petrillo}}
-
+=\int \de x_1 \dotsm \de x_n p(x_0|x_1)\dotsm p(x_{n-1}|x_n)$, dove le $p(x_n,x_{n+1})$ sono le distribuzioni di risposta dei singoli processi.
 Nella nostra esperienza lo spettrometro dovrà misurare l'energia di fotoni $\gamma$ che, essendo neutri, devono prima interagire con la materia del rivelatore e trasferire tutta o parte della loro energia a particelle cariche, delle quali sarà poi misurabile l'energia nel modo descritto sopra. Bisogna quindi analizzare le interazioni fotone-materia per modellizzare gli spettri che andremo poi ad osservare.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -55,28 +42,25 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  Nello scattering Rayleigh l'intero atomo funge da bersaglio, perciò dopo l'urto il fotone cambia direzione e l'atomo rincula per conservare il momento. Data la grande massa dell'atomo (rispetto all'energia del fotone) l'energia scambiata è trascurabile e il fotone uscente ha praticamente la stessa energia iniziale. \`E chiaro quindi che i fotoni non potranno essere rivelati in uno scintillatore con questo meccanismo perché nessuna energia viene rilasciata all'interno.
  
  \paragraph{Scattering Compton}
- Se il fotone è abbastanza energetico può urtare un singolo elettrone. Per fotoni di questo tipo l'energia di legame può essere in prima approssimazione trascurata e si può trattare l'elettrone come libero. Nello stato finale troviamo il fotone che è stato deviato di un certo angolo $\theta$ rispetto alla sua direzione iniziale e ha ceduto parte della sua energia all'elettrone. La relazione tra energia del fotone dopo lo scattering e angolo è\footnote{Useremo la convenzione $e = c = 1$.}:
+ Se il fotone è abbastanza energetico può urtare un singolo elettrone. Per fotoni di questo tipo l'energia di legame può essere in prima approssimazione trascurata e si può trattare l'elettrone come libero. Nello stato finale troviamo il fotone che è stato deviato di un certo angolo $\theta$ rispetto alla sua direzione iniziale e ha ceduto parte della sua energia all'elettrone. La relazione tra energia del fotone dopo lo scattering e angolo è:
  \begin{equation}
  \label{energia_compton} 
- E'_{\gamma} = \frac{E_{\gamma}}{1+\frac{E_{\gamma}}{m_e}(1-\cos{\theta})}.
+ E' = \frac{E}{1+\frac{E}{m_ec^2}(1-\cos{\theta})}.
  \end{equation}
  Quello che misureremo nello spettroscopio sarà l'energia ceduta all'elettrone cioè $E-E'$. Quando un fotone fa scattering Compton nel nostro spettroscopio non abbiamo modo di conoscere l'angolo di scattering e non è possibile da una singola misura ricavare l'energia del fotone incidente.
  La sezione d'urto differenziale di questo processo (anche nota come formula di Klein–Nishina) è:
  \begin{equation}
  \label{klein-nishina}
- \frac{d\sigma}{d\cos{\theta}} = \frac{\pi\text{Z}}{m_e^2} \cdot\left(\frac{E'_{\gamma}}{E_{\gamma}}\right)^2 \cdot \left(\frac{E_{\gamma}}{E'_{\gamma}} + \frac{E'_{\gamma}}{E_{\gamma}} - \sin^2{\theta}\right),
+ \frac{d\sigma}{d\cos{\theta}} = \frac{\pi\text{Z}\alpha^2\hbar^2}{m_e^2c^2} \cdot\left(\frac{E'}{E}\right)^2 \cdot \left(\frac{E}{E'} + \frac{E'}{E} - \sin^2{\theta}\right),
  \end{equation}
  dove $\frac{E'}{E}$ contiene implicitamente l'angolo attraverso la \eqref{energia_compton}.
  La sezione d'urto differenziale è graficata in \autoref{fig:klein-nishina}
- \marginpar{In che unità di misura è la sezione d'urto in figura?
- Metterlo nella caption.\\
- \emph{Petrillo}}
  ed è da qui evidente come all'energia di $\sim \SI{1}{MeV}$ è molto più probabile che il fotone sia deviato poco, tuttavia esiste un angolo critico per cui l'energia ceduta dal fotone non è sufficiente a ionizzare e di fatti l'elettrone non può più considerarsi libero. L'energia di legame dell'orbitale K del carbonio (il materiale del nostro bersaglio) vale $E_b = \SI{0.277}{keV}$ e per i fotoni del \co\; l'angolo critico vale $\theta_c \simeq \SI{0.8}{\degree}$. 
  
  \begin{figure}[h]
  	\centering
  	\includegraphics[width=20em]{klein-nishina}
- 	\caption{\label{fig:klein-nishina}Sezione d'urto in funzione dell'angolo di scattering Compton.}
+ 	\caption{\label{fig:klein-nishina}Sezione d'urto (in $\si{m^2}$) in funzione dell'angolo di scattering Compton.}
  \end{figure}
 
  \paragraph{Produzione di coppie}
@@ -119,9 +103,7 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
 	Risposta di un detector di grandi dimensioni per fotoni mono-energetici \cite{6}.}
  \end{figure}
 
- \paragraph{Piccolo detector}Nel caso opposto di un detector di piccole dimensioni i fotoni potranno interagire una sola volta, facendo effetto fotoelettrico o Compton\footnote{Stiamo trascurando la produzione di coppie, per i motivi detti sopra.} in proporzione alla sezione d'urto. I fotoni che fanno effetto fotoelettrico produrranno un segnale alla loro energia (che non sarà una delta ma sarà allargato dalla risoluzione strumentale) come visto prima, mentre i fotoni che faranno fotoelettrico si produrranno uno spettro come quello predetto dalla sezione d'urto di Klein-Nishina (la spalla Compton sarà meno definita perché convoluta con la risoluzione strumentale).
-\marginpar{Non credo che sia una convoluzione perché la $\sigma$ della gaussiana dipende dall'energia.\\
-\emph{Petrillo}}
+ \paragraph{Piccolo detector}Nel caso opposto di un detector di piccole dimensioni i fotoni potranno interagire una sola volta, facendo effetto fotoelettrico o Compton\footnote{Stiamo trascurando la produzione di coppie, per i motivi detti sopra.} in proporzione alla sezione d'urto. I fotoni che fanno effetto fotoelettrico produrranno un segnale alla loro energia (che non sarà una delta ma sarà allargato dalla risoluzione strumentale) come visto prima, mentre i fotoni che faranno fotoelettrico si produrranno uno spettro come quello predetto dalla sezione d'urto di Klein-Nishina (la spalla Compton sarà meno definita per via della risoluzione strumentale).
 Il risultato finale sarà simile a quelli in \autoref{fig:spettrometro_piccolo}.
  
   \begin{figure}[h]
@@ -154,8 +136,6 @@ Lo spettro finale atteso (per una sorgente che emetta un solo fotone e uno spett
 	\includegraphics[width=\textwidth]{spettro_tipico}
 	\caption{\label{fig:spettro_tipico}Un tipico spettro (\cs) acquisito con il nostro rivelatore. Si possono notare da sinistra verso destra: il picco dei raggi X, quello del backscattering, la spalla Compton e il fotopicco principale.}
 \end{figure}
-
-\marginpar{La qualità di \autoref{fig:spettrometro_intermedio} è talmente bassa che non riesco a leggerla nemmeno se la ingrandisco \\ (Andrea)}
 
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  \subsubsection{Risposta del detector e calibrazione}
