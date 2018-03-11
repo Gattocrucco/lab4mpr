@@ -1,4 +1,4 @@
-#energia(MeV)  	Rayleigh(cm2/g)	Comtpon(cm2/g)	fotoel.(cm2/g)	coppie(cm2/g)
+#energia(MeV)  	Rayleigh(cm2/g)	Compton(cm2/g)	fotoel.(cm2/g)	coppie(cm2/g)
 1.000E-02	2.437E+00	6.731E-02	1.375E+02	0.000E+00	
 1.500E-02	1.598E+00	8.410E-02	4.570E+01	0.000E+00	
 2.000E-02	1.136E+00	9.463E-02	2.062E+01	0.000E+00	
