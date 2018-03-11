@@ -5,9 +5,9 @@ from collections import OrderedDict
 
 # script che analizza la misura di controllo della stabilità della calibrazione della notte 22-23 febbraio
 
-slices = 20
+slices = 2
 
-all_samples = np.load('../dati/log-neve.npy')
+all_samples = np.load('../dati/log-27feb-e15.npy')
 
 cuts = np.array(np.round(np.arange(slices + 1) / slices * len(all_samples)), dtype='int32')
 
