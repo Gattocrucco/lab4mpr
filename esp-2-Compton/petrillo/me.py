@@ -14,6 +14,12 @@ with open('fit-result.pickle', 'rb') as load_file:
 def fun_energy(E_0, m_e, theta_0):
     return E_0 / (1 + E_0 / m_e * (1 - np.cos(np.radians(theta_0))))
 
+def weighted_mean(y):
+    inv_covy = np.linalg.inv(un.covariance_matrix(y))
+    vara = 1 / np.sum(inv_covy)
+    a = vara * np.sum(np.dot(inv_covy, y))
+    return a
+
 cntcal_133     = []
 cntcal_117     = []
 cntcal_133_sim = []
@@ -41,7 +47,7 @@ fig = plt.figure('me')
 fig.clf()
 fig.set_tight_layout(True)
 G = gridspec.GridSpec(1, 3)
-ax = fig.add_subplot(G[:,:1])
+ax = fig.add_subplot(G[:,:2])
 
 s = 0.15
 ax.errorbar(np.arange(len(theta_0s)) - 3*s/2, unp.nominal_values(m_133_sim), yerr=unp.std_devs(m_133_sim), fmt='^', label='1.33 fondo semplificato', color=[0.6]*3)
