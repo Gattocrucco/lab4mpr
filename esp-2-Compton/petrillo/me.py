@@ -7,18 +7,30 @@ from uncertainties import unumpy as unp
 import calibration
 import bias
 import sympy as sp
+import copy
+
+##### LOAD FILE #####
 
 with open('fit-result.pickle', 'rb') as load_file:
     centers_133, centers_117, centers_133_sim, centers_117_sim, theta_0s, calib_date, fixnorm, logcut = pickle.load(load_file)
+    theta_0s = np.array(theta_0s)
+
+##### FUNCTIONS #####
 
 def fun_energy(E_0, m_e, theta_0):
     return E_0 / (1 + E_0 / m_e * (1 - np.cos(np.radians(theta_0))))
 
 def weighted_mean(y):
+    """
+    y is array of ufloats
+    """
     inv_covy = np.linalg.inv(un.covariance_matrix(y))
     vara = 1 / np.sum(inv_covy)
     a = vara * np.sum(np.dot(inv_covy, y))
+    assert np.allclose(vara, a.s ** 2)
     return a
+
+##### COMPUTE ALL MASSES #####
 
 cntcal_133     = []
 cntcal_117     = []
@@ -42,6 +54,61 @@ m_133 -= biases[:,0]
 m_117 -= biases[:,1]
 m_133_sim -= biases[:,0]
 m_117_sim -= biases[:,1]
+
+##### COMPUTE FINAL MEASUREMENT #####
+
+# 15°, start
+m_133_15 = m_133[theta_0s == 15][0]
+m_117_15 = m_117[theta_0s == 15][0]
+
+m_133_15_p = m_133[theta_0s == 15][1]
+m_117_15_p = m_117[theta_0s == 15][1]
+
+stab_133_15 = abs(m_133_15_p.n - m_133_15.n) / m_133_15.n
+stab_117_15 = abs(m_117_15_p.n - m_117_15.n) / m_117_15.n
+stab_15 = un.ufloat(1, max(stab_133_15, stab_117_15), tag='stability')
+m_133_15 *= stab_15
+m_117_15 *= stab_15
+
+# 15°, end
+m_133_15e = m_133[theta_0s == 15][4]
+m_117_15e = m_117[theta_0s == 15][4]
+
+m_133_15e_p = m_133[theta_0s == 15][5]
+m_117_15e_p = m_117[theta_0s == 15][5]
+
+stab_133_15e = abs(m_133_15e_p.n - m_133_15e.n) / m_133_15e.n
+stab_117_15e = abs(m_117_15e_p.n - m_117_15e.n) / m_117_15e.n
+stab_15e = un.ufloat(1, max(stab_133_15e, stab_117_15e), tag='stability')
+m_133_15e *= stab_15e
+m_117_15e *= stab_15e
+
+# 61.75°
+stab_61 = un.ufloat(1, stab_15.s * (1 - np.cos(np.radians(15))) / (1 - np.cos(np.radians(61.75))), tag='stability')
+
+m_133_61 = m_133[theta_0s == 61.75][0]
+m_133_61 *= stab_61
+m_117_61 = m_117[theta_0s == 61.75][0]
+m_117_61 *= stab_61
+
+# 45°
+stab_45 = un.ufloat(1, stab_15.s * (1 - np.cos(np.radians(15))) / (1 - np.cos(np.radians(45))), tag='stability')
+
+m_133_45 = m_133[theta_0s == 45][0]
+m_133_45 *= stab_45
+m_117_45 = m_117[theta_0s == 45][0]
+m_117_45 *= stab_45
+
+# weighted mean
+masses_133 = np.array([m_133_15, m_133_15e, m_133_61, m_133_45])
+masses_117 = np.array([m_117_15, m_117_15e, m_117_61, m_117_45])
+masses = np.concatenate([masses_133, masses_117])
+
+me = weighted_mean(masses)
+me_133 = weighted_mean(masses_133)
+me_117 = weighted_mean(masses_117)
+
+##### PLOT #####
 
 fig = plt.figure('me')
 fig.clf()
