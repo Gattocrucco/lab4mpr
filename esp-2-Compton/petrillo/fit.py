@@ -7,7 +7,6 @@ import lab
 import sympy as sp
 from uncertainties import unumpy as unp
 import uncertainties as un
-import collections
 import pickle
 
 theta_0s   = [15                         , 15                         , 15                         , 15                         , 15                         , 15                         , 15                         , 7                     , 7                     , 7                     , 61.75                              , 45                             ]
@@ -22,24 +21,6 @@ doplot     = [True                       , False                      , False   
 
 # def hist_adc(a, weights=None):
 # 	return empirical.histogram(a, bins=2**13, range=(0, 2**13), weights=weights)
-
-def errorsummary(x):
-    comps = x.error_components()
-    
-    tags = set(map(lambda v: v.tag, comps.keys()))
-    var = dict(zip(tags, [0] * len(tags)))
-    
-    for (v, sd) in comps.items():
-        var[v.tag] += sd ** 2
-    
-    tags = list(tags)
-    sds = np.sqrt(np.array([var[tag] for tag in tags]))
-    idx = np.argsort(sds)[::-1]
-    d = collections.OrderedDict()
-    for i in idx:
-        d[tags[i]] = sds[i]
-    
-    return d
 
 fig = plt.figure('fit', figsize=[9.78, 6.13])
 fig.clf()
