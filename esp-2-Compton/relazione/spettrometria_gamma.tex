@@ -49,7 +49,7 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  T_e = E - E_b
  \end{equation} 
  dove $E$ è l'energia del fotone incidente e $E_b$ è l'energia di legame, solitamente piccola se paragonata a $E_{\gamma}$. Nel nostro caso l'energia di legame vale al massimo $\sim \SI{33}{keV}$ per gli elettroni 1s dello iodio, da confrontarsi con l'energia dei fotoni $\gamma$ del \co\;: \SI{1.17}{MeV} e \SI{1.33}{MeV}. Il risultato finale è una particella carica nello scintillatore con approssimativamente la stessa energia del fotone incidente.
- Un elettrone con energia cinetica di $\SI{1}{MeV}$ ha un range in NaI di $\sim \SI{2}{mm}$ FONTE CIPPA LIPPA, questo vuol dire che questi fotoni perdono tutta la loro energia nel nostro rivelatore (un cilindro retto $\sim \SI{5}{cm} \times \SI{5}{cm}$). 
+ Un elettrone con energia cinetica di $\SI{1}{MeV}$ ha un range in NaI di $\sim \SI{2}{mm}$ (vedi \cite{3}), questo vuol dire che questi fotoni perdono tutta la loro energia nel nostro rivelatore (un cilindro retto $\sim \SI{5}{cm} \times \SI{5}{cm}$). 
 
  \paragraph{Scattering Rayleigh}
  Nello scattering Rayleigh l'intero atomo funge da bersaglio, perciò dopo l'urto il fotone cambia direzione e l'atomo rincula per conservare il momento. Data la grande massa dell'atomo (rispetto all'energia del fotone) l'energia scambiata è trascurabile e il fotone uscente ha praticamente la stessa energia iniziale. \`E chiaro quindi che i fotoni non potranno essere rivelati in uno scintillatore con questo meccanismo perché nessuna energia viene rilasciata all'interno.
@@ -90,7 +90,7 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
   \begin{figure}[h]
  	\centering
  	\includegraphics[width=\textwidth]{photon-matter-interaction}
- 	\caption{\label{fig:photon_cross_section_pdg}Sezione d'urto in funzione dell'energia per i vari processi nel carbonio e nel piombo FONTE CIPPALIPPA.}
+ 	\caption{\label{fig:photon_cross_section_pdg}Sezione d'urto in funzione dell'energia per i vari processi nel carbonio e nel piombo \cite{4}}
  \end{figure}
 
  \paragraph{Scelta del materiale per bersaglio e spettrometro}
@@ -102,10 +102,9 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  	\caption{\label{fig:photon_cross_section_xcom}
 	Sezione d'urto del fotone in funzione dell'energia per i vari processi nel NaI,
 	espressa come inverso del cammino libero medio diviso per la densità del materiale
-	e moltiplicato per la sezione d'urto relativa.
-	La densità del NaI è \SI{3.67}{g\,cm^{-3}} FONTE CIPPALIPPA.}
+	e moltiplicato per la sezione d'urto relativa \cite{5}. La densità del NaI è \SI{3.67}{g\,cm^3}.}
  \end{figure}
- 
+ \marginpar{non è il cammino libero medio inverso}
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  \subsubsection{Spettri attesi e dimensione del detector}
  \paragraph{Grande detector} Se il detector fosse abbastanza esteso, tutta l'energia dei fotoni, indipendentemente dalla complessità dell'interazione, verrebbe rilasciata nel rivelatore. Per una sorgente di fotoni ad una energia fissata, come potrebbe essere una sorgente di raggi $\gamma$\footnote{I raggi $\gamma$ delle sorgenti radioattive hanno tipicamente larghezze $\Gamma \ll \SI{1}{eV}$ e possono quindi considerarsi mono-energetici per i nostri scopi.},
@@ -117,7 +116,7 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  	\centering
  	\includegraphics[width=\textwidth]{spettrometro_grosso}
  	\caption{\label{fig:spettrometro_grosso}
-	Risposta di un detector di grandi dimensioni per fotoni mono-energetici.}
+	Risposta di un detector di grandi dimensioni per fotoni mono-energetici \cite{6}.}
  \end{figure}
 
  \paragraph{Piccolo detector}Nel caso opposto di un detector di piccole dimensioni i fotoni potranno interagire una sola volta, facendo effetto fotoelettrico o Compton\footnote{Stiamo trascurando la produzione di coppie, per i motivi detti sopra.} in proporzione alla sezione d'urto. I fotoni che fanno effetto fotoelettrico produrranno un segnale alla loro energia (che non sarà una delta ma sarà allargato dalla risoluzione strumentale) come visto prima, mentre i fotoni che faranno fotoelettrico si produrranno uno spettro come quello predetto dalla sezione d'urto di Klein-Nishina (la spalla Compton sarà meno definita perché convoluta con la risoluzione strumentale).
@@ -128,7 +127,7 @@ Il risultato finale sarà simile a quelli in \autoref{fig:spettrometro_piccolo}.
   \begin{figure}[h]
  	\centering
  	\includegraphics[width=\textwidth]{spettrometro_piccolo}
- 	\caption{\label{fig:spettrometro_piccolo}Risposta di un detector di piccole dimensioni per fotoni mono-energetici.}
+ 	\caption{\label{fig:spettrometro_piccolo}Risposta di un detector di piccole dimensioni per fotoni mono-energetici \cite{6}.}
  \end{figure}
  
  \paragraph{Detector di dimensioni intermedie}\label{par:spettrometro_intermedio}
@@ -147,7 +146,7 @@ Lo spettro finale atteso (per una sorgente che emetta un solo fotone e uno spett
  \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{spettrometro_intermedio}
-	\caption{\label{fig:spettrometro_intermedio}Risposta di un detector di dimensioni intermedie (come il nostro) per fotoni mono-energetici.}
+	\caption{\label{fig:spettrometro_intermedio}Risposta di un detector di dimensioni intermedie (come il nostro) per fotoni mono-energetici \cite{6}.}
  \end{figure}
 
  \begin{figure}[h]
@@ -188,7 +187,7 @@ Lo spettro finale atteso (per una sorgente che emetta un solo fotone e uno spett
  \begin{figure}[h]
 	\centering
 	\includegraphics[width=20em]{linearita}
-	\caption{\label{fig:linearità}Numero relativo di fotoni emessi dal cristallo di NaI(Tl) vs energia degli elettroni FONTE CIPPALIPPA}
+	\caption{\label{fig:linearità}Numero relativo di fotoni emessi dal cristallo di NaI(Tl) vs energia degli elettroni \cite{6}.}
  \end{figure}
  
  \paragraph{Distribuzione di risposta (risoluzione)}
