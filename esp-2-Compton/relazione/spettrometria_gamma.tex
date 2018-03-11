@@ -56,17 +56,15 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  
  \paragraph{Scattering Compton}
  Se il fotone è abbastanza energetico può urtare un singolo elettrone. Per fotoni di questo tipo l'energia di legame può essere in prima approssimazione trascurata e si può trattare l'elettrone come libero. Nello stato finale troviamo il fotone che è stato deviato di un certo angolo $\theta$ rispetto alla sua direzione iniziale e ha ceduto parte della sua energia all'elettrone. La relazione tra energia del fotone dopo lo scattering e angolo è\footnote{Useremo la convenzione $e = c = 1$.}:
- \marginpar{Quella che qui chiami $E$ prima era $E_\gamma$.\\
- \emph{Petrillo}}
  \begin{equation}
  \label{energia_compton} 
- E' = \frac{E}{1+\frac{E}{m_e}(1-\cos(\theta))}.
+ E'_{\gamma} = \frac{E_{\gamma}}{1+\frac{E_{\gamma}}{m_e}(1-\cos{\theta})}.
  \end{equation}
  Quello che misureremo nello spettroscopio sarà l'energia ceduta all'elettrone cioè $E-E'$. Quando un fotone fa scattering Compton nel nostro spettroscopio non abbiamo modo di conoscere l'angolo di scattering e non è possibile da una singola misura ricavare l'energia del fotone incidente.
  La sezione d'urto differenziale di questo processo (anche nota come formula di Klein–Nishina) è:
  \begin{equation}
  \label{klein-nishina}
- \frac{d\sigma}{d\cos(\theta)} = \frac{\pi\text{Z}}{m_e^2} \cdot\left(\frac{E'}{E}\right)^2 \cdot \left(\frac{E}{E'} + \frac{E'}{E} - \sin^2(\theta)\right),
+ \frac{d\sigma}{d\cos{\theta}} = \frac{\pi\text{Z}}{m_e^2} \cdot\left(\frac{E'_{\gamma}}{E_{\gamma}}\right)^2 \cdot \left(\frac{E_{\gamma}}{E'_{\gamma}} + \frac{E'_{\gamma}}{E_{\gamma}} - \sin^2{\theta}\right),
  \end{equation}
  dove $\frac{E'}{E}$ contiene implicitamente l'angolo attraverso la \eqref{energia_compton}.
  La sezione d'urto differenziale è graficata in \autoref{fig:klein-nishina}
@@ -104,8 +102,7 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  	\caption{\label{fig:photon_cross_section_xcom}
 	Sezione d'urto del fotone in funzione dell'energia per i vari processi nel NaI,
 	espressa come inverso del cammino libero medio diviso per la densità del materiale
-	e moltiplicato per la sezione d'urto relativa \cite{5}.
-	La densità del NaI è \SI{3.67}{g\,cm^3}.}
+	e moltiplicato per la sezione d'urto relativa \cite{5}. La densità del NaI è \SI{3.67}{g\,cm^3}.}
  \end{figure}
  \marginpar{non è il cammino libero medio inverso}
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -134,10 +131,7 @@ Il risultato finale sarà simile a quelli in \autoref{fig:spettrometro_piccolo}.
  \end{figure}
  
  \paragraph{Detector di dimensioni intermedie}\label{par:spettrometro_intermedio}
- Nel nostro caso disponiamo di un rivelatore $\SI2{''}\times\SI2{''}$ e, a partire dal grafico in FONTE
- \marginpar{Non è meglio fare direttamente riferimento alla \autoref{fig:photon_cross_section_xcom}?\\
- \emph{Petrillo}}
- che ci dà la lunghezza di radiazione al variare dell'energia del fotone in vari materiali, è semplice calcolare che per il nostro rivelatore la lunghezza di radiazione è circa \SI{5}{cm}, quindi paragonabile alla dimensione del cristallo, ne segue che il $\sim \SI{60}\%$ dei fotoni interagisce nel cristallo almeno una volta. Ci troviamo quindi in una situazione intermedia per cui in pratica lo spettro sarà simile a quello in \autoref{fig:spettrometro_piccolo}, ma il rapporto tra gli eventi Compton e quelli fotoelettrico non sarà uguale al rapporto tra le sezioni d'urto: è infatti importante il contributo di quei fotoni che dopo aver fatto Compton fanno fotoelettrico\footnote{Questa doppia interazione è anche favorita dal fatto che i fotoni che hanno fatto scattering Compton hanno perso energia e l'effetto fotoelettrico ha sezione d'urto maggiore al diminuire dell'energia.} (quando ancora si trovano nello spettrometro): questi produrranno un segnale all'energia del fotopicco poiché tutta l'energia del fotone iniziale è rilasciata nello scintillatore. 
+ Nel nostro caso disponiamo di un rivelatore $\SI2{''}\times\SI2{''}$ e, a partire dal grafico in \autoref{fig:photon_cross_section_xcom}, è semplice calcolare che per il nostro rivelatore la lunghezza di radiazione è circa \SI{5}{cm}, quindi paragonabile alla dimensione del cristallo, ne segue che il $\sim \SI{60}\%$ dei fotoni interagisce nel cristallo almeno una volta. Ci troviamo quindi in una situazione intermedia per cui in pratica lo spettro sarà simile a quello in \autoref{fig:spettrometro_piccolo}, ma il rapporto tra gli eventi Compton e quelli fotoelettrico non sarà uguale al rapporto tra le sezioni d'urto: è infatti importante il contributo di quei fotoni che dopo aver fatto Compton fanno fotoelettrico\footnote{Questa doppia interazione è anche favorita dal fatto che i fotoni che hanno fatto scattering Compton hanno perso energia e l'effetto fotoelettrico ha sezione d'urto maggiore al diminuire dell'energia.} (quando ancora si trovano nello spettrometro): questi produrranno un segnale all'energia del fotopicco poiché tutta l'energia del fotone iniziale è rilasciata nello scintillatore. 
  
  Lo spettro finale prodotto sarà la somma di molti effetti riassunti in \autoref{fig:spettrometro_intermedio}:
  \begin{itemize}
@@ -188,7 +182,7 @@ Lo spettro finale atteso (per una sorgente che emetta un solo fotone e uno spett
  	\item la funzione di risposta associata all'interazione dei fotoni per effetto fotoelettrico è affine come visto in \autoref{eq:fotoelettrico}, dove per $E_b$ prendiamo l'energia di legame media;
  	\item è noto che la luce di scintillazione per i detector in NaI non è proporzionale all'energia depositata, come mostrato in figura \autoref{fig:linearità}.
  \end{itemize}
- Poiché l'energie che andremo a misurare saranno tutte nel range $\sim$\SI{500}keV--\SI{1300}{keV}, range nel quale la risposta dello scintillatore è ragionevolmente lineare, decidiamo di fittare la risposta dello spettrometro con una retta a intercetta libera, usando tutti i fotopicchi a disposizione tranne quello del \am{} che emette fotoni a \SI{60}keV, lontani dalla regione di interesse e di linearità.
+ Poiché l'energie che andremo a misurare saranno tutte nel range \SI{500}keV--\SI{1300}{keV}, range nel quale la risposta dello scintillatore è ragionevolmente lineare, decidiamo di fittare la risposta dello spettrometro con una retta a intercetta libera, usando tutti i fotopicchi a disposizione tranne quello del \am{} che emette fotoni a \SI{60}keV, lontani dalla regione di interesse e di linearità.
  
  \begin{figure}[h]
 	\centering
