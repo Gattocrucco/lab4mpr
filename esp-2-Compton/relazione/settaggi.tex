@@ -28,7 +28,11 @@ Se lo spettrometro si trova a piccolo angolo rispetto al bersaglio viene attrave
 
 Abbiamo poi confrontato lo spettro a \SI{45}{\degree} con o senza scintillatore plastico, ma non abbiamo notato nessuna differenza. Abbiamo anche verificato che, come atteso, il rate di eventi diminuisce all'aumentare della distanza.
 
-Proviamo a schermare lateralmente lo scintillatore cristallino con il piombo per ridurre il fondo di backscattering e lo spettro in \autoref{casetta} mostra come effettivamente questo si riduca ma non a sufficienza da poter osservare il segnale. Si rende necessario l'uso di un trigger esterno per campionare sulla coincidenza di segnale tra PMT1 e PMT2.
+Proviamo a schermare lateralmente lo scintillatore cristallino con il piombo per ridurre il fondo di backscattering e lo spettro in \autoref{casetta} mostra come effettivamente questo si riduca ma non a sufficienza da poter osservare il segnale.
+\marginpar{Dalla \autoref{casetta} non mi sembra che il backscattering si riduca,
+ma piuttosto che compaia un picco a sinistra.\\
+\emph{Petrillo}}
+Si rende necessario l'uso di un trigger esterno per campionare sulla coincidenza di segnale tra PMT1 e PMT2.
 
 \begin{figure}
 	\centering
@@ -42,7 +46,7 @@ Per ottenere il segnale di trigger usiamo il circuito in \autoref{fig:trigger}:\
 \begin{itemize}
 	\item il segnale ``veloce'' del PMT2 (quello non pre-amplificato con ampiezza di picco $\sim\SI{20}{mV}$) è prima amplificata di un fattore 10 attraverso un modulo di amplificazione lineare, quindi inviato ad un discriminatore con soglia a $\SI{35}{mV}$ (il minimo) in modo da ottenere una soglia efficace più bassa;
 	\item il segnale del PMT1 è inviato direttamente ad un discriminatore con soglia a $\SI{35}{mV}$ (il minimo);
-	\item entrambi gli output dei discriminatori vanno ad un sistema di anti-rettriger che impone un tempo morto di $\sim\SI{1}{\micro s}$ e produce segnali di durata $\sim\SI{30}{ns}$;
+	\item entrambi gli output dei discriminatori vanno ad un sistema di anti-retrigger che impone un tempo morto di $\sim\SI{1}{\micro s}$ e produce segnali di durata $\sim\SI{30}{ns}$;
 	\item il segnale discriminato del PMT1 è ritardato di circa \SI{20}{ns} per compensare un ritardo asimmetrico dovuto al modulo di anti-retrigger;
 	\item facciamo la coincidenza dei due segnali così formati e mandiamo l'output a un modulo \texttt{gate \& delay}.
 	\item l'ADC richiede un segnale di trigger che parta almeno \SI{200}{ns} prima del picco e termini almeno \SI{200}{ns} dopo: usando l'oscilloscopio, regoliamo il modulo \texttt{gate \& delay} in modo da avere un segnale della durata di $\sim\SI{1}{\micro s}$ centrato sul picco del formatore.
@@ -54,13 +58,35 @@ Il PMT1 può essere alimentato fino a \SI{1800}{V} e nel range \SI{1500}{V}-\SI{
 \marginpar{tenerlo lontano da 1800\! V non conta niente? \\ (Andrea)}
 
 \subsubsection{Stabilità della risposta del PMT2}
-Una sorgente di errore sistematico che ci aspettiamo importante\footnote{Come vedremo sarà la principale componente dell'errore sulla misura finale.} è dovuta alla stabilità della risposta del nostro spettrometro. Per avere un idea della stabilità nel tempo della calibrazione campioniamo per $\sim{25}{h}$ lo spettro del \co, quindi dividiamo i dati in parti di uguale statistica (che a rate costante implicano circa durate uguali) e grafichiamo. In \autoref{fig:stability} è riportato il risultato per intervalli temporali di $\sim{5}{h}$: la calibrazione varia in $\SI{24}{h}$ di poco più del $2\%$ e la variazione non è costante nel tempo, ma concentrata sopratutto nelle prime ore. 
 
-Se a partire dalla \autoref{energia_compton} scriviamo $m_e$ in funzione di $E$, $\Delta E = E-E'$ e $\theta$ e sviluppiamo al prim'ordine intorno a $E'$ otteniamo $m_e(dE') = m_e \cdot \frac{m_e}{\Delta E}dE'$ che ci dà come varia la massa dell'elettrone misurata dal nostro esperimento quando l'apparato si scalibra. Ad esempio a $\SI{7}{\degree}$, $\Delta E \simeq \SI{20}{keV}$ e ammettendo una variazione del $1\%$ della calibrazione (dato realistico alla luce delle misure precedenti) a $\sim\SI{1}{MeV}$ ho un $dE' \simeq \SI{10}{keV}$ da cui ottengo un errore sulla massa dell'elettrone $\Delta m_e = \frac{\SI{511}{keV}}{\SI{20}{keV}} \cdot  \SI{10}{keV} = \SI{250}{keV}$. Questo ci mostra come le misure della massa dell'elettrone ad angoli molto piccoli saranno dominate da questo errore.
-
- \begin{figure}[h]
-	\hspace{-4em}
-	\includegraphics[width=45em]{stability}
-	\caption{\label{fig:stability}Stabilità nel tempo della calibrazione, ogni istogramma è un intervallo di $\sim{5}{h}$.}
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{stability}
+	\caption{\label{fig:stability}
+	Dettaglio dello spettro del \co{}
+	ottenuto da un'acquisizione di 25 ore
+	separata in 5 parti da 5 ore.
+	Si nota uno spostamento verso sinistra.}
 \end{figure}
 
+Una sorgente di errore sistematico che ci aspettiamo importante\footnote{Come vedremo sarà la principale componente dell'errore sulla misura finale.} è dovuta alla stabilità della risposta del nostro spettrometro. Per avere un idea della stabilità nel tempo della calibrazione campioniamo per $\sim\SI{25}{h}$ lo spettro del \co, quindi dividiamo i dati in parti di uguale statistica (che a rate costante implicano circa durate uguali) e grafichiamo. In \autoref{fig:stability} è riportato il risultato per intervalli temporali di $\sim\SI{5}{h}$: la calibrazione varia in $\SI{24}{h}$ di poco più del \SI2\% e la variazione non è costante nel tempo, ma concentrata soprattutto nelle prime ore.
+
+Stimiamo qual è l'effetto dell'instabilità.
+Invertendo la \eqref{energia_compton} otteniamo
+\begin{equation}
+	\label{eq:scalibur}
+	\left. \pdv{m_e}{E'} \right|_\theta = \frac{m_e}{E - E'}
+\end{equation}
+che, poiché $E$ e $\theta$ sono conosciuti con precisione e misuriamo $E'$ con lo spettrometro,
+ci dà come varia la massa dell'elettrone misurata dal nostro esperimento quando l'apparato si scalibra.
+Ad esempio per $E=\SI{1.33}{MeV}$ e $\theta=\SI{10}{\degree}$ abbiamo $E-E'\approx\SI{51}{keV}$ e,
+ammettendo una variazione della calibrazione del \SI1\%
+(dato realistico alla luce delle misure precedenti),
+otteniamo una variazione della massa misurata
+\begin{align*}
+	\Delta m_e
+	\approx \frac{m_e}{E - E'} \cdot \frac{\Delta E'}{E'} \cdot E'
+	\approx \frac{\SI{511}{keV}}{\SI{51}{keV}} \cdot \SI1\% \cdot \SI{1.28}{MeV}
+	= \SI{128}{keV}.
+\end{align*}
+Questo ci mostra come le misure dell’elettrone a piccolo angolo saranno dominate da questo errore.

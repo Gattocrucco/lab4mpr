@@ -87,7 +87,7 @@ Gli spettri e i fit sono riportati in \autoref{fig:fit}.
 \subsubsection{Misura della massa}
 
 \begin{figure}
-	\hspace{-7em}\includegraphics[width=50em]{me}
+	\hspace{-5em}\includegraphics[width=46em]{me}
 	\caption{\label{fig:me}
 	Misure della massa dell'elettrone.
 	Nel grafico a sinistra quelle ottenute da tutti i fit di spettri,
@@ -122,11 +122,11 @@ e quella del fotopicco \SI{1.17}{MeV}.
 
 Quando abbiamo solo l'istogramma,
 stimiamo l'incertezza di stabilità in questo modo:
-dalla \eqref{energia_compton} si ottiene che la variazione relativa della massa misurata dell'elettrone
+dalla \eqref{eq:scalibur} si ottiene che la variazione relativa della massa misurata dell'elettrone
 al variare della calibrazione è
 \begin{equation}
 	\label{eq:scal}
-	r = \frac{\Delta m_e}{m_e} = \frac1{E-E'}\left(\frac{\Delta E'}{E'}\right)E',
+	r \is \frac{\Delta m_e}{m_e} = \frac1{E-E'}\left(\frac{\Delta E'}{E'}\right)E',
 \end{equation}
 dove $\Delta E'/E'$ è la variazione della scala di calibrazione.
 Supponendo fissato $\Delta E'/E'$,
@@ -143,9 +143,9 @@ stimiamo la variazione della scala di $b$ come un random walk:
 \end{equation*}
 questa stima è conservativa perché l'effetto è integrato sul tempo.
 Infine:
-\begin{equation}
-	r_b = r_a \frac{1 - \cos\theta_a}{1 - \cos\theta_b} \sqrt{\frac{t_b}{t_a}}
-\end{equation}
+\begin{equation*}
+	r_b = r_a \frac{1 - \cos\theta_a}{1 - \cos\theta_b} \sqrt{\frac{t_b}{t_a}}.
+\end{equation*}
 Nel nostro caso per $a$ prendiamo la presa dati a \SI{15}{\degree}
 perché è quella con la maggiore incertezza di stabilità.
 
@@ -155,7 +155,10 @@ Non usiamo la massa ottenuta dalla misura a \SI{7}{\degree}
 perché risulta fortemente incompatibile con le altre misure.
 Lo riteniamo plausibile perché, a questo angolo,
 dalla \eqref{eq:scal} si ottiene che una variazione della scala dell'\SI1\%
-provoca una variazione della massa misurata di \SI{0.25}{MeV},
+provoca una variazione della massa misurata di \SI{0.26}{MeV},
+\marginpar{In verità usando la formula mi viene che la scalibrazione
+dovrebbe differire del \SI{15}\% tra 1.33 e 1.17,
+cosa che non osservo in \autoref{fig:me}.}
 quindi diventa molto significativo il tempo che intercorre tra la calibrazione
 e l'inizio della presa dati.
 

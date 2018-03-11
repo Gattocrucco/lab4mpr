@@ -16,4 +16,12 @@ for i in range(len(cuts) - 1):
     samples = all_samples[cuts[i]:cuts[i+1]]
     samples_dict['slice%d' % (i+1,)] = samples
 
-histo.histo(samples_dict, cut=8, linewidth=1.5)
+fig = plt.figure('stability', figsize=[6.88, 2.93])
+fig.clf()
+fig.set_tight_layout(True)
+ax = fig.add_subplot(111)
+
+histo.histo(samples_dict, cut=8, linewidth=1.5, ax=ax)
+ax.grid(linestyle=':')
+
+fig.show()

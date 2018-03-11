@@ -61,6 +61,8 @@ def histo(datasets, ax=None, logscale=False, cut=1, **kw):
         fig.clf()
         ax = fig.add_subplot(111)
         show = True
+    else:
+        show = False
     col = 0
     for label in datasets.keys():
         data = datasets[label]
@@ -77,8 +79,8 @@ def histo(datasets, ax=None, logscale=False, cut=1, **kw):
         bar_line(arange(0, 2**13 + 1, cut), counts, label='%s, N=%s' % (label, lab.num2si(np.sum(counts), format='%.3g')), ax=ax, color=[col/(len(datasets.keys())*1.2)]*3,**kw)
         if logscale:
             ax.set_yscale('symlog', linthreshy=1, linscaley=1/5, subsy=[2, 3, 4, 5, 6, 7, 8, 9])
-    ax.set_xlabel('canale ADC')
-    ax.set_ylabel('conteggio')
+    ax.set_xlabel('canale ADC [digit]')
+    ax.set_ylabel('conteggio [%s$^{-1}$]' % ('digit' if cut == 1 else '(%d$\\cdot$digit)' % (cut,),))
     ax.legend(loc=1, fontsize='small')
     ax.minorticks_on()
     ax.grid()
