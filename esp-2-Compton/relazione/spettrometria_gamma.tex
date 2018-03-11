@@ -16,7 +16,7 @@ Ciascuno di questi processi sarà caratterizzato da una:
 \end{itemize}
 La misura finale avrà per funzione di risposta la composizione di tutte queste funzioni di risposta e per distribuzione di risposta  $p(x_0)=\int\de x_1 p(x_0|x_1) p(x_1)
 =\int \de x_1 p(x_0|x_1) \int \de x_2 p(x_1|x_2)
-=\int \de x_1 \dotsm \de x_n p(x_0|x_1)\dotsm p(x_{n-1}|x_n)$, dove le $p(x_n,x_{n+1})$ sono le distribuzioni di risposta dei singoli processi.
+=\int \de x_1 \dotsm \de x_n p(x_0|x_1)\dotsm p(x_{n-1}|x_n)$, dove le $p(x_n|x_{n+1})$ sono le distribuzioni di risposta dei singoli processi.
 Nella nostra esperienza lo spettrometro dovrà misurare l'energia di fotoni $\gamma$ che, essendo neutri, devono prima interagire con la materia del rivelatore e trasferire tutta o parte della loro energia a particelle cariche, delle quali sarà poi misurabile l'energia nel modo descritto sopra. Bisogna quindi analizzare le interazioni fotone-materia per modellizzare gli spettri che andremo poi ad osservare.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -55,13 +55,24 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
  \end{equation}
  dove $\frac{E'}{E}$ contiene implicitamente l'angolo attraverso la \eqref{energia_compton}.
  La sezione d'urto differenziale è graficata in \autoref{fig:klein-nishina}
- ed è da qui evidente come all'energia di $\sim \SI{1}{MeV}$ è molto più probabile che il fotone sia deviato poco, tuttavia esiste un angolo critico per cui l'energia ceduta dal fotone non è sufficiente a ionizzare e di fatti l'elettrone non può più considerarsi libero. L'energia di legame dell'orbitale K del carbonio (il materiale del nostro bersaglio) vale $E_b = \SI{0.277}{keV}$ e per i fotoni del \co\; l'angolo critico vale $\theta_c \simeq \SI{0.8}{\degree}$. 
+ ed è da qui evidente come all'energia di $\sim \SI{1}{MeV}$ è molto più probabile che il fotone sia deviato poco. 
  
- \begin{figure}[h]
+  \begin{figure}[h]
  	\centering
  	\includegraphics[width=20em]{klein-nishina}
  	\caption{\label{fig:klein-nishina}Sezione d'urto (in $\si{m^2}$) in funzione dell'angolo di scattering Compton.}
  \end{figure}
+
+ Esiste un angolo critico per cui l'energia ceduta dal fotone non è sufficiente a ionizzare e di fatti l'elettrone non può più considerarsi libero. L'energia di legame dell'orbitale K del carbonio (il materiale del nostro bersaglio) vale $E_b = \SI{0.277}{keV}$ e per i fotoni del \co\; l'angolo critico vale $\theta_c \simeq \SI{0.8}{\degree}$.
+ 
+ \subparagraph{Compton defect} \cite{7,8}
+ Per elettroni liberi l'energia $E'$ è completamente determinata dalla \autoref{energia_compton} che sostanzialmente deriva dalla conservazione del quadrimpulso. Poiché gli elettroni sono in realtà legati non c'è una corrispondenza uno a uno tra angolo e energia del fotone secondario. Questo provoca un allargamento intrinseco del fotopicco e uno spostamento della moda del fotopicco (rispetto all'approssimazione di elettrone libero) noto come ``Compton defect'' pari a $+E_b/6$. In \autoref{fig:compton_defect} è mostrata la sezione d'urto differenziale (in angolo e energia del fotone secondario) per scattering su un elemento a grande Z. Nel nostro caso questo bias è del tutto trascurabile rispetto agli errori sperimentali.
+ 
+ \begin{figure}[h]
+	\centering
+	\includegraphics[width=23em]{compton_defect}
+	\caption{\label{fig:compton_defect}Sezione d'urto differenziale in energia del fotone secondario e dell'angolo di scattering di un fascio non polarizzato di fotoni a $\SI{661.7}{keV}$  su Tantalio. Le frecce mostrano l'energia del fotone secondario prevista dalla \autoref{energia_compton} \cite{8}.}
+\end{figure}
 
  \paragraph{Produzione di coppie}
  Il fotone $\gamma$ può fare scattering con un fotone del campo e.m. del nucleo (o meno probabilmente di un elettrone) e produrre una coppia $e^+e^-$. Affinché questo processo sia accessibile cinematicamente l'energia del fotone deve essere maggiore di \SI{1.02}{MeV}, quindi questo processo è possibile per i fotoni del \co\;  e del \na, tuttavia, come vedremo, questo processo è largamente trascurabile a queste energie, rispetto agli altri in gioco.
@@ -74,7 +85,7 @@ I principali meccanismi di interazione dei fotoni con la materia sono:
   \begin{figure}[h]
  	\centering
  	\includegraphics[width=\textwidth]{photon-matter-interaction}
- 	\caption{\label{fig:photon_cross_section_pdg}Sezione d'urto in funzione dell'energia per i vari processi nel carbonio e nel piombo \cite{4}}
+ 	\caption{\label{fig:photon_cross_section_pdg}Sezione d'urto in funzione dell'energia per i vari processi nel carbonio e nel piombo \cite{4}.}
  \end{figure}
 
  \paragraph{Scelta del materiale per bersaglio e spettrometro}

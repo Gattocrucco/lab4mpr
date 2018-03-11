@@ -10,6 +10,7 @@ import bias
 import sympy as sp
 import copy
 import collections
+import lab
 
 ##### LOAD FILE #####
 
@@ -96,6 +97,9 @@ stab_15_time = (logcut[theta_0s == 15][0][1] - logcut[theta_0s == 15][0][0]) * 2
 m_133_15 *= stab_15
 m_117_15 *= stab_15
 
+bias_133_15 = biases[:,0][theta_0s == 15][0]
+bias_117_15 = biases[:,1][theta_0s == 15][0]
+
 # 15°, end
 m_133_15e = m_133[theta_0s == 15][4]
 m_117_15e = m_117[theta_0s == 15][4]
@@ -109,6 +113,9 @@ stab_15e = un.ufloat(1, max(stab_133_15e, stab_117_15e), tag='stability')
 m_133_15e *= stab_15e
 m_117_15e *= stab_15e
 
+bias_133_15e = biases[:,0][theta_0s == 15][4]
+bias_117_15e = biases[:,1][theta_0s == 15][4]
+
 # 61.75°
 stab_61_time = 40
 stab_61 = un.ufloat(1, stab_15.s * (1 - np.cos(np.radians(15))) / (1 - np.cos(np.radians(61.75))) * np.sqrt(stab_61_time / stab_15_time), tag='stability')
@@ -117,6 +124,9 @@ m_133_61 = m_133_sim[theta_0s == 61.75][0]
 m_133_61 *= stab_61
 m_117_61 = m_117_sim[theta_0s == 61.75][0]
 m_117_61 *= stab_61
+
+bias_133_61 = biases[:,0][theta_0s == 61.75][0]
+bias_117_61 = biases[:,1][theta_0s == 61.75][0]
 
 # 45°
 stab_45_time = 20
@@ -127,10 +137,14 @@ m_133_45 *= stab_45
 m_117_45 = m_117[theta_0s == 45][0]
 m_117_45 *= stab_45
 
+bias_133_45 = biases[:,0][theta_0s == 45][0]
+bias_117_45 = biases[:,1][theta_0s == 45][0]
+
 # weighted mean
 masses_133 = np.array([m_133_15, m_133_15e, m_133_61, m_133_45])
 masses_117 = np.array([m_117_15, m_117_15e, m_117_61, m_117_45])
 masses = np.concatenate([masses_133, masses_117])
+biases = np.array([bias_133_15, bias_133_15e, bias_133_61, bias_133_45, bias_117_15, bias_117_15e, bias_117_61, bias_117_45])
 
 me,     Q = weighted_mean(masses)
 me_133, _ = weighted_mean(masses_133)
@@ -153,6 +167,8 @@ es = errorsummary(me)
 for k, s in es.items():
     print('    {:11}: {:.3g}'.format(str(k), s))
 print('chi2/ndof = {:.1f} / {} = {:.1f}'.format(Q, len(masses) - 1, Q / (len(masses) - 1)))
+print('matrice di covarianza:')
+print(lab.format_par_cov(unp.nominal_values(masses), un.covariance_matrix(masses)))
 
 ##### PLOT #####
 
