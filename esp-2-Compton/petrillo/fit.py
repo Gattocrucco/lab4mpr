@@ -10,16 +10,15 @@ import uncertainties as un
 import collections
 import pickle
 
-theta_0s   = [15                         , 15                         , 15                         , 15                         , 15                         , 15                         , 7                     , 7                     , 7                     , 61.75                              , 45                             ]
-files      = ['../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-neve.npy', '../dati/log-neve.npy', '../dati/log-neve.npy', '../dati/histo-22feb-stralunga.dat', '../dati/histo-20feb-notte.dat']
-logcut     = [(0, 1/2)                   , (0, 1/4)                   , (1/4, 1/2)                 , (1/2, 1)                   , (1/2, 3/4)                 , (3/4, 1)                   , (0, 1/5)              , (0, 1/10)             , (1/10, 1/5)           , None                               , None                           ]
-calib_date = ['26feb'                    , '26feb'                    , '26feb'                    , '27feb'                    , '27feb'                    , '27feb'                    , '27feb'               , '27feb'               , '27feb'               , '22feb'                            , '20feb'                        ]
-fitcuts    = [(3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7400)          , (3000, 7400)          , (3000, 7400)          , (1500, 3700)                       , (2000, 5100)                   ]
-Ls         = [40                         , 40                         , 40                         , 40                         , 40                         , 40                         , 40                    , 40                    , 40                    , 71.5 + 62.8 - 16                   , 40                             ]
-fixnorm    = [False                      , False                      , False                      , False                      , False                      , False                      , False                 , False                 , False                 , True                               , True                           ]
-labels     = ['15°, prima metà'          , '15°, prima metà'          , '15°, prima metà'          , '15°, seconda metà'        , '15°, seconda metà'        , '15°, seconda metà'        , '7°, primo quinto'    , '7°, primo quinto'    , '7°, primo quinto'    , '61.75°'                           , '45°'                          ]
-bkg_sim    = [False                      , False                      , False                      , False                      , False                      , False                      , False                 , False                 , False                 , True                               , False                          ]
-doplot     = [True                       , False                      , False                      , True                       , False                      , False                      , True                  , False                 , False                 , True                               , True                           ]
+theta_0s   = [15                         , 15                         , 15                         , 15                         , 15                         , 15                         , 15                         , 7                     , 7                     , 7                     , 61.75                              , 45                             ]
+files      = ['../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-neve.npy', '../dati/log-neve.npy', '../dati/log-neve.npy', '../dati/histo-22feb-stralunga.dat', '../dati/histo-20feb-notte.dat']
+logcut     = [(0, 1/8)                   , (1/8, 2/8)                 , (2/8, 3/8)                 , (3/8, 4/8)                 , (7/8, 1)                   , (6/8, 7/8)                 , (5/8, 6/8)                 , (0, 1/8)              , (1/8, 2/8)            , (2/8, 3/8)            , None                               , None                           ]
+calib_date = ['26feb'                    , '26feb'                    , '26feb'                    , '26feb'                    , '27feb'                    , '27feb'                    , '27feb'                    , '27feb'               , '27feb'               , '27feb'               , '22feb'                            , '20feb'                        ]
+fitcuts    = [(3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7400)          , (3000, 7400)          , (3000, 7400)          , (1500, 3700)                       , (2000, 5100)                   ]
+Ls         = [40                         , 40                         , 40                         , 40                         , 40                         , 40                         , 40                         , 40                    , 40                    , 40                    , 71.5 + 62.8 - 16                   , 40                             ]
+fixnorm    = [False                      , False                      , False                      , False                      , False                      , False                      , False                      , False                 , False                 , False                 , True                               , True                           ]
+bkg_sim    = [False                      , False                      , False                      , False                      , False                      , False                      , False                      , False                 , False                 , False                 , True                               , False                          ]
+doplot     = [True                       , False                      , False                      , False                      , True                       , False                      , False                      , True                  , False                 , False                 , True                               , True                           ]
 
 # def hist_adc(a, weights=None):
 # 	return empirical.histogram(a, bins=2**13, range=(0, 2**13), weights=weights)
@@ -42,9 +41,9 @@ def errorsummary(x):
     
     return d
 
-fig = plt.figure('fit')
+fig = plt.figure('fit', figsize=[9.78, 6.13])
 fig.clf()
-fig.set_tight_layout(True)
+fig.set_tight_layout(False)
 
 centers_133 = []
 centers_117 = []
@@ -56,7 +55,7 @@ for i in range(len(files)):
     theta_0 = theta_0s[i]
     fitcut = fitcuts[i]
     
-    print('FILE {}'.format(filename))
+    print('FILE {}, CUT {}'.format(filename, logcut[i]))
     
     print('loading data...')
     if filename.endswith('.dat'):
@@ -125,7 +124,7 @@ for i in range(len(files)):
     model = lab.CurveModel(fit_fun, symb=True, npar=len(p0))
     if not bkg_sim[i]:
         try:
-            out = lab.fit_curve(model, fit_x, fit_y, dy=fit_dy, p0=p0, pfix=pfix, print_info=3, method='linodr', bounds=bounds)
+            out = lab.fit_curve(model, fit_x, fit_y, dy=fit_dy, p0=p0, pfix=pfix, print_info=0, method='linodr', bounds=bounds)
             par = out.par
         except:
             par = p0
@@ -139,7 +138,7 @@ for i in range(len(files)):
         pfix += [5]
     pfix += [4, 9]
     # try:
-    out_sim = lab.fit_curve(model, fit_x, fit_y, dy=fit_dy, p0=p0_sim, pfix=pfix, print_info=3, method='linodr', bounds=bounds)
+    out_sim = lab.fit_curve(model, fit_x, fit_y, dy=fit_dy, p0=p0_sim, pfix=pfix, print_info=0, method='linodr', bounds=bounds)
     par_sim = out_sim.par
     # except:
     #     par_sim = p0_sim
@@ -150,6 +149,13 @@ for i in range(len(files)):
         lplot = np.sum(doplot)
         iplot = np.cumsum(doplot)[i] - 1
         
+        label = '{}°'.format(theta_0s[i])
+        if not (logcut[i] is None):
+            c = 2**4 * 3**3 * 5**4
+            start = "dall'inizio" if logcut[i][0] == 0 else "da {}".format(sp.Rational(np.round(logcut[i][0] * c)) / c)
+            end   = "alla fine"   if logcut[i][1] == 1 else  "a {}".format(sp.Rational(np.round(logcut[i][1] * c)) / c)
+            label += ', {} {}'.format(start, end)
+        
         modela = lab.CurveModel(fit_fun_a, symb=True)
         modelb = lab.CurveModel(fit_fun_b, symb=True)
         modelc = lab.CurveModel(fit_fun_c, symb=True)
@@ -159,7 +165,7 @@ for i in range(len(files)):
         ax = fig.add_subplot(nrows, ncols, iplot + 1)
         rebin_counts = histo.partial_sum(counts, rebin)
         color3 = [0.8] * 3
-        histo.bar_line(edges, rebin_counts, ax=ax, label=labels[i], color=color3)
+        histo.bar_line(edges, rebin_counts, ax=ax, label=label, color=color3)
         # ax.plot(fit_x,  model.f()(fit_x, *p0), '-k')
         # ax.plot(fit_x, modela.f()(fit_x, *p0), '--k', linewidth=0.5)
         # ax.plot(fit_x, modelb.f()(fit_x, *p0), '--k', linewidth=0.5)
