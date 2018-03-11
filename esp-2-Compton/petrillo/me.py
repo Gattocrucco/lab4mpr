@@ -42,5 +42,6 @@ ax.errorbar(np.arange(len(theta_0s)) + 0.1, unp.nominal_values(m_117_sim), yerr=
 ax.set_xticks(np.arange(len(theta_0s)))
 ax.set_xticklabels(theta_0s)
 ax.legend(loc=1)
+ax.grid()
 
 fig.show()
