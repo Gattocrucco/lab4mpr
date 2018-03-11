@@ -58,7 +58,7 @@ Per ottenere il segnale di trigger usiamo il circuito in \autoref{fig:trigger}:\
 	\item il segnale ``veloce'' del PMT2 (quello non pre-amplificato con ampiezza di picco $\sim\SI{20}{mV}$) è prima amplificata di un fattore 10 attraverso un modulo di amplificazione lineare, quindi inviato ad un discriminatore con soglia a $\SI{35}{mV}$ (il minimo) in modo da ottenere una soglia efficace più bassa;
 	\item il segnale del PMT1 è inviato direttamente ad un discriminatore con soglia a $\SI{35}{mV}$ (il minimo);
 	\item entrambi gli output dei discriminatori vanno ad un sistema di anti-rettriger che impone un tempo morto di $\sim\SI{1}{\micro s}$ e produce segnali di durata $\sim\SI{30}{ns}$;
-	\item il segnale discriminato di uno dei PMT è ritardato di $\sim\SI{10}{ns}$ per compensare un ritardo asimmetrico dovuto al modulo di anti-retrigger;
+	\item il segnale discriminato del PMT1 è ritardato di circa \SI{20}{ns} per compensare un ritardo asimmetrico dovuto al modulo di anti-retrigger;
 	\item facciamo la coincidenza dei due segnali così formati e mandiamo l'output a un modulo \texttt{gate \& delay}.
 	\item l'ADC richiede un segnale di trigger che parta almeno \SI{200}{ns} prima del picco e termini almeno \SI{200}{ns} dopo: usando l'oscilloscopio, regoliamo il modulo \texttt{gate \& delay} in modo da avere un segnale della durata di $\sim\SI{1}{\micro s}$ centrato sul picco del formatore.
 \end{itemize}
@@ -66,3 +66,4 @@ Acquisiamo degli spettri di prova e verifichiamo che con le soglie impostate i p
 
 \subsubsection{Punto di lavoro del PMT1}
 Il PMT1 può essere alimentato fino a \SI{1800}{V} e nel range \SI{1500}{V}-\SI{1700}{V} mostra circa lo stesso rate. Decidiamo di alimentarlo a \SI{1700}{V} per avere alta efficienza e mantenendo il rate ragionevole.
+\marginpar{tenerlo lontano da 1800\! V non conta niente? \\ (Andrea)}
