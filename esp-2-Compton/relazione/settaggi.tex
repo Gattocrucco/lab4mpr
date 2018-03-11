@@ -66,4 +66,13 @@ Il PMT1 può essere alimentato fino a \SI{1800}{V} e nel range \SI{1500}{V}-\SI{
 \marginpar{tenerlo lontano da 1800\! V non conta niente? \\ (Andrea)}
 
 \subsubsection{Stabilità della risposta del PMT2}
+Una sorgente di errore sistematico che ci aspettiamo importante\footnote{Come vedremo sarà la principale componente dell'errore sulla misura finale.} è dovuta alla stabilità della risposta del nostro spettrometro. Per avere un idea della stabilità nel tempo della calibrazione campioniamo per $\sim{25}{h}$ lo spettro del \co, quindi dividiamo i dati in parti di uguale statistica (che a rate costante implicano circa durate uguali) e grafichiamo. In \autoref{fig:stability} è riportato il risultato per intervalli temporali di $\sim{5}{h}$: la calibrazione varia in $\SI{24}{h}$ di poco più del $2\%$ e la variazione non è costante nel tempo, ma concentrata sopratutto nelle prime ore. 
+
+Se a partire dalla \autoref{energia_compton} scriviamo $m_e$ in funzione di $E$, $\Delta E = E-E'$ e $\theta$ e sviluppiamo al prim'ordine intorno a $E'$ otteniamo $m_e(dE') = m_e \cdot \frac{m_e}{\Delta E}dE'$ che ci dà come varia la massa dell'elettrone misurata dal nostro esperimento quando l'apparato si scalibra. Ad esempio a $\SI{7}{\degree}$, $\Delta E \simeq \SI{20}{keV}$ e ammettendo una variazione del $1\%$ della calibrazione (dato realistico alla luce delle misure precedenti) a $\sim\SI{1}{MeV}$ ho un $dE' \simeq \SI{10}{keV}$ da cui ottengo un errore sulla massa dell'elettrone $\Delta m_e = \frac{\SI{511}{keV}}{\SI{20}{keV}} \cdot  \SI{10}{keV} = \SI{250}{keV}$. Questo ci mostra come le misure della massa dell'elettrone ad angoli molto piccoli saranno dominate da questo errore.
+
+ \begin{figure}[h]
+	\hspace{-4em}
+	\includegraphics[width=45em]{stability}
+	\caption{\label{fig:stability}Stabilità nel tempo della calibrazione, ogni istogramma è un intervallo di $\sim{5}{h}$.}
+\end{figure}
 
