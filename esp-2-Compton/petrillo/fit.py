@@ -12,7 +12,7 @@ import pickle
 
 theta_0s   = [15                         , 15                         , 15                         , 15                         , 15                         , 15                         , 15                         , 7                     , 7                     , 7                     , 61.75                              , 45                             ]
 files      = ['../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-neve.npy', '../dati/log-neve.npy', '../dati/log-neve.npy', '../dati/histo-22feb-stralunga.dat', '../dati/histo-20feb-notte.dat']
-logcut     = [(0, 1/8)                   , (1/8, 2/8)                 , (2/8, 3/8)                 , (3/8, 4/8)                 , (7/8, 1)                   , (6/8, 7/8)                 , (5/8, 6/8)                 , (0, 1/8)              , (1/8, 2/8)            , (2/8, 3/8)            , None                               , None                           ]
+logcut     = [(0, 1/32)                  , (1/32, 2/32)               , (2/32, 3/32)               , (3/32, 4/32)               , (7/8, 1)                   , (6/8, 7/8)                 , (5/8, 6/8)                 , (0, 1/8)              , (1/8, 2/8)            , (2/8, 3/8)            , None                               , None                           ]
 calib_date = ['26feb'                    , '26feb'                    , '26feb'                    , '26feb'                    , '27feb'                    , '27feb'                    , '27feb'                    , '27feb'               , '27feb'               , '27feb'               , '22feb'                            , '20feb'                        ]
 fitcuts    = [(3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7400)          , (3000, 7400)          , (3000, 7400)          , (1500, 3700)                       , (2000, 5100)                   ]
 Ls         = [40                         , 40                         , 40                         , 40                         , 40                         , 40                         , 40                         , 40                    , 40                    , 40                    , 71.5 + 62.8 - 16                   , 40                             ]
@@ -151,7 +151,7 @@ for i in range(len(files)):
         
         label = '{}°'.format(theta_0s[i])
         if not (logcut[i] is None):
-            c = 2**4 * 3**3 * 5**4
+            c = 2**5 * 3**3 * 5**4
             start = "dall'inizio" if logcut[i][0] == 0 else "da {}".format(sp.Rational(np.round(logcut[i][0] * c)) / c)
             end   = "alla fine"   if logcut[i][1] == 1 else  "a {}".format(sp.Rational(np.round(logcut[i][1] * c)) / c)
             label += ', {} {}'.format(start, end)
@@ -220,6 +220,6 @@ for i in range(len(files)):
 
 print('saving to fit-result.pickle...')
 with open('fit-result.pickle', 'wb') as dump_file:
-    pickle.dump([centers_133, centers_117, centers_133_sim, centers_117_sim, theta_0s, calib_date, fixnorm], dump_file)
+    pickle.dump([centers_133, centers_117, centers_133_sim, centers_117_sim, theta_0s, calib_date, fixnorm, logcut], dump_file)
 
 fig.show()
