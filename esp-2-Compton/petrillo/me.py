@@ -152,19 +152,33 @@ me_117, _ = weighted_mean(masses_117)
 
 angles = np.array([15, 15, 61.75, 45])
 
+# impose 133 and 117 compatibility
+d = me_133 - me_117
+s = np.sqrt((d.n ** 2 - d.s ** 2) / 2)
+mec_133 = me_133 * un.ufloat(1, s / me_133.n, tag='comp')
+mec_117 = me_117 * un.ufloat(1, s / me_117.n, tag='comp')
+dc = mec_133 - mec_117
+assert np.allclose(abs(dc.n), dc.s)
+mec, Qc = weighted_mean([mec_133, mec_117])
+assert np.allclose(Qc, 1)
+
 ##### SUMMARY #####
 
 print('massa 1.33: {:P}'.format(me_133))
 print('massa 1.17: {:P}'.format(me_117))
-d = me_133 - me_117
-print('  differenza: {:P} ({:.1f} σ)'.format(d, abs(d.n) / d.s))
-print('massa     : {:P}'.format(me))
+print('    differenza: {:P} ({:.1f} σ)'.format(d, abs(d.n) / d.s))
 print('massa vera: 0.511')
-d = me - 0.511
-print('  differenza: {:P} ({:.1f} σ)'.format(d, abs(d.n) / d.s))
+print('massa     : {:P}'.format(me))
+dv = me - 0.511
+print('    differenza: {:P} ({:.1f} σ)'.format(dv, abs(dv.n) / dv.s))
 print("componenti dell'incertezza:")
-es = errorsummary(me)
-for k, s in es.items():
+for k, s in errorsummary(me).items():
+    print('    {:11}: {:.3g}'.format(str(k), s))
+print('massa comp: {:P}'.format(mec))
+dv = mec - 0.511
+print('    differenza: {:P} ({:.1f} σ)'.format(dv, abs(dv.n) / dv.s))
+print("componenti dell'incertezza:")
+for k, s in errorsummary(mec).items():
     print('    {:11}: {:.3g}'.format(str(k), s))
 print('chi2/ndof = {:.1f} / {} = {:.1f}'.format(Q, len(masses) - 1, Q / (len(masses) - 1)))
 print('matrice di covarianza:')
