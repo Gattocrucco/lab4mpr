@@ -64,12 +64,23 @@ la funzione (ottenuta con massa \SI{0.511}{MeV}) descrive ancora sufficientement
 \begin{figure}
 	\hspace{-8em}\includegraphics[height=0.9\textwidth]{fit}
 	\caption{\label{fig:fit}
-	cippa}
+	Spettri del rilascio di energia nel NaI
+	fittati con la somma di due gaussiane, due spalle Compton e un'esponenziale,
+	oppure solo con due gaussiane e un'esponenziale (<<fondo semplificato>>).
+	La presa dati a \SI{61}{\degree} è fittata solo con il fondo semplificato
+	perché il fit completo è instabile.}
 \end{figure}
 
 Fittiamo ogni spettro con la somma di due gaussiane,
 due spalle Compton espresse come in \autoref{sec:empirical}
 e un'esponenziale.
+Per verificare la dipendenza dal modello dei fondi
+fittiamo anche senza spalle Compton, con solo l'esponenziale.
+Quando i fotopicchi sono sovrapposti
+fissiamo la normalizzazione relativa delle gaussiane a quella ottenuta dalla simulazione.
+Imponiamo che il centro della gaussiana corrispondente al fotopicco a energia maggiore
+sia maggiore del centro dell'altra.
+Gli spettri e i fit sono riportati in \autoref{fig:fit}.
 
 \begin{figure}
 	\hspace{-7em}\includegraphics[width=50em]{me}
