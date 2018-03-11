@@ -8,6 +8,14 @@ e misuriamo lo spettro.
 Fittiamo i fotopicchi con gaussiane più un fondo modellato empiricamente con una retta tagliata alle ordinate negative
 (in modo che sia forzatamente positivo).
 Da ogni fotopicco otteniamo il centro e la deviazione standard.
+In \autoref{fig:calibrazione_26feb} riportiamo a titolo di esempio gli spettri di calibrazione e le funzioni fittate per una calibrazione.
+
+\begin{figure}
+	\hspace{-2em}
+	\includegraphics[width=40em]{calibrazione_26feb}
+	\caption{\label{fig:calibrazione_26feb}
+		Spettri delle sorgenti di calibrazione e fotopicchi fittati (l'americio è riportato ma è escluso dalla calibrazione)}
+\end{figure}
 
 \paragraph{Scala dell'energia}
 
@@ -48,8 +56,7 @@ Teniamo conto della correlazione dei centri del cobalto.
 
 \paragraph{Risoluzione}
 
-Come modello per la risoluzione in funzione dell'energia usiamo la formula
-FONTE CIPPALIPPA
+Come modello per la risoluzione in funzione dell'energia usiamo la formula (vedi \cite{6})
 \begin{equation}
 	\sigma_E(E) = a \cdot E \cdot \frac{2.27 + 7.28 \cdot E ^ {-0.29} - 2.41 \cdot E ^ {0.21}} {235}
 \end{equation}
