@@ -21,7 +21,7 @@ Se lo spettrometro si trova a piccolo angolo rispetto al bersaglio viene attrave
 
 \begin{figure}[h]
 	\centering
-	\newcommand*\mywidth{17.5em}
+	\newcommand*\mywidth{0.5\textwidth}
 
 	\subfloat
 	{\includegraphics[width=\mywidth]{0g}}
@@ -35,7 +35,6 @@ Se lo spettrometro si trova a piccolo angolo rispetto al bersaglio viene attrave
 
 \marginpar{La parte che segue è abbastanza inutile se non aggiungiamo la spiegazione che dicevo prima (Bob)}
 Abbiamo poi confrontato lo spettro a \SI{45}{\degree} con o senza scintillatore plastico, ma non abbiamo notato nessuna differenza. Abbiamo anche verificato che, come atteso, il rate di eventi diminuisce all'aumentare della distanza.
-\marginpar{forse alcune di queste considerazioni sono stupide, ma è più facile togliere che aggiungere}
 
 Proviamo a schermare lateralmente lo scintillatore cristallino per ridurre il fondo di backscattering e lo spettro in \autoref{casetta} mostra come effettivamente questo si riduca ma non a sufficienza da poter osservare il segnale. Si rende necessario l'uso di un trigger esterno per campionare sulla coincidenza di segnale tra PMT1 e PMT2.
 \marginpar{Nella \autoref{casetta} metterei due figure: \SI{45}{\degree} con schermaggio e senza.\\
@@ -43,8 +42,13 @@ Proviamo a schermare lateralmente lo scintillatore cristallino per ridurre il fo
 
 \begin{figure}
 \centering
-\includegraphics[width=25 em]{45gs}
-\caption{Spettro energetico del PMT2 con schermatura per ridurre il backscattering.}
+
+\subfloat{
+\includegraphics[width=0.5\textwidth]{45g} }
+\subfloat{
+\includegraphics[width=0.5\textwidth]{45gs} }
+
+\caption{Confronto tra gli spettri a 45$^{\circ}$ con e senza schermaggio.}
 \label{casetta}
 \end{figure}
 

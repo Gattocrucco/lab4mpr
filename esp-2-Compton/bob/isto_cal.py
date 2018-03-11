@@ -183,6 +183,5 @@ for data in date:
             print("%s \t %s \t %f \t %f \t %f \t %f \t %f \t %f \t %f" %(data, el, energy[1],popt[4],abs(popt[5]),sqrt(pcov[4][4]),sqrt(pcov[5][5]),pcov[4][5], 0),file=file_print)
         else:
             print("%s \t %s \t %f \t %f \t %f \t %f \t %f \t %f \t %f" %(data, el, energy[0],popt[1],abs(popt[2]),sqrt(pcov[1][1]),sqrt(pcov[2][2]),pcov[1][2], 0),file=file_print)
-
 file_print.close()
     
