@@ -21,32 +21,20 @@ Se lo spettrometro si trova a piccolo angolo rispetto al bersaglio viene attrave
 
 \begin{figure}[h]
 	\centering
-	\newcommand*\mywidth{0.5\textwidth}
-
-	\subfloat
-	{\includegraphics[width=\mywidth]{0g}}
-	\hfill
-	\subfloat
-	{\includegraphics[width=\mywidth]{90g}}
-
+	\includegraphics[width=\textwidth]{plotg}
 	\caption{Spettri raccolti senza coincidenza a diversi angoli rispetto al bersaglio.}
 	\label{4ang}
 \end{figure}
 
 Abbiamo poi confrontato lo spettro a \SI{45}{\degree} con o senza scintillatore plastico, ma non abbiamo notato nessuna differenza. Abbiamo anche verificato che, come atteso, il rate di eventi diminuisce all'aumentare della distanza.
 
-Proviamo a schermare lateralmente lo scintillatore cristallino per ridurre il fondo di backscattering e lo spettro in \autoref{casetta} mostra come effettivamente questo si riduca ma non a sufficienza da poter osservare il segnale. Si rende necessario l'uso di un trigger esterno per campionare sulla coincidenza di segnale tra PMT1 e PMT2.
+Proviamo a schermare lateralmente lo scintillatore cristallino con il piombo per ridurre il fondo di backscattering e lo spettro in \autoref{casetta} mostra come effettivamente questo si riduca ma non a sufficienza da poter osservare il segnale. Si rende necessario l'uso di un trigger esterno per campionare sulla coincidenza di segnale tra PMT1 e PMT2.
 
 \begin{figure}
-\centering
-
-\subfloat{
-\includegraphics[width=0.5\textwidth]{45g} }
-\subfloat{
-\includegraphics[width=0.5\textwidth]{45gs} }
-
-\caption{Confronto tra gli spettri a 45$^{\circ}$ con e senza schermaggio.}
-\label{casetta}
+	\centering
+	\includegraphics[width=\textwidth]{plotcasetta}
+	\caption{Confronto tra gli spettri a 45$^{\circ}$ con e senza schermaggio.}
+	\label{casetta}
 \end{figure}
 
 \subsubsection{Trigger esterno}
