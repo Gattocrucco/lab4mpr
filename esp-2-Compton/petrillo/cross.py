@@ -50,7 +50,7 @@ if __name__ == '__main__':
     ax.set_xscale('log')
     ax.set_yscale('log')
     ax.set_xlabel('Energia del fotone [MeV]')
-    ax.set_ylabel('Cammino libero medio inverso [cm$^{2}$ g$^{-1}$]')
+    ax.set_ylabel('Coefficiente di attenuazione di massa [cm$^{2}$ g$^{-1}$]')
     ax.set_xlim((np.min(e), np.max(e)))
     y = ax.get_ylim()
     ax.set_ylim((np.nanmin([couple  (E) for E in e]), y[1]))
