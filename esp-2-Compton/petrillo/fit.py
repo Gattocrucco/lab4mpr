@@ -7,19 +7,19 @@ import lab
 import sympy as sp
 from uncertainties import unumpy as unp
 import uncertainties as un
-import calibration
 import collections
-import bias
+import pickle
 
-theta_0s =   [15                         , 15                         , 7                     , 61.75                              , 45]
-files =      ['../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-neve.npy', '../dati/histo-22feb-stralunga.dat', '../dati/histo-20feb-notte.dat']
-logcut     = [(0, 1/2)                   , (1/2, 1)                   , (0, 1/5)              , None                               , None                           ]
-calib_date = ['26feb'                    , '27feb'                    , '27feb'               , '22feb'                            , '20feb']
-fitcuts =    [(3000, 7200)               , (3000, 7200)               , (3000, 7400)          , (1500, 3700)                       , (2000, 5100)]
-Ls         = [40                         , 40                         , 40                    , 71.5 + 62.8 - 16                   , 40]
-fixnorm    = [False                      , False                      , False                 , True                               , True]
-labels     = ['15°, prima metà'          , '15°, seconda metà'        , '7°, primo quinto'    , '61.75°'                           , '45°']
-bkg_sim    = [False                      , False                      , False                 , True                               , False]
+theta_0s   = [15                         , 15                         , 15                         , 15                         , 15                         , 15                         , 7                     , 7                     , 7                     , 61.75                              , 45                             ]
+files      = ['../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-neve.npy', '../dati/log-neve.npy', '../dati/log-neve.npy', '../dati/histo-22feb-stralunga.dat', '../dati/histo-20feb-notte.dat']
+logcut     = [(0, 1/2)                   , (0, 1/4)                   , (1/4, 1/2)                 , (1/2, 1)                   , (1/2, 3/4)                 , (3/4, 1)                   , (0, 1/5)              , (0, 1/10)             , (1/10, 1/5)           , None                               , None                           ]
+calib_date = ['26feb'                    , '26feb'                    , '26feb'                    , '27feb'                    , '27feb'                    , '27feb'                    , '27feb'               , '27feb'               , '27feb'               , '22feb'                            , '20feb'                        ]
+fitcuts    = [(3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7400)          , (3000, 7400)          , (3000, 7400)          , (1500, 3700)                       , (2000, 5100)                   ]
+Ls         = [40                         , 40                         , 40                         , 40                         , 40                         , 40                         , 40                    , 40                    , 40                    , 71.5 + 62.8 - 16                   , 40                             ]
+fixnorm    = [False                      , False                      , False                      , False                      , False                      , False                      , False                 , False                 , False                 , True                               , True                           ]
+labels     = ['15°, prima metà'          , '15°, prima metà'          , '15°, prima metà'          , '15°, seconda metà'        , '15°, seconda metà'        , '15°, seconda metà'        , '7°, primo quinto'    , '7°, primo quinto'    , '7°, primo quinto'    , '61.75°'                           , '45°'                          ]
+bkg_sim    = [False                      , False                      , False                      , False                      , False                      , False                      , False                 , False                 , False                 , True                               , False                          ]
+doplot     = [True                       , False                      , False                      , True                       , False                      , False                      , True                  , False                 , False                 , True                               , True                           ]
 
 # def hist_adc(a, weights=None):
 # 	return empirical.histogram(a, bins=2**13, range=(0, 2**13), weights=weights)
@@ -146,52 +146,58 @@ for i in range(len(files)):
     #     print('fit failed!')
     
     print('plot...')
-    modela = lab.CurveModel(fit_fun_a, symb=True)
-    modelb = lab.CurveModel(fit_fun_b, symb=True)
-    modelc = lab.CurveModel(fit_fun_c, symb=True)
+    if doplot[i]:
+        lplot = np.sum(doplot)
+        iplot = np.cumsum(doplot)[i] - 1
+        
+        modela = lab.CurveModel(fit_fun_a, symb=True)
+        modelb = lab.CurveModel(fit_fun_b, symb=True)
+        modelc = lab.CurveModel(fit_fun_c, symb=True)
     
-    ax = fig.add_subplot(len(files) // 2 + (1 if len(files) % 2 else 0), 2, i + 1)
-    rebin_counts = histo.partial_sum(counts, rebin)
-    color3 = [0.8] * 3
-    histo.bar_line(edges, rebin_counts, ax=ax, label=labels[i], color=color3)
-    # ax.plot(fit_x,  model.f()(fit_x, *p0), '-k')
-    # ax.plot(fit_x, modela.f()(fit_x, *p0), '--k', linewidth=0.5)
-    # ax.plot(fit_x, modelb.f()(fit_x, *p0), '--k', linewidth=0.5)
-    # ax.plot(fit_x, modelc.f()(fit_x, *p0), '--k', linewidth=0.5)
-    color = [0.0] * 3
-    if not bkg_sim[i]:
-        ax.plot(fit_x,  model.f()(fit_x, *par), '-', color=color)
-        ax.plot(fit_x, modela.f()(fit_x, *par), '--', color=color, linewidth=0.5)
-        ax.plot(fit_x, modelb.f()(fit_x, *par), '--', color=color, linewidth=0.5)
-        ax.plot(fit_x, modelc.f()(fit_x, *par), '--', color=color, linewidth=0.5)
-    color2 = [0.4] * 3
-    ax.plot(fit_x,  model.f()(fit_x, *par_sim), '-', color=color2)
-    if bkg_sim[i]:
-        ax.plot(fit_x, modela.f()(fit_x, *par_sim), '-.', linewidth=0.5, color=color2)
-        ax.plot(fit_x, modelb.f()(fit_x, *par_sim), '-.', linewidth=0.5, color=color2)
-        ax.plot(fit_x, modelc.f()(fit_x, *par_sim), '-.', linewidth=0.5, color=color2)
-    ax.grid(linestyle=':')
-    ax.legend(fontsize='small', loc=2)
-    ymax = np.max(rebin_counts[15:1000])
-    ax.set_ylim((-ymax * 0.05, ymax * 1.05))
-    if i % 2 == 0:
-        ax.set_ylabel('conteggi')
-    if len(labels) - i <= 2:
-        ax.set_xlabel('canale ADC')
+        ncols = 2
+        nrows = (lplot + 1) // ncols + (1 if (lplot + 1) % ncols else 0)
+        ax = fig.add_subplot(nrows, ncols, iplot + 1)
+        rebin_counts = histo.partial_sum(counts, rebin)
+        color3 = [0.8] * 3
+        histo.bar_line(edges, rebin_counts, ax=ax, label=labels[i], color=color3)
+        # ax.plot(fit_x,  model.f()(fit_x, *p0), '-k')
+        # ax.plot(fit_x, modela.f()(fit_x, *p0), '--k', linewidth=0.5)
+        # ax.plot(fit_x, modelb.f()(fit_x, *p0), '--k', linewidth=0.5)
+        # ax.plot(fit_x, modelc.f()(fit_x, *p0), '--k', linewidth=0.5)
+        color = [0.0] * 3
+        if not bkg_sim[i]:
+            ax.plot(fit_x,  model.f()(fit_x, *par), '-', color=color)
+            ax.plot(fit_x, modela.f()(fit_x, *par), '--', color=color, linewidth=0.5)
+            ax.plot(fit_x, modelb.f()(fit_x, *par), '--', color=color, linewidth=0.5)
+            ax.plot(fit_x, modelc.f()(fit_x, *par), '--', color=color, linewidth=0.5)
+        color2 = [0.4] * 3
+        ax.plot(fit_x,  model.f()(fit_x, *par_sim), '-', color=color2)
+        if bkg_sim[i]:
+            ax.plot(fit_x, modela.f()(fit_x, *par_sim), '-.', linewidth=0.5, color=color2)
+            ax.plot(fit_x, modelb.f()(fit_x, *par_sim), '-.', linewidth=0.5, color=color2)
+            ax.plot(fit_x, modelc.f()(fit_x, *par_sim), '-.', linewidth=0.5, color=color2)
+        ax.grid(linestyle=':')
+        ax.legend(fontsize='small', loc=2)
+        ymax = np.max(rebin_counts[15:1000])
+        ax.set_ylim((-ymax * 0.05, ymax * 1.05))
+        if iplot % ncols == 0:
+            ax.set_ylabel('conteggi')
+        if lplot - iplot <= 2:
+            ax.set_xlabel('canale ADC')
     
-    if i == len(labels) - 1:
-        ax = fig.add_subplot(326)
-        dummy = ([0], [0])
-        ax.plot(*dummy, '-', color=color3, label='dati')
-        ax.plot(*dummy, '-', color=color, label='fit')
-        ax.plot(*dummy, '--', linewidth=0.5, color=color, label='  addendi')
-        ax.plot(*dummy, '-', color=color2, label='fit fondo semplificato')
-        if any(bkg_sim):
-            ax.plot(*dummy, '-.', color=color2, label='  addendi', linewidth=0.5)
-        ax.set_xlim((10,20))
-        ax.set_ylim((10,20))
-        ax.axis('off')
-        ax.legend(loc='center')
+        if iplot == lplot - 1:
+            ax = fig.add_subplot(nrows, ncols, nrows * ncols)
+            dummy = ([0], [0])
+            ax.plot(*dummy, '-', color=color3, label='dati')
+            ax.plot(*dummy, '-', color=color, label='fit')
+            ax.plot(*dummy, '--', linewidth=0.5, color=color, label='  addendi')
+            ax.plot(*dummy, '-', color=color2, label='fit fondo semplificato')
+            if any(bkg_sim):
+                ax.plot(*dummy, '-.', color=color2, label='  addendi', linewidth=0.5)
+            ax.set_xlim((10,20))
+            ax.set_ylim((10,20))
+            ax.axis('off')
+            ax.legend(loc='center')
 
     idx = np.array([1,6])
     if not bkg_sim[i]:
@@ -206,39 +212,8 @@ for i in range(len(files)):
     centers_133_sim.append(c133_sim)
     centers_117_sim.append(c117_sim)
 
-def fun_energy(E_0, m_e, theta_0):
-    return E_0 / (1 + E_0 / m_e * (1 - np.cos(np.radians(theta_0))))
-
-for i in range(len(calib_date)):
-    centers_133[i] = calibration.energy_inverse_calibration(calib_date[i], unc=True)(centers_133[i])
-    centers_117[i] = calibration.energy_inverse_calibration(calib_date[i], unc=True)(centers_117[i])
-    centers_133_sim[i] = calibration.energy_inverse_calibration(calib_date[i], unc=True)(centers_133_sim[i])
-    centers_117_sim[i] = calibration.energy_inverse_calibration(calib_date[i], unc=True)(centers_117_sim[i])
-
-utheta_0s = np.array([un.ufloat(t, 0.1, tag='angle') for t in theta_0s]) - un.ufloat(-0.09, 0.04, tag='forma')
-m_133 = np.array([(1 - un.umath.cos(un.umath.radians(utheta_0s[i]))) / (1 / centers_133[i] - 1 / 1.33) for i in range(len(utheta_0s))])
-m_117 = np.array([(1 - un.umath.cos(un.umath.radians(utheta_0s[i]))) / (1 / centers_117[i] - 1 / 1.17) for i in range(len(utheta_0s))])
-m_133_sim = np.array([(1 - un.umath.cos(un.umath.radians(utheta_0s[i]))) / (1 / centers_133_sim[i] - 1 / 1.33) for i in range(len(utheta_0s))])
-m_117_sim = np.array([(1 - un.umath.cos(un.umath.radians(utheta_0s[i]))) / (1 / centers_117_sim[i] - 1 / 1.17) for i in range(len(utheta_0s))])
-
-biases = np.array([bias.bias_double(1.33, 1.17, theta_0s[i], calib_date[i], fixnorm=fixnorm[i]) for i in range(len(theta_0s))])
-
-m_133 -= biases[:,0]
-m_117 -= biases[:,1]
-m_133_sim -= biases[:,0]
-m_117_sim -= biases[:,1]
-
-fig2 = plt.figure('fit_result')
-fig2.clf()
-ax = fig2.add_subplot(111)
-
-ax.errorbar(np.arange(len(theta_0s)) - 0.05, unp.nominal_values(m_133), yerr=unp.std_devs(m_133), fmt='.', label='1.33')
-ax.errorbar(np.arange(len(theta_0s)) + 0.05, unp.nominal_values(m_117), yerr=unp.std_devs(m_117), fmt='.', label='1.17')
-ax.errorbar(np.arange(len(theta_0s)) - 0.1, unp.nominal_values(m_133_sim), yerr=unp.std_devs(m_133_sim), fmt='.', label='1.33 simp.')
-ax.errorbar(np.arange(len(theta_0s)) + 0.1, unp.nominal_values(m_117_sim), yerr=unp.std_devs(m_117_sim), fmt='.', label='1.17 simp.')
-ax.set_xticks(np.arange(len(theta_0s)))
-ax.set_xticklabels(theta_0s)
-ax.legend(loc=1)
+print('saving to fit-result.pickle...')
+with open('fit-result.pickle', 'wb') as dump_file:
+    pickle.dump([centers_133, centers_117, centers_133_sim, centers_117_sim, theta_0s, calib_date, fixnorm], dump_file)
 
 fig.show()
-fig2.show()
