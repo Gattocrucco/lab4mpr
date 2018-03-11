@@ -18,13 +18,14 @@ Ls         = [40                         , 40                         , 40      
 fixnorm    = [False                      , False                      , False                      , False                      , False                      , False                      , False                      , False                 , False                 , False                 , True                               , True                           ]
 bkg_sim    = [False                      , False                      , False                      , False                      , False                      , False                      , False                      , False                 , False                 , False                 , True                               , False                          ]
 doplot     = [True                       , False                      , False                      , False                      , True                       , False                      , False                      , True                  , False                 , False                 , True                               , True                           ]
+rebin      = [16                         , 16                         , 16                         , 16                         , 8                          , 8                          , 8                          , 8                     , 8                     , 8                     , 8                                  , 8                              ]
 
 # def hist_adc(a, weights=None):
 # 	return empirical.histogram(a, bins=2**13, range=(0, 2**13), weights=weights)
 
 fig = plt.figure('fit', figsize=[9.78, 6.13])
 fig.clf()
-fig.set_tight_layout(False)
+fig.set_tight_layout(True)
 
 centers_133 = []
 centers_117 = []
@@ -77,15 +78,14 @@ for i in range(len(files)):
 
     print('fit...')
     # prepare data for fit
-    rebin = 8
-    edges = np.arange(2**13 + 1)[::rebin]
+    edges = np.arange(2**13 + 1)[::rebin[i]]
     cut = (edges[:-1] >= fitcut[0]) & (edges[:-1] <= fitcut[1])
-    fit_x = edges[:-1][cut] + rebin / 2
-    fit_y = histo.partial_sum(counts, rebin)[cut]
+    fit_x = edges[:-1][cut] + rebin[i] / 2
+    fit_y = histo.partial_sum(counts, rebin[i])[cut]
     fit_dy = np.where(fit_y > 0, np.sqrt(fit_y), 1)
 
     # estimate initial parameters
-    total = np.sum(counts[100:8000]) * rebin
+    total = np.sum(counts[100:8000]) * rebin[i]
     mc_total = np.sum(wpa) + np.sum(wsa) + np.sum(wpb) + np.sum(wsb)
     ratio = total / mc_total
     p0 = [np.sum(wpa) * ratio, np.mean(pa), np.std(pa), np.sum(wsa) * ratio, 1, np.sum(wpb) * ratio, np.mean(pb), np.std(pb), np.sum(wsb) * ratio, 1, np.max(counts[100:len(counts) // 2]), 1500]
@@ -144,7 +144,7 @@ for i in range(len(files)):
         ncols = 2
         nrows = (lplot + 1) // ncols + (1 if (lplot + 1) % ncols else 0)
         ax = fig.add_subplot(nrows, ncols, iplot + 1)
-        rebin_counts = histo.partial_sum(counts, rebin)
+        rebin_counts = histo.partial_sum(counts, rebin[i])
         color3 = [0.8] * 3
         histo.bar_line(edges, rebin_counts, ax=ax, label=label, color=color3)
         # ax.plot(fit_x,  model.f()(fit_x, *p0), '-k')
@@ -203,4 +203,5 @@ print('saving to fit-result.pickle...')
 with open('fit-result.pickle', 'wb') as dump_file:
     pickle.dump([centers_133, centers_117, centers_133_sim, centers_117_sim, theta_0s, calib_date, fixnorm, logcut], dump_file)
 
+fig.set_tight_layout(False)
 fig.show()
