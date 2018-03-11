@@ -12,7 +12,7 @@ import pickle
 
 theta_0s   = [15                         , 15                         , 15                         , 15                         , 15                         , 15                         , 15                         , 7                     , 7                     , 7                     , 61.75                              , 45                             ]
 files      = ['../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-27feb-e15.npy', '../dati/log-neve.npy', '../dati/log-neve.npy', '../dati/log-neve.npy', '../dati/histo-22feb-stralunga.dat', '../dati/histo-20feb-notte.dat']
-logcut     = [(0, 1/8)                   , (1/8, 2/8)                 , (2/8, 3/8)                 , (3/8, 4/8)                 , (1/2, 1)                   , (1/2, 3/4)                 , (3/4, 1)                   , (0, 1/5)              , (0, 1/10)             , (1/10, 1/5)           , None                               , None                           ]
+logcut     = [(0, 1/8)                   , (1/8, 2/8)                 , (2/8, 3/8)                 , (3/8, 4/8)                 , (7/8, 1)                   , (6/8, 7/8)                 , (5/8, 6/8)                 , (0, 1/8)              , (1/8, 2/8)            , (2/8, 3/8)            , None                               , None                           ]
 calib_date = ['26feb'                    , '26feb'                    , '26feb'                    , '26feb'                    , '27feb'                    , '27feb'                    , '27feb'                    , '27feb'               , '27feb'               , '27feb'               , '22feb'                            , '20feb'                        ]
 fitcuts    = [(3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7200)               , (3000, 7400)          , (3000, 7400)          , (3000, 7400)          , (1500, 3700)                       , (2000, 5100)                   ]
 Ls         = [40                         , 40                         , 40                         , 40                         , 40                         , 40                         , 40                         , 40                    , 40                    , 40                    , 71.5 + 62.8 - 16                   , 40                             ]
@@ -41,7 +41,7 @@ def errorsummary(x):
     
     return d
 
-fig = plt.figure('fit')
+fig = plt.figure('fit', figsize=[9.78, 6.13])
 fig.clf()
 fig.set_tight_layout(False)
 
