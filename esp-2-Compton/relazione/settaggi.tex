@@ -75,18 +75,18 @@ Stimiamo qual è l'effetto dell'instabilità.
 Invertendo la \eqref{energia_compton} otteniamo
 \begin{equation}
 	\label{eq:scalibur}
-	\left. \pdv{m_e}{E'} \right|_\theta = \frac{m_e}{E - E'}
+	\left. \pdv{m_e}{E'} \right|_\theta = \frac{1-\cos\theta}{\left( 1-\frac{E'}{E}\right )^2}
 \end{equation}
 che, poiché $E$ e $\theta$ sono conosciuti con precisione e misuriamo $E'$ con lo spettrometro,
 ci dà come varia la massa dell'elettrone misurata dal nostro esperimento quando l'apparato si scalibra.
-Ad esempio per $E=\SI{1.33}{MeV}$ e $\theta=\SI{10}{\degree}$ abbiamo $E-E'\approx\SI{51}{keV}$ e,
+Ad esempio per $E=\SI{1.33}{MeV}$ e $\theta=\SI{10}{\degree}$ abbiamo $E'\approx\SI{1.28}{MeV}$ e,
 ammettendo una variazione della calibrazione del \SI1\%
 (dato realistico alla luce delle misure precedenti),
 otteniamo una variazione della massa misurata
 \begin{align*}
 	\Delta m_e
-	\approx \frac{m_e}{E - E'} \cdot \frac{\Delta E'}{E'} \cdot E'
-	\approx \frac{\SI{511}{keV}}{\SI{51}{keV}} \cdot \SI1\% \cdot \SI{1.28}{MeV}
-	= \SI{128}{keV}.
+	\approx \frac{1-\cos\theta}{\left( 1-\frac{E'}{E}\right )^2} \cdot \frac{\Delta E'}{E'} \cdot E'
+	\approx \frac{0.015}{0.0014} \cdot \SI1\% \cdot \SI{1.28}{MeV}
+	= \SI{0.14}{MeV}.
 \end{align*}
 Questo ci mostra come le misure dell’elettrone a piccolo angolo saranno dominate da questo errore.

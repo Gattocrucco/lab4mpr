@@ -90,10 +90,10 @@ m_117_15 = m_117[theta_0s == 15][0]
 m_133_15_p = m_133[theta_0s == 15][1]
 m_117_15_p = m_117[theta_0s == 15][1]
 
+stab_15_time = (logcut[theta_0s == 15][0][1] - logcut[theta_0s == 15][0][0]) * 22
 stab_133_15 = abs(m_133_15_p.n - m_133_15.n) / m_133_15.n
 stab_117_15 = abs(m_117_15_p.n - m_117_15.n) / m_117_15.n
 stab_15 = un.ufloat(1, max(stab_133_15, stab_117_15), tag='stability')
-stab_15_time = (logcut[theta_0s == 15][0][1] - logcut[theta_0s == 15][0][0]) * 22
 m_133_15 *= stab_15
 m_117_15 *= stab_15
 
@@ -117,25 +117,39 @@ bias_133_15e = biases[:,0][theta_0s == 15][4]
 bias_117_15e = biases[:,1][theta_0s == 15][4]
 
 # 61.75°
+def stab_factor(E, theta):
+    m = 0.511
+    theta = np.radians(theta)
+    Ep = E / (1 + E/m * (1 - np.cos(theta)))
+    return 1 / (1 - Ep/E)
+
 stab_61_time = 40
-stab_61 = un.ufloat(1, stab_15.s * (1 - np.cos(np.radians(15))) / (1 - np.cos(np.radians(61.75))) * np.sqrt(stab_61_time / stab_15_time), tag='stability')
+stab_61_133_s = stab_15.s * stab_factor(1.33, 61.75) / stab_factor(1.33, 15) * np.sqrt(stab_61_time / stab_15_time)
+stab_61_117_s = stab_15.s * stab_factor(1.17, 61.75) / stab_factor(1.17, 15) * np.sqrt(stab_61_time / stab_15_time)
+stab_61_133_us = un.ufloat(0, stab_61_133_s, tag='stability')
+stab_61_133 = 1 + stab_61_133_us
+stab_61_117 = 1 + stab_61_117_s / stab_61_133_s * stab_61_133_us
 
 m_133_61 = m_133_sim[theta_0s == 61.75][0]
-m_133_61 *= stab_61
+m_133_61 *= stab_61_133
 m_117_61 = m_117_sim[theta_0s == 61.75][0]
-m_117_61 *= stab_61
+m_117_61 *= stab_61_117
 
 bias_133_61 = biases[:,0][theta_0s == 61.75][0]
 bias_117_61 = biases[:,1][theta_0s == 61.75][0]
 
 # 45°
 stab_45_time = 20
-stab_45 = un.ufloat(1, stab_15.s * (1 - np.cos(np.radians(15))) / (1 - np.cos(np.radians(45))) * np.sqrt(stab_45_time / stab_15_time), tag='stability')
+stab_45_133_s = stab_15.s * stab_factor(1.33, 45) / stab_factor(1.33, 15) * np.sqrt(stab_45_time / stab_15_time)
+stab_45_117_s = stab_15.s * stab_factor(1.17, 45) / stab_factor(1.17, 15) * np.sqrt(stab_45_time / stab_15_time)
+stab_45_133_us = un.ufloat(0, stab_45_133_s, tag='stability')
+stab_45_133 = 1 + stab_45_133_us
+stab_45_117 = 1 + stab_45_117_s / stab_45_133_s * stab_45_133_us
 
 m_133_45 = m_133[theta_0s == 45][0]
-m_133_45 *= stab_45
+m_133_45 *= stab_45_133
 m_117_45 = m_117[theta_0s == 45][0]
-m_117_45 *= stab_45
+m_117_45 *= stab_45_117
 
 bias_133_45 = biases[:,0][theta_0s == 45][0]
 bias_117_45 = biases[:,1][theta_0s == 45][0]
@@ -228,7 +242,7 @@ rect = patches.Rectangle(
 )
 ax.add_patch(rect)
 ax.plot(lim, [0.511] * 2, '--k', scalex=False, label='valore noto')
-ax.legend(loc='best', fontsize='small')
+ax.legend(loc='upper left', fontsize='small')
 ax.grid(linestyle=':')
 ax.set_xticks(np.arange(len(angles)))
 ax.set_xticklabels(['{:g}°'.format(a) for a in angles])
