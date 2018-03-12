@@ -57,7 +57,11 @@ la simuliamo e fittiamo sulla simulazione una funzione empirica a 10 parametri
 per usarla sui dati blocchiamo tutti i parametri tranne un parametro di scala.
 In \autoref{fig:empirical-test} verifichiamo che,
 per valori della massa dell'elettrone di \SI{0.4}{MeV} e \SI{0.6}{MeV},
-la funzione (ottenuta con massa \SI{0.511}{MeV}) descrive ancora sufficientemente bene la curva simulata.
+la funzione (ottenuta con massa \SI{0.511}{MeV}) descrive ancora sufficientemente bene la curva simulata.\footnotemark
+\footnotetext{Una descrizione così accurata della spalla Compton
+sarebbe servita per il punto facoltativo della scheda,
+ovvero ricavare la massa dal fit della spalla.
+Alla fine non abbiamo fatto il punto facoltativo.}
 
 \subsubsection{Fit degli spettri}
 
@@ -212,8 +216,8 @@ Otteniamo (in \si{MeV}):
 	m_e^{(1.17)}                &= \num{0.483 \pm 0.023}  ,    \\
 	m_e^{(1.17)} - m_e^{(1.33)} &= \num{0.014 \pm 0.008}  \quad(1.7\,\sigma),   \\
 	m_e                         &= \num{0.466 \pm 0.020} = \\
-	                            &=      0.477 \pm 0.020^{(\text{sist})} \pm 0.004^{(\text{stat})} = \\
-										 &=      0.477 \pm 0.016^{(\text{stab})} \pm 0.010^{(\text{cal})} \pm 0.005^{(\text{ang})} \pm 0.004^{(\text{stat})}.
+	                            &=      0.466 \pm 0.020^{(\text{sist})} \pm 0.004^{(\text{stat})} = \\
+										 &=      0.466 \pm 0.016^{(\text{stab})} \pm 0.010^{(\text{cal})} \pm 0.005^{(\text{ang})} \pm 0.004^{(\text{stat})}.
 \end{align*}
 Il $\chi^2$ della media pesata è 6.5, per 7 gradi di libertà.
 La nostra misura dista $2.3\,\sigma$ dal valore noto \SI{0.511}{MeV}.

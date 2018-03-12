@@ -8,7 +8,7 @@ Gli strumenti principali a disposizione per questa esperienza (fatta eccezione p
 	\item il PMT1: un rivelatore basato su uno scintillatore organico (che fungerà da bersaglio);
 	\item il PMT2: un rivelatore basato su un cristallo scintillatore di NaI(Tl) $\SI2{''}\times\SI2{''}$ dotato di un preamplificatore in cascata al fotomoltiplicatore (che useremo come spettrometro);
 	\item un formatore/amplificatore che produce in uscita un segnale gaussiano con altezza di picco proporzionale all'energia rilasciata e durata $\sim \SI{10}{\micro s}$;
-	\item un ADC a 13 bit che può sia essere triggerata dall'esterno, sia campionare automaticamente sul picco tutti i segnali che superano una certa soglia interna (chiameremo questa modalità \emph{automatica}).
+	\item un'ADC a 13 bit che può sia essere triggerata dall'esterno, sia campionare automaticamente sul picco tutti i segnali che superano una certa soglia interna (chiameremo questa modalità \emph{automatica}).
 \end{itemize}
 
 \subsubsection{Sorgenti radioattive}
@@ -19,7 +19,7 @@ Data l'emivita del \co\; di $\tau_2 = \SI{5.3}{yr}$ alla data della nostra esper
 
 Dalla costante di dose del \co\;  ($\SI{0.37}{\micro Sv\;m^2\;MBq^{-1}\;h^{-1}}$, vedi \cite{1}) è possibile stimare la dose assorbita nel corso dell'esperienza: $\SI{0.37}{\micro Sv\;m^2\;MBq^{-1}\;h^{-1}} \cdot \SI{4.7}{MBq} \cdot (\SI{1}{m})^2= \SI{1.7}{\micro Sv\;h^{-1}}$ (a un metro di distanza) che va confrontato con il fondo naturale $\sim\SI{0.3}{\micro Sv\;h^{-1}}$. Si tratta di una stima per eccesso poiché considera la sorgente isotropa, ma la nostra sorgente è schermata ed emette solo in un piccolo angolo solido (non nella nostra direzione).
 
-Le altre sorgenti di calibrazione a disposizione hanno un'attività minore di $\SI{72}{kBq}$\footnote{Si tratta dell'attività dichiarata dalla ditta produttrice alla data di vendita che è ignota.}\marginpar{questo dettaglio non è particolarmente rilevante ma bho (Bob)} e i loro principali modi di decadimento sono schematizzati in \autoref{tab:sorgenti_cal}. Notiamo inoltre che il \na\; decade $\beta^+$, ci aspettiamo perciò di osservare nel suo spettro il segnale dei fotoni $\gamma$ a \SI{511}{keV} prodotti nell'annichilazione.
+Le altre sorgenti di calibrazione a disposizione hanno un'attività minore\footnote{Si tratta dell'attività dichiarata dalla ditta produttrice alla data di vendita che è ignota.} di $\SI{72}{kBq}$ e i loro principali modi di decadimento sono schematizzati in \autoref{tab:sorgenti_cal}. Notiamo inoltre che il \na{} decade $\beta^+$, ci aspettiamo perciò di osservare nel suo spettro il segnale dei fotoni $\gamma$ a \SI{511}{keV} prodotti nell'annichilazione.
 
 \begin{table}[h]
 	\centering
@@ -38,7 +38,7 @@ Le altre sorgenti di calibrazione a disposizione hanno un'attività minore di $\
 
 \subsubsection{Schema dell'apparato sperimentale}
 La strumentazione a disposizione è disposta come in \autoref{fig:schema_apparato}: il PMT1 si trova subito davanti al collimatore della sorgente di \co. Il PMT2 si trova su una base capace di ruotare attorno ad un perno (che con buona approssimazione si trova sulla verticale del bersaglio) e di variare la distanza dal bersaglio (in un range $\sim\SI{40}{cm}-\SI{20}{cm}$).
-L'angolo di scattering ovvero l'angolo tra la direzione del fascio di fotoni primari e i fotoni secondi prodotti è misurato come mostrato in \autoref{fig:goniometro}: abbiamo stampato un goniometro su carta e lo abbiamo  sotto la base ruotante del PMT2 in modo che il centro fosse nel perno di rotazione che lo 0 fosse circa lungo la direzione del fascio primario. Una tacca sulla base trasparente ci consente di leggere l'angolo. Questa soluzione ci permette di misurare gli angoli con grande comodità e precisione (stimiamo di avere una risoluzione migliore di $\sfrac14 \si{\degree}$).
+L'angolo di scattering, ovvero l'angolo tra la direzione del fascio di fotoni primari e i fotoni secondari prodotti, è misurato come mostrato in \autoref{fig:goniometro}: abbiamo stampato un goniometro su carta e lo abbiamo fissato sotto la base rotante del PMT2 in modo che il centro fosse nel perno di rotazione e che lo 0 fosse circa lungo la direzione del fascio primario. Una tacca sulla base trasparente ci consente di leggere l'angolo. Questa soluzione ci permette di misurare gli angoli con grande comodità e precisione (stimiamo di avere una risoluzione migliore di~$\sfrac14 \si{\degree}$).
 
  \begin{figure}[h]
 	\centering

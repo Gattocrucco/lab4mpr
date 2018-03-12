@@ -23,5 +23,6 @@ ax = fig.add_subplot(111)
 
 histo.histo(samples_dict, cut=8, linewidth=1.5, ax=ax)
 ax.grid(linestyle=':')
+ax.legend(['%d h-%d h' % (h, h + 5) for h in range(0, 25, 5)], fontsize='small')
 
 fig.show()
