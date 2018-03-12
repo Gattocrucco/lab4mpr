@@ -98,7 +98,11 @@ Gli spettri e i fit sono riportati in \autoref{fig:fit}.
 
 Convertiamo i centri dei fotopicchi ottenuti dai fit degli spettri
 da digit a MeV usando la calibrazione più vicina a ogni presa dati.
-Per ogni fotopicco otteniamo la massa dell'elettrone invertendo la \eqref{energia_compton}.
+Per ogni fotopicco otteniamo la massa dell'elettrone invertendo la \eqref{energia_compton}:
+\begin{equation}
+	\label{eq:me}
+	m_e = \frac{1-\cos\theta}{\frac1{E'} - \frac1E}.
+\end{equation}
 
 \paragraph{Bias}
 
@@ -122,20 +126,24 @@ e quella del fotopicco \SI{1.17}{MeV}.
 
 Quando abbiamo solo l'istogramma,
 stimiamo l'incertezza di stabilità in questo modo:
-dalla \eqref{eq:scalibur} si ottiene che la variazione relativa della massa misurata dell'elettrone
+dalla \eqref{eq:scalibur} e dalla \eqref{eq:me}
+si ottiene che la variazione relativa della massa misurata dell'elettrone
 al variare della calibrazione è
 \begin{equation}
 	\label{eq:scal}
-	r \is \frac{\Delta m_e}{m_e} = \frac1{E-E'}\left(\frac{\Delta E'}{E'}\right)E',
+	r \is \frac{\Delta m_e}{m_e}
+	= \frac{1-\cos\theta}{\left(1-\frac{E'}E\right)^2}
+	\frac{\frac1{E'} - \frac1E}{1-\cos\theta}
+	\left(\frac{\Delta E'}{E'}\right) E'
+	= \frac1{1-\frac{E'}E} \left(\frac{\Delta E'}{E'}\right).
 \end{equation}
-dove $\Delta E'/E'$ è la variazione della scala di calibrazione.
-Supponendo fissato $\Delta E'/E'$,
-il rapporto tra le variazioni relative in due misure diverse $a$ e $b$ è
+Il rapporto tra le variazioni relative in due misure diverse $a$ e $b$ è
 \begin{equation*}
-	\frac{r_a}{r_b}
-	= \frac{E - E'_b}{E - E'_a} \frac{E'_a}{E'_b}
-	= \frac{1 - \cos\theta_b}{1 - \cos\theta_a}.
+	\frac{r_b}{r_a}
+	= \frac{1-\frac{E'_a}E}{1-\frac{E'_b}E}
+	\frac{\left(\frac{\Delta E'}{E'}\right)_b}{\left(\frac{\Delta E'}{E'}\right)_a},
 \end{equation*}
+dove $E'_a$ e $E'_b$ sono espressi dalla \eqref{energia_compton}.
 Se il tempo di acquisizione è diverso,
 stimiamo la variazione della scala di $b$ come un random walk:
 \begin{equation*}
@@ -144,7 +152,9 @@ stimiamo la variazione della scala di $b$ come un random walk:
 questa stima è conservativa perché l'effetto è integrato sul tempo.
 Infine:
 \begin{equation*}
-	r_b = r_a \frac{1 - \cos\theta_a}{1 - \cos\theta_b} \sqrt{\frac{t_b}{t_a}}.
+	r_b = r_a
+	\frac{1-\frac{E'_a}E}{1-\frac{E'_b}E}
+	\sqrt{\frac{t_b}{t_a}}.
 \end{equation*}
 Nel nostro caso per $a$ prendiamo la presa dati a \SI{15}{\degree}
 perché è quella con la maggiore incertezza di stabilità.
@@ -155,10 +165,7 @@ Non usiamo la massa ottenuta dalla misura a \SI{7}{\degree}
 perché risulta fortemente incompatibile con le altre misure.
 Lo riteniamo plausibile perché, a questo angolo,
 dalla \eqref{eq:scal} si ottiene che una variazione della scala dell'\SI1\%
-provoca una variazione della massa misurata di \SI{0.26}{MeV},
-\marginpar{In verità usando la formula mi viene che la scalibrazione
-dovrebbe differire del \SI{15}\% tra 1.33 e 1.17,
-cosa che non osservo in \autoref{fig:me}.}
+provoca una variazione della massa misurata di \SI{0.27}{MeV},
 quindi diventa molto significativo il tempo che intercorre tra la calibrazione
 e l'inizio della presa dati.
 
@@ -182,14 +189,14 @@ tranne per quella a \SI{61}{\degree} in cui usiamo quello semplificato.
 		\multicolumn{4}{c|}{$E=\SI{1.33}{MeV}$} & \multicolumn{4}{c}{$E=\SI{1.17}{MeV}$} \\
 		$\SI{15}{\degree}_\text{inizio}$ & $\SI{15}{\degree}_\text{fine}$ & \SI{61}{\degree} & \SI{45}{\degree} & $\SI{15}{\degree}_\text{inizio}$ & $\SI{15}{\degree}_\text{fine}$ & \SI{61}{\degree} & \SI{45}{\degree} \\
 		\midrule
-	   0.46(6) &     0.4\,\%  &   0.1\,\% &    0.1\,\% &   98.4\,\% &     0.3\,\% &   0.1\,\% &   0.0\,\% \\
-	           & 0.463(23)  &   0.2\,\% &    0.1\,\% &    0.4\,\% &    91.5\,\% &   0.2\,\% &   0.1\,\% \\
-	           &            & 0.52(4) &    0.0\,\% &    0.1\,\% &     0.2\,\% &  86.2\,\% &   0.0\,\% \\
-	           &            &         &  0.49(6) &    0.1\,\% &     0.1\,\% &   0.0\,\% &  99.2\,\% \\
-	           &            &         &          &  0.46(6) &     0.3\,\% &   0.1\,\% &   0.0\,\% \\
-	           &            &         &          &          & 0.477(27) &   0.1\,\% &   0.1\,\% \\
-	           &            &         &          &          &           & 0.56(4) &   0.0\,\% \\
-	           &            &         &          &          &           &         & 0.50(7) \\
+  0.46(6) &     0.4\,\% &    0.0\,\% &    0.0\,\%  &  98.4\,\% &     0.3\,\% &    0.0\,\%  &   0.0\,\% \\
+          & 0.463(23) &    0.1\,\% &    0.1\,\%  &   0.4\,\% &    91.5\,\% &    0.1\,\%  &   0.1\,\% \\
+          &           &  0.52(7) &    0.0\,\%  &   0.0\,\% &     0.1\,\% &   96.4\,\%  &   0.0\,\% \\
+          &           &          &  0.49(8)  &   0.0\,\% &     0.1\,\% &    0.0\,\%  &  98.9\,\% \\
+          &           &          &           & 0.46(6) &     0.3\,\% &    0.0\,\%  &   0.0\,\% \\
+          &           &          &           &         & 0.477(27) &    0.1\,\%  &   0.1\,\% \\
+          &           &          &           &         &           &  0.56(7)  &   0.0\,\% \\
+          &           &          &           &         &           &           & 0.50(9) \\
 		\bottomrule
 	\end{tabular}
 	\caption{\label{tab:cov}
@@ -201,19 +208,19 @@ Calcoliamo anche separatamente le medie per le masse corrispondenti a $E=\SI{1.3
 Le masse usate per la media sono riportate in \autoref{tab:cov} e graficamente in \autoref{fig:me}.
 Otteniamo (in \si{MeV}):
 \begin{align*}
-	m_e^{(1.33)}                &= \num{0.478 \pm 0.018}  ,    \\
-	m_e^{(1.17)}                &= \num{0.497 \pm 0.020}  ,    \\
-	m_e^{(1.17)} - m_e^{(1.33)} &= \num{0.019 \pm 0.008}  \quad(2.3\,\sigma),   \\
-	m_e                         &= \num{0.477 \pm 0.017} = \\
-	                            &=      0.477 \pm 0.016^{(\text{sist})} \pm 0.004^{(\text{stat})} = \\
-										 &=      0.477 \pm 0.014^{(\text{stab})} \pm 0.007^{(\text{cal})} \pm 0.004^{(\text{stat})} \pm 0.004^{(\text{ang})}.
+	m_e^{(1.33)}                &= \num{0.468 \pm 0.020}  ,    \\
+	m_e^{(1.17)}                &= \num{0.483 \pm 0.023}  ,    \\
+	m_e^{(1.17)} - m_e^{(1.33)} &= \num{0.014 \pm 0.008}  \quad(1.7\,\sigma),   \\
+	m_e                         &= \num{0.466 \pm 0.020} = \\
+	                            &=      0.477 \pm 0.020^{(\text{sist})} \pm 0.004^{(\text{stat})} = \\
+										 &=      0.477 \pm 0.016^{(\text{stab})} \pm 0.010^{(\text{cal})} \pm 0.005^{(\text{ang})} \pm 0.004^{(\text{stat})}.
 \end{align*}
-Il $\chi^2$ della media pesata è 8.1, per 7 gradi di libertà.
-La nostra misura dista $2\,\sigma$ dal valore noto \SI{0.511}{MeV}.
-Se imponiamo che la differenza tra $m_e^{(1.33)}$ e $m_e^{(1.17)}$ sia $1\,\sigma$
-aggiungendo due incertezze uguali $\sigma_\text{comp}=0.012$ alle due masse, otteniamo
-\begin{align*}
-	m_e^{(\text{comp})}                &= \num{0.485 \pm 0.020} = \\
-	                            &=      0.485 \pm 0.014^{(\text{stab})} \pm 0.010^{(\text{cal})} \pm 0.009^{(\text{comp})} \pm 0.004^{(\text{ang})} \pm 0.002^{(\text{stat})};
-\end{align*}
-$m_e^{(\text{comp})}$ dista $1.3\,\sigma$ da 0.511.
+Il $\chi^2$ della media pesata è 6.5, per 7 gradi di libertà.
+La nostra misura dista $2.3\,\sigma$ dal valore noto \SI{0.511}{MeV}.
+% Se imponiamo che la differenza tra $m_e^{(1.33)}$ e $m_e^{(1.17)}$ sia $1\,\sigma$
+% aggiungendo due incertezze uguali $\sigma_\text{comp}=0.012$ alle due masse, otteniamo
+% \begin{align*}
+% 	m_e^{(\text{comp})}                &= \num{0.485 \pm 0.020} = \\
+% 	                            &=      0.485 \pm 0.014^{(\text{stab})} \pm 0.010^{(\text{cal})} \pm 0.009^{(\text{comp})} \pm 0.004^{(\text{ang})} \pm 0.002^{(\text{stat})};
+% \end{align*}
+% $m_e^{(\text{comp})}$ dista $1.3\,\sigma$ da 0.511.
