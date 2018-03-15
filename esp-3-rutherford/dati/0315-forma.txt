@@ -1,0 +1,68 @@
+#clock=10 s
+#P=2e-2 mbar
+# soglia: 1.8 arbun
+#0 gradi
+594
+551
+604
+541
+554
+#P= 1.9e-2
+#-10 gradi
+585
+498
+542
+565
+#-20 gradi
+537
+485
+539
+#P=1.8e-2
+#-30 gradi
+481
+466
+#-40 gradi
+453
+445
+515
+#-50 gradi
+480
+402
+464
+374
+401
+#P=1.7e-2
+#-60 gradi
+302
+323
+330
+#-70 gradi
+228
+198
+197
+#-80 gradi
+92
+78
+91
+83
+#-90 gradi
+1 # senza telo
+0 # con telo
+0
+0
+1
+0
+# -90 gradi clock=89679
+#Durante la misura P=1.6e-2
+0
+#5 gradi
+#P=2e-2
+599
+#15 gradi
+551
+#25 gradi
+558
+#35 gradi
+445
+
+

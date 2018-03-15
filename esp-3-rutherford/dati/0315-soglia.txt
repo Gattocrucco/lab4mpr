@@ -1,0 +1,21 @@
+#clock 10000
+#pressione 1.5e-2
+#soglia 0
+#angolo 0
+456
+#soglia 1
+0
+#soglia 0.5
+467
+#telo on
+433
+#soglia 0
+452
+#soglia 0.7
+432
+#soglia 0.8
+379
+#soglia 0.9
+102
+#soglia 0
+1
