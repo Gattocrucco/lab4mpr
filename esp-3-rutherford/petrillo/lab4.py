@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import sys
 from scipy import optimize
 import collections
+import uncertainties as un
+from uncertainties import unumpy as unp
 
 def interp(x, y):
     """
@@ -114,6 +116,18 @@ def rebin(a, n):
     for i in range(n):
         out += a[i::n][:len(out)]
     return out
+
+def errorbar(ux, uy, *args, **kwargs):
+    x = unp.nominal_values(ux)
+    y = unp.nominal_values(uy)
+    xerr = unp.std_devs(ux)
+    yerr = unp.std_devs(uy)
+    if np.any(xerr != 0):
+        kwargs.update(xerr=xerr)
+    if np.any(yerr != 0):
+        kwargs.update(yerr=yerr)
+    ax = kwargs.pop('ax', plt)
+    return ax.errorbar(x, y, *args, **kwargs)
 
 def clear_lines(nlines, nrows):
     """
