@@ -1,0 +1,16 @@
+#SOGLIA 0.2 da ora in poi
+#Tempo 10s
+#Pressione (mbar)	conteggio 	   errore pressioni
+1e-2				415		   0.05e-2
+6.9e-2				443        0.05e-2
+1.1e-1				444        0.05e-1
+2e-1				473        0.05e-1
+5e-1				432        0.05e-1
+1	    			451        0.05  
+5.3	    			412        0.05	  
+1e1 				454        0.05e1
+3.3e1				443        0.05e1
+1.4e2				419        0.05e2
+3.8e2				430        0.05e2
+5e2	    			191        0.05e2
+6.1e2				0          0.05e2
