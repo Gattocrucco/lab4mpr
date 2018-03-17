@@ -16,9 +16,9 @@ def tagload(filename):
                     print('tagload: warning: comment line %d ignored' % (i,))
                 else:
                     tag, value = out
-                if not (tag in tags):
-                    tags[tag] = []
-                tags[tag].append((len(data), value))
+                    if not (tag in tags):
+                        tags[tag] = []
+                    tags[tag].append((len(data), value))
             else:
                 try:
                     data.append(float(line))
