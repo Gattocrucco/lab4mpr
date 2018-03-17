@@ -12,7 +12,7 @@ theta = unp.radians(unp.uarray(theta, 1))
 alpha = np.sign(unp.nominal_values(theta)) * unp.arccos((L*unp.cos(theta) + D) / unp.sqrt(L**2 + 2*L*D*unp.cos(theta) + D**2))
 alpha = unp.degrees(alpha)
 count = unp.uarray(count, np.sqrt(count))
-time = unp.uarray(time, 0.5)
+time = unp.uarray(time, 0.5) * 1e-3
 rate = count / time
 
 fig = plt.figure('forma')
