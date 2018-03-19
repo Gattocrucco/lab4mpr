@@ -10,8 +10,11 @@ from scipy import optimize
 ###### RATE vs. ANGLE ######
 
 ang, count, time = np.loadtxt('../dati/0316-forma.txt', unpack=True)
-L = un.ufloat(4, 0.1) # cm
-D = un.ufloat(4, 0.1) # cm
+diameter = un.ufloat(16.3, 0.1)
+overhang = un.ufloat(5.3, 0.1)
+source = un.ufloat(3.1, 0.1)
+L = diameter / 2 - overhang # cm
+D = source # cm
 
 # vedi sul logbook <<angolo forma>> per questi calcoli
 theta = unp.radians(unp.uarray(ang, 1))
