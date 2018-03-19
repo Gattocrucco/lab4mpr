@@ -67,18 +67,23 @@ fig.clf()
 fig.set_tight_layout(True)
 ax = fig.add_subplot(111)
 
-s = []
-serr = [[], []]
-cl = []
-for angle in ang:
+s, cl, lengths = np.empty((3, len(ang)))
+serr = np.empty((2, len(ang)))
+for i in range(len(ang)):
+    angle = ang[i]
     filename = '../de0_data/0316ang{}.dat'.format('{}'.format(int(angle)).replace('-', '_'))
+    if angle == 80:
+        filename = '../de0_data/0319ang80new.dat'
     print('processing {}...'.format(filename))
     t, ch1, ch2 = np.loadtxt(filename, unpack=True)
     out = credible_interval(ch1, cl=0.9, ax=None if angle != 0 else ax)
-    s.append(out[0])
-    serr[0].append(out[0] - out[1])
-    serr[1].append(out[2] - out[0])
-    cl.append(out[3])
+    s[i] = out[0]
+    serr[0, i] = out[0] - out[1]
+    serr[1, i] = out[2] - out[0]
+    cl[i] = out[3]
+    lengths[i] = len(ch1)
+    if abs(len(ch1) - count[i].n) / count[i].n > 0.001:
+        print('warning: angle {:.2f}: ADC and scaler counts differ more than 0.1 %'.format(angle))
 
 ###### PLOT ######
 
