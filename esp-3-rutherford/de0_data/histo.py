@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
@@ -29,7 +30,7 @@ if len(filenames) > 1:
     nbinspow = min(int(np.ceil(np.log2(np.sqrt(max([len(ds) for ds in datasets]))))), 12)
     edges = np.arange(2 ** 12 + 1)[::2 ** (12 - nbinspow)] - 0.5
     ax.hist(datasets, bins=edges, density=True, histtype='step', label=filenames)
-    ax.legend(loc='best', fontsize='small')
+    ax.legend(loc='upper right', fontsize='small')
     ax.set_xlabel('canale ADC')
     ax.set_ylabel('densita')
 
@@ -42,7 +43,7 @@ elif len(filenames) == 1:
     nbinspow = min(int(np.ceil(np.log2(np.sqrt(len(ch1))))), 12)
     edges = np.arange(2 ** 12 + 1)[::2 ** (12 - nbinspow)] - 0.5
     ax1.hist(ch1, bins=edges, histtype='step', label=filename)
-    ax1.legend(loc='best', fontsize='small')
+    ax1.legend(loc='upper right', fontsize='small')
     ax1.set_ylabel('conteggio')
     ax1.set_xlabel('canale ADC')
     ax2 = fig.add_subplot(212)
