@@ -1,8 +1,9 @@
 import numba
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import patches
 import sys
-from scipy import optimize
+from scipy import optimize, stats
 import collections
 import uncertainties as un
 from uncertainties import unumpy as unp
@@ -353,3 +354,35 @@ def coinc(T, tand, *seqs):
         ValueError('All durations must be positive.')
     
     return _coinc(T, r, tc, tm, tand)
+
+def credible_interval(samples, cl=0.68, ax=None):
+    kde = stats.gaussian_kde(samples)
+    pdf = kde(samples)
+    idx = np.argsort(pdf)
+    sorted_samples = samples[idx]
+    interval_samples = sorted_samples[-int(np.round(cl * len(samples))):]
+    left = np.min(interval_samples)
+    right = np.max(interval_samples)
+    act_cl = len(interval_samples) / len(samples)
+    out = optimize.minimize_scalar(lambda x: -kde(x), bracket=(left, right))
+    if not out.success:
+        raise RuntimeError('can not find mode of pdf')
+    if not (ax is None):
+        ax.plot(samples, pdf, '.k', label='samples')
+        l = ax.get_ylim()
+        ax.plot(2 * [out.x[0]], l, '--k', scaley=False, label='mode')
+        rect = patches.Rectangle(
+            (left, l[0]),
+            right - left,
+            l[1] - l[0],
+            facecolor='lightgray',
+            edgecolor='none',
+            zorder=-1,
+            label='%.3f CR' % act_cl
+        )
+        ax.add_patch(rect)
+        ax.legend(loc='best', fontsize='small')
+        ax.grid(linestyle=':')
+        ax.set_xlabel('value')
+        ax.set_ylabel('pdf')
+    return out.x[0], left, right, act_cl

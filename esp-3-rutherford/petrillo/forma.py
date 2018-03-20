@@ -1,11 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import patches
 import uncertainties as un
 from uncertainties import unumpy as unp
 import lab4
-from scipy import stats
-from scipy import optimize
 
 ###### RATE vs. ANGLE ######
 
@@ -33,38 +30,6 @@ rate = count / time * X**2
 
 ###### SPECTRUM vs. ANGLE ######
 
-def credible_interval(samples, cl=0.68, ax=None):
-    kde = stats.gaussian_kde(samples)
-    pdf = kde(samples)
-    idx = np.argsort(pdf)
-    sorted_samples = samples[idx]
-    interval_samples = sorted_samples[-int(np.round(cl * len(samples))):]
-    left = np.min(interval_samples)
-    right = np.max(interval_samples)
-    act_cl = len(interval_samples) / len(samples)
-    out = optimize.minimize_scalar(lambda x: -kde(x), bracket=(left, right))
-    if not out.success:
-        raise RuntimeError('can not find mode of pdf')
-    if not (ax is None):
-        ax.plot(samples, pdf, '.k', label='samples')
-        l = ax.get_ylim()
-        ax.plot(2 * [out.x[0]], l, '--k', scaley=False, label='mode')
-        rect = patches.Rectangle(
-            (left, l[0]),
-            right - left,
-            l[1] - l[0],
-            facecolor='lightgray',
-            edgecolor='none',
-            zorder=-1,
-            label='%.3f CR' % act_cl
-        )
-        ax.add_patch(rect)
-        ax.legend(loc='best', fontsize='small')
-        ax.grid(linestyle=':')
-        ax.set_xlabel('value')
-        ax.set_ylabel('pdf')
-    return out.x[0], left, right, act_cl
-
 fig = plt.figure('forma-spettro')
 fig.clf()
 fig.set_tight_layout(True)
@@ -79,7 +44,7 @@ for i in range(len(ang)):
         filename = '../de0_data/0319ang80new.dat'
     print('processing {}...'.format(filename))
     t, ch1, ch2 = np.loadtxt(filename, unpack=True)
-    out = credible_interval(ch1, cl=0.9, ax=None if angle != 0 else ax)
+    out = lab4.credible_interval(ch1, cl=0.9, ax=None if angle != 0 else ax)
     s[i] = out[0]
     serr[0, i] = out[0] - out[1]
     serr[1, i] = out[2] - out[0]
