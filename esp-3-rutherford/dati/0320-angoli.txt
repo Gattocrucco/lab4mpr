@@ -1,0 +1,13 @@
+# Angolo [°]	Conteggio	Clock
+# alcuni di questi dati non sono presi dal logbook ma dalla prima riga degli spettri.
+0	452	315809
+-5	449	416356
+-10	190	358874
+-15	413	1585177
+-20	418	3972591
+5	465	321238
+10	446	466589
+15	377	793003
+15	4214	8681670
+20	313	1442654
+25	329	3465488
