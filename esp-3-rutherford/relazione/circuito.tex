@@ -1,0 +1,16 @@
+\subsection{Elettronica di misura}
+
+\marginpar{Stavolta Jack ci delizierà con i suoi fantastici disegni?}
+
+I segnali analizzati in questa esperienza provengono da un fotodiodo al silicio la cui uscita è inviata ad un insieme di discriminatori e preamplificatori. Essi forniscono un segnale logico TTL ed un segnale analogico NIM preamplificato, entrambi della durata di pochi \si{\micro s}.
+Disponiamo di un amplificatore che genera un segnale la cui altezza di picco è proporzionale all'energia rilasciata nel fotodiodo.
+\marginpar{do per scontato che nella \emph{Teoria} sia scritto che il fotodiodo assorba tutta l'energia delle $\alpha$}
+Tale picco viene letto da un'ADC a \SI{12}{bit}. Gli altri strumenti sono i soliti moduli (contatori, timer, coincidenze...) presenti in laboratorio.
+
+\subsection{Strategia di acquisizione}
+
+Per acquisire al meglio i segnali amplificati dobbiamo costruire un circuito che sincronizzi il contatore e l'ADC all'inizio e alla fine di ogni acquisizione.
+Vogliamo comandare l'inizio e la fine di ogni acquisizione agendo sulla levetta di un timer.
+I conteggi vengono effettuati collegando l'uscita TTL del discriminatore ad un generatore di impulsi non retriggerabile, la cui uscita va ad un contatore. Per far partire e fermare un'acquisizione elettronicamente è sufficiente collegare l'uscita del timer allo \emph{start} del contatore e l'\emph{end marker} allo \emph{stop}.
+Per fare la stessa cosa con l'ADC colleghiamo l'uscita del timer (con durata impostata su $\infty$) ad un modulo di coincidenze a cui è connessa, ad un altro ingresso, l'uscita TTL del generatore di impulsi convertita in NIM. Il segnale di coincidenza (convertito in TTL) sarà il trigger dell'ADC, che deve arrivare all'omonimo ingresso \SI{1}{\micro s} prima del segnale affinché ne selezioni il picco.
+Concludiamo la procedura inserendo i ritardi opportuni.
