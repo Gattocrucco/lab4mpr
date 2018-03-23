@@ -1,0 +1,10 @@
+#Forma del fascio con il supercollimatore
+#
+#angolo	conteggi	tempo
+0		   252		106891
+1.25	   253		98641
+2.5		   248		102888
+3.75	   235		178679
+5		   40		124951
+-1.25	   117	    97516
+-2.5	   40		150541

@@ -7,9 +7,9 @@ import os
 
 ###### RATE vs. ANGLE ######
 
-data_prefixs   = ['0319-coll1v2'  , '0319-coll1'  ]
-spectr_prefixs = ['0319coll1v2ang', '0319coll1ang']
-colls          = [True            , True          ]
+data_prefixs   = ['0319-coll5']
+spectr_prefixs = ['0319coll5ang']
+colls          = [True         ]
 
 fig = plt.figure('forma')
 fig.clf()
@@ -63,6 +63,7 @@ for data_prefix, spectr_prefix, coll in zip(data_prefixs, spectr_prefixs, colls)
             serr[:, i] = np.nan
             cl[i] = np.nan
             lengths[i] = np.nan
+            continue
         print('processing {}...'.format(filename))
         t, ch1, ch2 = np.loadtxt(filename, unpack=True)
         out = lab4.credible_interval(ch1, cl=0.9)
@@ -73,15 +74,22 @@ for data_prefix, spectr_prefix, coll in zip(data_prefixs, spectr_prefixs, colls)
         lengths[i] = len(ch1)
         if abs(len(ch1) - count[i].n) / count[i].n > 0.001:
             print('warning: angle {:.2f}: ADC and scaler counts differ more than 0.1 %'.format(angle))
-
+            
     ###### PLOT ######
 
     lab4.errorbar(alpha, rate, ax=ax1, fmt='.', markersize=4, label=data_prefix)
     lab4.errorbar(alpha, s, yerr=serr, ax=ax2, fmt='.', markersize=4, label=data_prefix, capsize=4)
 
-ax1.legend(loc='best', fontsize='small')
+plt.rc("font",size=13)
+
+# subplot1
+
+ax1.set_title("Forma del fascio con collimatore da 5 mm")
+ax1.legend(loc='upper left', fontsize='small')
 ax1.grid(linestyle=':')
 ax1.set_ylabel('rate [s$^{-1}$ cm$^{2}$]' if not coll else 'rate [s$^{-1}$]')
+
+#subplot 2
 
 ax2.grid(linestyle=':')
 ax2.set_xlabel('angolo [°]')
