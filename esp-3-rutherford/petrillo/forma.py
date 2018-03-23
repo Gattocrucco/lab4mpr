@@ -80,11 +80,8 @@ for data_prefix, spectr_prefix, coll in zip(data_prefixs, spectr_prefixs, colls)
     lab4.errorbar(alpha, rate, ax=ax1, fmt='.', markersize=4, label=data_prefix)
     lab4.errorbar(alpha, s, yerr=serr, ax=ax2, fmt='.', markersize=4, label=data_prefix, capsize=4)
 
-plt.rc("font",size=13)
-
 # subplot1
 
-ax1.set_title("Forma del fascio con collimatore da 5 mm")
 ax1.legend(loc='upper left', fontsize='small')
 ax1.grid(linestyle=':')
 ax1.set_ylabel('rate [s$^{-1}$ cm$^{2}$]' if not coll else 'rate [s$^{-1}$]')
