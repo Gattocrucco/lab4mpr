@@ -1,0 +1,6 @@
+relazione.pdf
+relazione.log
+*.log
+*.aux
+*.synctex
+*.out
