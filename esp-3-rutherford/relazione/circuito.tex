@@ -14,7 +14,7 @@ Ci accorgiamo che non siamo in grado di sistemare il coperchio della camera a vu
 Questo accorgimento ci permette di riposizionare la sorgente nello stesso punto della scala graduata. Cercheremo gli angoli ``veri'' attraverso l'analisi delle nostre misure.
 \marginpar{non so come spiegare questa cosa dell'angolo vero con parole migliori}
 Riduciamo la parallasse nell'allineamento attaccando un pezzo di carta con una tacca al supporto della sorgente.
-\marginpar{spiegare meglio}
+\marginpar{spiegare meglio il pezzo di carta (io metterei la foto senza aggiungere altro)}
 
 \paragraph{Energia}
 Per acquisire al meglio i segnali amplificati dobbiamo costruire un circuito che sincronizzi il contatore e l'ADC all'inizio e alla fine di ogni acquisizione.
@@ -28,4 +28,22 @@ Evitiamo che segnali superiori a \SI{3.3}{V} danneggino l'ADC ponendo un attenua
 
 
 \subsubsection{Taratura ADC}
-L'ADC è stata tarata ponendo la sorgente a \SI{0}{\degree} e variando il ritardo sul trigger fino a massimizzare la lettura del segnale. Il risultato di tale misura è presente in \autoref{tara}. Abbiamo acquisito lo spettro a vari angoli e verificato che l'energia delle particelle $\alpha$ non dipendesse dall'angolo in assenza di bersaglio. Abbiamo fittato lo spettro a \SI{0}{\degree} con una Gaussiana ottenendo \marginpar{aggiungere il resto}
+L'ADC è stata tarata ponendo la sorgente a \SI{0}{\degree} e variando il ritardo sul trigger fino a massimizzare la lettura del segnale. Il risultato di tale misura è presente in \autoref{tara}. Abbiamo acquisito lo spettro a vari angoli e verificato che l'energia delle particelle $\alpha$ non dipendesse dall'angolo in assenza di bersaglio. 
+\marginpar{il fit e la figura sono degli scalda posto per sapere come verrà in seguito}
+Abbiamo fittato lo spettro a \SI{0}{\degree} con una Gaussiana lasciandone libera anche la normalizzazione.\\
+Abbiamo ottenuto:
+\begin{align*}
+\mu &=3115\pm2 \\
+\sigma &= 87\pm2 \\
+N &=(1.18\pm0.02)\cdot10^5 \\
+\chi^2 &=2313\pm15 \\
+\text{dof} &=15 \\
+\end{align*}
+Il valore elevato del $\chi^2$ mostra chiaramente la non gaussianità del picco osservato.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=23 em]{immagini/cal_provv}
+\caption{Risoluzione in energia dell'ADC. Il pannello superiore mostra l'istogramma dei dati acquisiti con la funzione di fit, quello inferiore mostra il loro valore in funzione del tempo.}
+\label{tara}
+\end{figure}
