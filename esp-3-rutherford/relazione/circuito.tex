@@ -26,6 +26,10 @@ Concludiamo la procedura inserendo i ritardi opportuni.
 \paragraph{Precauzioni}
 Evitiamo che segnali superiori a \SI{3.3}{V} danneggino l'ADC ponendo un attenuatore da \SI{0.9}{dB} all'uscita dell'amplificatore. Per il trigger non è necessario prendere precauzioni in quanto il convertitore NIM-TTL fornisce un segnale della tensione giusta. \marginpar{misurare?}
 
+\paragraph{Salvataggio dati}
+Il circuito descritto nel paragrafo \textbf{Energia} ha una particolarità: quando il crate si accende, il timer si riattiva e riavvia la catena di acquisizione.
+Questo accorgimento è particolarmente utile se la corrente dovesse mancare mentre non siamo presenti. In tal caso l'ADC, al ritorno della corrente, registrerebbe i dati nella memoria interna (essendo il computer spento) ed essi sono facilmente recuperabili dopo la riaccensione del computer.
+
 
 \subsubsection{Taratura ADC}
 L'ADC è stata tarata ponendo la sorgente a \SI{0}{\degree} e variando il ritardo sul trigger fino a massimizzare la lettura del segnale. Il risultato di tale misura è presente in \autoref{tara}. Abbiamo acquisito lo spettro a vari angoli e verificato che l'energia delle particelle $\alpha$ non dipendesse dall'angolo in assenza di bersaglio. 
