@@ -1,0 +1,16 @@
+# Forma del fascio senza collimatori fittata con una parabola.
+
+################ fit_curve ################
+
+Method chosen automatically: "odrpack"
+
+stopping reason: Sum of squares convergence
+Result:
+ -0.801(24) -26.0 %  -75.8 %
+             3.8(5)   14.4 %
+                    1565(20)
+
+############## END fit_curve ##############
+
+chi quadro= 7.689986801962462 +- 8.246211251235321
+P valore= 0.9999993315478226   dof= 34
