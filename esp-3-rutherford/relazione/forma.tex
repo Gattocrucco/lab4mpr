@@ -25,8 +25,6 @@ Teniamo conto della variazione della distanza al variare dell'angolo moltiplican
 Tale fattore è giustificato dal fatto che supponiamo isotropa l'emissione di particelle $\alpha$ da parte della sorgente.
 Se $C$ è una costante, abbiamo che $$ \frac{dN}{d^3r}=C \implies \frac{dN}{dr}=C 4\pi r^2. $$
 
-\marginpar{A dire il vero non lo so perché. Mi sembra che bisogna dividere per X$^2$ (analogia col campo elettrico). Invece moltiplichiamo. Il grafico ha senso ma non mi torna perché dovrei avere meno eventi all'allontanarmi dal rivelatore ad angolo fissato.}
-
 In virtù delle precedenti affermazioni, abbiamo calcolato il rate in \si{s^{-1}cm^2}.
 
 Il risultato di questa misura è presente in \autoref{fig:forma}, invece la \autoref{tab:forma} contiene i dati di tale grafico.
@@ -85,16 +83,120 @@ $ 47.1 \pm 1.8 $ & $ 2.6 \pm 0.9 $ & $ 964 $ \\
 \end{tabular}
 
 \caption{Dati utilizzati per trovare la forma del fascio. L'errore sulla moda è dato dal 90\% di credibilità del relativo istogramma.}
-
+\label{tab:forma}
 \end{table}
 
 Useremo queste informazioni (se sarà necessario) nell'analizzare i dati sulla sezione d'urto.
 
 \subsubsection{Collimatore da 5\! mm}
 
+Analizziamo la forma del fascio con un collimatore da \SI{5}{mm} che ci dà un errore minore sull'angolo di incidenza delle particelle $\alpha$.
+Con i dati presenti in \autoref{tab:coll5} abbiamo il grafico di \autoref{fig:coll5}.
+
+In questo caso i conteggi sono non nulli soltanto nell'intervallo \SI{\mp10}{\degree}. La parte piatta al centro del grafico è dovuta all'effetto descritto nella sezione precedente (non corretto), ancora visibile con un'apertura di tale larghezza.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=30 em]{immagini/coll5}
+\caption{Grafico del rate in funzione dell'angolo con il collimatore da 5\! mm.}
+\label{fig:coll5}
+\end{figure}
+
+\begin{table}[h]
+\centering
+
+\begin{tabular}{c|c|c}
+angolo [\si{\degree}] & rate  [\si{s^{-1}}] & moda [digit] \\
+\hline
+$ -15.00 $ & $ 0.0 \pm 0 $ & $ 0 $ \\ 
+$ -10.00 $ & $ 2.76 \pm 0.18 $ & $ 3177 $ \\ 
+$ -7.50 $ & $ 27.8 \pm 0.6 $ & $ 3183 $ \\ 
+$ -5.00 $ & $ 42.4 \pm 0.9 $ & $ 3186 $ \\ 
+$ -2.50 $ & $ 43.9 \pm 1.0 $ & $ 3181 $ \\ 
+$ 0.00 $ & $ 44.4 \pm 0.9 $ & $ 3185 $ \\ 
+$ 2.50 $ & $ 44.7 \pm 1.0 $ & $ 3187 $ \\ 
+$ 5.00 $ & $ 47.1 \pm 1.0 $ & $ 3182 $ \\ 
+$ 7.50 $ & $ 43.2 \pm 0.9 $ & $ 3180 $ \\ 
+$ 10.00 $ & $ 15.6 \pm 0.4 $ & $ 3188 $ \\ 
+$ 15.00 $ & $ 0.0 \pm 0 $ & $ 0 $ \\ 
+
+\end{tabular}
+
+\caption{Rate in funzione dell'angolo con il collimatore da 5\! mm.
+		L'errore sugli angoli è stimato essere 1.25$^{\circ}$.}
+\label{tab:coll5}
+\end{table}
+
 \subsubsection{Collimatore da 1\! mm}
 
+Studiamo la forma del fascio con il collimatore da \SI1{mm} che ci permette di avere il più piccolo errore possibile sull'angolo di incidenza.
+Di contro abbiamo un rate minore che nei casi precedenti.
+I dati presenti in \autoref{tab:coll1} e \autoref{fig:coll1} sono stati analizzati come in precedenza.
+Stavolta abbiamo conteggi solo in un intervallo di \SI{5}{\degree}.
+
+\begin{table}[h]
+\centering
+
+\begin{tabular}{c|c|c}
+angolo [\si{\degree}] & rate  [\si{s^{-1}}] & moda [digit] \\
+\hline
+$ -2.50 $ & $ 0.08 \pm 0.04 $ & $ 3156 $ \\ 
+$ -1.25 $ & $ 2.48 \pm 0.20 $ & $ 3171 $ \\ 
+$ 0.00 $ & $ 14.63 \pm 0.32 $ & $ 3174 $ \\ 
+$ 1.25 $ & $ 31.5 \pm 0.7 $ & $ 3178 $ \\ 
+$ 2.50 $ & $ 34.8 \pm 0.8 $ & $ 3185 $ \\ 
+$ 3.75 $ & $ 26.9 \pm 0.6 $ & $ 3184 $ \\ 
+$ 5.00 $ & $ 12.70 \pm 0.31 $ & $ 3188 $ \\ 
+$ 6.25 $ & $ 2.81 \pm 0.22 $ & $ 3193 $ \\ 
+$ 7.50 $ & $ 0.11 \pm 0.04 $ & $ 3185 $ \\ 
+
+\end{tabular}
+
+\caption{Dati per le misure con il collimatore da 1\! mm.}
+\label{tab:coll1}
+\end{table}
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=30 em]{immagini/coll1}
+\caption{Grafico del rate in funzione dell'angolo con il collimatore da 1\! mm.}
+\label{fig:coll1}
+\end{figure}
+
 \subsubsection{Collimatore a croce}
+
+Cerchiamo infine di collimare il fascio il più possibile sovrapponendo 2 collimatori da \SI1{mm} di cui uno ruotato di \SI{90}{\degree} rispetto all'altro. In questo modo abbiamo una piccola finestra che seleziona le particelle sia verticalmente che orizzontalmente.
+Prendiamo le misure in \autoref{tab:super} e guardiamo il grafico di \autoref{fig:super}.
+
+\begin{table}
+\centering
+
+\begin{tabular}{c|c|c}
+angolo [\si{\degree}] & rate  [\si{s^{-1}}] & moda [digit] \\
+\hline
+$ -2.50 $ & $ 0.27 \pm 0.04 $ & $ 3213 $ \\ 
+$ -1.25 $ & $ 1.20 \pm 0.11 $ & $ 3198 $ \\ 
+$ 0.00 $ & $ 2.36 \pm 0.15 $ & $ 3190 $ \\ 
+$ 1.25 $ & $ 2.56 \pm 0.16 $ & $ 3187 $ \\ 
+$ 2.50 $ & $ 2.41 \pm 0.15 $ & $ 3192 $ \\ 
+$ 3.75 $ & $ 1.32 \pm 0.09 $ & $ 3187 $ \\ 
+$ 5.00 $ & $ 0.32 \pm 0.05 $ & $ 3193 $ \\ 
+
+\end{tabular}
+
+\caption{Dati per le misure con il collimatore a croce.}
+\label{tab:super}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=30 em]{immagini/supercoll}
+\caption{Grafico del rate in funzione dell'angolo con il collimatore a croce.}
+\label{fig:super}
+\end{figure}
+
+Questa configurazione è ottimale per avere un fascio collimato, ma non la useremo a causa del rate incredibilmente basso.
 
 
 
