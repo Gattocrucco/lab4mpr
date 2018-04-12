@@ -1,0 +1,19 @@
+# angolo	conteggi	clock
+# file di spettro: 0322oro0.2umcoll5ang*.dat
+-25	847	2627843
+# i dati successivi sono del 23 marzo
+70	111	58844530
+30	296	1315146
+35	246	2162810
+40	660	13072678
+45	136	4668724
+50	62	3918471
+# non metto la misura del fine settimana perché è inutile
+# misure del 26 marzo
+-30	336	2228355
+-35	305	4271011
+-40	204	4214717
+-60	105	15475917
+-50	68	4283846
+# fermata 27 marzo
+-70	103	52345767

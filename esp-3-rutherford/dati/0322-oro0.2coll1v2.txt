@@ -1,0 +1,6 @@
+# angolo	conteggi	clock
+# file di spettro: 0322oro0.2umv2*.dat
+0	1081	117168
+5	1160	101829
+10	1103	259900
+-5	1028	340929
