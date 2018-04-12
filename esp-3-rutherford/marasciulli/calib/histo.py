@@ -68,13 +68,13 @@ if fit==True:
     edges=edges[:-1]
     X=np.array([])
     Y=np.array([])
-    for i in range(len(edges)):
-        if edges[i]>=taglio[0]:
-            X=np.append(X,edges[i])
+    for i in range(len(edges) - 1):
+        if edges[i] >= taglio[0] and edges[i+1]<= taglio[1]:
+            X=np.append(X,(edges[i] + edges[i+1]) / 2)
             Y=np.append(Y,cont[i])
     
     val=[10**4,3200,100]
-    out=lab.fit_curve(gaussiana,X,Y,p0=val,dy=np.sqrt(Y),print_info=1,absolute_sigma=True,method="leastsq")
+    out=lab.fit_curve(gaussiana,X,Y,p0=val,dy=np.sqrt(Y),print_info=1,absolute_sigma=True,method="auto")
     
     z=np.linspace(taglio[0],taglio[1],1000)
     ax1.plot(z,gaussiana(z,*out.par),color="red")
