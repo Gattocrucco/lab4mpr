@@ -49,4 +49,3 @@ xlabel('theta [°]')
 ylabel('P')
 
 show()
-    
