@@ -45,11 +45,41 @@ $ 1.0 $ & $ 0.05 \pm 0.03 $\\
 
 \end{tabular}
 
-\caption{Valori presenti nel grafico di \autoref{fig:soglia}. La line orizzontale divide quelli del 15 marzo (in alto) da quelli del 19 marzo (in basso).}
+\caption{Valori presenti nel grafico di \autoref{fig:soglia}. La linea orizzontale divide quelli del 15 marzo (in alto) da quelli del 19 marzo (in basso).}
 \label{tab:soglia}
 \end{table}
 
 \subsubsection{Ritardo}
 
 Guardando all'oscilloscopio i segnali da digitalizzare, ci siamo accorti che aumentare la soglia ritarda l'arrivo del segnale di trigger rendendo inutile la calibrazione dell'ADC ogni volta che la soglia viene modificata. Abbiamo quantificato questo effetto misurando il ritardo in funzione della soglia (\autoref{tab:rit}). 
+
+\begin{table}[h]
+\centering
+
+\begin{tabular}{c|c @{\,$\pm$\,} l}
+soglia & \multicolumn{2}{c}{ritardo [\si{ns}]} \\
+\hline
+$ 0.0 $ & $ 88 $ & $ 2 $\\ 
+$ 0.1 $ & $ 88 $ & $ 2 $\\ 
+$ 0.2 $ & $ 116 $ & $ 2 $\\ 
+$ 0.3 $ & $ 180 $ & $ 2 $\\ 
+$ 0.4 $ & $ 288 $ & $ 2 $\\ 
+$ 0.5 $ & $ 384 $ & $ 2 $\\ 
+$ 0.6 $ & $ 464 $ & $ 4 $\\ 
+$ 0.7 $ & $ 560 $ & $ 10 $\\ 
+$ 0.8 $ & $ 720 $ & $ 60 $\\ 
+$ 0.9 $ & $ 910 $ & $ 60 $\\ 
+\end{tabular}
+
+\caption{Dati per la misura in cui si quantifica il ritardo del segnale discriminato in funzione della soglia del discriminatore.
+Le ultime misure hanno un errore maggiore a causa del jitter del segnale.}
+\label{tab:rit}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=30 em]{immagini/ritardo}
+\caption{Grafico che rappresenta il ritardo del segnale discriminato al variare della soglia. Le ultime misure hanno un errore maggiore a causa del jitter del segnale}
+\label{fig:rit}
+\end{figure}
 
