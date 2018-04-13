@@ -45,12 +45,13 @@ for file in files:
     
 # selezione
 
-sel=[-10,15]  # estremi compresi
+fuori=[-10,20]  # estremi compresi
+dentro=[-70,70]  # estremi inclusi
 angf=np.array([]) # f sta per fit
 ratef=np.array([]) 
 
 for i in range(len(angoli)):
-    if angoli[i]<=sel[0] or angoli[i]>=sel[1]:
+    if dentro[0]<=angoli[i]<=fuori[0] or fuori[1]<=angoli[i]<=dentro[1]:
         angf=np.append(angf,angoli[i])
         ratef=np.append(ratef,tassi[i])
     else:
@@ -66,7 +67,8 @@ p0=[1,np.radians(3.5)]
 fit=lab.fit_curve(rute,np.radians(nom(angf)),nom(ratef),dx=np.radians(err(angf)),dy=err(ratef),p0=p0,print_info=1)
 
 dof=len(angf)-len(fit.par)
-print("chi quadro=",fit.chisq,"+-",sqrt(2*dof),"  dof=",dof)
+print("chi quadro=",fit.chisq,"+-",np.sqrt(2*dof),"  dof=",dof,"\n")
+print("zero vero= {:1uP}°".format(unp.degrees(fit.upar[1])))
 
 # grafico    
 
@@ -76,10 +78,10 @@ ax1.grid(linestyle=':')
 
 lab4.errorbar(angoli,tassi,capsize=2,marker=".",linestyle="")  # non posso fare ax1.lab4.errorbar
 
-z1=np.linspace(-70,-5,100)
+z1=np.linspace(dentro[0],fuori[0],1000)
 ax1.plot(z1,rute(np.radians(z1),*fit.par),color="red")
 
-z2=np.linspace(10,70,100)
+z2=np.linspace(fuori[1],dentro[1],1000)
 ax1.plot(z2,rute(np.radians(z2),*fit.par),color="red")
 
 fig.show()
