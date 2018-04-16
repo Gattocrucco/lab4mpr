@@ -1,5 +1,8 @@
 # angolo [°]	conteggio	clock
 # file di spettro: 0412allcoll5ang*.dat
-10	2548	109723
-15	719	911373
-# DA COMPLETARE!!
+10	2548 109723
+15	719	 911373
+20	182	 2423001
+25	28	 1310148
+-15	150	 1122079
+-25	29	 2129980

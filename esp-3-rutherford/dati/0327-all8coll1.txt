@@ -2,8 +2,9 @@
 # file di spettro: 0327allcoll1ang*.dat
 0	2696	121814
 5	1167	149769
-10	282	1763355
 -5	1725	1506202
 -15	421	28109031
 # misure 12 aprile
 -10	127	2797985
+# misura del 27 marzo messa qui per far funzionare il programma
+10	282	1763355
