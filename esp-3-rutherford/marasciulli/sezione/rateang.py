@@ -9,15 +9,23 @@ from scipy.special import chdtrc
 from uncertainties import ufloat as uf
 
 '''
-parametri oro 0.2um: A=7.5(4)e-5 , ang0=1.6(4)°
-parametri oro 5um:
-parametri allumnio 8um: A=3.5(3)e-7 ang0=0.8(4)°
-'''
-
-files = [
+alluminio:
 '0327-all8coll1.txt',
 '0412-all8coll5.txt',
 '0413-all8coll5.txt'
+'''
+'''
+oro0.2:
+'0322-oro0.2coll1.txt',
+'0322-oro0.2coll5.txt'
+'''
+'''
+oro5:
+'0320-oro5coll1.txt'
+'''
+
+files = [
+'0320-oro5coll1.txt'
 ]
 
 fig = plt.figure('rateang')
@@ -46,11 +54,10 @@ for file in files:
         a='red'
     lab4.errorbar(ang,rate,capsize=2,label="%s"%file,linestyle='',color=a)
 
-# selezioni
-w=np.concatenate((atot[1:]))
-rr=np.concatenate((rtot[1:]))
 
-fuori=[-5,10] # estremi inclusi
+# selezioni
+
+fuori=[-6,11] # estremi inclusi
 
 # selezione per il coll1
 y1=[]
@@ -61,15 +68,19 @@ atot[0]=np.delete(atot[0],y1)
 rtot[0]=np.delete(rtot[0],y1)
 
 # selezione per il coll5
-y5=[]
-for k in range(len(w)):
-    if fuori[0]<w[k]<fuori[1]:
-        y5.append(k)
-w=np.delete(w,y5)
-rr=np.delete(rr,y5)
-
-w=np.delete(w,-1) # correzione fatta a mano ATTENZIONE
-rr=np.delete(rr,-1)
+if len(atot)>1:
+    w=np.concatenate((atot[1:]))
+    rr=np.concatenate((rtot[1:]))
+    
+    y5=[]
+    for k in range(len(w)):
+        if fuori[0]<w[k]<fuori[1]:
+            y5.append(k)
+    w=np.delete(w,y5)
+    rr=np.delete(rr,y5)
+    
+    #w=np.delete(w,-1) # correzione fatta a mano ATTENZIONE
+    #rr=np.delete(rr,-1)
 
 # fit
 # mi serve una selezione con gli angoli
@@ -81,8 +92,9 @@ def fitfun(teta,A,tc):
 val1=[1e-6,np.radians(2)]
 fit1=lab.fit_curve(fitfun,np.radians(nom(atot[0])),nom(rtot[0]),dx=err(unp.radians(atot[0])),dy=err(rtot[0]),p0=val1,print_info=1)
 
-val2=[1e-5,np.radians(2)]
-fit2=lab.fit_curve(fitfun,np.radians(nom(w)),nom(rr),dx=err(unp.radians(w)),dy=err(rr),p0=val2,print_info=1)
+if len(atot)>1:
+    val2=[1e-5,np.radians(2)]
+    fit2=lab.fit_curve(fitfun,np.radians(nom(w)),nom(rr),dx=err(unp.radians(w)),dy=err(rr),p0=val2,print_info=1)
 
 # grafico    
 
@@ -92,9 +104,11 @@ ax1.grid(linestyle=':')
 ax1.set_xlim(min(nom(w)),max(nom(w)))
 
 z1=np.linspace(min(nom(atot[0])),max(nom(atot[0])),1000)
-z2=np.linspace(min(nom(w)),max(nom(w)),1000)
 ax1.plot(z1,fitfun(np.radians(z1),*fit1.par),'b',scaley=False)
-ax1.plot(z2,fitfun(np.radians(z2),*fit2.par),'r',scaley=False)
+
+if len(atot)>1:
+    z2=np.linspace(min(nom(w)),max(nom(w)),1000)
+    ax1.plot(z2,fitfun(np.radians(z2),*fit2.par),'r',scaley=False)
 
 plt.legend()
 fig.show()
