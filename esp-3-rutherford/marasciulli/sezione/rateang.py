@@ -8,25 +8,23 @@ from uncertainties.unumpy import std_devs as err
 from scipy.special import chdtrc
 from uncertainties import ufloat as uf
 
-'''
-alluminio:
+
+alluminio=[
 '0327-all8coll1.txt',
 '0412-all8coll5.txt',
-'0413-all8coll5.txt'
-'''
-'''
-oro0.2:
-'0322-oro0.2coll1.txt',
-'0322-oro0.2coll5.txt'
-'''
-'''
-oro5:
-'0320-oro5coll1.txt'
-'''
+'0413-all8coll5.txt']
 
-files = [
-'0320-oro5coll1.txt'
-]
+oro0_2=[
+'0322-oro0.2coll1.txt',
+'0322-oro0.2coll5.txt']
+
+oro5=[
+'0320-oro5coll1.txt']
+
+varname = 'oro0_2'
+files = eval(varname)  # immettere il nome del materiale
+
+print("\n##############  %s  ############\n"%varname.upper())
 
 fig = plt.figure('rateang')
 fig.clf()
@@ -57,7 +55,7 @@ for file in files:
 
 # selezioni
 
-fuori=[-6,11] # estremi inclusi
+fuori=[-5,15] # estremi inclusi
 
 # selezione per il coll1
 y1=[]
@@ -74,7 +72,7 @@ if len(atot)>1:
     
     y5=[]
     for k in range(len(w)):
-        if fuori[0]<w[k]<fuori[1]:
+        if fuori[0]<w[k]<fuori[1] or nom(w[k])==150.0:
             y5.append(k)
     w=np.delete(w,y5)
     rr=np.delete(rr,y5)
@@ -89,26 +87,40 @@ def fitfun(teta,A,tc):
     return A/np.sin((teta-tc)/2)**4
 
 # fit1 e fit5 prendono il nome dai collimatori
-val1=[1e-6,np.radians(2)]
+val1=[1e-6,np.radians(3)]
 fit1=lab.fit_curve(fitfun,np.radians(nom(atot[0])),nom(rtot[0]),dx=err(unp.radians(atot[0])),dy=err(rtot[0]),p0=val1,print_info=1)
 
+print("")
+print("centro vero coll1=",unp.degrees(fit1.upar[1]),"°")
+dof=len(atot[0])-len(fit1.par)
+print("chi quadro=",fit1.chisq,"+-",np.sqrt(2*dof),"  dof=",dof)
+print("P valore=",chdtrc(dof,fit1.chisq),"\n")
+
 if len(atot)>1:
-    val2=[1e-5,np.radians(2)]
+    val2=[1e-4,np.radians(1.5)]
     fit2=lab.fit_curve(fitfun,np.radians(nom(w)),nom(rr),dx=err(unp.radians(w)),dy=err(rr),p0=val2,print_info=1)
+
+    print("")    
+    print("centro vero coll5=",unp.degrees(fit2.upar[1]),"°")
+    dof=len(w)-len(fit2.par)
+    print("chi quadro=",fit2.chisq,"+-",np.sqrt(2*dof),"  dof=",dof)
+    print("P valore=",chdtrc(dof,fit2.chisq),"\n")
 
 # grafico    
 
 ax1.set_xlabel('angolo [°]')
 ax1.set_ylabel('rate [s$^{-1}$]')
 ax1.grid(linestyle=':')
-ax1.set_xlim(min(nom(w)),max(nom(w)))
 
 z1=np.linspace(min(nom(atot[0])),max(nom(atot[0])),1000)
 ax1.plot(z1,fitfun(np.radians(z1),*fit1.par),'b',scaley=False)
 
 if len(atot)>1:
     z2=np.linspace(min(nom(w)),max(nom(w)),1000)
+    ax1.set_xlim(nom(min(w))-5,nom(max(w))+5)
     ax1.plot(z2,fitfun(np.radians(z2),*fit2.par),'r',scaley=False)
 
 plt.legend()
 fig.show()
+
+print("_______________%s_____________\n"%varname.upper())
