@@ -19,17 +19,19 @@ oro0_2=[
 '0322-oro0.2coll5.txt']
 
 oro5=[
-'0320-oro5coll1.txt']
+'0320-oro5coll1.txt',
+'0419-oro5coll5.txt'
+]
 
-varname = 'oro5'
-files = eval(varname)  # immettere il nome del materiale
+varname = 'oro5'   # immettere il nome del materiale
+files = eval(varname)  
 
 print("\n______________ %s ___________\n"%varname.upper())
 
 fig = plt.figure('rateang')
 fig.clf()
 fig.set_tight_layout(True)
-
+plt.rc('font',size=16)
 ax1 = fig.add_subplot(111)
 
 atot=[] # set di angoli
@@ -55,7 +57,7 @@ for file in files:
 
 # selezioni
 
-fuori=[-5,15] # estremi inclusi
+fuori=[-11,15] # estremi inclusi
 
 # selezione per il coll1
 y1=[]
@@ -87,7 +89,7 @@ def fitfun(teta,A,tc):
     return A/np.sin((teta-tc)/2)**4
 
 # fit1 e fit5 prendono il nome dai collimatori
-val1=[1e-6,np.radians(3)]
+val1=[1e-3,np.radians(3)]
 fit1=lab.fit_curve(fitfun,np.radians(nom(atot[0])),nom(rtot[0]),dx=err(unp.radians(atot[0])),dy=err(rtot[0]),p0=val1,print_info=1)
 
 print("")
@@ -97,7 +99,7 @@ print("chi quadro=",fit1.chisq,"+-",np.sqrt(2*dof),"  dof=",dof)
 print("P valore=",chdtrc(dof,fit1.chisq),"\n")
 
 if len(atot)>1:
-    val2=[1e-4,np.radians(1.5)]
+    val2=[1e-2,np.radians(10)]
     fit2=lab.fit_curve(fitfun,np.radians(nom(w)),nom(rr),dx=err(unp.radians(w)),dy=err(rr),p0=val2,print_info=1)
 
     print("")    
@@ -120,7 +122,7 @@ if len(atot)>1:
     ax1.set_xlim(nom(min(w))-5,nom(max(w))+5)
     ax1.plot(z2,fitfun(np.radians(z2),*fit2.par),'r',scaley=False)
 
-plt.legend()
+plt.legend(fontsize='small')
 fig.show()
 
 print("_______________%s_____________\n"%varname.upper())
