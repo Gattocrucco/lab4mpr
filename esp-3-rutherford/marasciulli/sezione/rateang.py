@@ -21,10 +21,10 @@ oro0_2=[
 oro5=[
 '0320-oro5coll1.txt']
 
-varname = 'oro0_2'
+varname = 'oro5'
 files = eval(varname)  # immettere il nome del materiale
 
-print("\n##############  %s  ############\n"%varname.upper())
+print("\n______________ %s ___________\n"%varname.upper())
 
 fig = plt.figure('rateang')
 fig.clf()
@@ -124,3 +124,16 @@ plt.legend()
 fig.show()
 
 print("_______________%s_____________\n"%varname.upper())
+
+'''
+# scrviere i rate sul file
+f=open('%s.txt'%varname,'w')
+print("# dati %s"%varname,file=f)
+print("# angolo[°]\trate[Hz]\terrore rate",file=f)
+
+for i in range(len(atot)):
+    for j in range(len(atot[i])):
+        print("%d\t\t%f\t%f"%(nom(atot[i][j]),nom(rtot[i][j]),err(rtot[i][j])),file=f)
+        
+f.close()
+'''
