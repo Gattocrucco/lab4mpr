@@ -1,0 +1,13 @@
+\subsection{Sorgente}
+
+La sorgente \am{} emette $\alpha$ a due energie cinetiche\footnote{PDG 2016 \S 37.}: \SI{5.443}{MeV}, \SI{5.486}{MeV}. La sorgente emette anche raggi $\gamma$ a \SI{60}{keV} (\SI{36}\%),
+per i quali la lunghezza di attenuazione nel silicio è circa\footnote{PDG 2016 fig. 33.18.}
+$\SI{3}{g\,cm^{-2}} / \SI{2.6}{g\,cm^{-3}} = \SI{1.1}{cm}$.
+Lo spessore del rivelatore è dell'ordine dei \si{\micro m}
+e i fotoni vengono assorbiti con una probabilità circa del \SI{50}\%\footnote{NIST XCOM database \url{https://physics.nist.gov/PhysRefData/Xcom/html/xcom1.html}},
+allora la probabilità di assorbimento è circa \SI{1/20000}{\micro m^{-1}}.
+Dalla scheda sappiamo l'area del fotodiodo (\SI{20}{mm^2})
+e la distanza della sorgente dal fotodiodo ad angolo \SI0{\degree} è \SI{6}{cm},
+quindi il rate atteso di fotoni rilevati è
+$\SI{315}{kBq} \times \SI{36}\% \times \SI{20}{mm^2} / (\SI{6}{cm})^2 \times \SI{1/20000}{\micro m^{-1}}
+= \SI{0.03}{Hz\,\micro m^{-1}}$.

@@ -4,3 +4,6 @@ relazione.log
 *.aux
 *.synctex
 *.out
+*.fls
+*.fdb_latexmk
+*.watcher_pid
