@@ -1,0 +1,32 @@
+\appendix
+\section{Conti}
+
+Calcoliamo la sezione d'urto Rutherford nel caso di nucleo non fisso.
+La formula con nucleo fisso è
+\begin{equation}
+	\label{eq:ruthfisso}
+	\dv\sigma\Omega = \left( \frac {zZ\alpha\hbar c} {2T(1-\cos\theta)} \right)^2.
+\end{equation}
+Il problema con il nucleo non fisso si rinconduce a quello fisso,
+che chiamiamo <<problema ridotto>>, con queste sostituzioni:
+\begin{center}
+	\begin{tabular}{ll}
+		Nucleo non fisso                 & Nucleo fisso               \\
+		\hline
+		Distanza tra particella e nucleo & Posizione della particella \\
+		Massa della particella           & Massa ridotta              
+	\end{tabular}
+\end{center}
+La \eqref{eq:ruthfisso} è da intendersi scritta nelle variabili del problema ridotto,
+che dobbiamo esprimere in termini di quelle non ridotte.
+Sia $\vec v$ la velocità della particella $\alpha$ (di massa $m$),
+sia $\vec V$ la velocità del nucleo (di massa $M$), sia
+\begin{equation*}
+	\mu = \frac{mM}{m + M}
+\end{equation*}
+la massa ridotta.
+Indichiamo con il pedice ``rid'' le variabili del problema ridotto.
+La velocità ridotta è
+\begin{equation*}
+	\vec v_\text{rid} = \dv{}t(\vec r_\alpha - \vec r_\text{nucl}) = \vec v - \vec V.
+\end{equation*}
