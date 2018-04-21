@@ -8,6 +8,26 @@ e i fotoni vengono assorbiti con una probabilità circa del \SI{50}\%\footnote{N
 allora la probabilità di assorbimento è circa \SI{1/20000}{\micro m^{-1}}.
 Dalla scheda sappiamo l'area del fotodiodo (\SI{20}{mm^2})
 e la distanza della sorgente dal fotodiodo ad angolo \SI0{\degree} è \SI{6}{cm},
-quindi il rate atteso di fotoni rilevati è
+quindi il rate atteso di fotoni che rilasciano tutta l'energia è
 $\SI{315}{kBq} \times \SI{36}\% \times \SI{20}{mm^2} / (\SI{6}{cm})^2 \times \SI{1/20000}{\micro m^{-1}}
 = \SI{0.03}{Hz\,\micro m^{-1}}$.
+\marginpar{Ma quando vengono assorbiti i fotoni, poi vengono anche rivelati? Suppongo di sì.}
+
+\subsection{Scattering Rutherford}
+
+La sezione d'urto differenziale in approssimazione non relativistica di una particella di carica $+ze$ ed energia cinetica $T$ su un campo elettrostatico di carica $+Ze$ è\footnote{Wikipedia: Rutherford scattering \url{https://en.wikipedia.org/wiki/Rutherford_scattering}.}
+\begin{equation}
+	\label{eq:rutherford}
+	\dv\sigma\Omega = \left( \frac {zZ\alpha\hbar c} {2T(1-\cos\theta)} \right)^2.
+\end{equation}
+Per un campo generato da una massa $M$ di carica $+Ze$,
+applicando nella \eqref{eq:rutherford} le trasformazioni del problema in coordinate relative con la massa ridotta,
+\marginpar{Mettere dimostrazione in appendice apposita.}
+con $m$ massa della particella incidente e $T_\text{in}$, $T_\text{out}$ energia cinetica rispettivamente prima e dopo l'interazione, si ottiene
+\begin{align*}
+	T_\text{out}
+	&= T_\text{in} \left( 1 - 2\frac mM(1-\cos\theta) + O\left(\frac mM\right)^2 \right), \\
+	\dv\sigma\Omega &= \left( \frac {zZ\alpha\hbar c} {2T_\text{in}(1-\cos\theta)} \right)^2
+	\left( 1 + O\left(\frac mM\right)^2 \right).
+\end{align*}
+Notiamo che la correzione al primo ordine nel rapporto delle masse alla sezione d'urto è nulla.
