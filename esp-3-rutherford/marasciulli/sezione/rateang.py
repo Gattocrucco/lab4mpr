@@ -32,6 +32,7 @@ fig = plt.figure('rateang')
 fig.clf()
 fig.set_tight_layout(True)
 plt.rc('font',size=16)
+plt.title("%s"%varname,size=18)
 ax1 = fig.add_subplot(111)
 
 atot=[] # set di angoli
@@ -65,11 +66,10 @@ for file in files:
         a='blue'
     else:
         a='red'
-    lab4.errorbar(angoli,rate,xerr=1,capsize=2,label="%s"%file,linestyle='',color=a)
 
 # selezioni
 
-fuori=[-5,11] # estremi inclusi
+fuori=[-6,50] # estremi inclusi
 
 # selezione per il coll1
 y1=[]
@@ -94,23 +94,29 @@ if len(atot)>1:
 # fit
 
 def fitfun(teta,A,tc):
-
-    def f(teta):
-        return teta
+    "Rutherford con pdf per il collimatore da 5 mm"
+    def f(a, tetax):
+        l=28.5 # mm
+        d=31
+        #np.pi/2+np.arctan(a/d)-np.arcsin( (l*np.cos(tetax))/(np.sqrt(a**2+l**2+2*a*l*np.sin(tetax))) )
+        return np.arctan(np.tan(tetax)-a/(l*np.cos(tetax))) - np.arctan(a/d)
     
-    def integrando(teta,A,tc):
-        return A/( np.sin( (f(teta)-tc)/2 ))**4
-    amax=teta+np.radians(0.2)
-    amin=teta-np.radians(0.2)
+    def integrando(a,A,tc,tetax):
+        return A/( np.sin( (f(a,tetax)-tc)/2 ))**4
+    amax=2.5
+    amin=-2.5
     
     integrali=np.empty(len(teta))
     for x in range(len(teta)):
-        integrali[x]=quad(integrando,amin[x],amax[x],args=(A,tc))[0]/(amax[x]-amin[x])
+        integrali[x]=quad(integrando,amin,amax,args=(A,tc,teta[x]))[0]/(amax-amin)
     return integrali
+
+def semplice(teta,A,tc):
+    return A/( np.sin( (teta-tc)/2 ) )**4
 
 # fit1 e fit5 prendono il nome dai collimatori
 val1=[1e-3,np.radians(3)]
-fit1=lab.fit_curve(fitfun,np.radians(nom(atot[0])),nom(rtot[0]),dx=err(unp.radians(atot[0])),dy=err(rtot[0]),p0=val1,print_info=1)
+fit1=lab.fit_curve(semplice,np.radians(nom(atot[0])),nom(rtot[0]),dx=err(unp.radians(atot[0])),dy=err(rtot[0]),p0=val1,print_info=1)
 
 print("")
 print("centro vero coll1=",unp.degrees(fit1.upar[1]),"°")
@@ -119,7 +125,7 @@ print("chi quadro=",fit1.chisq,"+-",np.sqrt(2*dof),"  dof=",dof)
 print("P valore=",chdtrc(dof,fit1.chisq),"\n")
 
 if len(atot)>1:
-    val2=[1e-2,np.radians(3)]
+    val2=[1e-2,np.radians(1)]
     fit2=lab.fit_curve(fitfun,np.radians(nom(w)),nom(rr),dx=err(unp.radians(w)),dy=err(rr),p0=val2,print_info=1)
 
     print("")    
@@ -134,18 +140,33 @@ ax1.set_xlabel('angolo [°]')
 ax1.set_ylabel('rate [s$^{-1}$]')
 ax1.grid(linestyle=':')
 
-z1=np.linspace(min(nom(atot[0])),max(nom(atot[0])),1000)
-ax1.plot(z1,fitfun(np.radians(z1),*fit1.par),'b',scaley=False)
 
-if len(atot)>1:
-    z2=np.linspace(min(nom(w)),max(nom(w)),1000)
-    ax1.set_xlim(nom(min(w))-5,nom(max(w))+5)
+lab4.errorbar(atot[0],rtot[0],fmt='.b',capsize=2,label='collimatore da 1$\!$ mm')
+lab4.errorbar(w,rr,fmt='.r',capsize=2,label='collimatore da 5$\!$ mm')
+'''
+rappo=fit2.par[0]/fit1.par[0] * (np.sin( (np.radians(nom(w))-fit1.par[1])/2 ))**4 / (np.sin( (np.radians(nom(w))-fit2.par[1])/2 ))**4
+rr/=rappo
+lab4.errorbar(w-np.degrees(fit2.par[1]),rr,fmt='.g',capsize=2,label='collimatore da 5$\!$ mm scalato')
+'''
+z1=np.linspace(min(nom(w))-10,max(nom(w)),1000)
+ax1.plot(z1,semplice(np.radians(z1),*fit1.par),'b',scaley=False)
+
+
+if len(atot)>1:    
+    z2=np.linspace(min(nom(w)),-10,1000)
+    z3=np.linspace(15,max(nom(w)),1000)
+    
     ax1.plot(z2,fitfun(np.radians(z2),*fit2.par),'r',scaley=False)
+    ax1.plot(z3,fitfun(np.radians(z3),*fit2.par),'r',scaley=False)
+
+
 
 plt.legend(fontsize='x-small')
 fig.show()
 
 print("_______________%s_____________\n"%varname.upper())
+
+
 
 '''
 # scrviere i rate sul file
