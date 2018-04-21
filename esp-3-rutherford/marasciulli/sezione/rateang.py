@@ -7,7 +7,7 @@ from uncertainties.unumpy import nominal_values as nom
 from uncertainties.unumpy import std_devs as err
 from scipy.special import chdtrc
 from uncertainties import ufloat as uf
-
+from scipy.integrate import quad
 
 alluminio=[
 '0327-all8coll1.txt',
@@ -42,22 +42,34 @@ for file in files:
 
     count = unp.uarray(count, np.sqrt(count))
     time = unp.uarray(clock, 0.5) * 1e-3
-    rate = count / time
     ang = unp.uarray(ang, 1)
 
-    atot.append(ang)
-    rtot.append(rate)
+    # somma doppi
     
+    angoli = np.unique(nom(ang))
+    conteggi = np.empty(angoli.shape,dtype=object)
+    tempi = np.zeros(angoli.shape,dtype=object)
+
+    for i in range(len(angoli)):
+        conti = count[nom(ang) == angoli[i]]
+        temps=time[nom(ang)==angoli[i]]
+        conteggi[i] = sum(conti)
+        tempi[i]=sum(temps)
+        
+    rate=conteggi/tempi
+        
+    atot.append(unp.uarray(angoli,1))
+    rtot.append(rate)
+
     if 'coll1' in file:
         a='blue'
     else:
         a='red'
-    lab4.errorbar(ang,rate,capsize=2,label="%s"%file,linestyle='',color=a)
-
+    lab4.errorbar(angoli,rate,xerr=1,capsize=2,label="%s"%file,linestyle='',color=a)
 
 # selezioni
 
-fuori=[-11,15] # estremi inclusi
+fuori=[-5,11] # estremi inclusi
 
 # selezione per il coll1
 y1=[]
@@ -78,15 +90,23 @@ if len(atot)>1:
             y5.append(k)
     w=np.delete(w,y5)
     rr=np.delete(rr,y5)
-    
-    #w=np.delete(w,-1) # correzione fatta a mano ATTENZIONE
-    #rr=np.delete(rr,-1)
 
 # fit
-# mi serve una selezione con gli angoli
 
 def fitfun(teta,A,tc):
-    return A/np.sin((teta-tc)/2)**4
+
+    def f(teta):
+        return teta
+    
+    def integrando(teta,A,tc):
+        return A/( np.sin( (f(teta)-tc)/2 ))**4
+    amax=teta+np.radians(0.2)
+    amin=teta-np.radians(0.2)
+    
+    integrali=np.empty(len(teta))
+    for x in range(len(teta)):
+        integrali[x]=quad(integrando,amin[x],amax[x],args=(A,tc))[0]/(amax[x]-amin[x])
+    return integrali
 
 # fit1 e fit5 prendono il nome dai collimatori
 val1=[1e-3,np.radians(3)]
@@ -99,7 +119,7 @@ print("chi quadro=",fit1.chisq,"+-",np.sqrt(2*dof),"  dof=",dof)
 print("P valore=",chdtrc(dof,fit1.chisq),"\n")
 
 if len(atot)>1:
-    val2=[1e-2,np.radians(10)]
+    val2=[1e-2,np.radians(3)]
     fit2=lab.fit_curve(fitfun,np.radians(nom(w)),nom(rr),dx=err(unp.radians(w)),dy=err(rr),p0=val2,print_info=1)
 
     print("")    
@@ -122,7 +142,7 @@ if len(atot)>1:
     ax1.set_xlim(nom(min(w))-5,nom(max(w))+5)
     ax1.plot(z2,fitfun(np.radians(z2),*fit2.par),'r',scaley=False)
 
-plt.legend(fontsize='small')
+plt.legend(fontsize='x-small')
 fig.show()
 
 print("_______________%s_____________\n"%varname.upper())
