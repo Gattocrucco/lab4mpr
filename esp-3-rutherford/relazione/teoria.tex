@@ -1,10 +1,12 @@
 \subsection{Sorgente}
 
-La sorgente \am{} emette $\alpha$ a due energie cinetiche\footnote{PDG 2016 \S 37.}: \SI{5.443}{MeV}, \SI{5.486}{MeV}. La sorgente emette anche raggi $\gamma$ a \SI{60}{keV} (\SI{36}\%),
+La sorgente \am{} emette $\alpha$ a due energie cinetiche\footnote{PDG 2016 \S{} 37.}: \SI{5.443}{MeV}, \SI{5.486}{MeV}.
+\marginpar{Oro attaccato alla sorgente fa calare l'energia.}
+La sorgente emette anche raggi $\gamma$ a \SI{60}{keV} (\SI{36}\%),
 per i quali la lunghezza di attenuazione nel silicio è circa\footnote{PDG 2016 fig. 33.18.}
 $\SI{3}{g\,cm^{-2}} / \SI{2.6}{g\,cm^{-3}} = \SI{1.1}{cm}$.
 Lo spessore del rivelatore è dell'ordine dei \si{\micro m}
-e i fotoni vengono assorbiti con una probabilità circa del \SI{50}\%\footnote{NIST XCOM database \url{https://physics.nist.gov/PhysRefData/Xcom/html/xcom1.html}},
+e i fotoni vengono assorbiti con una probabilità circa del \SI{50}\%\footnote{NIST XCOM database \url{https://physics.nist.gov/PhysRefData/Xcom/html/xcom1.html}.},
 allora la probabilità di assorbimento è circa \SI{1/20000}{\micro m^{-1}}.
 Dalla scheda sappiamo l'area del fotodiodo (\SI{20}{mm^2})
 e la distanza della sorgente dal fotodiodo ad angolo \SI0{\degree} è \SI{6}{cm},
@@ -31,3 +33,23 @@ con $m$ massa della particella incidente e $T_\text{in}$, $T_\text{out}$ energia
 	\left( 1 + O\left(\frac mM\right)^2 \right).
 \end{align*}
 Notiamo che la correzione al primo ordine nel rapporto delle masse alla sezione d'urto è nulla.
+
+\subsection{Multiplo scattering}
+
+Le particelle $\alpha$, passando nel bersaglio,
+vengono in maggior parte deviate di piccoli angoli per interazione con molti atomi
+e occasionalmente di un grande angolo per interazione con un singolo nucleo secondo la \eqref{eq:rutherford}.
+Nel secondo caso comunque subiscono anche una deviazione ulteriore di un piccolo angolo
+prima e dopo l'interazione ravvicinata con il nucleo.
+La deviazione standard della distribuzione dei piccoli angoli,
+nel limite non relativistico,
+con l'angolo riferito a un piano fissato nello spazio anziché rispetto a un asse,
+è data da\footnote{PDG 2016 \S{} 33.3.}
+\begin{equation}
+	\label{eq:ms}
+	\theta_0 = \frac {\SI{6.8}{MeV}} {T_\text{in}} z \sqrt{\frac{x}{X_0}} \left(1+0.038\log\frac x{X_0}\right)
+\end{equation}
+dove $x$ è lo spessore attraversato e $X_0$ è la lunghezza di radiazione,
+che vale\footnote{PDG 2016 \S{} 6.} \SI{8.9}{cm} per l'alluminio e \SI{0.33}{cm} per l'oro.
+Ad esempio con $x = \SI5{\micro m}$ e $T_\text{in} = \SI5{MeV}$
+risulta $\theta_0 = \SI{9}\degree$ per l'oro e \SI{1.5}{\degree} per l'alluminio.
