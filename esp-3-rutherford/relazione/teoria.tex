@@ -23,15 +23,16 @@ La sezione d'urto differenziale in approssimazione non relativistica di una part
 	\dv\sigma\Omega = \left( \frac {zZ\alpha\hbar c} {2T(1-\cos\theta)} \right)^2.
 \end{equation}
 Per un campo generato da una massa $M$ di carica $+Ze$,
-applicando nella \eqref{eq:rutherford} le trasformazioni del problema in coordinate relative con la massa ridotta,
-\marginpar{Mettere dimostrazione in appendice apposita.}
+applicando nella \eqref{eq:rutherford} le trasformazioni del problema in coordinate relative con la massa ridotta
+(vedi \autoref{sec:conti}),
 con $m$ massa della particella incidente e $T_\text{in}$, $T_\text{out}$ energia cinetica rispettivamente prima e dopo l'interazione, si ottiene
-\begin{align*}
+\begin{align}
 	T_\text{out}
-	&= T_\text{in} \left( 1 - 2\frac mM(1-\cos\theta) + O\left(\frac mM\right)^2 \right), \\
+	&= T_\text{in} \left( 1 - 2\frac mM(1-\cos\theta) + O\left(\frac mM\right)^2 \right),
+	\label{eq:tout} \\
 	\dv\sigma\Omega &= \left( \frac {zZ\alpha\hbar c} {2T_\text{in}(1-\cos\theta)} \right)^2
-	\left( 1 + O\left(\frac mM\right)^2 \right).
-\end{align*}
+	\left( 1 + O\left(\frac mM\right)^2 \right). \notag
+\end{align}
 Notiamo che la correzione al primo ordine nel rapporto delle masse alla sezione d'urto è nulla.
 
 \subsection{Multiplo scattering}
@@ -53,3 +54,58 @@ dove $x$ è lo spessore attraversato e $X_0$ è la lunghezza di radiazione,
 che vale\footnote{PDG 2016 \S{} 6.} \SI{8.9}{cm} per l'alluminio e \SI{0.33}{cm} per l'oro.
 Ad esempio con $x = \SI5{\micro m}$ e $T_\text{in} = \SI5{MeV}$
 risulta $\theta_0 = \SI{9}\degree$ per l'oro e \SI{1.5}{\degree} per l'alluminio.
+
+\subsection{Simulazione}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{immagini/schemamc}
+	\caption{\label{fig:schemamc}
+	Schema della simulazione.
+	Il raggio esce dalla sorgente con un angolo $\theta_S$,
+	fa multiplo scattering di $\theta_\text{MS1}$,
+	scattering Rutherford $\theta_R$ alla profondità $d_R$
+	e di nuovo multiplo scattering $\theta_\text{MS2}$.
+	L'angolo a cui bisognerebbe mettere il rivelatore per osservare la traiettoria simulata è $\theta$,
+	che dipende solo da $\theta_S$.}
+\end{figure}
+
+Implementiamo una simulazione 2D semplificata dell'esperimento,
+illustrata in \autoref{fig:schemamc}.
+Passaggi della simulazione:
+\begin{enumerate}
+	\item
+	Partiamo con un'energia di \SI{5.46}{MeV}
+	e simuliamo la perdita di energia nei \SI{3}{\micro m} di oro che incapsulano la sorgente.
+	La perdita di energia è calcolata da $\mathrm dE/\mathrm dx$ tabulati\footnotemark,
+	\footnotetext{NIST ASTAR \url{https://physics.nist.gov/PhysRefData/Star/Text/ASTAR.html}.}
+	integrati per passi discreti di \SI{0.5}{\micro m};
+	alla perdita di energia è aggiunta una variazione casuale gaussiana di deviazione standard \SI{10}\%.
+	\item
+	Estraiamo un angolo di uscita dalla sorgente $\theta_S$ con distribuzione uniforme
+	delimitata dalla larghezza del collimatore.
+	\item
+	Estraiamo uniformemente la profondità nel bersaglio $d_R$ a cui faremo avvenire lo scattering Rutherford.
+	\item
+	Simuliamo la perdita di energia fino alla profondità $d_R$
+	e deviamo la traiettoria di un angolo di multiplo scattering $\theta_\text{MS1}$
+	estratto da una gaussiana di deviazione standard $\theta_0$ (\autoref{eq:ms}).
+	\item
+	Estraiamo il coseno dell'angolo di scattering Rutherford $\theta_R$
+	dalla distribuzione $(1-\cos\theta_R)^{-1}$,
+	tagliata a $\theta_R>\epsilon$ dove $\epsilon$ è un parametro della simulazione.
+	Calcoliamo l'energia persa con la \eqref{eq:tout}.
+	Salviamo il peso statistico $w = (T_\text{in}^2 (1-\cos\theta_R))^{-1}$
+	per tenere conto della distribuzione delle energie a cui avviene lo scattering
+	e della distribuzione con cui abbiamo estratto $\theta_R$.
+	\item
+	Simuliamo perdita di energia e multiplo scattering fino all'uscita dal bersaglio.
+	\item
+	Troviamo l'intersezione della traiettoria finale con la circonferenza delle possibili posizioni del rivelatore,
+	da cui calcoliamo l'angolo $\theta$ che è quello che impostiamo nell'esperimento.
+	\item
+	Facciamo un istogramma degli eventi simulati nella variabile $\theta$,
+	contando ogni evento non come +1 ma con il suo peso $w$.
+	\marginpar{Aggiungere magari figura di un montecarlo.
+	Senza dati sennò Morello si spaventa.}
+\end{enumerate}
