@@ -18,63 +18,9 @@ Per sapere se la soglia ha un effetto minore di quanto misurato dobbiamo aumenta
 Siccome il rate diminuisce di molto all'aumentare dell'angolo, le misure ad angoli maggiori avranno un'accuratezza minore. Quindi possiamo affermare che la soglia non avrà alcun effetto sulle misure di rate. 
 Pertanto la teniamo a 0 per tutta l'esperienza.
 
-\begin{table}[h]
-\centering
-
-\begin{tabular}{c|c}
-soglia & rate [\si{s^{-1}}] \\
-\hline
-$ 0.0 $ & $ 45.4 \pm 1.5 $\\ 
-$ 0.5 $ & $ 45.0 \pm 1.5 $\\ 
-$ 0.7 $ & $ 43.2 \pm 2.1 $\\ 
-$ 0.8 $ & $ 38 \pm 2 $\\ 
-$ 0.9 $ & $ 10 \pm 1 $\\ 
-$ 1.0 $ & $\;\; 0.05 \pm 0.05 $\\ 
-\hline
-$ 0.0 $ & $ 43.7 \pm 0.9 $\\ 
-$ 0.1 $ & $ 44 \pm 1 $\\ 
-$ 0.2 $ & $ 45 \pm 1 $\\ 
-$ 0.3 $ & $ 43.9 \pm 0.8 $\\ 
-$ 0.4 $ & $ 43.6 \pm 0.9 $\\ 
-$ 0.5 $ & $ 41.9 \pm 0.9 $\\ 
-$ 0.6 $ & $ 42.0 \pm 0.9 $\\ 
-$ 0.7 $ & $ 44.0 \pm 0.9 $\\ 
-$ 0.8 $ & $ 36.5 \pm 0.7 $\\ 
-$ 0.9 $ & $ 5.6 \pm 0.2 $\\ 
-$ 1.0 $ & $ 0.05 \pm 0.03 $\\ 
-
-\end{tabular}
-
-\caption{Valori presenti nel grafico di \autoref{fig:soglia}. La linea orizzontale divide quelli del 15 marzo (in alto) da quelli del 19 marzo (in basso).}
-\label{tab:soglia}
-\end{table}
-
 \subsubsection{Ritardo}
 
 Guardando all'oscilloscopio i segnali da digitalizzare, ci siamo accorti che aumentare la soglia ritarda l'arrivo del segnale di trigger rendendo inutile la calibrazione dell'ADC ogni volta che la soglia viene modificata. Abbiamo quantificato questo effetto misurando il ritardo in funzione della soglia (\autoref{tab:rit}). 
-
-\begin{table}[h]
-\centering
-
-\begin{tabular}{c|c @{\,$\pm$\,} l}
-soglia & \multicolumn{2}{c}{ritardo [\si{ns}]} \\
-\hline
-$ 0.0 $ & $ 88 $ & $ 2 $\\ 
-$ 0.1 $ & $ 88 $ & $ 2 $\\ 
-$ 0.2 $ & $ 116 $ & $ 2 $\\ 
-$ 0.3 $ & $ 180 $ & $ 2 $\\ 
-$ 0.4 $ & $ 288 $ & $ 2 $\\ 
-$ 0.5 $ & $ 384 $ & $ 2 $\\ 
-$ 0.6 $ & $ 464 $ & $ 4 $\\ 
-$ 0.7 $ & $ 560 $ & $ 10 $\\ 
-$ 0.8 $ & $ 720 $ & $ 60 $\\ 
-$ 0.9 $ & $ 910 $ & $ 60 $\\ 
-\end{tabular}
-
-\caption{Dati per la misura in cui si quantifica il ritardo del segnale discriminato in funzione della soglia del discriminatore.
-Le ultime misure hanno un errore maggiore a causa del jitter del segnale.}
-\label{tab:rit}
-\end{table}
 
 \begin{figure}[h]
 \centering
