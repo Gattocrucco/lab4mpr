@@ -66,7 +66,7 @@ def load_spectrum(fileglob, angle):
     n_ol = np.sum(noise_t & noise_ch2)
     
     if n_t + n_ch2 > 0:
-        print('{} noise: {} stamp, {} ch2, {} both'.format(file, n_t, n_ch2, n_ol))
+        print('        noise: {} stamp, {} ch2, {} both'.format(n_t, n_ch2, n_ol))
     
     # remove noise
     data = ch1[~noise]
@@ -83,17 +83,19 @@ def load_spectrum(fileglob, angle):
     return edges, counts, np.sum(noise), np.max(t) - np.min(t)
 
 def load_file(filename, spectrglob):
+    print(filename.split('/')[-1])
     ang, scaler, clock = np.loadtxt(filename, unpack=True)
     spectra = []
     count = []
     for i in range(len(ang)):
+        print('    angle {:g}'.format(ang[i]))
         spectra.append(load_spectrum(spectrglob, ang[i]))
         count.append(np.sum(spectra[i][1]))
         
         if count[i] + spectra[i][2] != scaler[i]:
-            print('{}, angle {}: ADC total {} != scaler {}'.format(filename, ang[i], count[i] + spectra[i][2], scaler[i]))
+            print('        ADC total {:d} != scaler {:d}'.format(int(count[i] + spectra[i][2]), int(scaler[i])))
         if abs(clock[i] - 1000 * spectra[i][3]) / clock[i] > 0.1:
-            print('{}, angle {}: clock {} s - ADC range {} s > 10 %'.format(filename, ang[i], clock[i] / 1000, spectra[i][3]))
+            print('        clock {:.3f} s - ADC range {:.1f} s > 10 %'.format(clock[i] / 1000, spectra[i][3]))
     
     count = np.array(count)
     rate = unp.uarray(count, np.where(count > 0, np.sqrt(count), 1)) / (unp.uarray(clock, 1) * 1e-3)
