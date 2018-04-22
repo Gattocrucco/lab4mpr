@@ -200,7 +200,7 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
             continue
         
         # multiple scattering and energy loss after rutherford scattering
-        if abs(theta_source + ms_before + theta_rutherford) > np.radians(85):
+        if abs(theta_source + ms_before + theta_rutherford) > np.radians(89.9):
             continue # would require different treatment
         depth_after = (target_thickness - rutherford_depth) / np.cos(theta_source + ms_before + theta_rutherford)
         ms_after = np.random.normal(loc=0, scale=multiple_scattering(T_scattered, depth_after / 10000 / target_X0))
