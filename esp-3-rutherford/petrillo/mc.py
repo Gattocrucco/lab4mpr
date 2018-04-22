@@ -158,7 +158,9 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
     z_max = -np.log(1 - cos_theta_eps)
     
     i = 0
+    count = 0
     while i < N:
+        count += 1
         # energy loss in the encapsulation
         T_beam = energy_loss(T, source_thickness, rho_au, Z_au)
         if T_beam == 0:
@@ -210,7 +212,7 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
         
         # compute intersection with circumference of detector
         theta_final = theta_source + ms_before + theta_rutherford + ms_after
-        if abs(theta_final) > np.radians(85):
+        if abs(theta_final) > np.radians(89.9):
             continue
         tan_theta_final = np.tan(theta_final)
         sin_theta = (a/L + tan_theta_final * np.sqrt(1 + tan_theta_final**2 - (a/L)**2)) / (1 + tan_theta_final**2)
@@ -221,6 +223,8 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
         energies[i] = T_out
         
         i += 1
+    
+    weights *= target_Z ** 2 * theta_source_max * target_thickness / count
                
     return thetas, weights, energies
 
@@ -279,14 +283,14 @@ if __name__ == '__main__':
     fig.set_tight_layout(True)
     ax = fig.add_subplot(111)
     
-    for target, color in zip([target_al8, target_au2], ['gray', 'black']):
-        t, w, e = mc(seed=0, N=100000, **target, **coll_1, theta_eps=0.2)
-        w *= target['target_Z'] ** 2 * target['target_thickness']
+    for target, coll, color in zip([target_au5, target_au5], [coll_1, coll_5], ['gray', 'black']):
+        t, w, e = mc_cached(seed=0, N=1000000, **target, **coll, theta_eps=0.2)
     
         counts, edges, unc_counts = lab4.histogram(np.degrees(t), bins=int(np.sqrt(len(t))), weights=w)
     
-        ax.errorbar(edges[:-1] + (edges[1] - edges[0]) / 2, counts, yerr=unc_counts, fmt='.', color=color)
+        ax.errorbar(edges[:-1] + (edges[1] - edges[0]) / 2, counts, yerr=unc_counts, fmt=',', color=color)
 
+    ax.set_yscale('log')
     ax.set_xlabel(r'$\theta$ [°]')
     ax.set_ylabel('densità')
     ax.grid(linestyle=':')
