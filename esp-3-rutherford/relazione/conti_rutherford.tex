@@ -31,3 +31,73 @@ La velocità ridotta è
 \begin{equation*}
 	\vec v_\text{rid} = \dv{}t(\vec r_\alpha - \vec r_\text{nucl}) = \vec v - \vec V.
 \end{equation*}
+Per conservazione dell'energia nel problema ridotto
+$|\vec v_\text{rid,in}| = |\vec v_\text{rid,out}|$,
+inoltre
+$\vec v_\text{rid,in}
+= \vec v_\text{in} - \vec V_\text{in}
+= \vec v_\text{in}$.
+Calcoliamo l'energia ridotta:
+\begin{align*}
+	\begin{cases}
+		T_\text{rid} = \frac12 \mu v_\text{rid}^2 = \frac12 \mu v_\text{in}^2 \\
+		T_\text{in}  = \frac12 m v_\text{in}^2
+	\end{cases} \implies
+	T_\text{rid} = \frac\mu m T_\text{in} = \frac1{1+\frac mM} T_\text{in},
+\end{align*}
+dunque abbiamo $T_\text{rid}(T_\text{in})$.
+Ora ricaviamo $T_\text{out}$ in funzione di $T_\text{in}$ e $\cos\theta$.
+Equivalentemente ricaviamo la relazione per le velocità anziché per le energie.
+\begin{align*}
+	\begin{cases}
+		\vec v_\text{rid,out} = \vec v_\text{out} - \vec V_\text{out} \text{ (def. di $\vec v_\text{rid}$)}\\
+		m \vec v_\text{in} = m \vec v_\text{out} + M \vec V_\text{out} \text{ (conservazione impulso)}
+	\end{cases}
+\end{align*}
+ricaviamo $\vec V_\text{out}$ dalla seconda equazione:
+\begin{align*}
+	\vec V_\text{out} = \frac mM (\vec v_\text{in} - \vec v_\text{out})
+\end{align*}
+sostituiamo nella prima:
+\begin{align}
+	\label{eq:star}
+	\vec v_\text{rid,out}
+	= \vec v_\text{out} \left(1 + \frac mM\right) - \frac mM \vec v_\text{in}
+\end{align}
+prendiamo il modulo nell'ultima equazione:
+\begin{align*}
+	v_\text{in}^2
+	= v_\text{out}^2 \left(1 + \frac mM\right)^2 + \left(\frac mM\right)^2 v_\text{in}^2
+	- 2 \frac mM \left(1 + \frac mM\right) \vec v_\text{in} \vec v_\text{out}
+\end{align*}
+ma $\vec v_\text{in}\vec v_\text{out} = v_\text{in} v_\text{out} \cos\theta$.
+Risolviamo per $v_\text{out}$:
+\begin{align*}
+	0
+	&= v_\text{out}^2 \left(1 + \frac mM\right)^2
+	- v_\text{out} 2\frac mM\left(1 + \frac mM\right) v_\text{in} \cos\theta
+	- v_\text{in}^2 \left(1 - \left(\frac mM\right)^2 \right) = \\
+	&= \left(1 + \frac mM\right) \Bigg(
+   v_\text{out}^2 \left(1 + \frac mM\right)
+  	- v_\text{out} 2\frac mM v_\text{in} \cos\theta
+  	- v_\text{in}^2 \left(1 - \frac mM\right)
+	\Bigg) \implies \\
+	\implies v_\text{out}
+	&= v_\text{in} \frac
+	{\frac mM \cos\theta + \sqrt{\left(\frac mM\right)^2 \cos^2\theta + \left(1-\frac mM\right)\left(1+\frac mM\right)}}
+	{1 + \frac mM} = \\
+	&= v_\text{in} \frac
+	{\frac mM \cos\theta + \sqrt{1 - \left(\frac mM\right)^2 (1-\cos^2\theta)}}
+	{1 + \frac mM} = \\
+	&= v_\text{in} \frac
+	{\sqrt{1 - \left(\frac mM\sin\theta\right)^2} + \frac mM\cos\theta}
+	{1 + \frac mM}
+\end{align*}
+dunque abbiamo $v_\text{out}(\vec v_\text{in},\cos\theta)$.
+Ora ricaviamo $\cos\theta_\text{rid}$ in funzione di $\cos\theta$.
+Prendiamo la proiezione su $\vec v_\text{in}$ della \eqref{eq:star}:
+\begin{align*}
+	\cos\theta_\text{rid}
+	&= \frac{v_\text{out}}{v_\text{in}} \cos\theta \left(1+\frac mM\right) - \frac mM = \\
+	&= \left( \sqrt{1 - \left(\frac mM \sin\theta\right)^2} + \frac mM \cos\theta \right) \cos\theta - \frac mM.
+\end{align*}
