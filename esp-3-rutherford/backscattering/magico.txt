@@ -1,0 +1,13 @@
+#angolo[°]	Z	conteggio	clock[ms]	filename					     note
+150         13     187      224319706   0416allcoll5ang150.dat	    misura_normale
+180         13	   61       23467977    0416diss09_52.dat           dissipatori
+180         0      17       6231372     0416plast16_38.dat          tanta_plastica
+0           0      3419       76475     0416buco18_35.dat           buco_0_gradi
+0           79      0         96474     nessun_file                 doppio_oro_nuda_fuori
+0           79      0         42480     nessun_file                 doppio_oro_nuda_dentro
+150         79      70      52466858    0416doppiooro18_54.dat      doppio_oro
+0           79      2       1267210     0417doppiooro09_40.dat      doppio_oro_0_gradi
+150         0       49      95529191    0417buco10_08.dat           fondo_backscattering
+0           13      57      99894       0418doppioall12_50.dat      doppio_all_0_gradi
+150         13      91      97309806    0418doppioall12_53.dat      doppio_all
+150         79      24      57738972    0419alluminio_notte.dat     doppio_all_2
