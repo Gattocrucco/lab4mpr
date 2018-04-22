@@ -6,6 +6,7 @@ import os
 import pickle
 import dedx
 import lab
+import lab4
 
 # alpha particle properties
 z = 2
@@ -95,7 +96,7 @@ coll_5 = dict(amax=2.5)
 coll_1 = dict(amax=0.5)
 
 @numba.jit(nopython=True, cache=True)
-def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, source_thickness=3.0, theta_eps=1, target_rho=rho_au, target_X0=X0_au, target_Z=Z_au, target_A=A_au):
+def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, source_thickness=3.0, theta_eps=1, target_rho=rho_au, target_X0=X0_au, target_Z=Z_au, target_A=A_au, sampler=1):
     """
     Parameters
     ----------
@@ -125,6 +126,10 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
         Nuclear charge of target.
     target_A : float
         Nuclear weight of target.
+    sampler : integer in {0, 1}
+        Sampler for rutherford distribution.
+        0 = sample directly the distribution 1/(1-cos_theta)**2
+        1 = sample 1/(1-cos_theta) and apply weight
     
     Returns
     -------
@@ -145,6 +150,7 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
     theta_eps = np.radians(theta_eps)
     cos_theta_eps = np.cos(theta_eps)
     y_max = 1 / (1 - cos_theta_eps) if theta_eps > 0.01 else 2 / theta_eps**2
+    z_max = -np.log(1 - cos_theta_eps)
     
     i = 0
     while i < N:
@@ -172,12 +178,18 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
             continue
         
         # rutherford scattering
-        # y = np.random.uniform(1, y_max)
-        # cos_theta_rutherford = 1 - 1/y
-        # theta_rutherford = np.arccos(cos_theta_rutherford) * random_sign()
-        theta_rutherford = np.random.uniform(theta_eps, np.pi/2) * random_sign()
-        cos_theta_rutherford = np.cos(theta_rutherford)
-        prob_rutherford = 1 / (T_rutherford * (1 - cos_theta_rutherford)) ** 2 * abs(np.sin(theta_rutherford))
+        # theta_rutherford = np.random.uniform(theta_eps, np.pi/2) * random_sign()
+        # distribution_factor = abs(np.sin(theta_rutherford))
+        if sampler == 0:
+            y = np.random.uniform(1, y_max)
+            cos_theta_rutherford = 1 - 1/y
+            theta_rutherford = np.arccos(cos_theta_rutherford) * random_sign()
+            prob_rutherford = 1 / T_rutherford ** 2
+        elif sampler == 1:
+            z = np.random.uniform(0, z_max)
+            cos_theta_rutherford = 1 - np.exp(-z)
+            theta_rutherford = np.arccos(cos_theta_rutherford) * random_sign()
+            prob_rutherford = 1 / (T_rutherford ** 2 * (1 - cos_theta_rutherford))
         T_scattered = T_rutherford * T_out_factor(target_A, cos_theta_rutherford)
         if T_scattered == 0:
             continue
@@ -257,14 +269,18 @@ def mc_cached(*args, **kwargs):
     return t, w, e
 
 if __name__ == '__main__':
-    t, w, e = mc_cached(seed=0, N=100000, theta_eps=5, **target_au5, **coll_5)
-    
     fig = plt.figure('mc')
     fig.clf()
     fig.set_tight_layout(True)
-    
     ax = fig.add_subplot(111)
-    ax.hist(np.degrees(t), bins=int(np.sqrt(len(t))), weights=w, histtype='step')
+    
+    for sampler, color in zip([0, 1], ['lightgray', 'black']):
+        t, w, e = mc(seed=0, N=100000, theta_eps=5, sampler=sampler, **target_au5, **coll_5)
+    
+        counts, edges, unc_counts = lab4.histogram(np.degrees(t), bins=int(np.sqrt(len(t))), weights=w, density=True)
+    
+        ax.errorbar(edges[:-1] + (edges[1] - edges[0]) / 2, counts, yerr=unc_counts, fmt='.', color=color)
+
     ax.set_xlabel(r'$\theta$ [°]')
     ax.set_ylabel('densità')
     ax.grid(linestyle=':')
