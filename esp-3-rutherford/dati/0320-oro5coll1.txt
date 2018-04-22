@@ -4,7 +4,10 @@
 # Angolo [°]	Conteggio	Clock
 0	452	315809
 -5	449	416356
--10	190	358874
+# durante la seguente misura è saltata la luce
+# al posto del clock (358874) che conta solo dopo che è tornata,
+# ho messo la somma dei due spezzoni di timestamp
+-10	190	608800
 -15	413	1585177
 -20	418	3972591
 5	465	321238

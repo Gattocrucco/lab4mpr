@@ -13,7 +13,7 @@ fig.set_tight_layout(True)
 
 def unroll_time(t):
     if len(t) == 1: 
-	return t
+        return t
     tmax = 6553.5
     # preso da max(t)
     # bisogna sommare 65535 e non 65536 perché min(t) == 0.1
@@ -56,18 +56,24 @@ elif len(filenames) == 1:
     rolled_t, ch1, ch2 = np.loadtxt(filename, unpack=True).reshape(3, -1)
     t = unroll_time(rolled_t)
     noise = find_noise(t)
+    noise_ch2 = ch2 != 0
+    
     ax1 = fig.add_subplot(211)
-    nbinspow = min(int(np.ceil(np.log2(np.sqrt(len(ch1))))), 12)
+    hist_data = ch1[~(noise | noise_ch2)]
+    nbinspow = min(int(np.ceil(np.log2(np.sqrt(len(hist_data))))), 12)
     edges = np.arange(2 ** 12 + 1)[::2 ** (12 - nbinspow)] - 0.5
-    ax1.hist(ch1, bins=edges, histtype='step', label=filename)
+    ax1.hist(hist_data, bins=edges, histtype='step', label=filename)
     ax1.legend(loc='upper right', fontsize='small')
-    ax1.set_ylabel('conteggio')
+    ax1.set_ylabel('conteggio [no rumori]')
     ax1.set_xlabel('canale ADC')
+    
     ax2 = fig.add_subplot(212)
     ax2.plot(t, ch1, '.', markersize=2)
-    ax2.plot(t[noise], ch1[noise], 'rx')
-    ax2.set_xlabel('tempo')
+    ax2.plot(t[noise], ch1[noise], 'rx', label='timestamp')
+    ax2.plot(t[noise_ch2], ch1[noise_ch2], 'kx', label='ch2 > 0')
+    ax2.set_xlabel('tempo [s]')
     ax2.set_ylabel('canale ADC')
+    ax2.legend(fontsize='small', loc='best')
 
 else:
     print('no filenames specified.')
