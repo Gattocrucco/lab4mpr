@@ -12,6 +12,19 @@ import lab4
 z = 2
 A = 4
 
+# target material properties
+X0_au = 0.33 # cm
+X0_al = 8.9 # cm
+
+rho_au = 19.320 # g/cm^3
+rho_al = 2.699 # g/cm^3
+
+Z_au = 79
+Z_al = 13
+
+A_au = 200
+A_al = 27
+
 @numba.jit(nopython=True, cache=True)
 def multiple_scattering(T, x):
     """
@@ -30,8 +43,11 @@ def multiple_scattering(T, x):
     theta_0 = 6.8 / T * z * np.sqrt(x) * (1 + 0.038 * np.log(x))
     return max(theta_0, 0) # 0 last: NaN-propagating
 
+dedx_au = dedx.dedx[Z_au]
+dedx_al = dedx.dedx[Z_al]
+
 @numba.jit(nopython=True, cache=True)
-def energy_loss(T, x, rho, d_step=0.5, spread=0.1):
+def energy_loss(T, x, rho, Z, d_step=0.5, spread=0.1):
     """
     T : [MeV]
     x : [um]
@@ -48,11 +64,13 @@ def energy_loss(T, x, rho, d_step=0.5, spread=0.1):
     while d < x:
         if T < dedx.dedx_min:
             return 0
-        T -= dedx.dedx(T) * rho / 10000 * d_step # 10000 is conversion MeV/cm -> MeV/um
+        dEdx = dedx_al(T) if Z == Z_al else dedx_au(T)
+        T -= dEdx * rho / 10000 * d_step # 10000 is conversion MeV/cm -> MeV/um
         d += d_step
     if T < dedx.dedx_min:
         return 0
-    T -= dedx.dedx(T) * rho / 10000 * (x - (d - d_step))
+    dEdx = dedx_al(T) if Z == Z_al else dedx_au(T)
+    T -= dEdx * rho / 10000 * (x - (d - d_step))
     T = np.random.normal(loc=T, scale=spread * (T_in - T))
     return max(T, 0)
 
@@ -73,19 +91,6 @@ def T_out_factor(nucl_A, cos_theta):
 @numba.jit(nopython=True, cache=True)
 def random_sign():
     return np.random.randint(2) * 2 - 1
-
-# target material properties
-X0_au = 0.33 # cm
-X0_al = 8.9 # cm
-
-rho_au = 19.320 # g/cm^3
-rho_al = 2.699 # g/cm^3
-
-Z_au = 79
-Z_al = 13
-
-A_au = 200
-A_al = 27
 
 # keyword arguments for available targets
 target_au5 = dict(target_rho=rho_au, target_X0=X0_au, target_Z=Z_au, target_A=A_au, target_thickness=5.0)
@@ -155,7 +160,7 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
     i = 0
     while i < N:
         # energy loss in the encapsulation
-        T_beam = energy_loss(T, source_thickness, rho_au)
+        T_beam = energy_loss(T, source_thickness, rho_au, Z_au)
         if T_beam == 0:
             continue
         
@@ -173,7 +178,7 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
         # multiple scattering and energy loss before rutherford scattering
         depth_before = rutherford_depth / np.cos(theta_source)
         ms_before = np.random.normal(loc=0, scale=multiple_scattering(T_beam, depth_before / 10000 / target_X0))
-        T_rutherford = energy_loss(T_beam, depth_before, target_rho)
+        T_rutherford = energy_loss(T_beam, depth_before, target_rho, target_Z)
         if T_rutherford == 0:
             continue
         
@@ -199,7 +204,7 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
             continue # would require different treatment
         depth_after = (target_thickness - rutherford_depth) / np.cos(theta_source + ms_before + theta_rutherford)
         ms_after = np.random.normal(loc=0, scale=multiple_scattering(T_scattered, depth_after / 10000 / target_X0))
-        T_out = energy_loss(T_scattered, depth_after, target_rho)
+        T_out = energy_loss(T_scattered, depth_after, target_rho, target_Z)
         if T_out == 0:
             continue
         
@@ -274,8 +279,8 @@ if __name__ == '__main__':
     fig.set_tight_layout(True)
     ax = fig.add_subplot(111)
     
-    for target, color in zip([target_au2, target_al8], ['gray', 'black']):
-        t, w, e = mc(seed=0, N=100000, **target, **coll_1, theta_eps=0.1 * target['target_Z'] / Z_al)
+    for target, color in zip([target_al8, target_au2], ['gray', 'black']):
+        t, w, e = mc(seed=0, N=100000, **target, **coll_1, theta_eps=0.2)
         w *= target['target_Z'] ** 2 * target['target_thickness']
     
         counts, edges, unc_counts = lab4.histogram(np.degrees(t), bins=int(np.sqrt(len(t))), weights=w)
