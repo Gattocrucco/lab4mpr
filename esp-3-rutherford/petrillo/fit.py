@@ -1,5 +1,8 @@
 import numpy as np
 import glob
+import lab4
+from uncertainties import unumpy as unp
+import uncertainties as un
 
 files = [
     ['0320-oro5coll1.txt', '0320oro5um{}.dat'],
@@ -34,3 +37,69 @@ def find_noise(t):
     dt_zero = np.diff(t) == 0
     noise = np.concatenate([dt_zero, [False]]) | np.concatenate([[False], dt_zero])
     return noise
+
+def load_spectrum(fileglob, angle):
+    """
+    Returns
+    -------
+    edges (missing codes-aware)
+    counts (noise-filtered)
+    number of noises
+    time range [seconds] (including starting or ending noises)
+    """
+    # obtain filename
+    files = glob.glob('../de0_data/{}'.format(fileglob).format('{:g}'.format(angle).replace('-', '_')))
+    if len(files) != 1:
+        raise RuntimeError('more or less than one file found for {}, angle {}'.format(fileglob, angle))
+    file = files[0]
+    
+    # load data
+    rolled_t, ch1, ch2 = np.loadtxt(file, unpack=True)
+    t = unroll_time(rolled_t)
+    noise_t = find_noise(t)
+    noise_ch2 = ch2 != 0
+    noise = noise_t | noise_ch2
+    
+    # count noise
+    n_t = np.sum(noise_t)
+    n_ch2 = np.sum(noise_ch2)
+    n_ol = np.sum(noise_t & noise_ch2)
+    
+    if n_t + n_ch2 > 0:
+        print('{} noise: {} stamp, {} ch2, {} both'.format(file, n_t, n_ch2, n_ol))
+    
+    # remove noise
+    data = ch1[~noise]
+    
+    # case of empty data
+    if len(data) == 0:
+        edges = np.array([0, 2 ** 12])
+        counts = np.array([0])
+    else:
+        edges = np.concatenate([[0], 1 + np.arange(2**7) * 2**5, [2**12]])
+        counts, _ = np.histogram(data + 0.5, bins=edges)
+        assert np.sum(counts) == len(data)
+
+    return edges, counts, np.sum(noise), np.max(t) - np.min(t)
+
+def load_file(filename, spectrglob):
+    ang, scaler, clock = np.loadtxt(filename, unpack=True)
+    spectra = []
+    count = []
+    for i in range(len(ang)):
+        spectra.append(load_spectrum(spectrglob, ang[i]))
+        count.append(np.sum(spectra[i][1]))
+        
+        if count[i] + spectra[i][2] != scaler[i]:
+            print('{}, angle {}: ADC total {} != scaler {}'.format(filename, ang[i], count[i] + spectra[i][2], scaler[i]))
+        if abs(clock[i] - 1000 * spectra[i][3]) / clock[i] > 0.1:
+            print('{}, angle {}: clock {} s - ADC range {} s > 10 %'.format(filename, ang[i], clock[i] / 1000, spectra[i][3]))
+    
+    count = np.array(count)
+    rate = unp.uarray(count, np.where(count > 0, np.sqrt(count), 1)) / (unp.uarray(clock, 1) * 1e-3)
+    
+    return rate, spectra
+
+for file_data in files:
+    load_file('../dati/' + file_data[0], file_data[1])
+    
