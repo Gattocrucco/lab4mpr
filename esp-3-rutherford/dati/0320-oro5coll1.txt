@@ -1,5 +1,6 @@
 # la maggior parte di questi dati non sono presi dal logbook ma dalla prima riga degli spettri.
 #lamina d'oro di 5um
+# file di spettro: 0320oro5um*.dat
 # Angolo [°]	Conteggio	Clock
 0	452	315809
 -5	449	416356
