@@ -244,7 +244,7 @@ def mc_cached(*args, **kwargs):
     return t, w, e
 
 if __name__ == '__main__':
-    t, w, e = mc(seed=0, N=100000, theta_eps=10)
+    t, w, e = mc_cached(seed=0, N=10000000, theta_eps=5)
     
     fig = plt.figure('mc')
     fig.clf()
