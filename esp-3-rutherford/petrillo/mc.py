@@ -4,8 +4,8 @@ import numpy as np
 from scipy import optimize
 import os
 import pickle
-import lab
 import dedx
+import lab
 
 # alpha particle properties
 z = 2
@@ -88,6 +88,11 @@ A_al = 27
 
 # keyword arguments for available targets
 target_au5 = dict(target_rho=rho_au, target_X0=X0_au, target_Z=Z_au, target_A=A_au, target_thickness=5.0)
+target_au3 = dict(target_rho=rho_au, target_X0=X0_au, target_Z=Z_au, target_A=A_au, target_thickness=3.0)
+target_au2 = dict(target_rho=rho_au, target_X0=X0_au, target_Z=Z_au, target_A=A_au, target_thickness=2.0)
+target_al8 = dict(target_rho=rho_al, target_X0=X0_al, target_Z=Z_al, target_A=A_al, target_thickness=8.0)
+coll_5 = dict(amax=2.5)
+coll_1 = dict(amax=0.5)
 
 @numba.jit(nopython=True, cache=True)
 def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, source_thickness=3.0, theta_eps=1, target_rho=rho_au, target_X0=X0_au, target_Z=Z_au, target_A=A_au):
@@ -116,6 +121,10 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
         Density of target.
     target_X0 : float [cm]
         Radiation length of target.
+    target_Z : integer
+        Nuclear charge of target.
+    target_A : float
+        Nuclear weight of target.
     
     Returns
     -------
@@ -134,7 +143,8 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
     
     # rutherford scattering setup
     theta_eps = np.radians(theta_eps)
-    y_max = 1 / (1 - np.cos(theta_eps)) if theta_eps > 0.01 else 2 / theta_eps**2
+    cos_theta_eps = np.cos(theta_eps)
+    y_max = 1 / (1 - cos_theta_eps) if theta_eps > 0.01 else 2 / theta_eps**2
     
     i = 0
     while i < N:
@@ -162,9 +172,12 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
             continue
         
         # rutherford scattering
-        y = np.random.uniform(1, y_max)
-        cos_theta_rutherford = 1 - 1/y
-        theta_rutherford = np.arccos(cos_theta_rutherford) * random_sign()
+        # y = np.random.uniform(1, y_max)
+        # cos_theta_rutherford = 1 - 1/y
+        # theta_rutherford = np.arccos(cos_theta_rutherford) * random_sign()
+        theta_rutherford = np.random.uniform(theta_eps, np.pi/2) * random_sign()
+        cos_theta_rutherford = np.cos(theta_rutherford)
+        prob_rutherford = 1 / (T_rutherford * (1 - cos_theta_rutherford)) ** 2 * abs(np.sin(theta_rutherford))
         T_scattered = T_rutherford * T_out_factor(target_A, cos_theta_rutherford)
         if T_scattered == 0:
             continue
@@ -187,7 +200,7 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
         theta = np.arcsin(sin_theta)
         
         thetas[i] = theta
-        weights[i] = 1 / T_rutherford ** 2
+        weights[i] = prob_rutherford
         energies[i] = T_out
         
         i += 1
@@ -244,14 +257,14 @@ def mc_cached(*args, **kwargs):
     return t, w, e
 
 if __name__ == '__main__':
-    t, w, e = mc_cached(seed=0, N=10000000, theta_eps=5)
+    t, w, e = mc_cached(seed=0, N=100000, theta_eps=5, **target_au5, **coll_5)
     
     fig = plt.figure('mc')
     fig.clf()
     fig.set_tight_layout(True)
     
     ax = fig.add_subplot(111)
-    ax.hist(np.degrees(t), bins=int(np.sqrt(len(t))), weights=w, histtype='step', density=True)
+    ax.hist(np.degrees(t), bins=int(np.sqrt(len(t))), weights=w, histtype='step')
     ax.set_xlabel(r'$\theta$ [°]')
     ax.set_ylabel('densità')
     ax.grid(linestyle=':')

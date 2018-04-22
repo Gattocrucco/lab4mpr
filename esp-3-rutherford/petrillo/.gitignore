@@ -1,4 +1,4 @@
 *.pdf
 *.png
 !figure/*
-mc_cache
+mc_cache*
