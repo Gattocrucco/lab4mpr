@@ -70,7 +70,7 @@ elif len(filenames) == 1:
     ax2 = fig.add_subplot(212)
     ax2.plot(t, ch1, '.', markersize=2)
     ax2.plot(t[noise], ch1[noise], 'rx', label='timestamp')
-    ax2.plot(t[noise_ch2], ch1[noise_ch2], 'kx', label='ch2 > 0')
+    ax2.plot(t[noise_ch2], ch1[noise_ch2], 'k+', label='ch2 > 0')
     ax2.set_xlabel('tempo [s]')
     ax2.set_ylabel('canale ADC')
     ax2.legend(fontsize='small', loc='best')

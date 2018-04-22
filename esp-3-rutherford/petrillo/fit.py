@@ -87,18 +87,36 @@ def load_file(filename, spectrglob):
     ang, scaler, clock = np.loadtxt(filename, unpack=True)
     spectra = []
     count = []
+    time = []
     for i in range(len(ang)):
         print('    angle {:g}'.format(ang[i]))
         spectra.append(load_spectrum(spectrglob, ang[i]))
         count.append(np.sum(spectra[i][1]))
+        time.append(un.ufloat(clock[i], 1) * 1e-3)
         
+        # cross checks
         if count[i] + spectra[i][2] != scaler[i]:
             print('        ADC total {:d} != scaler {:d}'.format(int(count[i] + spectra[i][2]), int(scaler[i])))
         if abs(clock[i] - 1000 * spectra[i][3]) / clock[i] > 0.1:
             print('        clock {:.3f} s - ADC range {:.1f} s > 10 %'.format(clock[i] / 1000, spectra[i][3]))
+        
+        # ad hoc operations
+        if filename == '0320-oro5coll1.txt' and ang[i] == 15:
+            # nearly complete spectrum with one ch2==0
+            count[i] = scaler[i] - 1
+        if filename == '0322-oro0.2coll5.txt' and ang[i] == -70:
+            # partial spectrum
+            count[i] = scaler[i]
+        if filename == '0327-all8coll1.txt' and ang[i] == -15:
+            # partial spectrum, but I prefer to check noises here
+            time[i] = un.ufloat(spectra[i][3], spectra[i][3] / count[i])
+        if filename == '0419-oro5coll5.txt' and ang[i] == 40:
+            # partial spectrum without noises
+            count[i] = scaler[i]
     
     count = np.array(count)
-    rate = unp.uarray(count, np.where(count > 0, np.sqrt(count), 1)) / (unp.uarray(clock, 1) * 1e-3)
+    time = np.array(time)
+    rate = unp.uarray(count, np.where(count > 0, np.sqrt(count), 1)) / time
     
     return rate, spectra
 

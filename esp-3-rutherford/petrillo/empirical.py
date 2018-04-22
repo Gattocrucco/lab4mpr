@@ -27,13 +27,13 @@ if __name__ == '__main__':
 
     ax = fig.add_subplot(111)
     
-    t, w, e = mc.mc_cached(seed=0, N=1000000, **mc.target_al8, **mc.coll_5)
+    t, w, e = mc.mc_cached(seed=0, N=1000000, **mc.target_al8, **mc.coll_1)
     t = np.degrees(t)
     
     counts, edges, unc_counts = lab4.histogram(t, weights=w, bins=int(np.sqrt(len(t))))
 
     theta = edges[:-1] + (edges[1] - edges[0]) / 2
-    cut = (np.abs(theta) >= 20) & (np.abs(theta) <= 84)
+    cut = (np.abs(theta) <= 25) & (np.abs(theta) <= 84)
     theta = theta[cut]
     counts = counts[cut]
     unc_counts = unc_counts[cut]
@@ -43,14 +43,14 @@ if __name__ == '__main__':
 
     # theta = np.linspace(-85, 85, 1000)
     ax.errorbar(theta, counts, yerr=unc_counts, fmt=',', label='mc')
-    if not out.success:
-        ax.semilogy(theta, function(theta, *p0), '-', linewidth=4, label='p0')
-        ax.plot(theta, p0[0] * rutherford(y(theta, p0[1])) * fermi(theta, p0[4], p0[5]), '-', label='fit_rutherford', scaley=False)
-        ax.plot(theta, p0[0] * p0[3] * gauss(theta, p0[1] * p0[2]), '-', label='fit_gauss', scaley=False)
-    else:
-        ax.semilogy(theta, function(theta, *out.par), '-', linewidth=4, label='fit')
-        ax.plot(theta, out.par[0] * rutherford(y(theta, out.par[1])) * fermi(theta, out.par[4], out.par[5]), '-', label='fit_rutherford', scaley=False)
-        ax.plot(theta, out.par[0] * out.par[3] * gauss(theta, out.par[1] * out.par[2]), '-', scaley=False, label='fit_gauss')
+    # if not out.success:
+    #     ax.semilogy(theta, function(theta, *p0), '-', linewidth=4, label='p0')
+    #     ax.plot(theta, p0[0] * rutherford(y(theta, p0[1])) * fermi(theta, p0[4], p0[5]), '-', label='p0_rutherford', scaley=False)
+    #     ax.plot(theta, p0[0] * p0[3] * gauss(theta, p0[1] * p0[2]), '-', label='p0_gauss', scaley=False)
+    # else:
+    ax.semilogy(theta, function(theta, *out.par), '-', linewidth=4, label='fit')
+    ax.plot(theta, out.par[0] * rutherford(y(theta, out.par[1])) * fermi(theta, out.par[4], out.par[5]), '-', label='fit_rutherford', scaley=False)
+    ax.plot(theta, out.par[0] * out.par[3] * gauss(theta, out.par[1] * out.par[2]), '-', scaley=False, label='fit_gauss')
     
     ax.legend(loc=1)
     ax.grid(linestyle=':')
