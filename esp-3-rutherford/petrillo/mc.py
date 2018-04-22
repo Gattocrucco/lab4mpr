@@ -274,10 +274,11 @@ if __name__ == '__main__':
     fig.set_tight_layout(True)
     ax = fig.add_subplot(111)
     
-    for sampler, color in zip([0, 1], ['lightgray', 'black']):
-        t, w, e = mc(seed=0, N=100000, theta_eps=5, sampler=sampler, **target_au5, **coll_5)
+    for target, color in zip([target_au2, target_al8], ['gray', 'black']):
+        t, w, e = mc(seed=0, N=100000, **target, **coll_1, theta_eps=0.1 * target['target_Z'] / Z_al)
+        w *= target['target_Z'] ** 2 * target['target_thickness']
     
-        counts, edges, unc_counts = lab4.histogram(np.degrees(t), bins=int(np.sqrt(len(t))), weights=w, density=True)
+        counts, edges, unc_counts = lab4.histogram(np.degrees(t), bins=int(np.sqrt(len(t))), weights=w)
     
         ax.errorbar(edges[:-1] + (edges[1] - edges[0]) / 2, counts, yerr=unc_counts, fmt='.', color=color)
 
