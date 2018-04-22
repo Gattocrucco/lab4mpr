@@ -1,8 +1,14 @@
 # angolo [°]	conteggio	clock
-# file di spettro: 0412allcoll5ang*.dat
+# file di spettro: 041?allcoll5ang*.dat
 10	2548 109723
 15	719	 911373
 20	182	 2423001
 25	28	 1310148
 -15	150	 1122079
 -25	29	 2129980
+# dati 13 aprile
+-60	18	58755825
+-30	89	13406411
+30	90	8750844
+-20	105	3862554
+# 150	187	224319706

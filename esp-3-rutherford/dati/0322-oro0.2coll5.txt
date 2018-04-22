@@ -1,5 +1,5 @@
 # angolo	conteggi	clock
-# file di spettro: 0322oro0.2umcoll5ang*.dat
+# file di spettro: 032*oro0.2umcoll5ang*.dat
 -25	847	2627843
 # i dati successivi sono del 23 marzo
 70	111	58844530
