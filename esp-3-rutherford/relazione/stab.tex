@@ -1,10 +1,9 @@
-\subsection{Stabilità dell'ADC}
+\subsection{Stabilità dello spettrometro}
 
-Facciamo una misura lunga circa 20 ore con la sorgente a \SI{70}{\degree} senza bersaglio per sapere ogni quanto l'ADC ha bisogno di essere ricalibrata. 
-Abbiamo scelto questo angolo perché l'ADC ha un rate di campionamento massimo di \SI{40}{Hz}. In caso di rate maggiori salva gli eventi nella memoria interna finché non è piena; esaurita questa scrive sul file dei numeri casuali.
-A \SI{70}{\degree} abbiamo un rate di circa \SI{35}{Hz}.
+Facciamo una misura lunga circa 20 ore con la sorgente a \SI{70}{\degree} senza bersaglio per valutare la stabilità in risposta dello spettrometro (ovvero il sistema rivelatore-preampli-ampli-ADC).
+La scelta dell'angolo è forzata dal rate di campionamento massimo (\SI{40}{Hz}) dell'ADC.
 
-Mostriamo in \autoref{stab} i valori campionati dall'ADC in funzione del tempo. Non osserviamo nessuna variazione di energia rispetto ad una misura di breve durata.
+Mostriamo in \autoref{stab} i valori campionati in funzione del tempo. Non osserviamo nessuna variazione di energia rispetto ad una misura di breve durata.
 
 \begin{figure}[h]
 \centering
