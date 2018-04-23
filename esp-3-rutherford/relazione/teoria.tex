@@ -5,7 +5,7 @@ La sorgente emette anche raggi $\gamma$ a \SI{60}{keV} (\SI{36}\%),
 per i quali la lunghezza di attenuazione nel silicio è circa\footnote{PDG 2016 fig. 33.18.}
 $\SI{3}{g\,cm^{-2}} / \SI{2.6}{g\,cm^{-3}} = \SI{1.1}{cm}$.
 Lo spessore del rivelatore è dell'ordine dei \si{\micro m}
-e i fotoni vengono assorbiti con una probabilità circa del \SI{50}\%\footnote{NIST XCOM database \url{https://physics.nist.gov/PhysRefData/Xcom/html/xcom1.html}.},
+e i fotoni vengono assorbiti con una probabilità circa del \SI{50}\%\footnote{NIST XCOM \url{https://physics.nist.gov/PhysRefData/Xcom/html/xcom1.html}.},
 allora la probabilità di assorbimento è circa \SI{1/20000}{\micro m^{-1}}.
 Dalla scheda sappiamo l'area del fotodiodo (\SI{20}{mm^2})
 e la distanza della sorgente dal fotodiodo ad angolo \SI0{\degree} è \SI{6}{cm},
@@ -16,7 +16,8 @@ Bisogna poi vedere se l'energia dei fotoni è sufficiente a superare la soglia d
 
 \subsection{Scattering Rutherford}
 
-La sezione d'urto differenziale in approssimazione non relativistica di una particella di carica $+ze$ ed energia cinetica $T$ su un campo elettrostatico di carica $+Ze$ è\footnote{Wikipedia: Rutherford scattering \url{https://en.wikipedia.org/wiki/Rutherford_scattering}.}\marginpar{non mi sembra il caso di citare qualcosa per questa formula, men che meno wikipedia (Bob)}
+La sezione d'urto differenziale in approssimazione non relativistica di una particella di carica $+ze$ ed energia cinetica $T$ su un campo elettrostatico di carica $+Ze$ è\footnote{Wikipedia: Rutherford scattering \url{https://en.wikipedia.org/wiki/Rutherford_scattering}.}
+%\marginpar{non mi sembra il caso di citare qualcosa per questa formula, men che meno wikipedia (Bob)} % sti...
 \begin{equation}
 	\label{eq:rutherford}
 	\dv\sigma\Omega = \left( \frac {zZ\alpha\hbar c} {2T(1-\cos\theta)} \right)^2.
@@ -83,6 +84,7 @@ Passaggi della simulazione:
 	\item
 	Estraiamo un angolo di uscita dalla sorgente $\theta_S$ con distribuzione uniforme
 	delimitata dalla larghezza del collimatore.
+	L'uniformità è giustificata dalla larghezza del fascio (vedi \autoref{sec:forma}). 
 	\item
 	Estraiamo uniformemente la profondità nel bersaglio $d_R$ a cui faremo avvenire lo scattering Rutherford.
 	\item
@@ -103,9 +105,25 @@ Passaggi della simulazione:
 	Troviamo l'intersezione della traiettoria finale con la circonferenza delle possibili posizioni del rivelatore,
 	da cui calcoliamo l'angolo $\theta$ che è quello che impostiamo nell'esperimento.
 	\item
+	Moltiplichiamo i pesi $w$ per un fattore globale
+	$Z^2 \cdot \max \theta_S \cdot d / N$,
+	dove $d$ è lo spessore del bersaglio
+	e $N$ è il numero di particelle simulate,
+	che in generale è maggiore del numero di campioni finali
+	perché le particelle si possono fermare per perdita di energia.
+	\item
 	Facciamo un istogramma degli eventi simulati nella variabile $\theta$,
 	contando ogni evento non come +1 ma con il suo peso $w$.
-	\marginpar{Aggiungere magari figura di un montecarlo.
-	Senza dati sennò Morello si spaventa.}
-	\marginpar{Aggiungere fattore globale $w$.}
 \end{enumerate}
+I pesi $w$ forniscono la corretta normalizzazione per il rate a grande angolo.
+Il rate a piccolo angolo è in pratica impostato dal parametro regolarizzatore $\epsilon$.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=30em]{immagini/mc}
+	\caption{\label{fig:mc}
+	Simulazione per le varie configurazioni elemento-spessore-collimatore.
+	Per ogni configurazione sono state simulate \num{1000000} particelle rivelate,
+	con $\epsilon=\SI{1}{\degree}$,
+	e istogrammate in 250 bin in $\theta$.}
+\end{figure}

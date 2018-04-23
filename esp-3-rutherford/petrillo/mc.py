@@ -22,7 +22,7 @@ rho_al = 2.699 # g/cm^3
 Z_au = 79
 Z_al = 13
 
-A_au = 200
+A_au = 197
 A_al = 27
 
 @numba.jit(nopython=True, cache=True)
@@ -278,21 +278,35 @@ def mc_cached(*args, **kwargs):
     return t, w, e
 
 if __name__ == '__main__':
-    fig = plt.figure('mc')
+    fig = plt.figure('mc', figsize=[5.32, 3.58])
     fig.clf()
     fig.set_tight_layout(True)
     ax = fig.add_subplot(111)
     
-    for target, coll, color in zip([target_au5, target_au5], [coll_1, coll_5], ['gray', 'black']):
-        t, w, e = mc_cached(seed=0, N=1000000, **target, **coll, theta_eps=0.2)
+    roba = [
+        ['al', '8', '1', 'gray'  ], 
+        ['al', '8', '5', 'black' ], 
+        ['au', '3', '1', 'orange'], 
+        ['au', '3', '5', 'red'   ], 
+        ['au', '5', '1', 'green' ], 
+        ['au', '5', '5', 'blue'  ], 
+    ]
     
-        counts, edges, unc_counts = lab4.histogram(np.degrees(t), bins=int(np.sqrt(len(t))), weights=w)
+    for nucl_lbl, thick_lbl, coll_lbl, color in roba[::-1]:
+        target = eval('target_{}{}'.format(nucl_lbl, thick_lbl))
+        coll = eval('coll_{}'.format(coll_lbl))
+        label = '{}{} coll{}'.format(nucl_lbl, thick_lbl, coll_lbl)
+        
+        t, w, e = mc_cached(seed=0, N=1000000, **target, **coll, theta_eps=1)
     
-        ax.errorbar(edges[:-1] + (edges[1] - edges[0]) / 2, counts, yerr=unc_counts, fmt=',', color=color)
+        counts, edges, unc_counts = lab4.histogram(np.degrees(t), bins=250, weights=w)
+    
+        ax.errorbar(edges[:-1] + (edges[1] - edges[0]) / 2, counts, yerr=unc_counts, fmt=',', color=color, label=label)
 
     ax.set_yscale('log')
     ax.set_xlabel(r'$\theta$ [°]')
-    ax.set_ylabel('densità')
+    ax.set_ylabel('rate [unità arbitraria]')
+    ax.legend(loc='best', fontsize='small')
     ax.grid(linestyle=':')
     
     fig.show()
