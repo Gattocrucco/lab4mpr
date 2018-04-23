@@ -1,0 +1,24 @@
+\subsection{Rumore}
+
+Verifichiamo che il circuito può venire triggerato da scariche elettriche nei dintorni.
+Ciò avviene sistematicamente azionando interruttori in potenza
+(cioè non interruttori elettronici come ad esempio dei computer)
+o collegando spine vicino all'apparato,
+a distanza maggiore (ad esempio l'interruttore della luce) più di rado.
+Inoltre viene triggerato accendendo i neon,
+questo effetto però è ottico perché coprendo la camera con un panno nero l'effetto si annulla.
+
+Confrontando gli eventi salvati dall'ADC con il contatore
+e provocando intenzionalmente rumori, osserviamo che:
+\begin{itemize}
+	\item
+	Ci sono rumori ``intensi'' che producono più di un conteggio
+	e spesso il contatore segnala più eventi di quelli salvati dall'ADC, mai di meno.
+	I conteggi multipli hanno lo stesso timestamp.
+	\item
+	Quasi sempre (sicuramente più del \SI{99.9}\percent delle volte)
+	il canale 2 dell'ADC, che non usiamo ma che viene letto, segna 0.
+	Le letture diverse da zero sono correlate, ma non totalmente, con i rumori intensi.
+	\item
+	Le 
+\end{itemize}

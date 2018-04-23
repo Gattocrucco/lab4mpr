@@ -13,8 +13,15 @@ In questo grafico è presente soltanto un punto ogni 100 perché la rappresentaz
 \label{stab}
 \end{figure}
 
-Guardando l'istogramma di questi dati ci siamo accorti che l'ADC presenta degli accumuli nei canali corrispondenti alle varie potenze di 2. Questo accade quando in un numero binario vengono cambiate più cifre alla volta, cosa che si verifica quando si raggiungono le varie potenze di 2. L'ADC impiega più tempo a cambiare valore e la misura successiva rimane nel bin precedente.
-Per aggirare questo problema ribinniamo i dati usando dei bin che abbiano come bordi (0,32]+32n, dove n è un intero. Mostriamo questo effetto in \autoref{picchi} insieme alla sua ``correzione''.
+\paragraph{Missing codes}
+
+Guardando l'istogramma dei dati per la stabilità (\autoref{picchi})
+ci siamo accorti che l'ADC presenta degli accumuli nei canali del tipo $2^{k} - 1$ con $k\in\{1,\dots,5\}$,
+dove l'accumulo è maggiore all'aumentare di $k$.
+L'ADC probabilmente confronta l'input con una rampa crescente,
+quando si raggiungono le varie potenze di 2 deve cambiare più cifre da 1 a 0,
+impiega più tempo a cambiare valore e la lettura va nel canale precedente a quello giusto.
+Per aggirare questo problema ribinniamo i dati usando i bin del tipo $(0,32]+32n$ con $n$ intero.
 
 \begin{figure}[h]
 \centering
