@@ -23,7 +23,7 @@ oro5=[
 '0419-oro5coll5.txt'
 ]
 
-varname = 'oro5'   # immettere il nome del materiale
+varname = 'alluminio'   # immettere il nome del materiale
 files = eval(varname)  
 
 print("\n______________ %s ___________\n"%varname.upper())
@@ -118,7 +118,7 @@ def fitfun(teta,A,tc):
         return np.arctan(np.tan(tetax)-a/(l*np.cos(tetax))) - np.arctan(a/d)
     
     def integrando(a,A,tc,tetax):
-        return A/( np.sin( (f(a,tetax)-tc)/2 ))**4
+        return A/( np.sin( (f(a,tetax-tc))/2 ))**4
     amax=2.5
     amin=-2.5
     
@@ -169,15 +169,15 @@ rr/=rappo
 lab4.errorbar(w-np.degrees(fit2.par[1]),rr,fmt='.g',capsize=2,label='collimatore da 5$\!$ mm scalato')
 '''
 z1=np.linspace(min(nom(w))-10,max(nom(w)),1000)
-ax1.plot(z1,semplice(np.radians(z1),*fit1.par),color='black',scaley=False,label='fit collimatore 1$\!$ mm')
+ax1.plot(z1,semplice(np.radians(z1),*fit1.par),color='black',linewidth=0.5,scaley=False,label='fit collimatore 1$\!$ mm')
 
 
 if len(atot)>1:    
     z2=np.linspace(min(nom(w)),-10,1000)
     z3=np.linspace(10,max(nom(w)),1000)
     
-    ax1.plot(z2,fitfun(np.radians(z2),*fit2.par),color='gray',linestyle='--',scaley=False,label='fit collimatore 5$\!$ mm')
-    ax1.plot(z3,fitfun(np.radians(z3),*fit2.par),color='gray',linestyle='--',scaley=False)
+    ax1.plot(z2,fitfun(np.radians(z2),*fit2.par),color='gray',linewidth=0.5,linestyle='--',scaley=False,label='fit collimatore 5$\!$ mm')
+    ax1.plot(z3,fitfun(np.radians(z3),*fit2.par),color='gray',linewidth=0.5,linestyle='--',scaley=False)
 
 
 
