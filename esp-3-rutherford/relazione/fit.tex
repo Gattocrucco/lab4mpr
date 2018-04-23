@@ -1,16 +1,29 @@
-\subsection{Fit}
+\subsubsection{Fit}
 
-Misuriamo il rate di eventi al variare dell'angolo con i seguenti materiali:
-\begin{itemize}
-\item oro \SI{3}{\micro m}
-\item oro \SI5{\micro m}
-\item alluminio \SI8{\micro m}.
-\end{itemize}
+Eseguiamo il fit ai minimi quadrati del rate in funzione dell'angolo,
+assegnando l'incertezza poissoniana ai rate e \SI{\pm1}{\degree} agli angoli.
+Nel caso di collimatore da \SI1{mm} usiamo una funzione proporzionale alla \eqref{eq:rutherford}:
+\begin{equation}
+	\label{eq:fit1}
+	R_1(\theta;B,\theta_0) = \frac {B} {(1-\cos(\theta-\theta_0))^2}.
+\end{equation}
+Per il collimatore da \SI5{mm} mediamo la \eqref{eq:fit1}
+supponendo che il fascio incidente abbia una distribuzione uniforme sul collimatore:
+\begin{align*}
+	R_5(\theta;B,\theta_0)
+	&= \int_{-\ell/2}^{\ell/2} \frac{\de a}{\ell}
+	\frac B {(1-\cos(\theta_R(a, \theta-\theta_0)))^2}, \\
+	\theta_R(a, \theta)
+	&= \tan^{-1} \left( \tan(\theta) - \frac a {L\cos\theta} \right) - \tan^{-1}\frac aD,
+\end{align*}
+dove $\theta_R$ è l'angolo di cui effettivamente viene deviata la traiettoria attraversando il bersaglio,
+$L$ e $D$ sono definite in \autoref{sec:forma}, $\ell$ è la larghezza del collimatore.
 
+% \begin{figure}
+% 	\includegraphics
+% \end{figure}
 
-
-
-\subsubsection{Z dell'alluminio}
+\subsubsection{Rapporto delle cariche nucleari}
 
 Comparando i parametri di ampiezza dei fit con l'oro con quello eseguito sull'alluminio, possiamo estrarre lo Z di quest'ultimo. Le ampiezze di fit hanno la forma $$ B=\mathcal{L} \left( \frac {zZ\alpha\hbar c} {2T} \right)^2 = \mathcal{L} A . $$
 La nostra luminosità vale $\mathcal{L}=r n_2 l$, in cui $r$ è il rate di particelle incidenti, $n$  è la densità di bersagli e $l$ è lo spessore della targhetta.

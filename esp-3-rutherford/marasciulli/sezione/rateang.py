@@ -28,10 +28,12 @@ files = eval(varname)
 
 print("\n______________ %s ___________\n"%varname.upper())
 
-fig = plt.figure()
+sizes = dict(oro5=[4.72, 3.33], oro0_2=[6.64, 3.33], alluminio=[4.33, 3.33])
+fig = plt.figure(varname, figsize=sizes[varname])
 fig.clf()
 fig.set_tight_layout(True)
-plt.title("%s"%varname)
+titles = dict(oro5='Oro 5$\,\mu$m', oro0_2='Oro 3$\,\mu$m', alluminio='Alluminio 8$\,\mu$m')
+plt.title(titles[varname])
 ax1 = fig.add_subplot(111)
 
 atot=[] # set di angoli
