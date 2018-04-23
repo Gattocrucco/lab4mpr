@@ -23,7 +23,8 @@ supponendo che il fascio incidente abbia una distribuzione uniforme sul collimat
 \end{align*}
 dove $a$ è la coordinata sul collimatore, $\theta_R$ è l'angolo di cui effettivamente viene deviata la traiettoria attraversando il bersaglio,
 $L$ e $D$ sono definite in \autoref{sec:forma}, $\ell$ è la larghezza del collimatore.
-I dati con sovraimposte le curve di fit sono riportati in \autoref{fig:fit}.
+I dati con sovraimposte le curve di fit sono riportati in \autoref{fig:fit},
+i risultati sono riportati in \autoref{tab:fit}.
 
 \begin{figure}
 	\hspace{-0.2\textwidth}
@@ -34,6 +35,23 @@ I dati con sovraimposte le curve di fit sono riportati in \autoref{fig:fit}.
 	\caption{\label{fig:fit}
 	cippa}
 \end{figure}
+
+\begin{table}
+	\centering
+	\begin{tabular}{cccrr}
+		Bersaglio & $B$ [\si{s^{-1}}] & $\theta_0$ [\si\degree] & corr. & $\chi^2$/dof \\
+		\hline
+		\texttt{al8coll1} & \num{5.7(11)e-6 } & \num{1.5 \pm 0.5  } & \SI{41.5} \% & 3.1 / 4  \\
+		\texttt{al8coll5} & \num{2.19(19)e-5} & \num{1.2 \pm 0.4  } & \SI{8.8 }\%  & 10.7 / 8 \\
+		\texttt{au3coll1} & \num{1.22(10)e-4} & \num{3.02 \pm 0.35} & \SI{9.1 }\%  & 3.8 / 7  \\
+		\texttt{au3coll5} & \num{5.26(22)e-4} & \num{1.1 \pm 0.4  } & \SI{5.8 }\%  & 11.1 / 9 \\
+		\texttt{au5coll1} & \num{1.21(11)e-4} & \num{2.2 \pm 0.4  } & \SI{-1.4} \% & 7.9 / 4  \\
+		\texttt{au5coll5} & \num{6.8(3)e-4  } & \num{-0.5 \pm 0.4 } & \SI{-6.2} \% & 80.5 / 7
+	\end{tabular}
+	\caption{\label{tab:fit}
+	Risultati del fit. Il bersaglio è indicato come
+	\texttt{<elemento><spessore [\si{\micro m}]>coll<collimatore [\si{mm}]>}.}
+\end{table}
 
 \subsubsection{Rapporto delle cariche nucleari}
 
