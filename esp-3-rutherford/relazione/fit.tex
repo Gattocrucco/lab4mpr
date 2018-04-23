@@ -12,11 +12,26 @@ Misuriamo il rate di eventi al variare dell'angolo con i seguenti materiali:
 
 \subsubsection{Z dell'alluminio}
 
-Comparando i parametri di ampiezza dei fit con l'oro con quello eseguito sull'alluminio, possiamo estrarre lo Z di quest'ultimo. Le ampiezze di fit hanno la forma $$ B=\mathcal{L} \left( \frac {zZ\alpha\hbar c} {2T} \right)^2 = A \mathcal{L} $$.
+Comparando i parametri di ampiezza dei fit con l'oro con quello eseguito sull'alluminio, possiamo estrarre lo Z di quest'ultimo. Le ampiezze di fit hanno la forma $$ B=\mathcal{L} \left( \frac {zZ\alpha\hbar c} {2T} \right)^2 = \mathcal{L} A . $$
 La nostra luminosità vale $\mathcal{L}=n_1 n_2 l$, in cui $n_1$ è il rate di particelle incidenti, $n_2$  è la densità di bersagli e $l$ è lo spessore della targhetta.
 Nel nostro caso $n_1$ è uguale per tutte le misure con lo stesso collimatore.   \marginpar{c'è bisogno di precisare perché?}
 Da queste considerazioni possiamo trarre lo Z dell'alluminio dalla relazione \eqref{zeta} usando i parametri di fit per i dati con lo stesso collimatore.
+
 \begin{equation}
 Z_{\text{al}}=Z_{\text{au}} \sqrt{ \frac{B_{\text{al}}}{B_{\text{au}}} \frac{n_{\text{au}} l_{\text{au}}}{n_{\text{al}} l_{\text{al}}} }
 \label{zeta}
 \end{equation}
+
+Otteniamo i seguenti risultati:
+
+\begin{align*}
+\text{Oro } \SI3{\micro m}&:\\
+\text{collimatore } \SI1{mm}&: Z_{\text{al}}=\num{10.4(4)} \\
+\text{collimatore } \SI5{mm}&: Z_{\text{al}}=\num{9.2(4)}. \\
+\text{Oro } \SI5{\micro m}&:\\
+\text{collimatore } \SI1{mm}&: Z_{\text{al}}=\num{13.5(6)} \\
+\text{collimatore } \SI5{mm}&: Z_{\text{al}}=\num{70(2)}. \\
+\end{align*}
+
+Soltanto una misura è compatibile con lo $Z$ dell'alluminio atteso. Gli altri risultati sono influenzati dallo scattering multiplo all'interno dell'oro, fenomeno praticamente assente nell'alluminio.
+L'ultimo risultato è molto lontano dal valore atteso perché lo scattering multiplo influisce pesantemente su una lamina d'oro così spessa e il fatto che il collimatore da \SI5{mm} selezioni più angoli rispetto a quello da \SI1{mm} non fa che peggiorare la situazione.
