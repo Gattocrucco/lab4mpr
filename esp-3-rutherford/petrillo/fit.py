@@ -3,14 +3,16 @@ import glob
 import lab4
 from uncertainties import unumpy as unp
 import uncertainties as un
+from matplotlib import pyplot as plt
+import mc
 
 files = [
-    ['0320-oro5coll1.txt', '0320oro5um{}.dat'],
-    ['0322-oro0.2coll1.txt', '0322oro0.2um{}.dat'],
-    ['0322-oro0.2coll5.txt', '032?oro0.2umcoll5ang{}.dat'],
-    ['0327-all8coll1.txt', '0???allcoll1ang{}.dat'],
-    ['0412-all8coll5.txt', '041?allcoll5ang{}.dat'],
-    ['0419-oro5coll5.txt', '04??oro5umcoll5ang{}.dat']
+    ['0320-oro5coll1.txt',   '0320oro5um{}.dat'          , '1', 'au', '5'],
+    ['0419-oro5coll5.txt',   '04??oro5umcoll5ang{}.dat'  , '5', 'au', '5'],
+    ['0322-oro0.2coll1.txt', '0322oro0.2um{}.dat'        , '1', 'au', '3'],
+    ['0322-oro0.2coll5.txt', '032?oro0.2umcoll5ang{}.dat', '5', 'au', '3'],
+    ['0327-all8coll1.txt',   '0???allcoll1ang{}.dat'     , '1', 'al', '8'],
+    ['0412-all8coll5.txt',   '041?allcoll5ang{}.dat'     , '5', 'al', '8']
 ]
 
 def unroll_time(t):
@@ -117,9 +119,51 @@ def load_file(filename, spectrglob):
     count = np.array(count)
     time = np.array(time)
     rate = unp.uarray(count, np.where(count > 0, np.sqrt(count), 1)) / time
+    ang = unp.uarray(ang, 1)
     
-    return rate, spectra
+    return ang, rate, spectra
 
-for file_data in files:
-    load_file('../dati/' + file_data[0], file_data[1])
+figs = []
+
+for i in range(len(files)):
+    # load data
+    file_data = files[i]
+    filename = file_data[0]
+    spectrglob = file_data[1]
+    coll_label = file_data[2]
+    nucl_label = file_data[3]
+    thick_label = file_data[4]
+    ang, rate, spectra = load_file('../dati/' + filename, spectrglob)
+    
+    # create figure
+    if i % 2 == 0:
+        fig = plt.figure('fit-{}{}'.format(nucl_label, thick_label))
+        fig.clf()
+        fig.set_tight_layout(True)
+        figs.append(fig)
+        ax = fig.add_subplot(111)
+    
+    # plot data
+    label = nucl_label + thick_label + ' coll' + coll_label
+    lab4.errorbar(ang, rate, ax=ax, fmt=',', label=label)
+    
+    # mc
+    target = eval('mc.target_{}{}'.format(nucl_label, thick_label))
+    coll = eval('mc.coll_{}'.format(coll_label))
+    t, w, e = mc.mc_cached(seed=0, N=1000000, **target, **coll, theta_eps=1)
+    t = np.degrees(t)
+    w /= 100
+    counts, edges, unc_counts = lab4.histogram(t, bins=int(np.sqrt(len(t))), weights=w)
+    ax.errorbar(edges[:-1] + (edges[1] - edges[0]) / 2, counts, yerr=unc_counts, fmt=',', zorder=-1, label='mc {}'.format(label))
+    
+    # figure decoration
+    if i % 2 == 1:
+        ax.set_ylabel('rate [s$^{-1}$]')
+        ax.set_xlabel('angolo [°]')
+        ax.set_yscale('log')
+        ax.legend(loc='upper right', fontsize='small')
+        ax.grid(linestyle=':')
+
+for fig in figs:
+    fig.show()
     

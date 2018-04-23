@@ -2,7 +2,7 @@
 from pylab import *
 import lab4
 
-t,val=loadtxt('../dati/stabi.txt',unpack=True,usecols=(0,1))
+t,val=loadtxt('../de0_data/0420prova_all50.dat',unpack=True,usecols=(0,1))
 
 figure().set_tight_layout(True)
 rc('font',size=16)

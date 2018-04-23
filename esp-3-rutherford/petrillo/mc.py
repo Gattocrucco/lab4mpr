@@ -225,7 +225,7 @@ def mc(seed=-1, N=1000, amax=2.5, L=28.5, D=31.0, target_thickness=5.0, T=5.46, 
         i += 1
     
     weights *= target_Z ** 2 * theta_source_max * target_thickness / count
-               
+
     return thetas, weights, energies
 
 def mc_cached(*args, **kwargs):

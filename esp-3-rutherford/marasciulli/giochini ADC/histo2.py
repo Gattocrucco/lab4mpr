@@ -6,7 +6,7 @@ import sys
 import lab4
 
 # legge i files da linea di comando
-filenames = '0420oro5um_finale.dat'
+filenames = '0420prova_all50.dat'
 
 fig = plt.figure()
 fig.clf()
@@ -49,8 +49,9 @@ ax1 = fig.add_subplot(111)
 #edges = np.arange(2 ** 12 + 1)[::2 ** (12 - nbinspow)] - 0.5
 
 # taglietti
-
-pezzo1=(2389.2,2407.8)
+'''
+# vanno bene per l'oro
+pezzo1=(2389.2,2407.8) 
 pezzo2=(2407.9,2426)
 pezzo3=(2426.1,2474.3)
 pezzo4=(2474.4,2525.9)
@@ -58,10 +59,24 @@ pezzo5=(2526,2553.4)
 
 guad50=pezzo1+pezzo5
 guad100=pezzo2+pezzo4
+guad200=pezzo3
+'''
 
-settore=eval("guad50")
+# vanno bene per l'alluminio
+sett1=(1976.7,1994.6)
+sett2=(1994.7,2037.2)
+sett3=(2037.3,2063.6)
+sett4=(2063.7,2099.8)
+sett5=(2099.9,2117.8)
 
-cond=((t>settore[0]) & (t<settore[1])) | ((t>settore[2]) & (t<settore[3]))
+guad25=sett4
+guad50=sett1+sett3+sett5
+guad100=sett2
+
+
+settore=eval("guad25")
+
+cond=logical_and(t<settore[1] ,t>settore[0])
 ch11=ch1[cond]
 t1=t[cond]
 
@@ -71,24 +86,25 @@ ax1.set_ylabel('conteggio')
 ax1.set_xlabel('canale ADC')
 
 k=np.arange(64)*2
+ax1.hist(ch11+0.5, bins=k*32+1,histtype='step',label="guadagno 25")
+
+
+settore=eval("guad50")
+
+cond=((t>settore[0]) & (t<settore[1])) | ((t>settore[2]) & (t<settore[3])) | ((t>settore[4]) & (t<settore[5]))
+ch11=ch1[cond]
+t1=t[cond]
+
 ax1.hist(ch11+0.5, bins=k*32+1,histtype='step',label="guadagno 50")
-
-
-settore=eval("pezzo3")
-
-ch11=ch1[np.logical_and(t>settore[0] , t<settore[1])]
-t1=t[np.logical_and(t>settore[0] , t<settore[1])]
-
-ax1.hist(ch11+0.5, bins=k*32+1,histtype='step',label="guadagno 200")
 
 
 settore=eval("guad100")
 
-cond=((t>settore[0]) & (t<settore[1])) | ((t>settore[2]) & (t<settore[3]))
+cond= (t<settore[1]) & (t>settore[0])
 ch11=ch1[cond]
 t1=t[cond]
 
 ax1.hist(ch11+0.5, bins=k*32+1,histtype='step',label="guadagno 100")
 
-ax1.legend(loc=0,fontsize='xx-large')
+ax1.legend(loc=0,fontsize='x-small')
 fig.show()
