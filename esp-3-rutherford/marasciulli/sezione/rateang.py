@@ -23,7 +23,7 @@ oro5=[
 '0419-oro5coll5.txt'
 ]
 
-varname = 'alluminio'   # immettere il nome del materiale
+varname = 'oro5'   # immettere il nome del materiale
 files = eval(varname)  
 
 print("\n______________ %s ___________\n"%varname.upper())
@@ -111,6 +111,9 @@ if len(y5)>0:
 
 # fit
 
+def y(x, xmin):
+    return x + np.sign(x) * xmin * np.exp(-np.abs(x) / xmin)
+
 def fitfun(teta,A,tc):
     "Rutherford con pdf per il collimatore da 5 mm"
     def f(a, tetax):
@@ -120,7 +123,7 @@ def fitfun(teta,A,tc):
         return np.arctan(np.tan(tetax)-a/(l*np.cos(tetax))) - np.arctan(a/d)
     
     def integrando(a,A,tc,tetax):
-        return A/( np.sin( (f(a,tetax-tc))/2 ))**4
+        return A/( np.sin( y(f(a,tetax-tc), np.radians(0.2))/2 ))**4
     amax=2.5
     amin=-2.5
     
@@ -130,7 +133,7 @@ def fitfun(teta,A,tc):
     return integrali
 
 def semplice(teta,A,tc):
-    return A/( np.sin( (teta-tc)/2 ) )**4
+    return A/( np.sin( y(teta-tc, np.radians(0.2))/2 ) )**4
 
 # fit1 e fit5 prendono il nome dai collimatori
 val1=[1e-3,np.radians(3)]

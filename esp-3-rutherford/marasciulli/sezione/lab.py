@@ -278,7 +278,7 @@ class FitCurveOutput:
             Anone = np.array([a is None for a in A], dtype=bool)
             if npar is None and not all(Anone):
                 npar = -len(A[~Anone][0])
-            else:
+            elif npar is None:
                 raise ValueError("You should specify npar")
         
         if not (px is None):
