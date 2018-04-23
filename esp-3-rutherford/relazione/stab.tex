@@ -1,6 +1,6 @@
-\subsection{Stabilità dello spettrometro}
+\subsection{Risposta dello spettrometro}
 
-Facciamo una misura lunga circa 20 ore con la sorgente a \SI{70}{\degree} senza bersaglio per valutare la stabilità in risposta dello spettrometro (ovvero il sistema rivelatore-preampli-ampli-ADC).
+\paragraph{Stabilità} Facciamo una misura lunga circa 20 ore con la sorgente a \SI{70}{\degree} senza bersaglio per valutare la stabilità in risposta dello spettrometro (ovvero il sistema rivelatore-preampli-ampli-ADC).
 La scelta dell'angolo è forzata dal rate di campionamento massimo (\SI{40}{Hz}) dell'ADC.
 
 Mostriamo in \autoref{stab} i valori campionati in funzione del tempo. Non osserviamo nessuna variazione di energia rispetto ad una misura di breve durata.
@@ -21,4 +21,13 @@ Per aggirare questo problema ribinniamo i dati usando dei bin che abbiano come b
 \includegraphics[width=30 em]{immagini/rebin}
 \caption{Istogramma di una parte dei dati della misura di stabilità in cui si vedono gli accumuli a cui è soggetta l'ADC e la nostra soluzione.}
 \label{picchi}
+\end{figure}
+
+\paragraph{Comportamenti inattesi} Abbiamo verificato che la risposta dello spettrometro dipendesse come atteso dal guadagno dell'amplificatore e abbiamo notato un comportamento inatteso dell'apparato. Variando il guadagno dell'amplificatore agendo sulla manopola principale osserviamo gli spettri riportati in \autoref{fig:guadagno}: la forma dello spettro varia non varia con un semplice fattore moltiplicativo: la larghezza del picco è circa uguale per un guadagno di 25 e 100 e la posizione del picco non è quella attesa. Questa dipendenza inattesa della forma dello spettro da questo parametro non ci permette di trovare un modello fisico per la stessa.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=30 em]{immagini/all8}
+	\caption{Risposta dello spettrometro al variare del guadagno dell'amplificatore. Gli spettri non variano come atteso.}
+	\label{fig:guadagno}
 \end{figure}
