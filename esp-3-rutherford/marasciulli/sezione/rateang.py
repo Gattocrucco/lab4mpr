@@ -8,11 +8,11 @@ from uncertainties.unumpy import std_devs as err
 from scipy.special import chdtrc
 from uncertainties import ufloat as uf
 from scipy.integrate import quad
+import mc
 
 alluminio=[
 '0327-all8coll1.txt',
-'0412-all8coll5.txt',
-'0413-all8coll5.txt']
+'0412-all8coll5.txt',]
 
 oro0_2=[
 '0322-oro0.2coll1.txt',
@@ -28,11 +28,10 @@ files = eval(varname)
 
 print("\n______________ %s ___________\n"%varname.upper())
 
-fig = plt.figure('rateang')
+fig = plt.figure()
 fig.clf()
 fig.set_tight_layout(True)
-plt.rc('font',size=16)
-plt.title("%s"%varname,size=18)
+plt.title("%s"%varname)
 ax1 = fig.add_subplot(111)
 
 atot=[] # set di angoli
@@ -63,13 +62,21 @@ for file in files:
     rtot.append(rate)
 
     if 'coll1' in file:
-        a='blue'
+        a='black'; nome='1$\!$ mm'
     else:
-        a='red'
+        a='gray'; nome='5$\!$ mm'
+        
+    lab4.errorbar(angoli,rate,xerr=1,yerr=unp.sqrt(conteggi)/tempi,linestyle='',color=a,marker='',capsize=0,label='dati collimatore '+nome)
 
 # selezioni
 
-fuori=[-6,50] # estremi inclusi
+# alluminio [0,0]
+# oro3 [-5,6]
+# oro5 [-10,15]
+tagli = dict(oro5=[-10,15], oro0_2= [-5,6],alluminio= [0,0])
+fuori=tagli[varname] # estremi inclusi
+vecchio_atot=atot.copy()
+vecchio_rtot=rtot.copy()
 
 # selezione per il coll1
 y1=[]
@@ -79,6 +86,10 @@ for l in range(len(atot[0])):
 atot[0]=np.delete(atot[0],y1)
 rtot[0]=np.delete(rtot[0],y1)
 
+mrk=10
+if len(y1)>0:
+    ax1.plot(nom(vecchio_atot[0][y1]),nom(vecchio_rtot[0][y1]),'xk',label='punti esclusi dal fit',markersize=mrk)
+
 # selezione per il coll5
 if len(atot)>1:
     w=np.concatenate((atot[1:]))
@@ -86,10 +97,15 @@ if len(atot)>1:
     
     y5=[]
     for k in range(len(w)):
-        if fuori[0]<w[k]<fuori[1] or nom(w[k])==150.0:
+        if fuori[0]<w[k]<fuori[1] or abs(nom(w[k]))>60:
             y5.append(k)
     w=np.delete(w,y5)
     rr=np.delete(rr,y5)
+if len(y5)>0:
+    if len(y1)>0:
+        ax1.plot(nom(vecchio_atot[1][y5]),nom(vecchio_rtot[1][y5]),'xk',markersize=mrk)
+    else:
+        ax1.plot(nom(vecchio_atot[1][y5]),nom(vecchio_rtot[1][y5]),'xk',label='punti esclusi dal fit',markersize=mrk)
 
 # fit
 
@@ -140,43 +156,34 @@ ax1.set_xlabel('angolo [°]')
 ax1.set_ylabel('rate [s$^{-1}$]')
 ax1.grid(linestyle=':')
 
+ax1.set_yscale('log')
 
-lab4.errorbar(atot[0],rtot[0],fmt='.b',capsize=2,label='collimatore da 1$\!$ mm')
-lab4.errorbar(w,rr,fmt='.r',capsize=2,label='collimatore da 5$\!$ mm')
+# monte di carlo
+#theta,pesi,energia=mc.mc_cached(seed=0, N=10000000, theta_eps=1,**mc.target_au5,**mc.coll_1)
+#pesi/=4e7
+#ax1.hist(np.degrees(theta), bins=int(np.sqrt(len(theta))), weights=pesi, histtype='step', density=False)
+
 '''
 rappo=fit2.par[0]/fit1.par[0] * (np.sin( (np.radians(nom(w))-fit1.par[1])/2 ))**4 / (np.sin( (np.radians(nom(w))-fit2.par[1])/2 ))**4
 rr/=rappo
 lab4.errorbar(w-np.degrees(fit2.par[1]),rr,fmt='.g',capsize=2,label='collimatore da 5$\!$ mm scalato')
 '''
 z1=np.linspace(min(nom(w))-10,max(nom(w)),1000)
-ax1.plot(z1,semplice(np.radians(z1),*fit1.par),'b',scaley=False)
+ax1.plot(z1,semplice(np.radians(z1),*fit1.par),color='black',scaley=False,label='fit collimatore 1$\!$ mm')
 
 
 if len(atot)>1:    
     z2=np.linspace(min(nom(w)),-10,1000)
-    z3=np.linspace(15,max(nom(w)),1000)
+    z3=np.linspace(10,max(nom(w)),1000)
     
-    ax1.plot(z2,fitfun(np.radians(z2),*fit2.par),'r',scaley=False)
-    ax1.plot(z3,fitfun(np.radians(z3),*fit2.par),'r',scaley=False)
+    ax1.plot(z2,fitfun(np.radians(z2),*fit2.par),color='gray',linestyle='--',scaley=False,label='fit collimatore 5$\!$ mm')
+    ax1.plot(z3,fitfun(np.radians(z3),*fit2.par),color='gray',linestyle='--',scaley=False)
 
 
 
-plt.legend(fontsize='x-small')
+plt.legend(fontsize='small')
 fig.show()
 
 print("_______________%s_____________\n"%varname.upper())
 
-
-
-'''
-# scrviere i rate sul file
-f=open('%s.txt'%varname,'w')
-print("# dati %s"%varname,file=f)
-print("# angolo[°]\trate[Hz]\terrore rate",file=f)
-
-for i in range(len(atot)):
-    for j in range(len(atot[i])):
-        print("%d\t\t%f\t%f"%(nom(atot[i][j]),nom(rtot[i][j]),err(rtot[i][j])),file=f)
-        
-f.close()
-'''
+print("Rapporto collimatori=",fit2.upar[0]/fit1.upar[0])
