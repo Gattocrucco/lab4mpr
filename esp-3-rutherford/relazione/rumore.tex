@@ -3,12 +3,12 @@
 Verifichiamo che il circuito può venire triggerato da scariche elettriche nei dintorni.
 Ciò avviene sistematicamente azionando interruttori in potenza
 (cioè non interruttori elettronici come ad esempio dei computer)
-o collegando spine vicino all'apparato,
-a distanza maggiore (ad esempio l'interruttore della luce) più di rado.
+o collegando spine vicino all'apparato;
+a distanza maggiore (ad esempio l'interruttore della luce) avviene più di rado.
 Inoltre viene triggerato accendendo i neon,
 questo effetto però è ottico perché coprendo la camera con un panno nero l'effetto si annulla.
 
-Confrontando gli eventi salvati dall'ADC con il contatore
+Confrontando gli eventi salvati dall'ADC con il conteggio del contatore
 e provocando intenzionalmente rumori, osserviamo che:
 \begin{itemize}
 	\item
@@ -16,9 +16,25 @@ e provocando intenzionalmente rumori, osserviamo che:
 	e spesso il contatore segnala più eventi di quelli salvati dall'ADC, mai di meno.
 	I conteggi multipli hanno lo stesso timestamp.
 	\item
-	Quasi sempre (sicuramente più del \SI{99.9}\percent delle volte)
+	Quasi sempre (sicuramente più del \SI{99.9}{\percent} delle volte)
 	il canale 2 dell'ADC, che non usiamo ma che viene letto, segna 0.
 	Le letture diverse da zero sono correlate, ma non totalmente, con i rumori intensi.
 	\item
-	Le 
+	Negli spettri si nota un accumulo vicino a zero anche per spettri lontani dallo zero.
+	Poiché il rate di zeri cresce con il rate di segnale, è slegato da quello di rumore
+	e non ha coincidenza di timestamp a meno di rate alto rispetto alla risoluzione temporale,
+	riteniamo che sia un errore di lettura di qualche tipo piuttosto che un rumore.
+\end{itemize}
+I rumori sono significativi nelle misure a basso rate.
+Limitiamo i problemi in questo modo:
+\begin{itemize}
+	\item
+	Anziché usare il conteggio del contatore usiamo il numero di eventi dell'ADC
+	eliminando quelli che hanno canale 2 non nullo e,
+	per rate minore di \SI1{min^{-1}},
+	gruppi di eventi con lo stesso timestamp.
+	\item
+	Teniamo la camera coperta con un panno nero.
+	\item
+	Badiamo a non attaccare spine o azionare interruttori.
 \end{itemize}
