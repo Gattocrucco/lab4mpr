@@ -47,12 +47,12 @@ def evt(var,filearray):
     spettri=filearray[var[2]]
     
     if isinstance(spettri,str):
-        ts,eng=loadtxt('../de0_data/'+spettri,unpack=True,usecols=(0,1))
+        ts,eng=loadtxt('../../de0_data/'+spettri,unpack=True,usecols=(0,1))
     else:
         ts=array([])
         eng=array([])
         for rt in spettri:
-          ts1,eng1=loadtxt('../de0_data/%s'%rt,unpack=True,usecols=(0,1))
+          ts1,eng1=loadtxt('../../de0_data/%s'%rt,unpack=True,usecols=(0,1))
           ts=append(ts,ts1)
           eng=append(eng,eng1)
     
