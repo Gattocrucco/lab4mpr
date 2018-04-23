@@ -7,11 +7,16 @@ Misuriamo il rate di eventi al variare dell'angolo con i seguenti materiali:
 \item alluminio \SI8{\micro m}.
 \end{itemize}
 
-Prendiamo una funzione di fit della forma $R=\sigma \mathcal{L}$, dove $\mathcal{L}$ è la luminosità, avendo $B$ e $\theta_0$ come parametri di fit.
 
+
+
+\subsubsection{Z dell'alluminio}
+
+Comparando i parametri di ampiezza dei fit con l'oro con quello eseguito sull'alluminio, possiamo estrarre lo Z di quest'ultimo. Le ampiezze di fit hanno la forma $$ B=\mathcal{L} \left( \frac {zZ\alpha\hbar c} {2T} \right)^2 = A \mathcal{L} $$.
+La nostra luminosità vale $\mathcal{L}=n_1 n_2 l$, in cui $n_1$ è il rate di particelle incidenti, $n_2$  è la densità di bersagli e $l$ è lo spessore della targhetta.
+Nel nostro caso $n_1$ è uguale per tutte le misure con lo stesso collimatore.   \marginpar{c'è bisogno di precisare perché?}
+Da queste considerazioni possiamo trarre lo Z dell'alluminio dalla relazione \eqref{zeta} usando i parametri di fit per i dati con lo stesso collimatore.
 \begin{equation}
-R=\frac{B}{\sin^4{\left(\frac{\theta-\theta_0}{2}\right)}}
-\label{rute}
+Z_{\text{al}}=Z_{\text{au}} \sqrt{ \frac{B_{\text{al}}}{B_{\text{au}}} \frac{n_{\text{au}} l_{\text{au}}}{n_{\text{al}} l_{\text{al}}} }
+\label{zeta}
 \end{equation}
-
-Abbiamo aggiunto il parametro libero $\theta_0$ perché, come detto in \autoref{spiegazione}, gli angoli indicati dalle tacche sono diversi da quelli tra sorgente e rivelatore.
