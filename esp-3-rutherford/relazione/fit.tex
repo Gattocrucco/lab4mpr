@@ -3,21 +3,27 @@
 Eseguiamo il fit ai minimi quadrati del rate in funzione dell'angolo,
 assegnando l'incertezza poissoniana ai rate e \SI{\pm1}{\degree} agli angoli.
 Nel caso di collimatore da \SI1{mm} usiamo una funzione proporzionale alla \eqref{eq:rutherford}:
-\begin{equation}
+\begin{align}
 	\label{eq:fit1}
-	R_1(\theta;B,\theta_0) = \frac {B} {(1-\cos(\theta-\theta_0))^2}.
-\end{equation}
+	R_1(\theta;B,\theta_0)
+	&= \frac {B} {(1-\cos(y(\theta-\theta_0)))^2}, \\
+	y(\theta)
+	&= \theta + (\operatorname{sgn} \theta) \theta_\text{min} e^{-|\theta|/\theta_\text{min}},
+	\quad \theta_\text{min} = \SI{0.2}{\degree}, \notag
+\end{align}
+dove $y$ serve solo a regolarizzare la funzione per il conto numerico ($\theta_\text{min}$ non influisce sul fit).
 Per il collimatore da \SI5{mm} mediamo la \eqref{eq:fit1}
 supponendo che il fascio incidente abbia una distribuzione uniforme sul collimatore:
 \begin{align*}
 	R_5(\theta;B,\theta_0)
 	&= \int_{-\ell/2}^{\ell/2} \frac{\de a}{\ell}
-	\frac B {(1-\cos(\theta_R(a, \theta-\theta_0)))^2}, \\
+	\frac B {(1-\cos(y(\theta_R(a, \theta-\theta_0))))^2}, \\
 	\theta_R(a, \theta)
 	&= \tan^{-1} \left( \tan(\theta) - \frac a {L\cos\theta} \right) - \tan^{-1}\frac aD,
 \end{align*}
 dove $a$ è la coordinata sul collimatore, $\theta_R$ è l'angolo di cui effettivamente viene deviata la traiettoria attraversando il bersaglio,
 $L$ e $D$ sono definite in \autoref{sec:forma}, $\ell$ è la larghezza del collimatore.
+I dati con sovraimposte le curve di fit sono riportati in \autoref{fig:fit}.
 
 \begin{figure}
 	\hspace{-0.2\textwidth}
