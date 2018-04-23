@@ -83,7 +83,7 @@ rho_al = 2.699 # g/cm^3
 Z_au = 79
 Z_al = 13
 
-A_au = 200
+A_au = 197
 A_al = 27
 
 # keyword arguments for available targets

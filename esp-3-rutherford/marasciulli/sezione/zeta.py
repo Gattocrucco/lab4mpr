@@ -11,9 +11,6 @@ from uncertainties import ufloat as uf
 
 
 
-l_au=5
-l_all=8
-
 n_au=19.32/197  # 1/cm**3
 n_all=2.699/27
 
@@ -67,22 +64,31 @@ z_au=79
 
 # parametri alluminio
 # coll1
-B_al=uf(5.7,0.1)*1e-6
+# B_al=uf(5.7,1.1)*1e-6
 # coll5
-#B_al=uf(1.92,0.14)*1e-5
+B_al=uf(2.19, 0.19)*1e-5
+l_all=8
 
 # parametri oro 3 um
 # coll1
-#B_au=uf(1.2,0.1)*1e-4
+# B_au=uf(1.22, 0.10)*1e-4
 # coll5
-#B_au=uf(5.26,0.22)*1e-4
+B_au=uf(5.26, 0.22)*1e-4
+l_au=3
 
 # parametri oro 5 um
 # coll1
-B_au=uf(1.2,0.1)*1e-4
+# B_au=uf(1.21, 0.11)*1e-4
 # coll5
-#B_al=uf(6.8,0.3)*1e-4
+# B_au=uf(6.8, 0.3)*1e-4
+# l_au=5
 
 z_al=z_au*unp.sqrt( B_al/B_au * n_au/n_all * l_au/l_all )
 
 print("Z_alluminio={:1uP}".format(z_al))
+
+# risultati Z
+# oro3 coll1 10.4±1.1
+# oro3 coll5 9.8±0.5
+# oro5 coll1 13.4±1.4
+# oro5 coll5 11.1±0.5
