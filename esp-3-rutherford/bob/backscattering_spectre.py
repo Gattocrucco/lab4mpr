@@ -13,8 +13,8 @@ ALL = 'all.dat'
 FONDO = direct+'0417buco10_08.dat'
 CAL = direct+'0416buco18_35.dat'
 
-filenames = [AU, ALL, FONDO]
-title = ['oro', 'alluminio', ]
+filenames = [AU, ALL, CAL]
+title = ['oro', 'alluminio', 'Am241']
 
 fig = plt.figure('histo')
 fig.clf()
