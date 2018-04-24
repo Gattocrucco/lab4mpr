@@ -10,7 +10,7 @@ ax = fig.add_subplot(111)
 
 ax.errorbar(thresh, ant, yerr=unc_ant, fmt='.k')
 
-ax.set_xlabel('soglia discriminatore [V]')
+ax.set_xlabel('soglia discriminatore')
 ax.set_ylabel('ritardo segnale discriminato [ns]')
 ax.grid(linestyle=':')
 

@@ -3,14 +3,27 @@
 \paragraph{Stabilità} Facciamo una misura lunga circa 20 ore con la sorgente a \SI{70}{\degree} senza bersaglio per valutare la stabilità in risposta dello spettrometro (ovvero il sistema rivelatore-preampli-ampli-ADC).
 La scelta dell'angolo è forzata dal rate di campionamento massimo (\SI{40}{Hz}) dell'ADC.
 
-Mostriamo in \autoref{stab} i valori campionati in funzione del tempo. Non osserviamo nessuna variazione di energia rispetto ad una misura di breve durata.
+Mostriamo in \autoref{stab} i valori campionati in funzione del tempo.
+Non osserviamo nessuna scalibrazione.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=30 em]{immagini/stab.png}
+\includegraphics[width=23 em]{immagini/stab.png}
 \caption{Valori acquisiti in funzione del tempo. Gli spazi vuoti tra una serie di dati e l'altra vengono dal fatto che sono state unite 4 acquisizioni quasi consecutive.
 In questo grafico è presente soltanto un punto ogni 100 perché la rappresentazione completa rendeva illeggibile la figura.}
 \label{stab}
+\end{figure}
+
+\paragraph{Forma dello spettro}
+
+A titolo di esempio in \autoref{fig:example}
+riportiamo lo spettro completo della presa dati per la verifica di stabilità.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=25em]{immagini/example}
+	\caption{\label{fig:example}
+	Spettro senza bersaglio preso durante la notte.}
 \end{figure}
 
 \paragraph{Missing codes}
@@ -25,12 +38,22 @@ Per aggirare questo problema ribinniamo i dati usando i bin del tipo $(0,32]+32n
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=30 em]{immagini/rebin}
+\includegraphics[width=25 em]{immagini/rebin}
 \caption{Istogramma di una parte dei dati della misura di stabilità in cui si vedono gli accumuli a cui è soggetta l'ADC e la nostra soluzione.}
 \label{picchi}
 \end{figure}
 
-\paragraph{Comportamenti inattesi} Abbiamo verificato che la risposta dello spettrometro dipendesse come atteso dal guadagno dell'amplificatore e abbiamo notato un comportamento inatteso dell'apparato. Variando il guadagno dell'amplificatore agendo sulla manopola principale osserviamo gli spettri riportati in \autoref{fig:guadagno}: la forma dello spettro varia non varia con un semplice fattore moltiplicativo: la larghezza del picco è circa uguale per un guadagno di 25 e 100 e la posizione del picco non è quella attesa. Questa dipendenza inattesa della forma dello spettro da questo parametro non ci permette di trovare un modello fisico per la stessa.
+\paragraph{Guadagno dell'amplificatore}
+
+Abbiamo verificato se la risposta dello spettrometro dipende come atteso dal guadagno dell'amplificatore
+e abbiamo notato un comportamento inatteso dell'apparato.
+Variando il guadagno dell'amplificatore agendo sulla manopola \texttt{coarse}
+osserviamo gli spettri riportati in \autoref{fig:guadagno}.
+La forma dello spettro non varia con un semplice fattore moltiplicativo:
+la larghezza del picco è circa uguale per un guadagno di 25 e 100
+e la posizione del picco non è quella attesa.
+Questa dipendenza incompresa della forma dello spettro da questo parametro
+non ci permette di trovare un modello fisico per la stessa.
 
 \begin{figure}[h]
 	\centering
