@@ -6,7 +6,6 @@ Abbiamo fatto delle misure di conteggio a vari angoli con e senza collimatori pe
 \subsubsection{Assenza di collimatori}
 
 La misura in assenza di collimatori ci permette di indagare la forma del fascio di particelle $\alpha$ in uscita dalla sorgente di \am{}.
-\marginpar{disegno provvisorio}
 Bisogna notare che l'angolo segnato sulla scala graduata non coincide con quello tra la sorgente ed il rivelatore perché il fotodiodo non è al centro della camera a vuoto, inoltre all'aumentare (in modulo) dell'angolo la distanza tra sorgente e rivelatore diminuisce. 
 Lo schema di \autoref{fma} illustra la situazione.
 
@@ -23,28 +22,26 @@ Applicate le dovute correzioni e usando le variabili di \autoref{fma} troviamo c
 \end{equation}
 
 Teniamo conto della variazione della distanza al variare dell'angolo moltiplicando ogni rate per $|\vec{X}|^2$.
-Tale fattore è giustificato dal fatto che supponiamo isotropa l'emissione di particelle $\alpha$ da parte della sorgente.
-Se $C$ è una costante, abbiamo che $$ \frac{dN}{d^3r}=C \implies \frac{dN}{dr}=C 4\pi r^2. $$
+Il risultato di questa misura è presente in \autoref{fig:forma}, i dati sono in \autoref{tab:forma}.
+Nell'interpretare il grafico bisogna tener conto che per angoli abbastanza grandi
+entrano in gioco il collimatore del rivelatore e la cornice della sorgente.
 
-In virtù delle precedenti affermazioni, abbiamo calcolato il rate in \si{s^{-1}cm^2}.
-
-Il risultato di questa misura è presente in \autoref{fig:forma}, invece la \autoref{tab:forma} contiene i dati di tale grafico.
-Si evince che il fascio ha un'estensione angolare di quasi \SI{50}{\degree}. 
-
-\begin{figure}[h]
+\begin{figure}
 \centering
 \includegraphics[width=30 em]{immagini/forma}
-\caption{Grafico rappresentante la forma del fascio. Nel pannello superiore è presente l'estensione angolare del fascio estrapolata dai conteggi, in quello inferiore sono presenti le mode dei relativi istogrammi.}
+\caption{Sopra: rate senza bersaglio in funzione dell'angolo asse sorgente-rivelatore,
+moltiplicato per la distanza al quadrato.
+Le incertezze sono fortemente correlate perché includono misure di geometria dell'apparato.
+Sotto: corrispondenti spettri, riportati come mode
+e barre che indicano la regione che contiene il \SI{90}\% dei campioni,
+ricavate con KDE.}
 \label{fig:forma}
 \end{figure}
 
-Useremo queste informazioni (se sarà necessario) nell'analizzare i dati sulla sezione d'urto.
+\subsubsection{Collimatore da 5\! mm}
 
-\subsubsection{Collimatore da \SI5{mm}}
-
-Analizziamo la forma del fascio con un collimatore da \SI{5}{mm} che ci dà un errore minore sull'angolo di incidenza delle particelle $\alpha$.
+Analizziamo la forma del fascio con un collimatore da \SI{5}{mm}.
 Con i dati presenti in \autoref{tab:coll5} abbiamo il grafico di \autoref{fig:coll5}.
-
 In questo caso i conteggi sono non nulli soltanto nell'intervallo \SI{\mp10}{\degree}. La parte piatta al centro del grafico è dovuta all'effetto descritto nella sezione precedente (non corretto), ancora visibile con un'apertura di tale larghezza.
 
 \begin{figure}[h]
@@ -56,11 +53,9 @@ In questo caso i conteggi sono non nulli soltanto nell'intervallo \SI{\mp10}{\de
 
 \subsubsection{Collimatore da 1\! mm}
 
-Studiamo la forma del fascio con il collimatore da \SI1{mm} che ci permette di avere il più piccolo errore possibile sull'angolo di incidenza.
-Di contro abbiamo un rate minore che nei casi precedenti.
-I dati presenti in \autoref{tab:coll1} e \autoref{fig:coll1} sono stati analizzati come in precedenza.
+Studiamo la forma del fascio con il collimatore da \SI1{mm}.
+I dati sono in \autoref{tab:coll1} e \autoref{fig:coll1}.
 Stavolta abbiamo conteggi solo in un intervallo di \SI{5}{\degree}.
-
 
 \begin{figure}[h]
 \centering

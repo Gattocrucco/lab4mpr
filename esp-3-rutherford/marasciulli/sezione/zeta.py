@@ -32,6 +32,8 @@ z_au=79
 # chi quadro= 10.698151291506667 +- 4.0   dof= 8
 # P valore= 0.21939579562169206
 #
+# Rapporto collimatori= 3.9+/-0.8
+#
 ############# oro3 coll1
 #  1.22(10)e-4    9.1 %
 #              0.053(6)
@@ -46,6 +48,8 @@ z_au=79
 # chi quadro= 11.070007284746564 +- 4.242640687119285   dof= 9
 # P valore= 0.27094081318077473
 #
+# Rapporto collimatori= 4.3+/-0.4
+#
 ############# oro5 coll1
 #  1.21(11)e-4   -1.4 %
 #              0.038(7)
@@ -59,6 +63,8 @@ z_au=79
 # centro vero coll5= -0.5+/-0.4 °
 # chi quadro= 80.530152605063 +- 3.7416573867739413   dof= 7
 # P valore= 1.0738947710500088e-14
+#
+# Rapporto collimatori= 5.6+/-0.6
 
 # scopo del gioco: commentare quello che non serve
 

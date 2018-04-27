@@ -21,7 +21,10 @@ $ 700 \pm 10 $ & $ 41.7 \pm 0.9 $ & $ 1712 $ \\
 $ 860 \pm 10 $ & $ 0.13 \pm 0.04 $ & $ 521 $ \\ 
 
 \end{tabular}
-\caption{Dati per stimare l'effetto della pressione sulle misure. L'errore sulla moda è dato dall'intervallo di credibilità del 90\% calcolato sul relativo istogramma.}
+\caption{Dati per stimare l'effetto della pressione sulle misure.
+L'incertezza sulla pressione è la cifra meno significativa del vacuometro digitale.
+L'ultima misura (\SI{860}{mbar}) corrisponde alla pressione atmosferica
+(il vacuometro si scalibra frequentemente).}
 \label{tab:press}
 \end{table}
 
@@ -29,31 +32,20 @@ $ 860 \pm 10 $ & $ 0.13 \pm 0.04 $ & $ 521 $ \\
 \begin{table}[h]
 \centering
 
-\begin{tabular}{c|c}
-soglia & rate [\si{s^{-1}}] \\
+\begin{tabular}{cc||cc|cc}
+	\multicolumn{2}{c||}{15 marzo} & \multicolumn{4}{c}{19 marzo} \\
+	\hline
+soglia & rate [\si{s^{-1}}] & soglia & rate [\si{s^{-1}}] & soglia & rate [\si{s^{-1}}] \\
 \hline
-$ 0.0 $ & $ 45.4 \pm 1.5 $\\ 
-$ 0.5 $ & $ 45.0 \pm 1.5 $\\ 
-$ 0.7 $ & $ 43.2 \pm 2.1 $\\ 
-$ 0.8 $ & $ 38 \pm 2 $\\ 
-$ 0.9 $ & $ 10 \pm 1 $\\ 
-$ 1.0 $ & $\;\; 0.05 \pm 0.05 $\\ 
-\hline
-$ 0.0 $ & $ 43.7 \pm 0.9 $\\ 
-$ 0.1 $ & $ 44 \pm 1 $\\ 
-$ 0.2 $ & $ 45 \pm 1 $\\ 
-$ 0.3 $ & $ 43.9 \pm 0.8 $\\ 
-$ 0.4 $ & $ 43.6 \pm 0.9 $\\ 
-$ 0.5 $ & $ 41.9 \pm 0.9 $\\ 
-$ 0.6 $ & $ 42.0 \pm 0.9 $\\ 
-$ 0.7 $ & $ 44.0 \pm 0.9 $\\ 
-$ 0.8 $ & $ 36.5 \pm 0.7 $\\ 
-$ 0.9 $ & $ 5.6 \pm 0.2 $\\ 
-$ 1.0 $ & $ 0.05 \pm 0.03 $\\ 
-
+$ 0.0 $ & $ 45.4 \pm 1.5 $      & $ 0.0 $ & $ 43.7 \pm 0.9 $    & $ 0.6 $ & $ 42.0 \pm 0.9 $  \\
+$ 0.5 $ & $ 45.0 \pm 1.5 $      & $ 0.1 $ & $ 44 \pm 1 $        & $ 0.7 $ & $ 44.0 \pm 0.9 $  \\
+$ 0.7 $ & $ 43.2 \pm 2.1 $      & $ 0.2 $ & $ 45 \pm 1 $        & $ 0.8 $ & $ 36.5 \pm 0.7 $  \\
+$ 0.8 $ & $ 38 \pm 2 $          & $ 0.3 $ & $ 43.9 \pm 0.8 $    & $ 0.9 $ & $ 5.6 \pm 0.2 $   \\
+$ 0.9 $ & $ 10 \pm 1 $          & $ 0.4 $ & $ 43.6 \pm 0.9 $    & $ 1.0 $ & $ 0.05 \pm 0.03 $ \\
+$ 1.0 $ & $\;\; 0.05 \pm 0.05 $ & $ 0.5 $ & $ 41.9 \pm 0.9 $    &&
 \end{tabular}
 
-\caption{Valori presenti nel grafico di \autoref{fig:soglia}. La linea orizzontale divide quelli del 15 marzo (in alto) da quelli del 19 marzo (in basso).}
+\caption{Valori presenti nel pannello a sinistra di \autoref{fig:sogliaritardo}.}
 \label{tab:soglia}
 \end{table}
 
@@ -78,6 +70,8 @@ $ 0.9 $ & $ 910 $ & $ 60 $\\
 \end{tabular}
 
 \caption{Dati per la misura in cui si quantifica il ritardo del segnale discriminato in funzione della soglia del discriminatore.
+In pratica descrivono la forma del segnale.
+Il ritardo è stato misurato con i cursori dell'oscilloscopio.
 Le ultime misure hanno un errore maggiore a causa del jitter del segnale.}
 \label{tab:rit}
 \end{table}
@@ -109,7 +103,11 @@ Le ultime misure hanno un errore maggiore a causa del jitter del segnale.}
 	$ 4.8 \pm 0.5 $ & $ 1.66 \pm 0.09   \cdot 10^{3} $ & $ 3141 $ & $ 7.2 \pm 0.5 $ & $ 1.59 \pm 0.09   \cdot 10^{3} $ & $ 3140 $ \\ 
 \end{tabular}
 
-\caption{Dati utilizzati per trovare la forma del fascio. L'errore sulla moda è dato dal 90\% di credibilità del relativo istogramma.}
+\caption{Dati per la forma del fascio mostrati in (\autoref{fig:forma}).
+Le incertezze sugli angoli sono correlate perché nel calcolo entrano le lunghezze
+$L=\SI{28.5(10)}{mm}$ e $D=\SI{31(1)}{mm}$.
+Gli angoli impostati sulla scala graduata sono \SI{-90}{\degree}, \SI{-80}{\degree},
+da \SI{-70}{\degree} a \SI{100}{\degree} in passi da \SI{5}{\degree}.}
 \label{tab:forma}
 \end{table}
 
@@ -134,8 +132,7 @@ $ 15.00 $ & $ 0.0 \pm 0 $ & $ 0 $ \\
 
 \end{tabular}
 
-\caption{Rate in funzione dell'angolo con il collimatore da 5\! mm.
-		L'errore sugli angoli è stimato essere 1.25$^{\circ}$.}
+\caption{Rate in funzione dell'angolo con il collimatore da 5\! mm.}
 \label{tab:coll5}
 \end{table}
 

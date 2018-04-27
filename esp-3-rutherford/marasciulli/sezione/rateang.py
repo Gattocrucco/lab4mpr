@@ -101,6 +101,8 @@ if len(atot)>1:
     for k in range(len(w)):
         if fuori[0]<w[k]<fuori[1] or abs(nom(w[k]))>60:
             y5.append(k)
+        # elif varname == 'oro5' and abs(w[k]) > 30:
+        #     y5.append(k)
     w=np.delete(w,y5)
     rr=np.delete(rr,y5)
 if len(y5)>0:
