@@ -13,6 +13,15 @@
 
 using namespace std;
 
+char *append_txt(char *str) {
+  size_t len = strlen(str);
+  size_t newlen = len + strlen(".txt");
+  char *newstr = (char *)malloc(sizeof(char) * (newlen + 1));
+  strcpy(newstr, str);
+  strcat(newstr, ".txt");
+  return newstr;
+}
+
 int main (int argc,  char *argv[]) {
   int CamN, CamA, CamF;
   long int CamD;
@@ -31,11 +40,13 @@ int main (int argc,  char *argv[]) {
   char OutputFileName[] = "PositronData.txt";
   int NEvt=0;
 
-   // Open the output file
+  // Open the output file
   if (argc>0) 
-    OutF = fopen(argv[1],"a"); // non cancella il file
+    OutF = fopen(append_txt(argv[1]),"a"); // non cancella il file
   else
     OutF = fopen(OutputFileName,"a");
+    
+  setvbuf(OutF,NULL,_IOLBF,0);
 
   // Find XX_USB devices and open the first one found
   nDevices = xxusb_devices_find(devices);
@@ -122,15 +133,15 @@ int main (int argc,  char *argv[]) {
       //      sleep(1);
     }
     else {
-	    printf("No LAM:reset module and wait\n");
-	    fprintf(OutF, "# no LAM\n");
+	    //printf("No LAM:reset module and wait\n");
+	    //fprintf(OutF, "# no LAM\n");
 	    CamF=9;
 	    ret=CAMAC_read(udev,CamN,CamA,CamF,&CamD,&CamQ,&CamX);
 	    if (ret<0 || CamX==0) printf("Clear fallito\n");
-      usleep(5000000);
+      usleep(1000);
     }
     // se non sleepi partono dei "no LAM" fasulli
-    usleep(1000);
+    usleep(1000);//<<<---
   }
   // Close Output File
   fclose(OutF);
