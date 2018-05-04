@@ -11,6 +11,8 @@
 #include <string.h>
 #include <iostream>
 
+const int sleep_time = 1000; // us
+
 using namespace std;
 
 char *append_txt(char *str) {
@@ -102,7 +104,7 @@ int main (int argc,  char *argv[]) {
     if (ret<0 || CamX==0) printf("Lettura LAM fallita\n");
     else if (CamQ==1) {
       NEvt++;
-      printf("Event: %i \n",NEvt);
+      printf("(%5d) ",NEvt);
       //      fprintf(OutF,"Event: %i \n",NEvt);
       //CAMAC_I(udev,true);
       struct timespec spec;
@@ -110,7 +112,8 @@ int main (int argc,  char *argv[]) {
       double float_time = spec.tv_sec + 1e-9 * spec.tv_nsec;
       current_time = time(NULL);
       c_time_string = ctime(&current_time);
-      printf("%s\n",c_time_string);
+      c_time_string[strlen(c_time_string) - 1] = '\0';
+      printf("[%s]",c_time_string);
       for (i=0;i<12;i++) {
 	      CamA=i;
 	      CamF=2;
@@ -121,7 +124,7 @@ int main (int argc,  char *argv[]) {
 	  	    // fprintf(OutF,", CH %2d: (%s) D=0x%lx",CamA,CamQ?"Q":" ",(unsigned int)CamD);
 	  	    //  printf(", CH %2d: (%s) D=%i",CamA,CamQ?"Q":" ",(unsigned int)CamD);
 	  	    //  fprintf(OutF,", CH %2d: (%s) D=%i",CamA,CamQ?"Q":" ",(unsigned int)CamD);
-          printf(" %i",(unsigned int)CamD);
+          printf(" %4i",(unsigned int)CamD);
 	        fprintf(OutF," %i",(unsigned int)CamD);
         }
 	//
@@ -138,16 +141,16 @@ int main (int argc,  char *argv[]) {
 	    CamF=9;
 	    ret=CAMAC_read(udev,CamN,CamA,CamF,&CamD,&CamQ,&CamX);
 	    if (ret<0 || CamX==0) printf("Clear fallito\n");
-      usleep(1000);
+      usleep(sleep_time);
     }
     // se non sleepi partono dei "no LAM" fasulli
-    usleep(1000);//<<<---
+    usleep(sleep_time);//<<<---
   }
   // Close Output File
   fclose(OutF);
   // Close the Device
   xxusb_device_close(udev);
-  printf("\n");
+  //printf("\n");
   
   return 0;
 }
