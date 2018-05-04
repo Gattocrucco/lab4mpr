@@ -399,6 +399,10 @@ def credible_interval(samples, cl=0.68, ax=None):
     return out.x[0], left, right, act_cl
 
 def loadtxt(fname, dtype=float, usecols=None, unpack=False):
+    """
+    Implements a subset of numpy.loadtxt's functionality,
+    using pandas.read_csv (which is much faster).
+    """
     import pandas
     if usecols is None:
         guess = pandas.read_csv(fname, header=0, nrows=2, delim_whitespace=True)
