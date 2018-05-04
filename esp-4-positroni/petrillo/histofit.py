@@ -40,19 +40,30 @@ for filename in filenames:
     p0[0] = counts[argmax] # peak
     p0[1] = x[argmax] # mean
     p0[2] = 50 # sigma
-    cut = counts > counts[argmax] / 2
-    out = lab.fit_curve(gauss, x[cut], counts[cut], p0=p0, dy=np.sqrt(counts)[cut], print_info=1)
-    outputs.append(out)
+    cut = (counts > counts[argmax] / 3) & (x < 1024)
+    if np.sum(cut) > 1:
+        out = lab.fit_curve(gauss, x[cut], counts[cut], p0=p0, dy=np.sqrt(counts)[cut], print_info=1)
+        outputs.append(out)
+    else:
+        outputs.append(None)
     
     # plot
     line, = lab4.bar(edges, counts, ax=ax, label=filename)
-    color = line.get_color()
-    xspace = np.linspace(np.min(x[cut]), np.max(x[cut]), 100)
-    ax.plot(xspace, gauss(xspace, *out.par), '--', color=color)
-    
+    if not outputs[-1] is None:
+        color = line.get_color()
+        xspace = np.linspace(np.min(x[cut]), np.max(x[cut]), 100)
+        ax.plot(xspace, gauss(xspace, *out.par), '--', color=color)
 
 ax.legend(loc='best')
 ax.set_xlabel('canale ADC')
 ax.set_ylabel('conteggio / 8 canali')
+
+for i in range(len(outputs)):
+    if outputs[i] is None:
+        continue
+    mean = outputs[i].upar[1]
+    sigma = outputs[i].upar[2]
+    rel = abs(sigma) / mean
+    print(('{:%ds}: {:7P}' % max(map(len, filenames))).format(filenames[i], rel))
 
 fig.show()
