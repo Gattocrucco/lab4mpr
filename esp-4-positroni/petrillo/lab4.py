@@ -1,4 +1,3 @@
-import numba
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import patches
@@ -7,6 +6,18 @@ from scipy import optimize, stats
 import collections
 import uncertainties as un
 from uncertainties import unumpy as unp
+
+try:
+    import numba
+except ImportError:
+    def numba_jit(*args, **kwargs):
+        def ret_fun(fun):
+            return fun
+        return ret_fun
+    have_numba = False
+else:
+    numba_jit = numba.jit
+    have_numba = True
 
 def interp(x, y):
     """
@@ -23,7 +34,7 @@ def interp(x, y):
     fun : compiled f8->f8 function
         Interpolating function.
     """
-    @numba.jit('f8(f8)', nopython=True)
+    @numba_jit('f8(f8)', nopython=True)
     def fun(x0):
         assert x[0] <= x0 <= x[-1]
         idx = np.searchsorted(x, x0)
@@ -150,10 +161,10 @@ def make_von_neumann(density, domain, max_cycles=100000):
     left = domain[0]
     right = domain[1]
     
-    if not isinstance(density, numba.targets.registry.CPUDispatcher):
+    if have_numba and not isinstance(density, numba.targets.registry.CPUDispatcher):
         density = numba.jit('f8(f8)', nopython=True)(density)
     
-    @numba.jit('f8', nopython=True)
+    @numba_jit('f8', nopython=True)
     def von_neumann():
         i = 0
         while i < max_cycles:
@@ -166,7 +177,7 @@ def make_von_neumann(density, domain, max_cycles=100000):
     
     return von_neumann
 
-@numba.jit('f8[3](f8[3],f8[3])', nopython=True, cache=True)
+@numba_jit('f8[3](f8[3],f8[3])', nopython=True, cache=True)
 def cross(a, b):
     """
     cross product a x b
@@ -177,7 +188,7 @@ def cross(a, b):
         a[0]*b[1] - a[1]*b[0]
     ])
 
-@numba.jit('f8[3](f8[3])', nopython=True, cache=True)
+@numba_jit('f8[3](f8[3])', nopython=True, cache=True)
 def versor(a):
     """
     normalize a (returns a / |a|)
@@ -233,7 +244,7 @@ def weighted_mean(y):
     
     return a, Q
 
-@numba.jit('u4(f8,f8[:],f8[:],f8[:],f8)', nopython=True, cache=True)
+@numba_jit('u4(f8,f8[:],f8[:],f8[:],f8)', nopython=True, cache=True)
 def _coinc(T, r, tc, tm, tand):
     """
     T = total time
@@ -386,3 +397,17 @@ def credible_interval(samples, cl=0.68, ax=None):
         ax.set_xlabel('value')
         ax.set_ylabel('pdf')
     return out.x[0], left, right, act_cl
+
+def loadtxt(fname, dtype=float, usecols=None, unpack=False):
+    import pandas
+    if usecols is None:
+        guess = pandas.read_csv(fname, header=0, nrows=2, delim_whitespace=True)
+        ncolumns = guess.shape[1]
+    else:
+        ncolumns = len(usecols)
+    names = list(map(str, range(ncolumns)))
+    dataframe = pandas.read_csv(fname, delim_whitespace=True, usecols=usecols, dtype=dtype, header=None, names=names)
+    array = dataframe.values
+    if unpack:
+        array = array.T
+    return array

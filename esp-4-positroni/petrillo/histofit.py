@@ -26,7 +26,7 @@ for filename in filenames:
     print('\n__________{}__________\n'.format(filename))
     
     # load file
-    ch1, ch2, ch3, tr1, tr2, tr3, c2, c3, ts = np.loadtxt(filename,  unpack=True,  usecols=(0, 1, 2, 4, 5, 6, 8, 9, 12))
+    ch1, ch2, ch3, tr1, tr2, tr3, c2, c3, ts = lab4.loadtxt(filename,  unpack=True,  usecols=(0, 1, 2, 4, 5, 6, 8, 9, 12))
     
     # histogram
     bins = np.arange(0, 1200 // 8) * 8
