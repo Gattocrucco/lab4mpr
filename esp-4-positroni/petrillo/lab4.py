@@ -405,12 +405,12 @@ def loadtxt(fname, dtype=float, usecols=None, unpack=False):
     """
     import pandas
     if usecols is None:
-        guess = pandas.read_csv(fname, header=0, nrows=2, delim_whitespace=True)
+        guess = pandas.read_csv(fname, header=0, nrows=2, delim_whitespace=True, comment='#')
         ncolumns = guess.shape[1]
     else:
         ncolumns = len(usecols)
     names = list(map(str, range(ncolumns)))
-    dataframe = pandas.read_csv(fname, delim_whitespace=True, usecols=usecols, dtype=dtype, header=None, names=names)
+    dataframe = pandas.read_csv(fname, delim_whitespace=True, usecols=usecols, dtype=dtype, header=None, names=names, comment='#')
     array = dataframe.values
     if unpack:
         array = array.T
