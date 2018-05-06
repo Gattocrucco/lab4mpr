@@ -2,11 +2,13 @@
 from __future__ import division,print_function
 from pylab import *
 import sys
-from lab4 import loadtxt as load
 
 filename=sys.argv[1]
-
-ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=load(filename,unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
+if sys.platform=='win32':
+    from lab4 import loadtxt
+    ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=loadtxt(filename,unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
+else:
+    ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=loadtxt(filename,unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
 
 out1=ch1[(tr1>500)]
 out2=ch2[(tr2>500)]
@@ -27,14 +29,14 @@ tutti=arange(0,1200//8)*8
 
 figure(1).set_tight_layout(True)
 
-subplot(221)
+subplot(121)
 title("Acquisizioni singole")
 hist(out1,bins=tutti,label="ch1 n=%d"%len(out1),histtype="step")
 hist(out2,bins=tutti,label="ch2 n=%d"%len(out2),histtype="step")
 hist(out3,bins=tutti,label="ch3 n=%d"%len(out3),histtype="step")
 legend(loc=0)
 
-subplot(222)
+subplot(122)
 title("Coincidenze a 2")
 hist(out1_2,bins=tutti,label="ch1 c2 n=%d"%len(out1_2),histtype="step")
 hist(out2_2,bins=tutti,label="ch2 c2 n=%d"%len(out2_2),histtype="step")
@@ -42,39 +44,11 @@ if len(out3_3)>0:
     hist(out3_2,bins=tutti,label="ch3 c2 n=%d"%len(out3_2),histtype="step")
 legend(loc=0)
 
-subplot(223)
-title("Coincidenze a 3")
-hist(out1_3,bins=tutti,label="ch1 c3 n=%d"%len(out1_3),histtype="step")
-hist(out2_3,bins=tutti,label="ch2 c3 n=%d"%len(out2_3),histtype="step")
-if len(out3_3)>0:
-    hist(out3_3,bins=tutti,label="ch3 c3 n=%d"%len(out3_3),histtype="step")
-legend(loc=0)
 
-
-subplot(224)
+figure(2).set_tight_layout(True)
 title("Scatter plot coincidenze a 2")
 plot(out1_2,out2_2,linestyle='',marker='.',markersize=1)
 xlabel("ch1")
 ylabel("ch2")
-
-figure(2).set_tight_layout(True)
-
-subplot(221)
-title("Coincidenze a 3: CH1 vs CH2")
-plot(out1_3,out2_3,linestyle='',marker='.',markersize=1)
-xlabel("ch1")
-ylabel('ch2')
-
-subplot(222)
-title("Coincidenze a 3: CH2 vs CH3")
-plot(out2_3,out3_3,linestyle='',marker='.',markersize=1)
-xlabel("ch2")
-ylabel('ch3')
-
-subplot(223)
-title("Coincidenze a 3: CH1 vs CH3")
-plot(out1_3,out3_3,linestyle='',marker='.',markersize=1)
-xlabel("ch1")
-ylabel('ch3')
 
 show()
