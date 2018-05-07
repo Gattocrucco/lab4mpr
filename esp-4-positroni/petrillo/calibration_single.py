@@ -2,6 +2,17 @@ import numpy as np
 import lab
 import lab4
 
+# This script can be used as module or executed.
+## As module:
+# function calibration_single():
+# Fit and/or plot a histogram containing a reference peak.
+# function load_records():
+# Load the file ../dati/calibration_single.txt as a dictionary.
+## As script:
+# Specify an ADC file on the command line
+# and run calibration_single() on that file,
+# using the first entry containing that file in ../dati/calibration_single.txt.
+
 # dictionary mapping source label to energy in keV
 sources = {
     'na': 1275,
