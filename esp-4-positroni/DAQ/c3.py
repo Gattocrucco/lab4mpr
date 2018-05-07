@@ -2,13 +2,11 @@
 from __future__ import division,print_function
 from pylab import *
 import sys
+import lab4
 
 filename=sys.argv[1]
-if sys.platform=='win32':
-    from lab4 import loadtxt
-    ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=loadtxt(filename,unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
-else:
-    ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=loadtxt(filename,unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
+ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=lab4.loadtxt(filename,unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
+
 
 out1=ch1[(tr1>500)]
 out2=ch2[(tr2>500)]

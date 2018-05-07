@@ -2,17 +2,23 @@
 from __future__ import division,print_function
 from pylab import *
 import sys
+import lab4
 
 filename=sys.argv[1]
-if sys.platform=='win32':
-    from lab4 import loadtxt
-    ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=loadtxt(filename,unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
-else:
-    ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=loadtxt(filename,unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
+data=lab4.loadtxt(filename,unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
+
+ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts = data[:,:(len(data[0])//1)]
+c3t = (tr1>500) & (tr2>500) & (tr3>500)
 
 out1=ch1[(tr1>500)]
 out2=ch2[(tr2>500)]
 out3=ch3[(tr3>500)]
+
+out1_nc3=ch1[(tr1>500) & (c3<500)]
+out2_nc3=ch2[(tr2>500) & (c3<500)]
+out3_nc3=ch3[(tr3>500) & (c3<500)]
+
+
 
 out1_2=ch1[(tr1>500) & (c2>500)]
 out2_2=ch2[(tr2>500) & (c2>500)]
@@ -27,13 +33,14 @@ tutti=arange(0,1200//8)*8
 
 # istogrammi
 
+
 figure(1).set_tight_layout(True)
 
 subplot(121)
 title("Acquisizioni singole")
-hist(out1,bins=tutti,label="ch1 n=%d"%len(out1),histtype="step")
-hist(out2,bins=tutti,label="ch2 n=%d"%len(out2),histtype="step")
-hist(out3,bins=tutti,label="ch3 n=%d"%len(out3),histtype="step")
+hist(out1,bins=tutti,label="ch1 n=%d"%len(out1_nc3),histtype="step")
+hist(out2,bins=tutti,label="ch2 n=%d"%len(out2_nc3),histtype="step")
+hist(out3,bins=tutti,label="ch3 n=%d"%len(out3_nc3),histtype="step")
 legend(loc=0)
 
 
@@ -44,6 +51,29 @@ hist(out2_3,bins=tutti,label="ch2 c3 n=%d"%len(out2_3),histtype="step")
 hist(out3_3,bins=tutti,label="ch3 c3 n=%d"%len(out3_3),histtype="step")
 legend(loc=0)
 
+'''
+figure('positron ch1').set_tight_layout(True)
+title("Ch1")
+hist(out1,bins=tutti,label="ch1 n=%d"%len(out1),histtype="step")
+hist(out1_nc3,bins=tutti,label="ch1 not c3 n=%d"%len(out1_nc3),histtype="step")
+hist(out1_3,bins=tutti,label="ch1 c3 n=%d"%len(out1_3),histtype="step")
+legend(loc=0)
+
+figure('positron ch2').set_tight_layout(True)
+title("Ch2")
+hist(out1,bins=tutti,label="ch2 n=%d"%len(out2),histtype="step")
+hist(out1_nc3,bins=tutti,label="ch2 not c3 n=%d"%len(out2_nc3),histtype="step")
+hist(out1_3,bins=tutti,label="ch2 c3 n=%d"%len(out2_nc3),histtype="step")
+legend(loc=0)
+
+figure('positron ch3').set_tight_layout(True)
+title("Ch3")
+hist(out3,bins=tutti,label="ch3 n=%d"%len(out3),histtype="step")
+hist(out3_nc3,bins=tutti,label="ch3 not c3 n=%d"%len(out3_nc3),histtype="step")
+hist(out3_3,bins=tutti,label="ch3 c3 n=%d"%len(out3_3),histtype="step")
+legend(loc=0)
+
+'''
 figure(2).set_tight_layout(True)
 
 subplot(221)
