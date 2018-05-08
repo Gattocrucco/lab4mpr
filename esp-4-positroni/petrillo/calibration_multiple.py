@@ -2,9 +2,11 @@ import numpy as np
 import calibration_single
 from matplotlib import pyplot as plt
 import lab4
+import lab
+from uncertainties import unumpy
 
 # arguments
-label = '0504_1'
+label = '0504_2'
 
 records = calibration_single.load_records()[label]
 out = []
@@ -25,8 +27,12 @@ ax2 = fig.add_subplot(212)
 
 for channel in np.unique(channels):
     cut = channels == channel
-    lab4.errorbar(energy[cut], adc_energy[cut], ax=ax1, fmt='.', label='ch{:d}'.format(int(channel)))
-    lab4.errorbar(energy[cut], adc_sigma[cut], ax=ax2, fmt='.')
+    function = lambda x, m, q: m * x + q
+    out = lab.fit_curve(function, np.array(energy[cut], dtype=float), unumpy.nominal_values(adc_energy[cut]), dy=unumpy.std_devs(adc_energy[cut]), p0=[1, 1], print_info=1)
+    line, = ax1.plot(energy[cut], function(energy[cut], *out.par))
+    color = line.get_color()
+    lab4.errorbar(energy[cut], adc_energy[cut], ax=ax1, fmt='.', label='ch{:d}'.format(int(channel)), color=color)
+    lab4.errorbar(energy[cut], adc_sigma[cut], ax=ax2, fmt='.', color=color)
 
 ax2.set_xlabel('energia nominale [keV]')
 ax1.set_ylabel('media del picco [digit]')
