@@ -16,10 +16,9 @@ fig.tight_layout(True)
 
 ax = fig.add_subplot(111)
 
-H,_,_,im=plt.hist2d(ch2[c2 > 500], ch1[c2 > 500],bins=np.arange(0,1200//8)*8,norm=LogNorm(),cmap='jet')  
+H,_,_,im=plt.hist2d(ch1[c2 > 500], ch2[c2 > 500],bins=np.arange(0,1200//8)*8,norm=LogNorm(),cmap='jet')
 ax.set_xlabel('ch1 c2')
 ax.set_ylabel('ch2 c2')
 fig.colorbar(im)
 
 fig.show()
-    

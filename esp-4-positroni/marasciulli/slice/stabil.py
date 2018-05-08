@@ -4,7 +4,7 @@ from lab4 import loadtxt as load
 
 
 file="0504_3gamma"
-cartella="../DAQ/"
+cartella="../../DAQ/"
 ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=load(cartella+file+".txt",unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
 
 pezzi=10
