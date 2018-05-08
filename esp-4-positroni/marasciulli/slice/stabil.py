@@ -7,8 +7,8 @@ file="0504_3gamma"
 cartella="../../DAQ/"
 ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=load(cartella+file+".txt",unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
 
-pezzi=10
-chname='ch3' # sono ammessi: ch1,ch2,ch3 
+pezzi=5
+chname='ch1' # sono ammessi: ch1,ch2,ch3 
 
 # dati di calibrazione
 out1=ch1[tr1>500]
@@ -22,7 +22,7 @@ ts3=ts[tr3>500]
 figure('tempo')
 clf()
 
-title("Scalibrazione")
+title("Scalibrazione {}".format(chname))
 xlabel("valore ADC [digit]")
 ylabel("conteggi")
 
