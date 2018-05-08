@@ -1,9 +1,9 @@
 # label	filename	channel	source	cut
 ######################
-0504_1	0504_cal_na_ch1.txt	1	na	[950,1030]
-0504_1	0504_cal_na_ch2.txt	2	na	[950,1030]
-# picco brutto
-0504_1	0504_cal_na_ch3.txt	3	na	[630,665]
+# questi li escludiamo perché hanno il problema del rate alto
+# 0504_1	0504_cal_na_ch1.txt	1	na	[950,1030]
+# 0504_1	0504_cal_na_ch2.txt	2	na	[950,1030]
+# 0504_1	0504_cal_na_ch3.txt	3	na	[630,665]
 0504_1	0504_cal_cs_ch1.txt	1	cs	[420,460]
 0504_1	0504_cal_cs_ch2.txt	2	cs	[435,480]
 0504_1	0504_cal_cs_ch3.txt	3	cs	[355,395]
@@ -14,16 +14,16 @@
 0504_1	0504_cal_co_ch2.txt	2	co17	[755,815]
 0504_1	0504_cal_co_ch3.txt	3	co17	[555,585]
 ######################
-0504_2	0504_cal2_na_ch1.txt	1	na	[990,1080]
-0504_2	0504_cal2_na_ch2.txt	2	na	[940,1015]
-# picco brutto
-0504_2	0504_cal2_na_ch3.txt	3	na	[610,655]
-0504_2	0504_cal2_cs-co_ch1.txt	1	cs	[420,460]
-0504_2	0504_cal2_cs-co_ch2.txt	2	cs	[435,480]
-0504_2	0504_cal2_cs-co_ch3.txt	3	cs	[355,395]
-0504_2	0504_cal2_cs-co_ch1.txt	1	co33	[800,860]
-0504_2	0504_cal2_cs-co_ch2.txt	2	co33	[855,920]
-0504_2	0504_cal2_cs-co_ch3.txt	3	co33	[605,635]
-0504_2	0504_cal2_cs-co_ch1.txt	1	co17	[710,760]
+# questi li escludiamo perché hanno il problema del rate alto
+# 0504_2	0504_cal2_na_ch1.txt	1	na	[990,1080]
+# 0504_2	0504_cal2_na_ch2.txt	2	na	[940,1015]
+# 0504_2	0504_cal2_na_ch3.txt	3	na	[610,655]
+0504_2	0504_cal2_cs-co_ch1.txt	1	co17	[730,780]
 0504_2	0504_cal2_cs-co_ch2.txt	2	co17	[755,815]
-0504_2	0504_cal2_cs-co_ch3.txt	3	co17	[555,585]
+0504_2	0504_cal2_cs-co_ch3.txt	3	co17	[565,600]
+0504_2	0504_cal2_cs-co_ch1.txt	1	cs	[425,465]
+0504_2	0504_cal2_cs-co_ch2.txt	2	cs	[435,485]
+0504_2	0504_cal2_cs-co_ch3.txt	3	cs	[365,405]
+0504_2	0504_cal2_cs-co_ch1.txt	1	co33	[820,870]
+0504_2	0504_cal2_cs-co_ch2.txt	2	co33	[860,915]
+0504_2	0504_cal2_cs-co_ch3.txt	3	co33	[610,640]
