@@ -3,6 +3,8 @@ from __future__ import division,print_function
 from pylab import *
 import sys
 import lab4
+import matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm
 
 filename=sys.argv[1]
 
@@ -25,28 +27,33 @@ tutti=arange(0,1200//8)*8
 
 # istogrammi e scatter 2
 
-figure(1).set_tight_layout(True)
-
+figure('c2').set_tight_layout(True)
+clf()
+'''
 subplot(121)
 title("Acquisizioni singole")
 hist(out1,bins=tutti,label="ch1 n=%d"%len(out1),histtype="step")
 hist(out2,bins=tutti,label="ch2 n=%d"%len(out2),histtype="step")
 hist(out3,bins=tutti,label="ch3 n=%d"%len(out3),histtype="step")
 legend(loc=0)
+'''
 
-subplot(122)
 title("Coincidenze a 2")
 hist(out1_2,bins=tutti,label="ch1 c2 n=%d"%len(out1_2),histtype="step")
 hist(out2_2,bins=tutti,label="ch2 c2 n=%d"%len(out2_2),histtype="step")
 if len(out3_3)>0:
     hist(out3_2,bins=tutti,label="ch3 c2 n=%d"%len(out3_2),histtype="step")
-legend(loc=0)
+legend(loc=0,fontsize='small')
 
 
-figure(2).set_tight_layout(True)
+figure('sc2').set_tight_layout(True)
+clf()
 title("Scatter plot coincidenze a 2")
-plot(out1_2,out2_2,linestyle='',marker='.',markersize=1)
+_,_,_,im=plt.hist2d(out1_2,out2_2,bins=tutti,norm=LogNorm(),cmap='jet')
+colorbar(im)
 xlabel("ch1")
 ylabel("ch2")
+xlim(min(out1_2)-5,max(out1_2)+5)
+ylim(min(out2_2)-5,max(out2_2)+10)
 
 show()
