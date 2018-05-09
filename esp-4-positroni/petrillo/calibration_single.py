@@ -126,6 +126,15 @@ def load_records(file='../dati/calibration_single.txt', prepath='../DAQ'):
         dict_by_label[lbl] = [(prepath + '/' + filename[i], channel[i], source[i], cut[i]) for i in idxs]
     return dict_by_label
 
+def find_record(records, label, channel, source):
+    _, channels, sources, _ = np.array(records[label], dtype=object).T
+    idx = np.arange(len(records[label]), dtype=int)[(channels == channel) & (sources == source)]
+    if len(idx) == 0:
+        raise KeyError('No record found for channel {:d} and source {:s}.'.format(channel, source))
+    if len(idx) > 1:
+        raise ValueError('More than one record ({:d}) found for channel {:d} and source {:s}.'.format(len(idx), channel, source))
+    return records[label][idx[0]]
+
 if __name__ == '__main__':
     import sys
     import os
