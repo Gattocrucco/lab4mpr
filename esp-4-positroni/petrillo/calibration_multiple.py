@@ -11,7 +11,7 @@ from uncertainties import unumpy
 # Run calibration_multiple() with the label specified on the
 # command line, and plot the calibration.
 
-def calibration_multiple(label, axcal=None, axres=None):
+def calibration_multiple(label, axcal=None, axres=None, **kw):
     """
     For the calibration labeled <label>, run calibration_single
     on each entry and fit a straight line to the means of the peaks
@@ -40,7 +40,7 @@ def calibration_multiple(label, axcal=None, axres=None):
         # fit
         cut = channels == channel
         function = lambda x, m, q: m * x + q
-        out = lab.fit_curve(function, energy[cut], adc_energy[cut], p0=[1, 1], print_info=1, absolute_sigma=False)
+        out = lab.fit_curve(function, energy[cut], adc_energy[cut], p0=[1, 1], absolute_sigma=False, tags='cal', **kw)
         outputs.append(out.upar)
         
         # plot
@@ -65,7 +65,7 @@ if __name__ == '__main__':
     ax1 = fig.add_subplot(211)
     ax2 = fig.add_subplot(212)
     
-    out = calibration_multiple(label, axcal=ax1, axres=ax2)
+    out = calibration_multiple(label, axcal=ax1, axres=ax2, print_info=1)
 
     ax2.set_xlabel('energia nominale [keV]')
     ax1.set_ylabel('media del picco [digit]')

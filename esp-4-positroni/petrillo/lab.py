@@ -222,6 +222,12 @@ class FitCurveOutput:
         deltax, datay, deltay, fity, then npar shall be specified.
     check : bool
         If True, perform some consistency checks.
+    tags : None or string or list of strings
+        Tags of upar (see upar below). If string, give the same tag
+        to every variable. If list of strings, the length of the list
+        must match the number of parameters. Note that, due to the internal
+        working of the uncertainties module, if the parameters are correlated
+        the tags are given to internal uncorrelated variables.
     
     Members
     -------
@@ -272,7 +278,7 @@ class FitCurveOutput:
         the result may be nonsensical.
     """
     
-    def __init__(self, par=None, cov=None, px=None, pxcov=None, npar=None, datax=None, datay=None, fitx=None, fity=None, deltax=None, deltay=None, chisq=None, method=None, rawoutput=None, check=True, success=True):
+    def __init__(self, par=None, cov=None, px=None, pxcov=None, npar=None, datax=None, datay=None, fitx=None, fity=None, deltax=None, deltay=None, chisq=None, method=None, rawoutput=None, check=True, success=True, tags=None):
         if not (px is None and pxcov is None):
             A = np.array([datax, deltax, datay, deltay, fity], dtype=object)
             Anone = np.array([a is None for a in A], dtype=bool)
@@ -305,7 +311,9 @@ class FitCurveOutput:
         if hasattr(self, 'px') and hasattr(self, 'pxcov'):
             self.upx = uncertainties.correlated_values(self.px, self.pxcov)
         if not (self.par is None) and not (self.cov is None):
-            self.upar = uncertainties.correlated_values(self.par, self.cov)
+            if isinstance(tags, str):
+                tags = [tags] * len(self.par)
+            self.upar = uncertainties.correlated_values(self.par, self.cov, tags=tags)
         
         if deltax is None and not (datax is None) and not (self.fitx is None):
             self.datax = np.asarray(datax)
@@ -700,7 +708,7 @@ def _apply_pfree_par_cov(par, cov, pfree, p0):
     else:
         return par, cov
 
-def fit_curve(f, x, y, dx=None, dy=None, p0=None, pfix=None, bounds=None, absolute_sigma=True, method='auto', print_info=0, full_output=True, check=True, raises=None, **kw):
+def fit_curve(f, x, y, dx=None, dy=None, p0=None, pfix=None, bounds=None, absolute_sigma=True, method='auto', print_info=0, full_output=True, check=True, raises=None, tags=None, **kw):
     """
     Fit a curve in the form:
     y = f(x, *par)
@@ -756,6 +764,8 @@ def fit_curve(f, x, y, dx=None, dy=None, p0=None, pfix=None, bounds=None, absolu
         If True, raise an exception if the fit fails. In some cases,
         an exception is raised even if raises=False. If None, raises
         is set to True if print_info <= 0 and to False if print_info >= 1.
+    tags : None or string or list of strings
+        Names of parameters. See FitCurveOutput for details.
     
     Keyword arguments
     -----------------
@@ -983,7 +993,7 @@ def fit_curve(f, x, y, dx=None, dy=None, p0=None, pfix=None, bounds=None, absolu
         chisq = output.sum_square
         if not absolute_sigma:
             cov *= chisq / (len(x) - len(par))
-        kwargs = dict(par=par, cov=cov, chisq=chisq, check=check, success=success)
+        kwargs = dict(tags=tags, par=par, cov=cov, chisq=chisq, check=check, success=success)
         if full_output:
             kwargs.update(deltay=output.eps, datax=x, datay=y, fity=output.y, rawoutput=output, method=method, check=False)
             # (!) check=False because ODRPACK may return slightly inconsistent fity, deltay; the problem is in ODRPACK itself, not in the wrapper. Anyway, inconsistencies are reasonable, so we just look away.
@@ -1052,7 +1062,7 @@ def fit_curve(f, x, y, dx=None, dy=None, p0=None, pfix=None, bounds=None, absolu
             deltax = fact * deriv * dx**2
             deltay = -fact * dy**2
         par, cov = _apply_pfree_par_cov(par, cov, pfree, p0)
-        kwargs = dict(par=par, cov=cov, chisq=chisq, check=check, success=success)
+        kwargs = dict(tags=tags, par=par, cov=cov, chisq=chisq, check=check, success=success)
         if full_output:
             kwargs.update(deltax=deltax, deltay=deltay, datax=x, datay=y, method=method, rawoutput=output)
         out = FitCurveOutput(**kwargs)
@@ -1096,7 +1106,7 @@ def fit_curve(f, x, y, dx=None, dy=None, p0=None, pfix=None, bounds=None, absolu
             par = px[:len(p0[pfree])]
             pxcov *= chisq / (len(y) - len(par))
         px, pxcov = _apply_pfree_par_cov(px, pxcov, np.concatenate([pfree, np.ones(len(x), dtype=bool)]), np.concatenate([p0, x]))
-        kwargs = dict(px=px, pxcov=pxcov, chisq=chisq, npar=len(p0), check=check, success=success)
+        kwargs = dict(tags=tags, px=px, pxcov=pxcov, chisq=chisq, npar=len(p0), check=check, success=success)
         if full_output:
             kwargs.update(datax=x, datay=y, method=method, rawoutput=output)
         out = FitCurveOutput(**kwargs)
@@ -1230,7 +1240,7 @@ def fit_curve(f, x, y, dx=None, dy=None, p0=None, pfix=None, bounds=None, absolu
             deltax = fact * deriv * dx**2
             deltay = -fact * dy**2
         par, cov = _apply_pfree_par_cov(par, cov, pfree, p0)
-        kwargs = dict(par=par, cov=cov, chisq=chisq, check=check, success=success)
+        kwargs = dict(tags=tags, par=par, cov=cov, chisq=chisq, check=check, success=success)
         if full_output:
             kwargs.update(deltax=deltax, deltay=deltay, datax=x, datay=y, method=method, rawoutput=output)
         out = FitCurveOutput(**kwargs)
@@ -1281,7 +1291,7 @@ def fit_curve(f, x, y, dx=None, dy=None, p0=None, pfix=None, bounds=None, absolu
         if full_output:
             deltay = y - f(x, *par)
         par, cov = _apply_pfree_par_cov(par, cov, pfree, p0)
-        kwargs = dict(par=par, cov=cov, chisq=chisq, check=check, success=success)
+        kwargs = dict(tags=tags, par=par, cov=cov, chisq=chisq, check=check, success=success)
         if full_output:
             kwargs.update(deltay=deltay, datay=y, method=method, rawoutput=output)
         out = FitCurveOutput(**kwargs)
@@ -1327,7 +1337,7 @@ def fit_curve(f, x, y, dx=None, dy=None, p0=None, pfix=None, bounds=None, absolu
         deltay = y - f(x, *par)
         chisq = np.sum((deltay / (1 if dy is None else dy)) ** 2)
         par, cov = _apply_pfree_par_cov(par, cov, pfree, p0)
-        kwargs = dict(par=par, cov=cov, chisq=chisq, check=check, success=success)
+        kwargs = dict(tags=tags, par=par, cov=cov, chisq=chisq, check=check, success=success)
         if full_output:
             kwargs.update(deltay=deltay, datay=y, method=method, rawoutput=output)
         out = FitCurveOutput(**kwargs)
