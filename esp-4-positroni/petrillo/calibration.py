@@ -31,8 +31,10 @@ def calibration(x, input='adc', label='', channel=0):
     if not os.path.exists(cache_file):
         with open(cache_file, 'wb') as file:
             pickle.dump(dict(), file)
-    with open(cache_file, 'rb') as file:
-        cache = pickle.load(file)
+    if not hasattr(calibration, 'cache'):
+        with open(cache_file, 'rb') as file:
+            calibration.cache = pickle.load(file)
+    cache = calibration.cache
 
     key = (label, channel)
     if not key in cache:
