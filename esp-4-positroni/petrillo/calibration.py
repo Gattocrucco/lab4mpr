@@ -1,6 +1,7 @@
 import numpy as np
 import calibration_multiple
 import calibration_single
+from calibration_single import sources
 import os
 import pickle
 
