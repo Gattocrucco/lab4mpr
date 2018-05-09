@@ -28,7 +28,7 @@ ax2 = fig.add_subplot(212)
 for channel in np.unique(channels):
     cut = channels == channel
     function = lambda x, m, q: m * x + q
-    out = lab.fit_curve(function, np.array(energy[cut], dtype=float), unumpy.nominal_values(adc_energy[cut]), dy=unumpy.std_devs(adc_energy[cut]), p0=[1, 1], print_info=1)
+    out = lab.fit_curve(function, energy[cut], adc_energy[cut], p0=[1, 1], print_info=1)
     line, = ax1.plot(energy[cut], function(energy[cut], *out.par))
     color = line.get_color()
     lab4.errorbar(energy[cut], adc_energy[cut], ax=ax1, fmt='.', label='ch{:d}'.format(int(channel)), color=color)

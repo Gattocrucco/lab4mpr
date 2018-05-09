@@ -922,8 +922,8 @@ def fit_curve(f, x, y, dx=None, dy=None, p0=None, pfix=None, bounds=None, absolu
                 dx = udx
     
     if isinstance(y[0], uncertainties.UFloat):
-        y = unumpy.nominal_values(y)
         dy = unumpy.std_devs(y)
+        y = unumpy.nominal_values(y)
     
     ##### METHOD #####
     
@@ -952,6 +952,9 @@ def fit_curve(f, x, y, dx=None, dy=None, p0=None, pfix=None, bounds=None, absolu
     ##### ODRPACK #####
     
     if method == 'odrpack':
+        # odr do not accept arbitrary x
+        x = np.asarray(x, dtype=float)
+        
         # obtain functions
         fcn = model.f_odrpack(len(x))
         fjacb = model.dfdp_odrpack(len(x))
