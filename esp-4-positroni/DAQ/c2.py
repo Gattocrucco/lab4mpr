@@ -44,6 +44,7 @@ hist(out2_2,bins=tutti,label="ch2 c2 n=%d"%len(out2_2),histtype="step")
 if len(out3_3)>0:
     hist(out3_2,bins=tutti,label="ch3 c2 n=%d"%len(out3_2),histtype="step")
 legend(loc=0,fontsize='small')
+yscale('log')
 
 
 figure('sc2').set_tight_layout(True)

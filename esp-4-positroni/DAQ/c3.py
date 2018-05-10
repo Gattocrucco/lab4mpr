@@ -3,6 +3,8 @@ from __future__ import division,print_function
 from pylab import *
 import sys
 import lab4
+import matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm
 
 filename=sys.argv[1]
 ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=lab4.loadtxt(filename,unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
@@ -26,7 +28,7 @@ tutti=arange(0,1200//8)*8
 # istogrammi e scatter 2
 
 figure(1).set_tight_layout(True)
-
+clf()
 subplot(221)
 title("Acquisizioni singole")
 hist(out1,bins=tutti,label="ch1 n=%d"%len(out1),histtype="step")
@@ -53,12 +55,15 @@ legend(loc=0)
 
 subplot(224)
 title("Scatter plot coincidenze a 2")
-plot(out1_2,out2_2,linestyle='',marker='.',markersize=1)
+_,_,_,im=plt.hist2d(out1_2,out2_2,bins=tutti,norm=LogNorm(),cmap='jet')
+colorbar(im)
 xlabel("ch1")
 ylabel("ch2")
+xlim(min(out1_2)-5,max(out1_2)+5)
+ylim(min(out2_2)-5,max(out2_2)+10)
 
 figure(2).set_tight_layout(True)
-
+clf()
 subplot(221)
 title("Coincidenze a 3: CH1 vs CH2")
 plot(out1_3,out2_3,linestyle='',marker='.',markersize=1)
