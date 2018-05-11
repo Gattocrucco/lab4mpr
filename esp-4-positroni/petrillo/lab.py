@@ -1007,8 +1007,9 @@ def fit_curve(f, x, y, dx=None, dy=None, p0=None, pfix=None, bounds=None, absolu
                 print()
             else:
                 print('stopping reason: {}'.format(', '.join(output.stopreason)))
-            print('Result:')
-            print(format_par_cov(par, cov))
+            print('chisq / dof (pvalue) = {:.1f} / {:d} ({:.3g})'.format(out.chisq, out.chisq_dof, out.chisq_pvalue))
+            print('absolute_sigma={}'.format(bool(absolute_sigma)))
+            print(format_par_cov(par, cov, labels=['par[{:d}]'.format(i) for i in range(len(out.par))]))
 
     ##### LINEARIZED ODR #####
 
