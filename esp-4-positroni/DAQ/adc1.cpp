@@ -96,13 +96,14 @@ int main (int argc,  char *argv[]) {
   }
   
   while(1) {
-    //
     CamA=0;
     CamF=8;
+    // test LAM
     ret=CAMAC_read(udev,CamN,CamA,CamF,&CamD,&CamQ,&CamX);
     //printf("---->  CamQ: 0x%lx \n",CamQ);
-    if (ret<0 || CamX==0) printf("Lettura LAM fallita\n");
-    else if (CamQ==1) {
+    if (ret<0 || CamX==0) {
+      printf("Lettura LAM fallita\n");
+    } else if (CamQ==1) {
       NEvt++;
       printf("(%5d) ",NEvt);
       //      fprintf(OutF,"Event: %i \n",NEvt);
@@ -141,7 +142,7 @@ int main (int argc,  char *argv[]) {
 	    CamF=9;
 	    ret=CAMAC_read(udev,CamN,CamA,CamF,&CamD,&CamQ,&CamX);
 	    if (ret<0 || CamX==0) printf("Clear fallito\n");
-      usleep(sleep_time);
+      //usleep(sleep_time);
     }
     // se non sleepi partono dei "no LAM" fasulli
     usleep(sleep_time);//<<<---

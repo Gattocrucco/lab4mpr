@@ -37,6 +37,11 @@ tdc-ini: tdc-ini.cpp
 	$(CXXLIBS) $(CXXLIBDIRS) -o tdc-ini
 	@echo "Done"
 
+tdc1: tdc1.cpp
+	$(CXX) $(CXXFLAGS) tdc1.cpp \
+	$(CXXLIBS) $(CXXLIBDIRS) -o tdc1
+	@echo "Done"
+
 clean:
 	$(RM) $(OBJ) 
 

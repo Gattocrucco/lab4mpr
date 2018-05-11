@@ -1,0 +1,4729 @@
+Event: 1 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 2 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 3 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 4 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 5 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 6 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 7 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 8 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 9 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 10 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 11 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 12 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 13 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 14 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 15 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 16 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 17 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 18 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 19 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 20 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 21 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 22 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 23 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 24 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 25 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 26 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 27 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 28 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 29 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 30 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 31 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 32 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 33 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 34 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 35 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 36 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 37 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 38 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 39 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 40 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 41 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 42 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 43 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 44 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 45 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 46 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 47 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 48 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 49 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 50 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 51 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 52 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 53 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 54 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 55 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 56 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 57 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 58 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 59 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 60 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 61 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 62 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 63 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 64 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 65 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 66 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 67 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 68 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 69 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 70 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 71 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 72 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 73 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 74 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 75 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 76 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 77 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 78 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 79 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 80 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 81 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 82 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 83 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 84 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 85 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 86 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 87 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 88 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 89 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 90 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 91 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 92 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 93 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 94 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 95 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 96 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 97 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 98 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 99 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 100 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 101 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 102 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 103 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 104 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 105 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 106 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 107 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 108 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 109 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 110 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 111 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 112 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 113 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 114 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 115 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 116 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 117 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 118 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 119 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 120 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 121 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 122 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 123 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 124 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 125 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 126 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 127 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 128 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 129 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 130 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 131 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 132 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 133 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 134 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 135 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 136 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 137 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 138 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 139 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 140 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 141 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 142 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 143 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 144 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 145 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 146 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 147 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 148 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 149 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 150 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 151 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 152 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 153 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 154 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 155 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 156 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 157 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 158 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 159 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 160 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 161 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 162 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 163 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 164 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 165 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 166 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 167 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 168 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 169 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 170 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 171 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 172 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 173 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 174 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 175 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 176 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 177 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 178 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 179 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 180 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 181 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 182 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 183 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 184 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 185 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 186 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 187 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 188 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 189 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 190 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 191 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 192 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 193 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 194 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 195 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 196 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 197 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 198 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 199 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 200 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 201 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 202 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 203 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 204 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 205 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 206 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 207 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 208 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 209 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 210 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 211 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 212 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 213 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 214 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 215 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 216 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 217 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 218 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 219 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 220 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 221 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 222 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 223 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 224 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 225 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 226 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 227 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 228 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 229 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 230 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 231 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 232 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 233 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 234 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 235 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 236 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 237 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 238 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 239 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 240 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 241 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 242 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 243 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 244 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 245 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 246 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 247 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 248 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 249 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 250 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 251 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 252 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 253 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 254 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 255 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 256 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 257 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 258 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 259 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 260 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 261 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 262 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 263 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 264 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 265 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 266 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 267 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 268 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 269 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 270 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 271 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 272 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 273 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 274 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 275 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 276 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 277 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 278 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 279 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 280 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 281 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 282 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 283 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 284 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 285 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 286 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 287 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 288 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 289 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 290 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 291 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 292 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 293 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 294 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 295 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 296 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 297 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 298 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 299 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 300 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 301 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 302 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 303 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 304 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 305 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 306 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 307 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 308 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 309 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 310 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 311 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 312 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 313 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 314 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 315 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 316 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 317 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 318 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 319 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 320 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 321 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 322 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 323 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 324 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 325 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 326 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 327 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 328 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 329 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 330 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 331 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 332 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 333 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 334 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 335 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 336 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 337 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 338 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 339 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 340 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 341 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 342 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 343 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 344 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 345 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 346 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 347 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 348 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 349 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 350 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 351 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 352 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 353 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 354 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 355 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 356 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 357 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 358 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 359 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 360 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 361 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 362 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 363 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 364 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 365 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 366 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 367 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 368 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 369 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 370 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 371 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 372 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 373 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 374 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 375 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 376 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 377 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 378 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 379 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 380 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 381 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 382 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 383 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 384 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 385 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 386 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 387 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 388 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 389 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 390 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 391 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 392 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 393 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 394 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 395 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 396 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 397 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 398 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 399 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 400 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 401 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 402 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 403 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 404 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 405 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 406 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 407 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 408 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 409 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 410 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 411 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 412 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 413 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 414 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 415 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 416 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 417 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 418 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 419 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 420 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 421 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 422 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 423 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 424 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 425 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 426 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 427 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 428 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 429 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 430 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 431 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 432 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 433 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 434 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 435 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 436 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 437 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 438 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 439 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 440 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 441 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 442 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 443 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 444 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 445 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 446 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 447 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 448 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 449 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 450 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 451 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 452 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 453 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 454 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 455 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 456 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 457 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 458 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 459 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 460 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 461 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 462 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 463 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 464 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 465 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 466 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 467 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 468 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 469 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 470 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 471 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 472 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 473 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 474 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 475 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 476 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 477 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 478 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 479 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 480 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 481 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 482 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 483 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 484 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 485 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 486 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 487 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 488 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 489 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 490 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 491 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 492 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 493 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 494 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 495 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 496 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 497 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 498 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 499 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 500 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 501 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 502 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 503 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 504 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 505 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 506 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 507 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 508 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 509 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 510 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 511 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 512 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 513 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 514 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 515 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 516 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 517 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 518 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 519 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 520 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 521 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 522 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 523 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 524 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 525 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 526 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 527 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 528 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 529 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 530 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 531 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 532 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 533 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 534 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 535 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 536 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 537 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 538 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 539 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 540 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 541 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 542 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 543 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 544 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 545 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 546 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 547 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 548 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 549 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 550 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 551 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 552 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 553 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 554 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 555 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 556 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 557 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 558 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 559 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 560 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 561 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 562 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 563 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 564 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 565 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 566 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 567 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 568 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 569 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 570 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 571 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 572 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 573 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 574 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 575 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 576 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 577 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 578 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 579 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 580 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 581 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 582 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 583 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 584 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 585 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 586 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 587 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 588 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 589 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 590 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 591 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 592 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 593 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 594 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 595 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 596 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 597 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 598 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 599 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 600 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 601 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 602 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 603 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 604 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 605 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 606 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 607 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 608 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 609 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 610 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 611 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 612 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 613 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 614 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 615 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 616 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 617 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 618 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 619 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 620 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 621 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 622 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 623 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 624 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 625 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 626 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 627 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 628 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 629 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 630 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 631 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 632 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 633 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 634 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 635 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 636 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 637 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 638 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 639 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 640 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 641 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 642 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 643 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 644 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 645 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 646 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 647 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 648 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 649 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 650 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 651 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 652 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 653 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 654 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 655 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 656 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 657 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 658 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 659 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 660 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 661 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 662 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 663 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 664 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 665 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 666 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 667 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 668 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 669 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 670 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 671 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 672 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 673 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 674 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 675 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 676 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 677 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 678 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 679 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 680 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 681 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 682 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 683 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 684 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 685 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 686 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 687 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 688 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 689 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 690 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 691 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 692 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 693 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 694 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 695 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 696 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 697 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 698 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 699 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 700 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 701 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 702 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 703 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 704 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 705 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 706 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 707 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 708 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 709 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 710 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 711 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 712 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 713 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 714 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 715 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 716 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 717 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 718 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 719 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 720 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 721 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 722 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 723 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 724 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 725 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 726 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 727 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 728 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 729 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 730 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 731 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 732 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 733 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 734 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 735 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 736 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 737 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 738 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 739 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 740 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 741 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 742 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 743 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 744 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 745 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 746 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 747 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 748 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 749 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 750 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 751 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 752 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 753 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 754 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 755 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 756 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 757 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 758 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 759 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 760 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 761 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 762 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 763 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 764 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 765 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 766 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 767 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 768 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 769 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 770 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 771 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 772 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 773 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 774 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 775 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 776 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 777 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 778 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 779 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 780 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 781 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 782 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 783 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 784 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 785 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 786 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 787 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 788 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 789 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 790 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 791 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 792 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 793 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 794 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 795 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 796 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 797 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 798 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 799 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 800 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 801 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 802 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 803 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 804 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 805 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 806 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 807 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 808 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 809 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 810 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 811 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 812 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 813 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 814 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 815 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 816 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 817 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 818 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 819 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 820 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 821 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 822 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 823 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 824 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 825 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 826 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 827 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 828 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 829 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 830 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 831 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 832 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 833 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 834 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 835 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 836 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 837 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 838 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 839 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 840 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 841 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 842 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 843 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 844 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 845 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 846 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 847 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 848 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 849 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 850 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 851 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 852 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 853 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 854 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 855 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 856 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 857 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 858 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 859 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 860 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 861 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 862 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 863 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 864 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 865 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 866 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 867 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 868 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 869 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 870 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 871 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 872 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 873 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 874 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 875 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 876 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 877 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 878 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 879 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 880 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 881 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 882 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 883 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 884 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 885 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 886 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 887 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 888 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 889 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 890 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 891 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 892 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 893 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 894 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 895 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 896 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 897 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 898 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 899 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 900 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 901 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 902 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 903 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 904 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 905 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 906 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 907 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 908 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 909 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 910 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 911 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 912 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 913 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 914 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 915 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 916 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 917 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 918 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 919 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 920 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 921 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 922 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 923 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 924 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 925 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 926 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 927 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 928 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 929 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 930 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 931 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 932 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 933 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 934 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 935 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 936 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 937 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 938 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 939 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 940 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 941 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 942 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 943 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 944 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 945 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
+, CH  3: ( ) D=4
+Event: 946 
+, CH  0: ( ) D=4
+, CH  1: ( ) D=4
+, CH  2: ( ) D=4
