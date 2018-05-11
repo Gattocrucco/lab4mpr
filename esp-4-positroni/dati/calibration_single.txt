@@ -27,3 +27,12 @@
 0504_2	0504_cal2_cs-co_ch1.txt	1	co33	[820,870]
 0504_2	0504_cal2_cs-co_ch2.txt	2	co33	[860,915]
 0504_2	0504_cal2_cs-co_ch3.txt	3	co33	[610,640]
+######################
+0508	0508_cal_na_ch1_ch2.txt	1	na	[790,840]
+0508	0508_cal_na_ch1_ch2.txt	2	na	[760,820]
+0508	0508_cal_co-cs_ch1_ch2.txt	1	cs	[430,470]
+0508	0508_cal_co-cs_ch1_ch2.txt	2	cs	[380,415]
+0508	0508_cal_co-cs_ch1_ch2.txt	1	co17	[730,780]
+0508	0508_cal_co-cs_ch1_ch2.txt	2	co17	[700,750]
+0508	0508_cal_co-cs_ch1_ch2.txt	1	co33	[820,870]
+0508	0508_cal_co-cs_ch1_ch2.txt	2	co33	[805,855]

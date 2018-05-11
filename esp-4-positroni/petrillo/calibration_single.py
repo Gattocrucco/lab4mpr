@@ -9,9 +9,8 @@ import lab4
 # function load_records():
 # Load the file ../dati/calibration_single.txt as a dictionary.
 ## As script:
-# Specify an ADC file on the command line
-# and run calibration_single() on that file,
-# using the first entry containing that file in ../dati/calibration_single.txt.
+# Specify <label>, <channel>, <source> on the command line,
+# the script runs calibration_single() on that file and plot the result.
 
 # dictionary mapping source label to energy in keV
 sources = {
@@ -95,6 +94,7 @@ def calibration_single(filename, channel, source, cut, ax=None, **kw):
         ax.set_xlabel('canale ADC')
         ax.set_ylabel('conteggio')
         ax.legend(loc='best')
+        ax.set_yscale('log')
     
     return (sources[source],) + ((None, None) if out is None else tuple(out.upar[1:]))
 
@@ -141,34 +141,25 @@ if __name__ == '__main__':
     from matplotlib import pyplot as plt
     
     # get filename from command line
-    if len(sys.argv) < 2:
-        raise ValueError('Specify filename on the command line.')
-    filename = sys.argv[1]
-    if not os.path.exists(filename):
-        raise RuntimeError('File `{}` does not exist.'.format(filename))
+    if len(sys.argv) != 4:
+        raise ValueError('Specify <label>, <channel>, <source> on the command line.')
+    label = sys.argv[1]
+    channel = int(sys.argv[2])
+    source = sys.argv[3]
     
     # find record in calibration file
     records = load_records()
-    found = False
-    for key in records.keys():
-        for args in records[key]:
-            if args[0] == filename:
-                found = args
-                break
-        if found:
-            break
-    if not found:
-        raise RuntimeError('File `{}` not found in records.')
-    args = found
+    record = find_record(records, label, channel, source)
     
     # prepare figure
     fig = plt.figure('calibration-single')
     fig.clf()
     fig.set_tight_layout(True)
     ax = fig.add_subplot(111)
+    ax.set_title('calibrazione {} ch{} {}'.format(label, channel, source))
     
     # run calibration
-    energy, adc_energy, adc_sigma = calibration_single(*args, ax=ax, print_info=1)
+    energy, adc_energy, adc_sigma = calibration_single(*record, ax=ax, print_info=1)
     
     fig.show()
     
