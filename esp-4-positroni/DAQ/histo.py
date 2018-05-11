@@ -12,7 +12,7 @@ out1=ch1[tr1>500]
 out2=ch2[(tr2>500)]
 out3=ch3[(tr3>500)]
 
-tuttivecchio=arange(0,max(tr1))
+#tuttivecchio=arange(0,max(tr1))
 tutti=arange(0,1200//8)*8
 
 figure('histo')
@@ -22,5 +22,6 @@ hist(out1,bins=tutti,label="ch1 n=%d"%len(out1),histtype="step")
 hist(out2,bins=tutti,label="ch2 n=%d"%len(out2),histtype="step")
 hist(out3,bins=tutti,label="ch3 n=%d"%len(out3),histtype="step")
 legend(loc=0)
+yscale('log')
 
 show()
