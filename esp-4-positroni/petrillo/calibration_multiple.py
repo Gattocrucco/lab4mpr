@@ -14,8 +14,8 @@ from uncertainties import unumpy
 def calibration_multiple(label, axcal=None, axres=None, **kw):
     """
     For the calibration labeled <label>, run calibration_single
-    on each entry and fit a straight line to the means of the peaks
-    with absolute_sigma=False. Optionally plot.
+    on each entry and fit a straight line to the means of the peaks.
+    Optionally plot.
     
     Returns
     -------
@@ -40,7 +40,7 @@ def calibration_multiple(label, axcal=None, axres=None, **kw):
         # fit
         cut = channels == channel
         function = lambda x, m, q: m * x + q
-        out = lab.fit_curve(function, energy[cut], adc_energy[cut], p0=[1, 1], absolute_sigma=False, tags='cal', **kw)
+        out = lab.fit_curve(function, energy[cut], adc_energy[cut], p0=[1, 1], tags='cal', **kw)
         outputs.append(out.upar)
         
         # plot
