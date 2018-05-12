@@ -1,11 +1,12 @@
 ## EVOLUZIONE TEMPORALE DEGLI ISTOGRAMMI
 from pylab import *
-from lab4 import loadtxt as load
+import lab4
+import lab
 
 
-file="0504_3gamma"
+file="0503_stab"
 cartella="../../DAQ/"
-ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=load(cartella+file+".txt",unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
+ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=lab4.loadtxt(cartella+file+".txt",unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
 
 pezzi=5
 chname='ch1' # sono ammessi: ch1,ch2,ch3 
@@ -22,7 +23,7 @@ ts3=ts[tr3>500]
 figure('tempo')
 clf()
 
-title("Scalibrazione {}".format(chname))
+title("Scalibrazione del %s in %s"%(chname,file))
 xlabel("valore ADC [digit]")
 ylabel("conteggi")
 
@@ -33,6 +34,8 @@ elif chname=='ch2':
     canale=out2; cant=ts2
 else:
     canale=out3; cant=ts3
+    
+outputs=[]
 
 for j in range(pezzi):
     slice=canale[int((j/pezzi)*len(canale)) :int(((j+1)/pezzi)*len(canale))]
@@ -42,9 +45,46 @@ for j in range(pezzi):
     else:
         tempo=(max(cant)-ts[0])/3600
         
-    hist(slice,bins=arange(0,1200//8)*8,label='$\Delta t$=%.1f ore'%tempo,histtype='step')
-    
+    counts,edges=histogram(slice,bins=arange(0,1200//8)*8)
+    line, = lab4.bar(edges, counts, label='$\Delta t$=%.1f ore'%tempo)
+    color=line.get_color()
     legend()
+    
+    
+    # fit
+    def gauss(x, peak, mean, sigma):
+        return peak * np.exp(-(x - mean) ** 2 / sigma ** 2)
+    
+    
+    x = (edges[1:] + edges[:-1]) / 2
+    
+    # picchi
+    
+    for i in range(2):
+        if i==0:
+            y=x[x<500]
+            count=counts[x<500]
+        else:
+            y=x[x>500]
+            count=counts[x>500]
+    
+        p0 = [1] * 3
+        argmax = np.argmax(count)
+        # initial parameters
+        p0[0] = count[argmax] # peak
+        p0[1] = y[argmax] # mean
+        p0[2] = 50 # sigma
+        cut = (count > count[argmax] / 3) & (y>350)
+        if np.sum(cut) > 1:
+            out = lab.fit_curve(gauss, y[cut], count[cut], p0=p0, dy=np.sqrt(count)[cut], print_info=1)
+            outputs.append(out)
+        else:
+            outputs.append(None)
+        
+        # plot
+        if not outputs[-1] is None:
+            xspace = np.linspace(np.min(y[cut]), np.max(y[cut]), 1000)
+            plot(xspace, gauss(xspace, *out.par), '--',color=color)
     
 minorticks_on()
 show()
