@@ -1,4 +1,2 @@
 # file	# calibration	# cut beta ch1	# cut neon ch1	# cut beta ch2	# cut neon ch2
-0504_c3_gate550.txt	0504_1	[385,450]	[930,1010]	[380,440]	[940,1020]
-0504_c3_v2.txt	0504_2	[380,440]	[940,1020]	[370,430]	[930,1010]
 0508_electron_mass_c2.txt	0508	[330,390]	[775,840]	[260,310]	[750,810]
