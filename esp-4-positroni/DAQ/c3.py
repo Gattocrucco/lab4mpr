@@ -18,9 +18,12 @@ out1_2=ch1[(tr1>500) & (c2>500)]
 out2_2=ch2[(tr2>500) & (c2>500)]
 out3_2=ch3[(tr3>500) & (c2>500)]
 
-out1_3=ch1[(tr1>500) & (c3>500)]
-out2_3=ch2[(tr2>500) & (c3>500)]
-out3_3=ch3[(tr3>500) & (c3>500)]
+#c3 = (tr1 > 500) & (tr2 > 500) & (tr3 > 500)
+c3 = c3 > 500
+
+out1_3=ch1[c3]
+out2_3=ch2[c3]
+out3_3=ch3[c3]
 
 #tuttivecchio=arange(0,max(tr1))
 tutti=arange(0,1200//8)*8
@@ -44,7 +47,7 @@ if len(out3_3)>0:
     hist(out3_2,bins=tutti,label="ch3 c2 n=%d"%len(out3_2),histtype="step")
 legend(loc=0)
 
-
+subplot(223)
 title("Coincidenze a 3")
 hist(out1_3,bins=tutti,label="ch1 c3 n=%d"%len(out1_3),histtype="step")
 hist(out2_3,bins=tutti,label="ch2 c3 n=%d"%len(out2_3),histtype="step")
