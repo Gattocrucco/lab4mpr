@@ -4,7 +4,7 @@ import gvar
 import lab4
 import matplotlib.pyplot as plt
 
-def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=None, print_info=False):
+def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=None, print_info=False, plot_kw={}, manual_p0={}):
     """
     Fit gaussian peaks on a histogram with background.
     
@@ -16,7 +16,7 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
         Values in the bins.
     cut : array or tuple or None
         Boolean array selecting certain bins with same shape as hist,
-        or tuple of 2 elements to select an interval in the bin centers.
+        or tuple or list of 2 elements to select an interval in the bin centers.
     npeaks : integer >= 1
         Number of gaussian peaks to fit.
     bkg : one of None, 'exp'
@@ -44,49 +44,62 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
     
     if cut is None:
         cut = np.ones(x.shape, dtype=bool)
-    elif isinstance(cut, tuple) and len(cut) == 2:
+    elif (isinstance(cut, tuple) or isinstance(cut, list)) and len(cut) == 2:
         cut = (cut[0] <= x) & (x <= cut[1])
     
     # initial parameters
-    norm = np.sum(gvar.mean(hist)[cut] * np.diff(bins)[cut]) / npeaks
-    mean = np.mean(x[cut])
-    sigma = np.std(x[cut])
+    norm = np.sum(gvar.mean(y)[cut] * np.diff(bins)[cut]) / npeaks
+    mean = np.linspace(np.min(x[cut]), np.max(x[cut]), npeaks + 2)[1:-1]
+    sigma = (np.max(x[cut]) - np.min(x[cut])) / npeaks / 8
     
     peak_label = ['peak{:d}'.format(i + 1) for i in range(npeaks)]
     p0 = {}
     for i in range(npeaks):
-        p0[peak_label[i]] = [np.log(norm), mean, sigma]
+        p0[peak_label[i] + '_lognorm'] = np.log(norm)
+        p0[peak_label[i] + '_mean'] = mean[i]
+        p0[peak_label[i] + '_sigma'] = sigma
     if bkg == 'exp':
-        center = mean
-        p0['log_exp_ampl'] = 0
-        p0['log_exp_length'] = np.log(sigma)
+        center = np.min(x[cut])
+        p0['log_exp_norm'] = np.log(norm / 10)
+        p0['log_exp_scale'] = np.log(np.max(x[cut]) - np.min(x[cut]))
     elif bkg != None:
         raise KeyError(bkg)
+    
+    for key in manual_p0:
+        if key in p0:
+            p0[key] = manual_p0[key]
     
     # fit
     def fcn_comp(x, p):
         ans = {}
         for i in range(npeaks):
-            lognorm, mean, sigma = p[peak_label[i]]
-            norm = gvar.exp(lognorm)
+            norm = gvar.exp(p[peak_label[i] + '_lognorm'])
+            mean = p[peak_label[i] + '_mean']
+            sigma = p[peak_label[i] + '_sigma']
             ans[peak_label[i]] = norm / (np.sqrt(2 * np.pi) * sigma) * gvar.exp(-1/2 * ((x - mean) / sigma) ** 2)
         if bkg == 'exp':
-            ampl = gvar.exp(p['log_exp_ampl'])
-            length = gvar.exp(p['log_exp_length'])
-            ans['bkg'] = ampl * gvar.exp(-(x - center) / length)
+            norm = gvar.exp(p['log_exp_norm'])
+            scale = gvar.exp(p['log_exp_scale'])
+            ans['bkg'] = norm * 1/scale * gvar.exp(-(x - center) / scale)
         return ans
         
     def fcn(x, p):
         return sum(list(fcn_comp(x, p).values()))
     
-    fit = lsqfit.nonlinear_fit(data=(x[cut], y[cut]), p0=p0, fcn=fcn, debug=True)
-    success = (fit.error is None) and (fit.stopping_criterion > 0)
+    try:
+        fit = lsqfit.nonlinear_fit(data=(x[cut], y[cut]), p0=p0, fcn=fcn, debug=False)
+    except:
+        if not ax is None:
+            xspace = np.linspace(np.min(x[cut]), np.max(x[cut]), 100)
+            ax.plot(xspace, fcn(xspace, p0), label='p0', **plot_kw)
+        raise
+    success = (fit.error is None) and (fit.stopping_criterion > 0)        
     
     # report
     if print_info:
         if not success:
-            print('fit failed! error message: {}'.format(fit.error))
-        print(fit.format(maxline=True))
+            print('fit failed!'.format(fit.error))
+        print(fit.format())
     
     # TODO absolute_sigma=False
     if not absolute_sigma:
@@ -95,22 +108,24 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
     
     # plot
     if not ax is None:
-        lab4.bar(bins, gvar.mean(hist), label='dati')
+        # lab4.bar(bins, gvar.mean(y), label='dati', ax=ax, **plot_kw)
         xspace = np.linspace(np.min(x[cut]), np.max(x[cut]), 100)
-        ax.plot(xspace, fcn(xspace, fit.pmean), label='fit{}'.format('' if success else ' (failed!)'))
+        ax.plot(xspace, fcn(xspace, fit.pmean), label='fit{}'.format('' if success else ' (failed!)'), **plot_kw)
         ycomp = fcn_comp(xspace, fit.pmean)
         for i in range(npeaks):
-            ax.plot(xspace, ycomp[peak_label[i]], linestyle='--', label=peak_label[i])
-        ax.plot(xspace, ycomp['bkg'], linestyle='--', label='background')
+            ax.plot(xspace, ycomp[peak_label[i]], linestyle='--', label=peak_label[i], **plot_kw)
+        if not bkg is None:
+            ax.plot(xspace, ycomp['bkg'], linestyle='--', label='background', **plot_kw)
         if not success:
-            ax.plot(xspace, fcn(xspace, fit.p0), label='p0')
+            ax.plot(xspace, fcn(xspace, fit.p0), label='p0', **plot_kw)
     
     # output
     inputs = dict(data=y[cut])
     outputs = {}
     for i in range(npeaks):
-        lognorm, mean, sigma = fit.p[peak_label[i]]
-        norm = gvar.exp(lognorm)
+        norm = gvar.exp(fit.p[peak_label[i] + '_lognorm'])
+        mean = fit.p[peak_label[i] + '_mean']
+        sigma = fit.p[peak_label[i] + '_sigma']
         outputs[peak_label[i] + '_norm'] = norm
         outputs[peak_label[i] + '_mean'] = mean
         outputs[peak_label[i] + '_sigma'] = sigma

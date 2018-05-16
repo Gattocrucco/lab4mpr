@@ -8,7 +8,7 @@ import lab4
 fig = plt.figure('mass')
 fig.clf()
 fig.set_tight_layout(True)
-axs = fig.subplots(3, 3, sharex='col')
+axs = fig.subplots(3, 3)
 
 scaler = dict(
     ch1=dict(
@@ -60,6 +60,8 @@ cut = dict(
 minlength = 1150
 bins = np.arange(minlength + 1)
 
+input_var = {}
+
 for channel in [1, 2, 3]:
     label = 'ch{:d}'.format(channel)
     
@@ -67,9 +69,11 @@ for channel in [1, 2, 3]:
     filename = '../DAQ/0515_noise_{:s}{:s}.txt'.format(label, '_conbarattolo' if channel == 1 else '')
     samples, = lab4.loadtxt(filename, usecols=(0,), unpack=True, dtype='uint16')
     hist = np.bincount(samples, minlength=minlength)
+    hist = gvar.gvar(hist, np.sqrt(hist))
     rate_noise = hist * (scaler[label]['noise'][0] / len(samples)) / (scaler[label]['noise'][1] / 1000)
-    rate_noise = gvar.gvar(rate_noise, np.sqrt(rate_noise))
+    input_var[label + '_noise'] = hist
     
+    peaks = {}
     for source_idx in range(3):
         source = ['na', 'co', 'cs'][source_idx]
         ax = axs[channel - 1][source_idx]
@@ -78,22 +82,47 @@ for channel in [1, 2, 3]:
         filename = '../DAQ/0515_{:s}_{:s}.txt'.format(source, label)
         samples, = lab4.loadtxt(filename, usecols=(0,), unpack=True, dtype='uint16')
         hist = np.bincount(samples, minlength=minlength)
+        hist = gvar.gvar(hist, np.sqrt(hist))
         rate = hist * (scaler[label][source][0] / len(samples)) / (scaler[label][source][1] / 1000)
-        rate = gvar.gvar(rate, np.sqrt(rate))
+        input_var['{:s}_{:s}'.format(label, source)] = hist
+        corr_rate = rate - rate_noise
         
-        # # fit
-        # if source == 'na':
-        #     cut_margins = cut[label]['nabeta']
-        #     outputs, inputs = fit_peak.fit_peak(bins, cut=cut_margins)
-        #
         # plot
-        lab4.bar(bins, gvar.mean(rate), ax=ax, label=label + ' ' + source)
-        lab4.bar(bins, gvar.mean(rate_noise), ax=ax, label='fondo')
+        ax.errorbar(bins[:-1], gvar.mean(corr_rate), yerr=gvar.sdev(corr_rate), fmt=',', label=label + ' ' + source)
+        # lab4.bar(bins, gvar.mean(rate_noise), ax=ax, label='fondo')
         ax.set_yscale('log')
-        ax.legend(loc='upper right', fontsize='small')
         if source == 'na':
             ax.set_ylabel('rate [s$^{-1}$]')
         if channel == 3:
             ax.set_xlabel('canale ADC')
-    
+
+        # fit
+        kw = dict(ax=ax, plot_kw=dict(scaley=False), print_info=1)
+        if kw['print_info']:
+            print('_________{:s}_{:s}_________'.format(label, source))
+        if source == 'na':
+            cut_margins = cut[label]['nabeta']
+            outputs, inputs = fit_peak.fit_peak(bins, corr_rate, cut=cut_margins, bkg='exp', **kw)
+            peaks['nabeta'] = outputs['peak1_mean']
+            
+            cut_margins = cut[label]['nagamma']
+            outputs, inputs = fit_peak.fit_peak(bins, corr_rate, cut=cut_margins, bkg='exp', **kw)
+            peaks['nagamma'] = outputs['peak1_mean']
+        elif source == 'co':
+            cut_margins = cut[label]['co']
+            mean1 = cut_margins[0] + (cut_margins[1] - cut_margins[0]) * 1/3
+            mean2 = cut_margins[0] + (cut_margins[1] - cut_margins[0]) * 2/3
+            manual_p0 = {}#dict(peak1_mean=mean1, peak2_mean=mean2, peak1_sigma=10, peak2_sigma=10)
+            outputs, inputs = fit_peak.fit_peak(bins, corr_rate, npeaks=2, cut=cut_margins, bkg=None, manual_p0=manual_p0, **kw)
+            peak12 = [outputs['peak1_mean'], outputs['peak2_mean']]
+            idx = np.argsort(gvar.mean(peak12))
+            peaks['co117'] = peak12[idx[0]]
+            peaks['co133'] = peak12[idx[1]]
+        elif source == 'cs':
+            cut_margins = cut[label]['cs']
+            outputs, inputs = fit_peak.fit_peak(bins, corr_rate, cut=cut_margins, bkg='exp', **kw)
+            peaks['cs'] = outputs['peak1_mean']
+        
+        ax.legend(loc='upper right', fontsize='small')
+
 fig.show()
