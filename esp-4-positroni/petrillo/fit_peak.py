@@ -62,7 +62,7 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
         center = np.min(x[cut])
         scale = np.max(x[cut]) - np.min(x[cut])
         p0['log_exp_ampl'] = np.log(norm / 10) / scale
-        p0['exp_scale'] = scale
+        p0['exp_lambda'] = 1 / scale
     elif bkg != None:
         raise KeyError(bkg)
     
@@ -80,8 +80,8 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
             ans[peak_label[i]] = norm / (np.sqrt(2 * np.pi) * sigma) * gvar.exp(-1/2 * ((x - mean) / sigma) ** 2)
         if bkg == 'exp':
             ampl = gvar.exp(p['log_exp_ampl'])
-            scale = p['exp_scale']
-            ans['bkg'] = ampl * gvar.exp(-(x - center) / scale)
+            lamda = p['exp_lambda']
+            ans['bkg'] = ampl * gvar.exp(-(x - center) * lamda)
         return ans
         
     def fcn(x, p):
