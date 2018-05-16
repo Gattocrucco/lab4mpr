@@ -14,7 +14,7 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
         Bins edges.
     hist : array of gvar
         Values in the bins.
-    cut : array or tuple or None
+    cut : array or None
         Boolean array selecting certain bins with same shape as hist,
         or tuple or list of 2 elements to select an interval in the bin centers.
     npeaks : integer >= 1
@@ -60,8 +60,9 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
         p0[peak_label[i] + '_sigma'] = sigma
     if bkg == 'exp':
         center = np.min(x[cut])
-        p0['log_exp_norm'] = np.log(norm / 10)
-        p0['log_exp_scale'] = np.log(np.max(x[cut]) - np.min(x[cut]))
+        scale = np.max(x[cut]) - np.min(x[cut])
+        p0['log_exp_ampl'] = np.log(norm / 10) / scale
+        p0['exp_scale'] = scale
     elif bkg != None:
         raise KeyError(bkg)
     
@@ -78,9 +79,9 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
             sigma = p[peak_label[i] + '_sigma']
             ans[peak_label[i]] = norm / (np.sqrt(2 * np.pi) * sigma) * gvar.exp(-1/2 * ((x - mean) / sigma) ** 2)
         if bkg == 'exp':
-            norm = gvar.exp(p['log_exp_norm'])
-            scale = gvar.exp(p['log_exp_scale'])
-            ans['bkg'] = norm * 1/scale * gvar.exp(-(x - center) / scale)
+            ampl = gvar.exp(p['log_exp_ampl'])
+            scale = p['exp_scale']
+            ans['bkg'] = ampl * gvar.exp(-(x - center) / scale)
         return ans
         
     def fcn(x, p):
