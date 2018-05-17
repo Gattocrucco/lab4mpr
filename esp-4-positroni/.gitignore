@@ -1,6 +1,7 @@
 *~
 DAQ/adc1
 DAQ/*-binary.txt
+DAQ/.goutputstream*
 0426_1701
 0426_1719
 0426_megapurga
@@ -15,3 +16,4 @@ DAQ/*-binary.txt
 04261647prova
 *.pickle
 DAQ/0510_effi_bbn.txt
+DAQ/0515_stab_ch1.txt

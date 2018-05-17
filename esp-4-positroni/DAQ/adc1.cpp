@@ -11,7 +11,7 @@
 #include <string.h>
 #include <iostream>
 
-const int sleep_time = 100000; // us
+const int sleep_time = 1000; // us
 
 using namespace std;
 

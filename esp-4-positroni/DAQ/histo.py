@@ -18,8 +18,11 @@ tutti=arange(0,max(ch1))
 figure('histo')
 clf()
 
-hist(out1,bins=tutti,label="ch1 n=%d"%len(out1),histtype="step")
-#hist(out2,bins=tutti,label="ch2 n=%d"%len(out2),histtype="step")
+t_slice = 1
+
+for m in arange(0,t_slice):
+  hist(out1[m*len(ch1)//t_slice:(m+1)*len(ch1)//t_slice],bins=tutti,label="ch1 slice=%d"%m,histtype="step")
+#hist(out1,bins=tutti,label="ch1 n=%d"%len(out1),histtype="step")
 #hist(out3,bins=tutti,label="ch3 n=%d"%len(out3),histtype="step")
 legend(loc=0)
 yscale('log')
