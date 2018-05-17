@@ -61,7 +61,8 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
     if bkg == 'exp':
         center = np.min(x[cut])
         scale = np.max(x[cut]) - np.min(x[cut])
-        p0['log_exp_ampl'] = np.log(norm / 10) / scale
+        ampl = np.mean(gvar.mean(y[cut])) / 5
+        p0['log_exp_ampl'] = np.log(ampl)
         p0['exp_lambda'] = 1 / scale
     elif bkg != None:
         raise KeyError(bkg)
@@ -118,7 +119,8 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
         if not bkg is None:
             ax.plot(xspace, ycomp['bkg'], linestyle='--', label='background', **plot_kw)
         if not success:
-            ax.plot(xspace, fcn(xspace, fit.p0), label='p0', **plot_kw)
+            pass
+            ax.plot(xspace, fcn(xspace, p0), linestyle='-', label='p0', **plot_kw)
     
     # output
     inputs = dict(data=y[cut])
