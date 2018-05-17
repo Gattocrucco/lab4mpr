@@ -41,6 +41,11 @@ tdc1: tdc1.cpp
 	$(CXX) $(CXXFLAGS) tdc1.cpp \
 	$(CXXLIBS) $(CXXLIBDIRS) -o tdc1
 	@echo "Done"
+	
+tdc4: tdc1_threshold4.cpp
+	$(CXX) $(CXXFLAGS) tdc1_threshold4.cpp \
+	$(CXXLIBS) $(CXXLIBDIRS) -o tdc4
+	@echo "Done"
 
 clean:
 	$(RM) $(OBJ) 

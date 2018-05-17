@@ -74,7 +74,7 @@ int main (int argc,  char *argv[]) {
   CAMAC_Z(udev);
   //  inhibit=0;
 
-  CamN=8;/*
+  CamN=1;/*
   while (CamN==0)  {
     printf("TDC slot? ");
     fflush(stdin);

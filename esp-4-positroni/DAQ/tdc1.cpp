@@ -74,7 +74,7 @@ int main (int argc,  char *argv[]) {
   CAMAC_Z(udev);
   //  inhibit=0;
 
-  CamN=8;/*
+  CamN=1;/*
   while (CamN==0)  {
     printf("TDC slot? ");
     fflush(stdin);
@@ -83,6 +83,7 @@ int main (int argc,  char *argv[]) {
     fflush(stdin);
     if (CamN<1 || CamN>24) CamN=0;
   }*/
+  printf("CamN is %i",CamN);
   CamA=1;
   CamF=26;
   ret=CAMAC_read(udev,CamN,CamA,CamF,&CamD,&CamQ,&CamX);
