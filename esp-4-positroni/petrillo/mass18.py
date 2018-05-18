@@ -24,18 +24,18 @@ cut = dict(
         nabetagamma=[650, 710],
         coco=[900, 980]
     ),
-    # ch2=dict(
-    #     nabeta=[370, 420],
-    #     conagamma=[700, 860],
-    #     cs=[440, 500],
-    #     nabetagamma=[1020, 1120]
-    # ),
-    # ch3=dict(
-    #     nabeta=[320, 390],
-    #     conagamma=[620, 740],
-    #     cs=[400, 480],
-    #     nabetagamma=[820, 880]
-    # )
+    ch2=dict(
+        nabeta=[370, 420],
+        conagamma=[700, 860],
+        cs=[440, 500],
+        nabetagamma=[1020, 1120]
+    ),
+    ch3=dict(
+        nabeta=[320, 390],
+        conagamma=[620, 740],
+        cs=[400, 480],
+        nabetagamma=[820, 880]
+    )
 )
 
 minlength = 1150
@@ -89,9 +89,6 @@ for channel in [1]:
     # conagamma
     cut_margins = cut[label]['conagamma']
     cut_bool = (cut_margins[0] <= x) & (x <= cut_margins[1]) & cut5
-    # mean1 = cut_margins[0] + (cut_margins[1] - cut_margins[0]) * 1/3
-    # mean2 = cut_margins[0] + (cut_margins[1] - cut_margins[0]) * 2/3
-    # manual_p0 = {}#dict(peak1_mean=mean1, peak2_mean=mean2, peak1_sigma=10, peak2_sigma=10)
     outputs, inputs = fit_peak.fit_peak(bins, hist, npeaks=3, cut=cut_bool, bkg='exp', **kw)
     peak123 = [outputs['peak1_mean'], outputs['peak2_mean'], outputs['peak3_mean']]
     idx = np.argsort(gvar.mean(peak123))
