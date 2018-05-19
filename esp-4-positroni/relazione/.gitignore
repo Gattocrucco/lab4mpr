@@ -1,4 +1,5 @@
 relazione.pdf
 *.aux
 *.log
-*.syntex
+*.synctex
+*.out
