@@ -1,0 +1,7 @@
+FILE: 0503_stab 
+
+annichilazione 1 = 404.0+/-0 		neon 1 = 924.0+/-0 
+annichilazione 2 = 404.0+/-0 		neon 2 = 932.0+/-0 
+annichilazione 3 = 404.0+/-0 		neon 3 = 932.0+/-0 
+annichilazione 4 = 404.0+/-0 		neon 4 = 932.0+/-0 
+annichilazione 5 = 404.0+/-0 		neon 5 = 932.0+/-0 
