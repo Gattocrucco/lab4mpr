@@ -3,6 +3,7 @@ import lsqfit
 import gvar
 import lab4
 import matplotlib.pyplot as plt
+from matplotlib import colors
 
 def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=None, print_info=False, plot_kw={}, manual_p0={}):
     """
@@ -135,7 +136,7 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
     
     return outputs, inputs
 
-def fit_peak_2d(binsx, binsy, hist, cutx=None, cuty=None, bkg=None, ax=None):
+def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, ax=None, print_info=0):
     """
     Parameters
     ----------
@@ -143,40 +144,105 @@ def fit_peak_2d(binsx, binsy, hist, cutx=None, cuty=None, bkg=None, ax=None):
         Bins edges along x.
     binsy : M+1 array
         Bins edges along y.
-    hist : (N, M) array
+    hist : (N, M) array of gvar
         Histogram.
     """
     x = (binsx[1:] + binsx[:-1]) / 2
-    if cutx is None:
-        cutx = np.ones(hist.shape[0], dtype=bool)
-    elif (isinstance(cutx, tuple) or isinstance(cutx, list)) and len(cutx) == 2:
-        cutx = (cutx[0] <= x) & (x <= cutx[1])
-
     y = (binsy[1:] + binsy[:-1]) / 2
-    if cuty is None:
-        cuty = np.ones(hist.shape[1], dtype=bool)
-    elif (isinstance(cuty, tuple) or isinstance(cuty, list)) and len(cuty) == 2:
-        cuty = (cuty[0] <= y) & (y <= cuty[1])
+    xx = np.outer(x, np.ones(len(y)))
+    yy = np.outer(np.ones(len(x)), y)
+        
+    if cut is None:
+        cut = np.outer(np.ones(len(x), dtype=bool), np.ones(len(y), dtype=bool))
+    elif (isinstance(cut, tuple) or isinstance(cut, list)) and len(cut) == 2:
+        cutx, cuty = cut
+        
+        if cutx is None:
+            cutx = np.ones(hist.shape[0], dtype=bool)
+        elif (isinstance(cutx, tuple) or isinstance(cutx, list)) and len(cutx) == 2:
+            cutx = (cutx[0] <= x) & (x <= cutx[1])
+
+        if cuty is None:
+            cuty = np.ones(hist.shape[1], dtype=bool)
+        elif (isinstance(cuty, tuple) or isinstance(cuty, list)) and len(cuty) == 2:
+            cuty = (cuty[0] <= y) & (y <= cuty[1])
+        
+        cut = np.outer(cutx, cuty)
     
+    # initial parameters
     p0 = {
-        'mean': np.array([np.max(x[cutx]) + np.min(x[cutx]), np.max(y[cuty]) + np.min(y[cuty])]) / 2,
-        'sigma': np.array([np.max(x[cutx]) - np.min(x[cutx]), np.max(y[cuty]) - np.min(y[cuty])]) / 8,
-        'lognorm': np.log(np.sum(hist * np.outer(np.diff(x[cutx]), np.diff(y[cuty]))))
+        'mean': np.array([np.mean(xx[cut]), np.mean(yy[cut])]),
+        'sigma': np.array([np.std(xx[cut]), np.std(yy[cut])]) / 2,
+        'lognorm': np.log(np.sum(gvar.mean(hist[cut]) * np.outer(np.diff(binsx), np.diff(binsy))[cut]))
     }
     
+    # fit
+    def gauss(x, mean, sigma):
+        return 1 / (np.sqrt(2 * np.pi) * sigma) * gvar.exp(-1/2 * ((x - mean) / sigma) ** 2)
     
+    def fcn(p):
+        mean = p['mean']
+        sigma = p['sigma']
+        norm = gvar.exp(p['lognorm'])
+        peak = norm * gauss(xx[cut], mean[0], sigma[0]) * gauss(yy[cut], mean[1], sigma[1])
+        return peak
+    
+    try:
+        fit = lsqfit.nonlinear_fit(data=hist[cut], fcn=fcn, p0=p0, debug=True)
+    except:
+        if not ax is None:
+            t = np.linspace(0, 2 * np.pi, 200)
+            kw = dict(fill=False)
+            for f in [1, 2, 3]:
+                ax.fill(f * p0['sigma'][0] * np.cos(t), f * p0['sigma'][1] * np.sin(t), **kw)
+        raise
+            
+    if print_info:
+        print(fit.format(maxline=0 if print_info < 2 else True))
+    
+    if not ax is None:
+        t = np.linspace(0, 2 * np.pi, 200)
+        kw = dict(fill=False)
+        for f in [1, 2, 3]:
+            ax.fill(f * fit.pmean['sigma'][0] * np.cos(t), f * fit.pmean['sigma'][1] * np.sin(t), **kw)
+    
+    # output
+    inputs = {
+        'data': hist[cut]
+    }
+    outputs = {
+        'mean': fit.p['mean'],
+        'sigma': fit.p['sigma'],
+        'norm': gvar.exp(fit.p['lognorm'])
+    }
+    return outputs, inputs
 
 if __name__ == '__main__':
-    size = 10000
-    data = np.concatenate([np.random.normal(loc=0, scale=1, size=size), np.random.normal(loc=3, scale=0.5, size=size), np.random.exponential(scale=2, size=100000) - 5])
-    hist, edges = np.histogram(data, bins='auto')
-    hist = gvar.gvar(hist, np.sqrt(hist))
+    # size = 10000
+    # data = np.concatenate([np.random.normal(loc=0, scale=1, size=size), np.random.normal(loc=3, scale=0.5, size=size), np.random.exponential(scale=2, size=100000) - 5])
+    # hist, edges = np.histogram(data, bins='auto')
+    # hist = gvar.gvar(hist, np.sqrt(hist))
+    #
+    # fig = plt.figure('fit_peak')
+    # fig.clf()
+    # ax = fig.add_subplot(111)
+    #
+    # cut = gvar.mean(hist) >= 5
+    # outputs, inputs = fit_peak(edges, hist, cut=cut, ax=ax, print_info=True, npeaks=2, bkg='exp')
+    #
+    # fig.show()
+    size = 100000
+    datax, datay = np.random.normal(loc=0, scale=1, size=(2, size))
+    datay *= 2
     
-    fig = plt.figure('fit_peak')
+    fig = plt.figure('fit_peak_2d')
     fig.clf()
     ax = fig.add_subplot(111)
     
-    cut = gvar.mean(hist) >= 5
-    outputs, inputs = fit_peak(edges, hist, cut=cut, ax=ax, print_info=True, npeaks=2, bkg='exp')
+    hist, edgesx, edgesy, im = ax.hist2d(datax, datay, bins=int(size ** (1/4)), cmap='gray', norm=colors.LogNorm())
+    fig.colorbar(im)
+    
+    cut = hist >= 5
+    outputs, inputs = fit_peak_2d(edgesx, edgesy, gvar.gvar(hist, np.sqrt(hist)), cut=cut, print_info=1, ax=ax)
     
     fig.show()

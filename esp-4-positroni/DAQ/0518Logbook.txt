@@ -1,0 +1,15 @@
+LOGBOOK del 18 maggio 2018 quando e' mancato Cella.
+ 
+Ho cambiato l'attenuazione dei PMT per fare la massa in coincideza.
+Il PMT1 e' a 19 dB e il PMT2 e' a 18 dB.
+Il canale 2 e' collegato all'ingresso 1 dell'ADC.
+ 
+Faccio una calibrazione con cesio e cobalto:  0518_cal_cocs_ch1_ch2.txt  FOTO=9:59.
+
+Vedo, con il sodio, se c'e' cross-talk guardando se i picchi si spostano quando entrambi acquisiscono rispetto all'anti coincidenza. I picchi corrispondono. 
+Il file e' 0518_antical_na_ch1_ch2.txt FOTO=10:09.
+
+Adesso parte la misura in coincidenza, il file e' 0518_mass_c2.txt. Sto usando la sorgente debole.
+Mi sono accorto che avete modificato c2.py, allora ho importato la mia versione dala chiavetta e l'ho chiamato c2_vero.py.
+Peccato che il rate non sia cosi' alto da vedere tutte quelle belle strutture colorate che ci piaciono tanto.
+
