@@ -25,16 +25,18 @@ cut = dict(
         coco=[900, 980]
     ),
     ch2=dict(
-        nabeta=[370, 420],
-        conagamma=[700, 860],
-        cs=[440, 500],
-        nabetagamma=[1020, 1120]
+        nabeta=[330, 355],
+        cs=[360, 390],
+        conagamma=[470, 540],
+        nabetagamma=[605, 635],
+        coco=[730, 780]
     ),
     ch3=dict(
-        nabeta=[320, 390],
-        conagamma=[620, 740],
-        cs=[400, 480],
-        nabetagamma=[820, 880]
+        nabeta=[305, 350],
+        cs=[360, 420],
+        conagamma=[540, 640],
+        nabetagamma=[710, 750],
+        coco=[850, 900]
     )
 )
 
@@ -45,7 +47,7 @@ x = (bins[:-1] + bins[1:]) / 2
 
 input_var = {}
 mass = {}
-for channel in [1]:
+for channel in [1, 2, 3]:
     label = 'ch{:d}'.format(channel)
         
     peaks = {}
@@ -53,7 +55,9 @@ for channel in [1]:
     
     # load data
     filename = [
-        '../DAQ/0517_nacocs_ch1_27db_2.txt'
+        '../DAQ/0517_nacocs_ch1_27db_2.txt',
+        '../DAQ/0518_nacocs_ch2_26db.txt',
+        '../DAQ/0518_nacocs_ch3_17db.txt',
     ][channel - 1]
     samples, = lab4.loadtxt(filename, usecols=(0,), unpack=True, dtype='uint16')
     hist = lab4.rebin(np.bincount(samples, minlength=minlength), rebin)

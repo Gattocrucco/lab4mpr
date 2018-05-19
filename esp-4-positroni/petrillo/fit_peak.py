@@ -135,6 +135,37 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
     
     return outputs, inputs
 
+def fit_peak_2d(binsx, binsy, hist, cutx=None, cuty=None, bkg=None, ax=None):
+    """
+    Parameters
+    ----------
+    binsx : N+1 array
+        Bins edges along x.
+    binsy : M+1 array
+        Bins edges along y.
+    hist : (N, M) array
+        Histogram.
+    """
+    x = (binsx[1:] + binsx[:-1]) / 2
+    if cutx is None:
+        cutx = np.ones(hist.shape[0], dtype=bool)
+    elif (isinstance(cutx, tuple) or isinstance(cutx, list)) and len(cutx) == 2:
+        cutx = (cutx[0] <= x) & (x <= cutx[1])
+
+    y = (binsy[1:] + binsy[:-1]) / 2
+    if cuty is None:
+        cuty = np.ones(hist.shape[1], dtype=bool)
+    elif (isinstance(cuty, tuple) or isinstance(cuty, list)) and len(cuty) == 2:
+        cuty = (cuty[0] <= y) & (y <= cuty[1])
+    
+    p0 = {
+        'mean': np.array([np.max(x[cutx]) + np.min(x[cutx]), np.max(y[cuty]) + np.min(y[cuty])]) / 2,
+        'sigma': np.array([np.max(x[cutx]) - np.min(x[cutx]), np.max(y[cuty]) - np.min(y[cuty])]) / 8,
+        'lognorm': np.log(np.sum(hist * np.outer(np.diff(x[cutx]), np.diff(y[cuty]))))
+    }
+    
+    
+
 if __name__ == '__main__':
     size = 10000
     data = np.concatenate([np.random.normal(loc=0, scale=1, size=size), np.random.normal(loc=3, scale=0.5, size=size), np.random.exponential(scale=2, size=100000) - 5])
