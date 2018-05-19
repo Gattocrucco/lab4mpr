@@ -7,11 +7,11 @@ import gvar
 from matplotlib.ticker import FuncFormatter
 
 
-file="0515_stab_ch1"
+file="0503_stab"
 cartella="../DAQ/"
-estensione=".npz"
+estensione=".txt"
 
-pezzi=26
+pezzi=25
 
 if estensione=='.txt':
     ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=lab4.loadtxt(cartella+file+estensione,unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
@@ -108,59 +108,66 @@ for z in range(p):
     tempi+=19    
     
     figure('grafico').set_tight_layout(False)
-    
+    rc('font',size=12)
     grid(linestyle=':')
     minorticks_on()
     
-    subplot(righe,colonne,z+1)
-    title("Scalibrazione del ch%d in %s"%(z+1,file))
-    ylabel("valore beta [digit]")
+    subplot(righe,colonne,z+1,sharex=gca())
+    if z==0:
+        ylabel("valore beta [digit]")
     
     gca().xaxis.set_major_formatter(FuncFormatter(lambda x,k: '%g' % (x%24)))
     
-    errorbar(tempi,gvar.mean(beta),gvar.sdev(beta),fmt='.r',capsize=2,markersize=3)
+    errorbar(tempi,gvar.mean(beta),gvar.sdev(beta),fmt='.r',capsize=2,markersize=3,label='ch%d beta'%(z+1))
     grid(linestyle=':')
     minorticks_on()
+    legend(loc=0,fontsize='small')
     
     if colonne==1:
         posto=2
     else:
         posto=z+4
         
-    subplot(righe,colonne,posto)
-    errorbar(tempi,gvar.mean(neon),gvar.sdev(neon),fmt='.g',capsize=2,markersize=3)
-    ylabel("valore neon [digit]")
+    subplot(righe,colonne,posto,sharex=gca())
+    errorbar(tempi,gvar.mean(neon),gvar.sdev(neon),fmt='.g',capsize=2,markersize=3,label='ch%d neon'%(z+1))
+    if z==0:
+        ylabel("valore neon [digit]")
     xlabel("orario")
+    legend(loc=0,fontsize='small')
     
     grid(linestyle=':')
     minorticks_on()
     gca().xaxis.set_major_formatter(FuncFormatter(lambda x,k: '%g' % (x%24)))
     
     
-    figure('rette')
+    figure('rette').set_tight_layout(True)
     
-    subplot(righe,colonne,z+1)
-    title('Retta del ch%d'%(z+1))
+    subplot(righe,colonne,z+1,sharex=gca())
+    
     grid(linestyle=':')
     minorticks_on()
-    ylabel("m  [keV/digit]")
+    if z==0:
+        ylabel("m  [keV/digit]")
     gca().xaxis.set_major_formatter(FuncFormatter(lambda x,k: '%g' % (x%24)))
 
     q=(1270*beta-511*neon)/(beta-neon)
     m=(511-q)/beta
-    errorbar(tempi,gvar.mean(m),gvar.sdev(m),fmt='.k',capsize=2,markersize=3)
+    errorbar(tempi,gvar.mean(m),gvar.sdev(m),fmt='.k',capsize=2,markersize=3,label='ch%d beta'%(z+1))
+    legend(loc=0,fontsize='small')
     
     if colonne==1:
         posto=2
     else:
         posto=z+4
         
-    subplot(righe,colonne,posto)
+    subplot(righe,colonne,posto,sharex=gca())
     xlabel("orario")
-    ylabel("q  [keV]")
+    if z==0:
+        ylabel("q  [keV]")
     gca().xaxis.set_major_formatter(FuncFormatter(lambda x,k: '%g' % (x%24)))
     
-    errorbar(tempi,gvar.mean(q),gvar.sdev(q),fmt='.k',capsize=2,markersize=3)
+    errorbar(tempi,gvar.mean(q),gvar.sdev(q),fmt='.k',capsize=2,markersize=3,label='ch%d neon'%(z+1))
+    legend(loc=0,fontsize='small')
     grid(linestyle=':')
     minorticks_on()
     
