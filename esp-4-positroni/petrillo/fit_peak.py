@@ -5,6 +5,16 @@ import lab4
 import matplotlib.pyplot as plt
 from matplotlib import colors
 
+def cut(bins, cut):
+    x = (bins[1:] + bins[:-1]) / 2
+    
+    if cut is None:
+        cut = np.ones(x.shape, dtype=bool)
+    elif (isinstance(cut, tuple) or isinstance(cut, list)) and len(cut) == 2:
+        cut = (cut[0] <= x) & (x <= cut[1])
+    
+    return cut
+
 def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=None, print_info=False, plot_kw={}, manual_p0={}):
     """
     Fit gaussian peaks on a histogram with background.
@@ -28,6 +38,10 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
         Axes to plot the fit.
     print_info : boolean
         If True, print a report.
+    plot_kw : dictionary
+        Keyword arguments passed to all plotting functions.
+    manual_p0 : dictionary
+        Overrides initial estimates made automatically.
     
     Returns
     -------
@@ -136,7 +150,23 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
     
     return outputs, inputs
 
-def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, ax=None, print_info=0):
+def cut_2d(binsx, binsy, cutx, cuty):
+    x = (binsx[1:] + binsx[:-1]) / 2
+    y = (binsy[1:] + binsy[:-1]) / 2
+
+    if cutx is None:
+        cutx = np.ones(len(binsx) - 1, dtype=bool)
+    elif (isinstance(cutx, tuple) or isinstance(cutx, list)) and len(cutx) == 2:
+        cutx = (cutx[0] <= x) & (x <= cutx[1])
+
+    if cuty is None:
+        cuty = np.ones(len(binsy) - 1, dtype=bool)
+    elif (isinstance(cuty, tuple) or isinstance(cuty, list)) and len(cuty) == 2:
+        cuty = (cuty[0] <= y) & (y <= cuty[1])
+    
+    return np.outer(cutx, cuty)
+
+def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, ax_2d=None, ax_x=None, ax_y=None, print_info=0, plot_cut=False):
     """
     Parameters
     ----------
@@ -146,6 +176,20 @@ def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, ax=None, print_info=0):
         Bins edges along y.
     hist : (N, M) array of gvar
         Histogram.
+    cut : None or (N, M) bool array or (cutx, cuty)
+        If None, do not apply cuts. If bool array with the same
+        shape as hist, it is used as hist[cut]. If tuple or list
+        containing two elements cutx, cuty, each of them can be
+        None, N/M bool array applying a cut along x/y, or 2-element
+        tuple or list indicating lower and upper borders along x/y
+        to cut.
+    bkg : None or string
+        'expcross' : gauss_xy + (gauss * exp)_x + (gauss * exp)_y, and
+            the sigmas are the same for peak and background gaussians.
+    ax_2d : None or axis
+        Matplotlib axis to plot level curves of the peak.
+    print_info : integer
+        0: do not print, 1: short report, 2: long report.
     """
     x = (binsx[1:] + binsx[:-1]) / 2
     y = (binsy[1:] + binsy[:-1]) / 2
@@ -156,56 +200,118 @@ def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, ax=None, print_info=0):
         cut = np.outer(np.ones(len(x), dtype=bool), np.ones(len(y), dtype=bool))
     elif (isinstance(cut, tuple) or isinstance(cut, list)) and len(cut) == 2:
         cutx, cuty = cut
-        
-        if cutx is None:
-            cutx = np.ones(hist.shape[0], dtype=bool)
-        elif (isinstance(cutx, tuple) or isinstance(cutx, list)) and len(cutx) == 2:
-            cutx = (cutx[0] <= x) & (x <= cutx[1])
-
-        if cuty is None:
-            cuty = np.ones(hist.shape[1], dtype=bool)
-        elif (isinstance(cuty, tuple) or isinstance(cuty, list)) and len(cuty) == 2:
-            cuty = (cuty[0] <= y) & (y <= cuty[1])
-        
-        cut = np.outer(cutx, cuty)
+        cut = cut_2d(binsx, binsy, cutx, cuty)
+            
+    xx_cut = xx[cut]
+    yy_cut = yy[cut]
+    hist_cut = hist[cut]
     
     # initial parameters
     p0 = {
-        'mean': np.array([np.mean(xx[cut]), np.mean(yy[cut])]),
-        'sigma': np.array([np.std(xx[cut]), np.std(yy[cut])]) / 2,
-        'lognorm': np.log(np.sum(gvar.mean(hist[cut]) * np.outer(np.diff(binsx), np.diff(binsy))[cut]))
+        'mean': np.array([np.mean(xx_cut), np.mean(yy_cut)]),
+        'sigma': np.array([np.std(xx_cut), np.std(yy_cut)]) / 2,
+        'lognorm': np.log(np.sum(gvar.mean(hist_cut) * np.outer(np.diff(binsx), np.diff(binsy))[cut]))
     }
+    if bkg == 'expcross':
+        center = p0['mean']
+        p0['exp_lambda'] = 1 / (p0['sigma'] * 4)
+        p0['log_exp_ampl'] = np.array(2 * [np.log(np.max(gvar.mean(hist_cut)) / 5)])
+    elif bkg == 'expx':
+        center = p0['mean'][0]
+        p0['exp_lambda'] = 1 / (p0['sigma'][0] * 4)
+        p0['log_exp_ampl'] = np.log(np.max(gvar.mean(hist_cut)) / 5)
+    elif bkg == 'expy':
+        center = p0['mean'][1]
+        p0['exp_lambda'] = 1 / (p0['sigma'][1] * 4)
+        p0['log_exp_ampl'] = np.log(np.max(gvar.mean(hist_cut)) / 5)
+    elif not bkg is None:
+        raise KeyError(bkg)
     
     # fit
     def gauss(x, mean, sigma):
         return 1 / (np.sqrt(2 * np.pi) * sigma) * gvar.exp(-1/2 * ((x - mean) / sigma) ** 2)
     
-    def fcn(p):
+    def fcn_comp(xxyy, p):
+        xx, yy = xxyy
+        
+        ans = {}
         mean = p['mean']
         sigma = p['sigma']
         norm = gvar.exp(p['lognorm'])
-        peak = norm * gauss(xx[cut], mean[0], sigma[0]) * gauss(yy[cut], mean[1], sigma[1])
-        return peak
+        ans['peak'] = norm * gauss(xx, mean[0], sigma[0]) * gauss(yy, mean[1], sigma[1])
+        
+        if bkg == 'expcross':
+            ampl = gvar.exp(p['log_exp_ampl'])
+            lamda = p['exp_lambda']
+            ans['bkg'] = 0
+            for i in range(2):
+                j = [1, 0][i]
+                ans['bkg'] += ampl[i] * gvar.exp(-([xx, yy][i] - center[i]) * lamda[i]) * gvar.exp(-1/2 * (([xx, yy][j] - mean[j]) / sigma[j]) ** 2)
+        elif bkg == 'expx':
+            ampl = gvar.exp(p['log_exp_ampl'])
+            lamda = p['exp_lambda']
+            ans['bkg'] = ampl * gvar.exp(-(xx - center) * lamda) * gvar.exp(-1/2 * ((yy - mean[1]) / sigma[1]) ** 2)
+        elif bkg == 'expy':
+            ampl = gvar.exp(p['log_exp_ampl'])
+            lamda = p['exp_lambda']
+            ans['bkg'] = ampl * gvar.exp(-(yy - center) * lamda) * gvar.exp(-1/2 * ((xx - mean[0]) / sigma[0]) ** 2)
+        else:
+            ans['bkg'] = 0
+        
+        return ans
+    
+    def fcn(p):
+        ans = fcn_comp((xx_cut, yy_cut), p)
+        return ans['peak'] + ans['bkg']
     
     try:
-        fit = lsqfit.nonlinear_fit(data=hist[cut], fcn=fcn, p0=p0, debug=True)
+        fit = lsqfit.nonlinear_fit(data=hist_cut, fcn=fcn, p0=p0, debug=True)
     except:
-        if not ax is None:
-            t = np.linspace(0, 2 * np.pi, 200)
-            kw = dict(fill=False)
-            for f in [1, 2, 3]:
-                ax.fill(f * p0['sigma'][0] * np.cos(t), f * p0['sigma'][1] * np.sin(t), **kw)
+        # in case of error
+        color = 'red'
+        plot_cut = True
+        p = p0
         raise
-            
+    else:
+        # in case of success
+        color = 'black'
+        plot_cut = False or plot_cut
+        p = fit.pmean
+    finally:
+        # plot
+        if not ax_2d is None:
+            # mark cut
+            if plot_cut:
+                ax_2d.plot(xx_cut, yy_cut, '.', color=color, markersize=2)
+            # plot contours
+            t = np.linspace(0, 2 * np.pi, 200)
+            kw = dict(fill=False, edgecolor=color)
+            for f in [1, 2, 3]:
+                ax_2d.fill(p['mean'][0] + f * p['sigma'][0] * np.cos(t), p['mean'][1] + f * p['sigma'][1] * np.sin(t), **kw)
+            # plot slices
+            if not ax_x is None:
+                xspace = np.linspace(np.min(xx_cut), np.max(xx_cut), 200)
+                yspace = np.linspace(np.min(yy_cut), np.max(yy_cut), 5)[1:-1]
+                for uy in yspace:
+                    comp = fcn_comp((xspace, uy), p)
+                    line, = ax_x.plot(xspace, comp['peak'] + comp['bkg'], linestyle='-', label='y = %g' % uy)
+                    ax_x.plot(xspace, comp['peak'], linestyle='--', color=line.get_color())
+                    if not bkg is None:
+                        ax_x.plot(xspace, comp['bkg'], linestyle='--', color=line.get_color())
+            if not ax_y is None:
+                xspace = np.linspace(np.min(xx_cut), np.max(xx_cut), 5)[1:-1]
+                yspace = np.linspace(np.min(yy_cut), np.max(yy_cut), 200)
+                for ux in xspace:
+                    comp = fcn_comp((ux, yspace), p)
+                    line, = ax_y.plot(yspace, comp['peak'] + comp['bkg'], linestyle='-', label='x = %g' % ux)
+                    ax_y.plot(yspace, comp['peak'], linestyle='--', color=line.get_color())
+                    if not bkg is None:
+                        ax_y.plot(yspace, comp['bkg'], linestyle='--', color=line.get_color())
+                    
+    # report
     if print_info:
         print(fit.format(maxline=0 if print_info < 2 else True))
-    
-    if not ax is None:
-        t = np.linspace(0, 2 * np.pi, 200)
-        kw = dict(fill=False)
-        for f in [1, 2, 3]:
-            ax.fill(f * fit.pmean['sigma'][0] * np.cos(t), f * fit.pmean['sigma'][1] * np.sin(t), **kw)
-    
+        
     # output
     inputs = {
         'data': hist[cut]
@@ -231,18 +337,31 @@ if __name__ == '__main__':
     # outputs, inputs = fit_peak(edges, hist, cut=cut, ax=ax, print_info=True, npeaks=2, bkg='exp')
     #
     # fig.show()
-    size = 100000
-    datax, datay = np.random.normal(loc=0, scale=1, size=(2, size))
-    datay *= 2
+    size = 10000
+    size_noise = 10000
+    scale=0.1
+    locx=10
+    locy=10
+    data = np.random.normal(loc=locx, scale=scale, size=(2, size))
+    data = np.concatenate([data, np.array([np.random.exponential(scale=5*scale, size=size_noise) - 10*scale + locx, np.random.normal(loc=locy, scale=scale, size=size_noise)])], axis=1)
+    data = np.concatenate([data, np.array([np.random.normal(loc=locx, scale=scale, size=size_noise), np.random.exponential(scale=5*scale, size=size_noise) - 10*scale + locy])], axis=1)
+    datax, datay = data
     
     fig = plt.figure('fit_peak_2d')
     fig.clf()
-    ax = fig.add_subplot(111)
+    ax = fig.add_subplot(222)
+    ax_x = fig.add_subplot(224)
+    ax_y = fig.add_subplot(221)
     
-    hist, edgesx, edgesy, im = ax.hist2d(datax, datay, bins=int(size ** (1/4)), cmap='gray', norm=colors.LogNorm())
-    fig.colorbar(im)
+    hist, edgesx, edgesy, im = ax.hist2d(datax, datay, bins=50, cmap='gray', norm=colors.LogNorm())
+    fig.colorbar(im, ax=ax)
     
-    cut = hist >= 5
-    outputs, inputs = fit_peak_2d(edgesx, edgesy, gvar.gvar(hist, np.sqrt(hist)), cut=cut, print_info=1, ax=ax)
+    # cut = hist >= 5
+    cut = cut_2d(edgesx, edgesy, (-5*scale + locx, 5*scale + locx), (-5*scale + locy, 5*scale + locy)) & (hist >= 5)
+    outputs, inputs = fit_peak_2d(edgesx, edgesy, gvar.gvar(hist, np.sqrt(hist)) / np.outer(np.diff(edgesx), np.diff(edgesy)), cut=cut, bkg='expcross', print_info=1, ax_2d=ax, ax_x=ax_x, ax_y=ax_y)
+    print(outputs)
+    
+    ax_x.legend(loc='best', fontsize='small')
+    ax_y.legend(loc='best', fontsize='small')
     
     fig.show()
