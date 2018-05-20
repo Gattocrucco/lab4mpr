@@ -89,7 +89,7 @@ hist = gvar.gvar(H, np.sqrt(H))
 for key in cuts.keys():
     print('_____________{}_____________'.format(key))
     cut = fit_peak.cut_2d(bins, bins, *cuts[key]) & (H >= 5)
-    outputs, inputs = fit_peak.fit_peak_2d(bins, bins, hist, cut=cut, bkg=bkgs[key], print_info=1, ax_2d=ax_c2, ax_2d_diff=ax_diff, plot_cut=True)
+    outputs, inputs = fit_peak.fit_peak_2d(bins, bins, hist, cut=cut, bkg=bkgs[key], print_info=1, ax_2d=ax_c2, ax_2d_diff=ax_diff, plot_cut=True, corr=key == 'betabeta')
     norm[key] = outputs['norm'] / (bins[1] - bins[0]) ** 2 * rate_corr
 
 ##### fit 1d

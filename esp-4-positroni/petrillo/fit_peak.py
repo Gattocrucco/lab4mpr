@@ -397,7 +397,7 @@ if __name__ == '__main__':
     scaley=1
     locx=10
     locy=10
-    theta = 5
+    theta = 30
     
     theta = np.radians(theta)
     R = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
