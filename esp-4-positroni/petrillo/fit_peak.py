@@ -4,6 +4,7 @@ import gvar
 import lab4
 import matplotlib.pyplot as plt
 from matplotlib import colors
+from scipy import linalg
 
 def cut(bins, cut):
     x = (bins[1:] + bins[:-1]) / 2
@@ -166,7 +167,19 @@ def cut_2d(binsx, binsy, cutx, cuty):
     
     return np.outer(cutx, cuty)
 
-def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, ax_2d=None, ax_x=None, ax_y=None, print_info=0, plot_cut=False):
+def _gauss(x, mean, sigma):
+    return 1 / (np.sqrt(2 * np.pi) * sigma) * gvar.exp(-1/2 * ((x - mean) / sigma) ** 2)
+
+def _gauss2d(x, y, mean, sigma, corr):
+    factor = 1 / (2 * np.pi * sigma[0] * sigma[1] * gvar.sqrt(1 - corr**2))
+    exponent = -1/2 * 1/(1 - corr**2) * (
+        ((x - mean[0]) / sigma[0]) ** 2 +
+        ((y - mean[1]) / sigma[1]) ** 2 -
+        2 * corr * (x - mean[0]) * (y - mean[1]) / (sigma[0] * sigma[1])
+    )
+    return factor * gvar.exp(exponent)
+    
+def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, corr=False, ax_2d=None, ax_x=None, ax_y=None, ax_2d_diff=None, print_info=0, plot_cut=False):
     """
     Parameters
     ----------
@@ -186,6 +199,8 @@ def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, ax_2d=None, ax_x=None, a
     bkg : None or string
         'expcross' : gauss_xy + (gauss * exp)_x + (gauss * exp)_y, and
             the sigmas are the same for peak and background gaussians.
+    corr : bool
+        If False, the peak has principal axes fixed along x and y.
     ax_2d : None or axis
         Matplotlib axis to plot level curves of the peak.
     print_info : integer
@@ -212,6 +227,8 @@ def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, ax_2d=None, ax_x=None, a
         'sigma': np.array([np.std(xx_cut), np.std(yy_cut)]) / 2,
         'lognorm': np.log(np.sum(gvar.mean(hist_cut) * np.outer(np.diff(binsx), np.diff(binsy))[cut]))
     }
+    if corr:
+        p0['corr'] = 0.01
     if bkg == 'expcross':
         center = p0['mean']
         p0['exp_lambda'] = 1 / (p0['sigma'] * 4)
@@ -228,9 +245,6 @@ def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, ax_2d=None, ax_x=None, a
         raise KeyError(bkg)
     
     # fit
-    def gauss(x, mean, sigma):
-        return 1 / (np.sqrt(2 * np.pi) * sigma) * gvar.exp(-1/2 * ((x - mean) / sigma) ** 2)
-    
     def fcn_comp(xxyy, p):
         xx, yy = xxyy
         
@@ -238,7 +252,10 @@ def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, ax_2d=None, ax_x=None, a
         mean = p['mean']
         sigma = p['sigma']
         norm = gvar.exp(p['lognorm'])
-        ans['peak'] = norm * gauss(xx, mean[0], sigma[0]) * gauss(yy, mean[1], sigma[1])
+        if corr:
+            ans['peak'] = norm * _gauss2d(xx, yy, mean, sigma, p['corr'])
+        else:
+            ans['peak'] = norm * _gauss(xx, mean[0], sigma[0]) * _gauss(yy, mean[1], sigma[1])
         
         if bkg == 'expcross':
             ampl = gvar.exp(p['log_exp_ampl'])
@@ -285,28 +302,65 @@ def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, ax_2d=None, ax_x=None, a
                 ax_2d.plot(xx_cut, yy_cut, '.', color=color, markersize=2)
             # plot contours
             t = np.linspace(0, 2 * np.pi, 200)
+            if corr:
+                sigmax, sigmay = p['sigma']
+                sigmaxy = p['corr'] * sigmax * sigmay
+                C = np.array([[sigmax ** 2, sigmaxy], [sigmaxy, sigmay ** 2]])
+                w, R = linalg.eigh(C)
+                w = np.sqrt(w)
+            else:
+                w = p['sigma']
+                R = np.eye(2)
             kw = dict(fill=False, edgecolor=color)
+            x_base = w[0] * np.cos(t)
+            y_base = w[1] * np.sin(t)
+            x_base, y_base = np.einsum('ij,jk->ik', R, [x_base, y_base])
             for f in [1, 2, 3]:
-                ax_2d.fill(p['mean'][0] + f * p['sigma'][0] * np.cos(t), p['mean'][1] + f * p['sigma'][1] * np.sin(t), **kw)
-            # plot slices
-            if not ax_x is None:
-                xspace = np.linspace(np.min(xx_cut), np.max(xx_cut), 200)
-                yspace = np.linspace(np.min(yy_cut), np.max(yy_cut), 5)[1:-1]
-                for uy in yspace:
-                    comp = fcn_comp((xspace, uy), p)
-                    line, = ax_x.plot(xspace, comp['peak'] + comp['bkg'], linestyle='-', label='y = %g' % uy)
-                    ax_x.plot(xspace, comp['peak'], linestyle='--', color=line.get_color())
-                    if not bkg is None:
-                        ax_x.plot(xspace, comp['bkg'], linestyle='--', color=line.get_color())
-            if not ax_y is None:
-                xspace = np.linspace(np.min(xx_cut), np.max(xx_cut), 5)[1:-1]
-                yspace = np.linspace(np.min(yy_cut), np.max(yy_cut), 200)
-                for ux in xspace:
-                    comp = fcn_comp((ux, yspace), p)
-                    line, = ax_y.plot(yspace, comp['peak'] + comp['bkg'], linestyle='-', label='x = %g' % ux)
-                    ax_y.plot(yspace, comp['peak'], linestyle='--', color=line.get_color())
-                    if not bkg is None:
-                        ax_y.plot(yspace, comp['bkg'], linestyle='--', color=line.get_color())
+                x = p['mean'][0] + f * x_base
+                y = p['mean'][1] + f * y_base
+                ax_2d.fill(x, y, **kw)
+        if not ax_2d_diff is None:
+            cut_x = np.sum(cut, axis=1, dtype=bool)
+            width_x = np.sum(cut_x)
+            complete_range_x = np.arange(len(cut_x))
+            range_x = complete_range_x[cut_x]
+            left_x = np.min(range_x)
+            right_x = np.max(range_x)
+            cut_x = (complete_range_x >= left_x) & (complete_range_x <= right_x)
+
+            cut_y = np.sum(cut, axis=0, dtype=bool)
+            width_y = np.sum(cut_y)
+            complete_range_y = np.arange(len(cut_y))
+            range_y = complete_range_y[cut_y]
+            left_y = np.min(range_y)
+            right_y = np.max(range_y)
+            cut_y = (complete_range_y >= left_y) & (complete_range_y <= right_y)
+            
+            rect_cut = np.outer(cut_x, cut_y)
+            ans = fcn_comp((xx[rect_cut], yy[rect_cut]), p)
+            f = ans['peak'] + ans['bkg']
+            diff = f.reshape(width_x, width_y) - gvar.mean(hist[rect_cut]).reshape(width_x, width_y)
+            im = ax_2d_diff.imshow(diff, extent=(left_x, right_x + 1, left_y, right_y + 1), cmap='jet')
+            ax_2d_diff.get_figure().colorbar(im, ax=ax_2d_diff)
+        # plot slices
+        if not ax_x is None:
+            xspace = np.linspace(np.min(xx_cut), np.max(xx_cut), 200)
+            yspace = np.linspace(np.min(yy_cut), np.max(yy_cut), 5)[1:-1]
+            for uy in yspace:
+                comp = fcn_comp((xspace, uy), p)
+                line, = ax_x.plot(xspace, comp['peak'] + comp['bkg'], linestyle='-', label='y = %g' % uy)
+                ax_x.plot(xspace, comp['peak'], linestyle='--', color=line.get_color())
+                if not bkg is None:
+                    ax_x.plot(xspace, comp['bkg'], linestyle='--', color=line.get_color())
+        if not ax_y is None:
+            xspace = np.linspace(np.min(xx_cut), np.max(xx_cut), 5)[1:-1]
+            yspace = np.linspace(np.min(yy_cut), np.max(yy_cut), 200)
+            for ux in xspace:
+                comp = fcn_comp((ux, yspace), p)
+                line, = ax_y.plot(yspace, comp['peak'] + comp['bkg'], linestyle='-', label='x = %g' % ux)
+                ax_y.plot(yspace, comp['peak'], linestyle='--', color=line.get_color())
+                if not bkg is None:
+                    ax_y.plot(yspace, comp['bkg'], linestyle='--', color=line.get_color())
                     
     # report
     if print_info:
@@ -339,12 +393,22 @@ if __name__ == '__main__':
     # fig.show()
     size = 10000
     size_noise = 10000
-    scale=0.1
+    scalex=0.1
+    scaley=1
     locx=10
     locy=10
-    data = np.random.normal(loc=locx, scale=scale, size=(2, size))
-    data = np.concatenate([data, np.array([np.random.exponential(scale=5*scale, size=size_noise) - 10*scale + locx, np.random.normal(loc=locy, scale=scale, size=size_noise)])], axis=1)
-    data = np.concatenate([data, np.array([np.random.normal(loc=locx, scale=scale, size=size_noise), np.random.exponential(scale=5*scale, size=size_noise) - 10*scale + locy])], axis=1)
+    theta = 5
+    
+    theta = np.radians(theta)
+    R = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
+    data = np.array([
+        scalex * np.random.normal(size=size),
+        scaley * np.random.normal(size=size)
+    ])
+    data = np.einsum('ij,jk->ik', R, data) + np.array([locx, locy]).reshape(-1,1)
+    range_peak = np.array([np.min(data, axis=1), np.max(data, axis=1)])
+    # data = np.concatenate([data, np.array([np.random.exponential(scale=5*scale, size=size_noise) - 10*scale + locx, np.random.normal(loc=locy, scale=scale, size=size_noise)])], axis=1)
+    # data = np.concatenate([data, np.array([np.random.normal(loc=locx, scale=scale, size=size_noise), np.random.exponential(scale=5*scale, size=size_noise) - 10*scale + locy])], axis=1)
     datax, datay = data
     
     fig = plt.figure('fit_peak_2d')
@@ -356,9 +420,8 @@ if __name__ == '__main__':
     hist, edgesx, edgesy, im = ax.hist2d(datax, datay, bins=50, cmap='gray', norm=colors.LogNorm())
     fig.colorbar(im, ax=ax)
     
-    # cut = hist >= 5
-    cut = cut_2d(edgesx, edgesy, (-5*scale + locx, 5*scale + locx), (-5*scale + locy, 5*scale + locy)) & (hist >= 5)
-    outputs, inputs = fit_peak_2d(edgesx, edgesy, gvar.gvar(hist, np.sqrt(hist)) / np.outer(np.diff(edgesx), np.diff(edgesy)), cut=cut, bkg='expcross', print_info=1, ax_2d=ax, ax_x=ax_x, ax_y=ax_y)
+    cut = cut_2d(edgesx, edgesy, list(range_peak[:,0]), list(range_peak[:,1])) & (hist >= 5)
+    outputs, inputs = fit_peak_2d(edgesx, edgesy, gvar.gvar(hist, np.sqrt(hist)) / np.outer(np.diff(edgesx), np.diff(edgesy)), cut=cut, bkg=None, print_info=1, ax_2d=ax, ax_x=ax_x, ax_y=ax_y, plot_cut=True, corr=True)
     print(outputs)
     
     ax_x.legend(loc='best', fontsize='small')
