@@ -22,16 +22,16 @@ tr = array([tr1, tr2, tr3])
 
 cha, chb = ch[coinc]
 tra, trb = tr[coinc] > 500
-outa = cha[tra]
-outb = chb[trb]
+outa = cha#[tra]
+outb = chb#[trb]
 
 c2 = c2 > 500
 c2_tr = tra & trb
 
-outa_2=cha[c2_tr]
-outb_2=chb[c2_tr]
+outa_2=cha#[c2_tr]
+outb_2=chb#[c2_tr]
 
-tutti=arange(0,1200//8)*8
+tutti=arange(min(min(outa_2), min(outb_2)),max(max(outa_2), max(outb_2)))[::4]
 
 # istogrammi e scatter 2
 
