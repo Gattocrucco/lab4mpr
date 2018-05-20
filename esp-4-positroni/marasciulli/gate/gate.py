@@ -87,8 +87,11 @@ show()
 # tabella per la relazione
 
 lista=[]
+tdurata=sort(durata)
+tbeta=beta[argsort(durata)]
+tsbeta=tbeta[argsort(durata)]
 
-for j in range(len(beta)):
-    lista.append([int(durata[j]),'{}'.format(beta[j]),'{}'.format(sbeta[j]),'{}'.format(sbeta[j]/beta[j])])
+for j in range(len(tbeta)):
+    lista.append([int(tdurata[j]),'{}'.format(tbeta[j]),'{}'.format(tsbeta[j]),'{}'.format(tsbeta[j]/tbeta[j])])
     
 print(lab.TextMatrix(lista).latex())
