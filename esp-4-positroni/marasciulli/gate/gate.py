@@ -52,13 +52,13 @@ for i in range(len(files)):
     if '400' in files[i]:
         sin=60; dex=40;
     else:
-        sin=40; dex=40;
+        sin=30; dex=40;
     cut = (bordi[argmax]-sin,bordi[argmax]+dex)
     ordinata=gvar.gvar(count,sqrt(count))
 
     print("_______%s________"%files[i])
     if '300_16' in files[i]:
-        fondo=None
+        fondo='exp'
     else:
         fondo='exp'
     outdict,indict = fit_peak(bordi,ordinata,bkg=fondo,npeaks=1,cut=cut,print_info=1,ax=mi)
@@ -75,10 +75,20 @@ for i in range(len(files)):
     ax.set_xlabel('durata del gate  [ns]')
     ax.set_ylabel('$\sigma$/media')
     
-    insieme.add(rit)
     if rit in insieme:
         ax.errorbar(durata[i],gvar.mean(sbeta/beta)[i],gvar.sdev(sbeta/beta)[i],color='blue',capsize=2,linestyle='',marker=mark[i])
     else:
-        ax.errorbar(durata[i],gvar.mean(sbeta/beta)[i],gvar.sdev(sbeta/beta)[i],color='blue',capsize=2,linestyle='',marker=mark[i],label='ritardo= %d ns'%rit)
-        ax.legend(loc=0,fontsize='x-small')
+        ax.errorbar(durata[i],gvar.mean(sbeta/beta)[i],gvar.sdev(sbeta/beta)[i],color='blue',capsize=4,linestyle='',marker=mark[i],label='ritardo= %d ns'%rit)
+        insieme.add(rit)
+
+ax.legend(loc=0,fontsize='x-small')
 show()
+
+# tabella per la relazione
+
+lista=[]
+
+for j in range(len(beta)):
+    lista.append([int(durata[j]),'{}'.format(beta[j]),'{}'.format(sbeta[j]),'{}'.format(sbeta[j]/beta[j])])
+    
+print(lab.TextMatrix(lista).latex())
