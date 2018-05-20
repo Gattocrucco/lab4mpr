@@ -122,11 +122,11 @@ for channel in [1, 2, 3]:
     print('__________{:s} calibration and mass fit__________'.format(label))
     Y = peaks
     X = dict(
-        cs=662,
-        co117=1173,
-        nagamma=1275,
-        co133=1333,
-        coco=1333 + 1173
+        cs=661.7,
+        co117=1173.2,
+        nagamma=1274.5,
+        co133=1332.5,
+        coco=1332.5 + 1173.2
     )
     p0 = dict(
         slope=1,
