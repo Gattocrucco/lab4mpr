@@ -7,6 +7,8 @@ import collections
 import uncertainties as un
 from uncertainties import unumpy as unp
 
+# try to import numba
+# because sometimes it is a pain to install
 try:
     import numba
 except ImportError:
@@ -58,6 +60,7 @@ def histogram(a, bins=10, range=None, weights=None, density=None):
         Quadrature sum of the weights (the same as case 1 if the weights are unitary).
     If density=True, the uncertainty is simply divided by the same factor
     as the counts.
+    Note: empty bins get a zero uncertainty.
     
     Returns
     -------
@@ -65,17 +68,21 @@ def histogram(a, bins=10, range=None, weights=None, density=None):
     bin_edges
     unc_hist :
         Uncertainty of hist.
+    
+    See also
+    --------
+    numpy.histogram
     """
     hist, bin_edges = np.histogram(a, bins=bins, range=range, weights=weights, density=density)
     
     if weights is None and not density:
-        unc_hist = np.where(hist > 0, np.sqrt(hist), 1)
+        unc_hist = np.sqrt(hist)
     elif weights is None:
         counts, _ = np.histogram(a, bins=bins, range=range)
         unc_hist = np.where(counts > 0, np.sqrt(counts), 1) / (len(a) * np.diff(bin_edges))
     else:
         unc_hist, _ = np.histogram(a, bins=bins, range=range, weights=weights ** 2)
-        unc_hist = np.where(unc_hist > 0, np.sqrt(unc_hist), 1)
+        unc_hist = np.sqrt(unc_hist)
         if density:
             unc_hist /= (np.sum(weights) * np.diff(bin_edges))
     
@@ -99,6 +106,10 @@ def bar(edges, counts, ax=None, **kwargs):
     Returns
     -------
     Return value from ax.plot.
+    
+    See also
+    --------
+    pyplot.bar, pyplot.hist
     """
     dup_edges = np.concatenate([[edges[0]], edges, [edges[-1]]])
     dup_counts = np.concatenate([[0], [counts[0]], counts, [0]])
@@ -130,6 +141,24 @@ def rebin(a, n):
     return out
 
 def errorbar(ux, uy, *args, **kwargs):
+    """
+    Same as pyplot.errorbar, but supports arrays of ufloats.
+    
+    Additional keyword arguments
+    ----------------------------
+    ax : subplot
+        Subplot to plot onto. If not specified, calls pyplot.errorbar.
+    
+    Example
+    -------
+    >>> from matplotlib import pyplot as plt
+    >>> from uncertainties import unumpy
+    >>> ...
+    >>> ux = unumpy.uarray(x_mean, x_sdev)
+    >>> fig = plt.figure()
+    >>> ax = figure.add_subplot(111)
+    >>> lab4.errorbar(ux, y_mean, yerr=y_sdev, ax=ax)
+    """
     x = unp.nominal_values(ux)
     y = unp.nominal_values(uy)
     xerr = unp.std_devs(ux)
@@ -201,6 +230,10 @@ def errorsummary(x):
     where the keys are the tags of the components. Components
     with the same tag are summed over. The ordering is greater
     component first.
+    
+    See also
+    --------
+    gvar.fmt_errorbudget
     """
     comps = x.error_components()
     
@@ -219,13 +252,15 @@ def errorsummary(x):
     
     return d
 
-def weighted_mean(y):
+def weighted_mean(y, covy=None):
     """
     Weighted mean (with covariance matrix).
     
     Parameters
     ----------
-    y : array of ufloats
+    y : array of numbers or ufloats
+    covy : None or matrix
+        If covy is None, y must be an array of ufloats.
     
     Returns
     -------
@@ -234,11 +269,21 @@ def weighted_mean(y):
     Q : float
         Chisquare (the value of the minimized quadratic form at the minimum).
     """
-    inv_covy = np.linalg.inv(un.covariance_matrix(y))
+    # get covariance matrix
+    if covy is None:
+        covy = un.covariance_matrix(y)
+    else:
+        y = un.correlated_values(y, covy)
+    
+    # compute weighted average
+    inv_covy = np.linalg.inv(covy)
     vara = 1 / np.sum(inv_covy)
     a = vara * np.sum(np.dot(inv_covy, y))
+    
+    # check computation of uncertainties module against direct computation
     assert np.allclose(vara, a.s ** 2)
     
+    # compute chisquare
     res = unp.nominal_values(y) - a.n
     Q = float(res.reshape(1,-1) @ inv_covy @ res.reshape(-1,1))
     
@@ -404,14 +449,20 @@ def loadtxt(fname, dtype=float, usecols=None, unpack=False):
     using pandas.read_csv (which is much faster).
     """
     import pandas
+    # find number of columns
     if usecols is None:
         guess = pandas.read_csv(fname, header=0, nrows=2, delim_whitespace=True, comment='#')
         ncolumns = guess.shape[1]
     else:
         ncolumns = len(usecols)
     names = list(map(str, range(ncolumns)))
+    
+    # read data
     dataframe = pandas.read_csv(fname, delim_whitespace=True, usecols=usecols, dtype=dtype, header=None, names=names, comment='#')
+    
+    # convert to array
     array = dataframe.values
     if unpack:
         array = array.T
+    
     return array

@@ -32,7 +32,7 @@ cut = dict(
         nabeta=[320, 390],
         conagamma=[620, 740],
         cs=[400, 480],
-        nabetagamma=[820, 880]
+        nabetagamma=[820, 900]
     )
 )
 
