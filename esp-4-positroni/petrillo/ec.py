@@ -202,7 +202,7 @@ def fcn_2(p):
     
     return ans
 
-fit = lsqfit.nonlinear_fit(data=norm, fcn=fcn_1, p0=p0_1, debug=True)
+fit = lsqfit.nonlinear_fit(data=norm, fcn=fcn_2, p0=p0_2, debug=True)
 print(fit.format(maxline=True))
 
 fig_ch.show()

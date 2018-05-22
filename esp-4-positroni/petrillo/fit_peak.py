@@ -316,9 +316,9 @@ def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, corr=False, ax_2d=None, 
             y_base = w[1] * np.sin(t)
             x_base, y_base = np.einsum('ij,jk->ik', R, [x_base, y_base])
             for f in [1, 2, 3]:
-                x = p['mean'][0] + f * x_base
-                y = p['mean'][1] + f * y_base
-                ax_2d.fill(x, y, **kw)
+                x_cont = p['mean'][0] + f * x_base
+                y_cont = p['mean'][1] + f * y_base
+                ax_2d.fill(x_cont, y_cont, **kw)
         if not ax_2d_diff is None:
             cut_x = np.sum(cut, axis=1, dtype=bool)
             width_x = np.sum(cut_x)
@@ -339,9 +339,15 @@ def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, corr=False, ax_2d=None, 
             rect_cut = np.outer(cut_x, cut_y)
             ans = fcn_comp((xx[rect_cut], yy[rect_cut]), p)
             f = ans['peak'] + ans['bkg']
-            diff = f.reshape(width_x, width_y) - gvar.mean(hist[rect_cut]).reshape(width_x, width_y)
-            im = ax_2d_diff.imshow(diff, extent=(left_x, right_x + 1, left_y, right_y + 1), cmap='jet')
+            hist_nan = gvar.mean(hist)
+            hist_nan[~cut] = np.nan
+            hist_rect = hist_nan[rect_cut].reshape(width_x, width_y)
+            unc = gvar.sdev(hist[rect_cut]).reshape(width_x, width_y)
+            diff = (hist_rect - f.reshape(width_x, width_y)) / unc
+            im = ax_2d_diff.imshow(diff.T, extent=(binsx[left_x], binsx[right_x + 1], binsy[left_y], binsy[right_y + 1]), cmap='jet', aspect='auto', origin='lower')
             ax_2d_diff.get_figure().colorbar(im, ax=ax_2d_diff)
+            # if plot_cut:
+            #     ax_2d_diff.plot(xx_cut, yy_cut, '.', color=color, markersize=2)
         # plot slices
         if not ax_x is None:
             xspace = np.linspace(np.min(xx_cut), np.max(xx_cut), 200)
