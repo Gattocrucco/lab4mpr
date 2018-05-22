@@ -7,17 +7,17 @@ import gvar
 import lsqfit
 import copy
 
-file_c2 = '../DAQ/0521_effi_c2.txt'
-file_ch1 = '../DAQ/0521_effi_ch1.txt'
-file_ch2 = '../DAQ/0521_effi_ch2.txt'
+file_c2 = '../DAQ/0522_prova_rtot_attaccati.txt'
+file_ch1 = '../DAQ/0522_prova_rtot_attaccati_ch1.txt'
+file_ch2 = '../DAQ/0522_prova_rtot_attaccati_ch2.txt'
 
 # prepare figures
-fig_c2 = plt.figure('R-c2')
+fig_c2 = plt.figure('Rtot-c2')
 fig_c2.clf()
 fig_c2.set_tight_layout(True)
 ax_c2, ax_diff = fig_c2.subplots(1, 2, sharex=True, sharey=True)
 
-fig_ch = plt.figure('R-ch')
+fig_ch = plt.figure('Rtot-ch')
 fig_ch.clf()
 fig_ch.set_tight_layout(True)
 ax_ch1 = fig_ch.add_subplot(121)
@@ -26,7 +26,7 @@ ax_ch2 = fig_ch.add_subplot(122)
 # load data
 ch1_c2, ch2_c2 = lab4.loadtxt(file_c2, unpack=True, usecols=(0, 11))
 ch1, = lab4.loadtxt(file_ch1, unpack=True, usecols=(0,))
-ch2, = lab4.loadtxt(file_ch2, unpack=True, usecols=(0,))
+ch2, = lab4.loadtxt(file_ch2, unpack=True, usecols=(11,))
 
 # plot
 bins = np.arange(1150 // 8) * 8
@@ -51,20 +51,22 @@ ax_ch2.set_xlabel('energia PMT 2 [canale ADC]')
 input_var = {}
 
 scaler = dict(
-    c2=[4139, 1817836],
-    ch1=[138278, 1342895],
-    ch2=[135925, 1341086]
+    c2=[32010, 516352],
+    ch1=[64697, 140308],
+    ch2=[102327, 232830]
 )
 norm = {}
 
 ##### fit 2d
 
 cuts = dict(
-    betabeta=[(440, 500), (380, 430)],
+    betagamma=[(440, 510), (810, 890)],
+    gammabeta=[(900, 980), (390, 450)]
 )
 
 bkgs = dict(
-    betabeta='expcross',
+    betagamma=None,
+    gammabeta=None
 )
 
 rate_corr = scaler['c2'][0] / (scaler['c2'][1] / 1000) / np.sum(H)
@@ -76,13 +78,15 @@ for key in cuts.keys():
     cut = fit_peak.cut_2d(bins, bins, *cuts[key]) & (H >= 5)
     outputs, inputs = fit_peak.fit_peak_2d(bins, bins, hist, cut=cut, bkg=bkgs[key], print_info=1, ax_2d=ax_c2, ax_2d_diff=ax_diff, plot_cut=True, corr=key == 'betabeta')
     norm[key] = outputs['norm'] / (bins[1] - bins[0]) ** 2 * rate_corr
-    input_var['1&2'] = inputs['data']
+    input_var[key] = inputs['data']
 
 ##### fit 1d
 
 cuts = {
-    ('beta', 1): [420, 490],
-    ('beta', 2): [500, 570],
+    ('beta', 1): [460, 530],
+    ('beta', 2): [460, 550],
+    ('gamma', 1): [900, 1000],
+    ('gamma', 2): [880, 990]
 }
 
 for key in cuts:
@@ -95,19 +99,15 @@ for key in cuts:
     norm[key] = outputs['peak1_norm']
     rate_corr = scaler['ch' + str(key[1])][0] / (scaler['ch' + str(key[1])][1] / 1000) / np.sum(h)
     norm[key] *= 1 / (bins[1] - bins[0]) * rate_corr
-    input_var[str(key[1])] = inputs['data']
+    input_var[key] = inputs['data']
 
 ##### global fit
 
-distance = gvar.gvar(599, 1) / 2
-radius = gvar.gvar(25.4, 0.1)
-acc = (radius / (2 * distance)) ** 2
-input_var['acc'] = acc
-
 results = dict(
-    p_beta1 = norm['betabeta'] / norm['beta', 2],
-    p_beta2 = norm['betabeta'] / norm['beta', 1],
-    R = (norm['beta', 1] * norm['beta', 2]) / (norm['betabeta'] * acc)
+    p_gamma1 = norm['gammabeta'] / norm['beta', 2],
+    p_gamma2 = norm['betagamma'] / norm['beta', 1],
+    R_tot_1 = norm['gamma', 1] * norm['beta', 2] / norm['gammabeta'],
+    R_tot_2 = norm['gamma', 2] * norm['beta', 1] / norm['betagamma']
 )
 
 print(gvar.fmt_partialsdev(results, input_var, percent=True))
