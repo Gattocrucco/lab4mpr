@@ -1,0 +1,16 @@
+\subsection{Apparato B}
+
+Dopo aver eseguito in maniera preliminare le misure richieste, abbiamo deciso di semplificare l'apparato per tenere sotto controllo le criticità descritte nella sezione precedente.
+
+\subsubsection{Descrizione del circuito}
+
+Il nuovo circuito segue lo schema in \autoref{disegno}.
+\marginpar{Jack deve disegnare l'apparato B}
+I segnali dei PMT vengono inviati ai discriminatori per ottenere i segnali logici e agli attenuatori per essere poi inviati all'ADC. I segnali logici attraversano un modulo di antiretrigger per poi essere usati come trigger di acquisizioni singole o per effettuare coincidenze. Una copia dei segnali finisce al contatore. Abbiamo usato il timer per far partire/fermare le acquisizioni come abbiamo fatto per l'apparato precedente.
+
+\subsubsection{Problemi riscontrati}
+
+Dopo aver acceso l'apparato il bit stuck è scomparso e l'aumento di risoluzione ci ha permesso di notare un problema che era già presente nell'apparato precedente. Abbiamo iniziato a vedere uno sdoppiamento dello spettro, come evidenziato dalla \autoref{doppio}. Tale problema non era visibile ad occhio nudo nelle precedenti acquisizioni, ma un fit eseguito in seguito ha mostrato la presenza di due gaussiane sovrapposte. Abbiamo poi scoperto la causa del problema, ovvero il \emph{cross-talk}.
+Come mostra il grafico di \autoref{sdoppio}, il doppio picco è la somma di quello osservato nelle acquisizioni in coincidenza con quello osservato in anticoincidenza. Siamo arrivati alla conclusione che si tratti di un cross-talk dal fatto che il picco in anticoincidenza coincide con quello delle acquisizioni singole. Inoltre abbiamo visto, aumentando la distanza di un PMT dalla sorgente, che il picco delle coincidenze si rimpicciolisce (perché ha meno eventi) e il picco in anticoincidenza tende ad assomigliare sempre di più a quello dell'acquisizione con canale singolo (\autoref{dist}). In seguito abbiamo provato che questo problema si riscontra anche quando i canali da analizzare non sono collegati ad ingressi adiacenti dell'ADC. Inspiegabilmente, il problema si è ripresentato solo a giorni alterni. 
+
+% il file doppio è 0514_provacal_na_ch1 
