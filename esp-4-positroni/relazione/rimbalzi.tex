@@ -11,19 +11,28 @@ La \autoref{scatter} mostra un tipico scatter plot nella configurazione in cui 2
 \label{scatter}
 \end{figure}
 
-\marginpar{Chiedere a Jack di fare il super grafico con istogrammi 1D e 2D se non si perde troppo tempo}
+\marginpar{Chiedere a Jack di fare il super grafico con istogrammi 1D e 2D se non si perde troppo tempo. Tra l'altro se non lo facciamo ci cazziano: ``Non avete inserito l'istogramma. Non si capisce niente.'' }
 
 Si vedono degli eccessi in alcuni punti del grafico che chiameremo in seguito \emph{strutture}. La più vistosa si manifesta quando entrambi i fotoni di annichilazione effettuano un processo fotoelettrico all'interno degli scintillatori. In basso a sinistra si nota invece la zona in cui entrambi hanno subito una diffusione Compton. Le bande arancioni intorno a questa zona rappresentano invece gli eventi in cui un fotone proveniente dall'annichilazione ha fatto fotoelettrico su un rivelatore e l'altro ha fatto Compton sull'altro.
 La stessa cosa avviene con il fotone proveniente dal decadimento del neon, rappresentato dalle strutture nella parte centrale del grafico adiacente ai bordi della figura. La struttura più a destra (o più in alto) rappresenta l'arrivo simultaneo di un fotone di annichilazione insieme ad uno del neon. L'interpretazione degli eventi è analoga a quelli descritti precedentemente.
 
 \marginpar{Non sarebbe male mettere una legenda sui picchi.}
 
-Le strutture non attese sono i due eccessi presenti nella zona in cui il fotone del neon e quello dell'annichilazione fanno entrambi scattering Compton. Queste strutture si manifestano a valori di energia coincidenti ai picchetti della spalla Compton
+Le strutture non attese sono i due eccessi presenti nella zona in cui il fotone del neon e quello dell'annichilazione fanno entrambi scattering Compton. Queste strutture si manifestano a valori di energia coincidenti ai picchetti della spalla Compton.
 \marginpar{``Picchetti della spalla Compton'' non è molto chiaro, ma ci penserò più tardi a come aggiustarli.}
 
-Per verificare la nostra ipotesi abbiamo messo i rivelatori nella configurazione di \autoref{spostati}, in modo da poterci aggiungere dei mattoni di piombo come in \autoref{spostati2}. \marginpar{AGGIUSTARE}
+Per verificare la nostra ipotesi abbiamo messo i rivelatori nella configurazione di Figura\autoref{spostati}, in modo da poterci aggiungere dei mattoni di piombo come in Figura\autoref{spostati2}. \marginpar{AGGIUSTARE}
 Lo scatter plot corrispondente si trova in \autoref{spostato}: la struttura più popolata non è più data dalla rivelazione simultanea dell'annichilazione per effetto fotoelettrico, ma dalla somma degli eventi nelle bande che si incrociano.
-In questa configurazione non si nota più uno degli eccessi inattesi nominati prima: quello ad energia più alta. Adesso sono diventate evidenti due strutture circolari nella zona in basso a sinistra del grafico: esse e l'ultimo tipo di struttura rimasta scompaiono completamente quando effettuiamo la misura nella configurazione mostrata in \autoref{spostati2}, come mostrato in \autoref{piombo}.
+In questa configurazione non si nota più uno degli eccessi inattesi nominati prima: quello ad energia minore. Adesso sono diventate evidenti due strutture circolari nella zona in basso a sinistra del grafico: esse e l'ultimo tipo di struttura rimasta scompaiono completamente quando effettuiamo la misura nella configurazione mostrata in Figura\autoref{spostati2}, come mostrato in \autoref{piombo}.
+
+\begin{figure}[h]
+\centering
+\subfloat
+{\includegraphics[width=17 em]{immagini/alter} \label{spostati} }
+\subfloat
+{\includegraphics[width=17 em]{immagini/spostati2} \label{spostati2}}
+\caption{A sinistra: rivelatori posti uno di fronte all'altro senza schermatura. A destra: aggiunta della schermatura di piombo per impedire i rimbalzi.}
+\end{figure}
 
 \begin{figure}[h]
 \centering
@@ -42,6 +51,33 @@ In questa configurazione non si nota più uno degli eccessi inattesi nominati pr
 
 \subsubsection{Misura con un solo fotone}
 
-Abbiamo effettuato la misura nella configurazione di \autoref{solo} e poi \autoref{solo_pb} usando la sorgente di \cs{}: lo scopo della misura è quantificare l'importanza di un rimbalzo tra scintillatori vicini.
+Abbiamo effettuato la misura nella configurazione di Figura\autoref{solo} e poi Figura\autoref{solo_pb} usando la sorgente di \cs{}: lo scopo della misura è evidenziare l'importanza dei rimbalzi tra scintillatori vicini.
 
- 
+\begin{figure}[h]
+\centering
+\subfloat
+{\includegraphics[width=17 em]{immagini/rimb} \label{solo} }
+\subfloat
+{\includegraphics[width=17 em]{immagini/norimb} \label{solo_pb}}
+\caption{A sinistra: configurazione usata per evidenziare la presenza di rimbalzi. A destra: aggiunta del piombo che blocca i rimbalzi.}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{immagini/ce_ri}
+\caption{Misura eseguita nella configurazione di Figura\autoref{solo}.}
+\label{ce}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{immagini/ce_pb}
+\caption{Misura eseguita nella configurazione di Figura\autoref{solo_pb}.}
+\label{no_ce}
+\end{figure}
+
+
+
+Lo scatter plot corrispondente alla Figura\autoref{solo} è in \autoref{ce}: notiamo due accumuli proprio dove si trovavano in \autoref{spostato}. Anche questi scompaiono dopo aver aggiunto il piombo (\autoref{no_ce}). Gli eventi misurati non possono che essere coincidenze casuali.
+\marginpar{Limare la fine della frase.}
+
