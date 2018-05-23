@@ -105,9 +105,9 @@ acc = (radius / (2 * distance)) ** 2
 input_var['acc'] = acc
 
 results = dict(
-    p_beta1 = norm['betabeta'] / norm['beta', 2],
-    p_beta2 = norm['betabeta'] / norm['beta', 1],
-    R = (norm['beta', 1] * norm['beta', 2]) / (norm['betabeta'] * acc)
+    p_beta1 = 2 * norm['betabeta'] / norm['beta', 2],
+    p_beta2 = 2 * norm['betabeta'] / norm['beta', 1],
+    R = (norm['beta', 1] * norm['beta', 2]) / (4 * norm['betabeta'] * acc)
 )
 
 print(gvar.fmt_partialsdev(results, input_var, percent=True))

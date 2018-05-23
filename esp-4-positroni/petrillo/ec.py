@@ -140,15 +140,15 @@ def fcn_1(p):
     ans = {}
     
     Racc = p['Racc']
-    R_tot = p['R_tot']   
-    p_beta1 = p['p_beta1'] 
-    p_beta2 = p['p_beta2'] 
+    R_tot = p['R_tot']
+    p_beta1 = p['p_beta1']
+    p_beta2 = p['p_beta2']
     p_gamma1 = p['p_gamma1acc']
     p_gamma2 = p['p_gamma2acc']
     
     Rp_beta12 = Racc * p_beta1 * p_beta2
-    Rp_beta1 = Racc * p_beta1
-    Rp_beta2 = Racc * p_beta2
+    Rp_beta1 = 2 * Racc * p_beta1
+    Rp_beta2 = 2 * Racc * p_beta2
     
     ans['beta', 1] = Rp_beta1 * (1 - p_gamma1)
     ans['gamma', 1] = R_tot * p_gamma1 - Rp_beta1 * p_gamma1
@@ -181,9 +181,9 @@ p0_2 = {
 def fcn_2(p):
     ans = {}
 
-    R_tot = p['R_tot']   
-    Rp_beta1 = p['Rp_beta1'] 
-    Rp_beta2 = p['Rp_beta2'] 
+    R_tot = p['R_tot']
+    Rp_beta1 = p['Rp_beta1'] * 2
+    Rp_beta2 = p['Rp_beta2'] * 2
     p_gamma1 = p['p_gamma1']
     p_gamma2 = p['p_gamma2']
     Rp_beta12 = p['Rp_beta12']
