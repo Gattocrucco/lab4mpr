@@ -18,7 +18,7 @@ couple   = explog(lab4.interp(np.log(data[0]), np.log(data[4])))
 total    = explog(lab4.interp(np.log(data[0]), np.log(np.sum(data[1:], axis=0))))
 
 if __name__ == '__main__':
-    fig = plt.figure('cross')
+    fig = plt.figure('cross', figsize=[4.82, 3.29])
     fig.clf()
     fig.set_tight_layout(True)
     ax = fig.add_subplot(111)
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     ax.set_xscale('log')
     ax.set_yscale('log')
     ax.set_xlabel('Energia del fotone [MeV]')
-    ax.set_ylabel('Coefficiente di attenuazione di massa [cm$^{2}$ g$^{-1}$]')
+    ax.set_ylabel('Coefficiente di attenuazione\ndi massa [cm$^{2}$ g$^{-1}$]')
     ax.set_xlim((np.min(e), np.max(e)))
     y = ax.get_ylim()
     ax.set_ylim((np.nanmin([couple  (E) for E in e]), y[1]))

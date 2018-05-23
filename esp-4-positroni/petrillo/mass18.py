@@ -6,15 +6,25 @@ from matplotlib import pyplot as plt
 import lab4
 import copy
 
-fig = plt.figure('mass18-peaks')
+fig = plt.figure('mass18-peaks', figsize=[6.87, 6.49])
 fig.clf()
 fig.set_tight_layout(True)
 axs = fig.subplots(3, 1)
 
-figcal = plt.figure('mass18-cal')
+figcal = plt.figure('mass18-cal', figsize=[4.44, 3.51])
 figcal.clf()
 figcal.set_tight_layout(True)
 axcal = figcal.add_subplot(111)
+
+peak_labels = dict(
+    nabeta='Na$_{\\beta}$',
+    cs='Cs',
+    co117='Co$_{1.17}$, Co$_{1.33}$',
+    # nagamma='Na$_{\\gamma}$',
+    # co133='Co$_{1.33}$',
+    nabetagamma='Na$_{\\beta+\\gamma}$',
+    coco='Co$_{1.17+1.33}$'
+)
 
 cut = dict(
     ch1=dict(
@@ -41,10 +51,7 @@ cut = dict(
     )
 )
 
-minlength = 1150
 rebin = 4
-bins = np.arange(minlength + 1)[::rebin]
-x = (bins[:-1] + bins[1:]) / 2
 
 input_var = {}
 mass = {}
@@ -64,21 +71,44 @@ for channel in [1, 2, 3]:
     nparts = 1
     for part in range(nparts):
         part_label = 'part%d' % (part + 1)
-        hist = lab4.rebin(np.bincount(samples[part * len(samples) // nparts:(part + 1) * len(samples) // nparts], minlength=minlength), rebin)
+        hist = np.bincount(samples[part * len(samples) // nparts:(part + 1) * len(samples) // nparts])
+        bins = np.arange(len(hist) + 1)[::rebin]
+        x = (bins[:-1] + bins[1:]) / 2
+        hist = lab4.rebin(hist, rebin)
         cut5 = hist >= 5
         hist = gvar.gvar(hist, np.sqrt(hist))
     
         # plot
+        if nparts == 1:
+            kw = dict(color='gray')
+        else:
+            kw = dict()
         non_zero = gvar.mean(hist) > 0
-        ax.errorbar(x[non_zero], gvar.mean(hist[non_zero]), yerr=gvar.sdev(hist[non_zero]), fmt=',', label=label + ' ' + part_label)
-        ax.errorbar(x[~non_zero], gvar.mean(hist[~non_zero]), yerr=[np.zeros(np.sum(~non_zero)), np.ones(np.sum(~non_zero))], fmt=',', label=label + ' ' + part_label)
-        ax.set_yscale('symlog', linthreshy=1, linscaley=0.3)
-        ax.set_ylabel('conteggio')
-        if channel == 3:
-            ax.set_xlabel('canale ADC')
+        if nparts == 1:
+            data_label = 'dati PMT %d' % channel
+        else:
+            data_label = label + ' ' + part_label
+        rt = ax.errorbar(x[non_zero], gvar.mean(hist[non_zero]), yerr=gvar.sdev(hist[non_zero]), fmt=',', label=data_label, **kw)
+        ax.errorbar(x[~non_zero], gvar.mean(hist[~non_zero]), yerr=[np.zeros(np.sum(~non_zero)), np.ones(np.sum(~non_zero))], fmt=',', color=rt[0].get_color())
+        if part == 0:
+            ax.set_yscale('symlog', linthreshy=1, linscaley=0.3)
+            if rebin == 1:
+                ylabel = 'conteggio'
+            else:
+                ylabel = 'conteggio / %d canali' % rebin
+            ax.set_ylabel(ylabel)
+            if channel == 3:
+                ax.set_xlabel('canale ADC')
+            if channel == 1:
+                ax.plot([1e6], [1e6], '-k', label='fit (gaussiana + fondo)', scalex=False, scaley=False)
+                ax.plot([1e6], [1e6], '--k', label='fit (gaussiana)', scalex=False, scaley=False)
+                ax.plot([1e6], [1e6], ':k', label='fit (fondo)', scalex=False, scaley=False)
+        if nparts == 1:
+            ax.set_xlim(*[(-218, 1020), (304, 824), (252, 976)][channel - 1])
+            ax.set_ylim(*[(-0.467, 11300), (-0.866, 44900), (-0.738, 18600)][channel - 1])
     
         # fit peaks
-        kw = dict(ax=ax, plot_kw=dict(scaley=False), print_info=1)
+        kw = dict(ax=ax, plot_kw=dict(scaley=False, scalex=False, color='black', label=None), print_info=1)
         for key in cut[label].keys():
             if kw['print_info']:
                 print('_________{:s} {} {}_________'.format(label, part_label, key))
@@ -96,9 +126,21 @@ for channel in [1, 2, 3]:
                 peaks['co133'] = peak_co_mean[idx_mean[1]]
             else:
                 peaks[key] = outputs['peak1_mean']
-            input_var['{:s}_{}_{}'.format(label, part_label, key)] = inputs['data'] 
+            input_var['{:s}_{}_{}'.format(label, part_label, key)] = inputs['data']
         
-        ax.legend(loc='upper right', fontsize='small')
+        for key in peak_labels:
+            text_x = gvar.mean(peaks[key])
+            h = gvar.mean(hist)
+            text_y = h[x <= text_x][-1]
+            if key in ['nabeta', 'cs']:
+                text_y /= 1000
+            else:
+                text_y *= 2
+            if key == 'co117':
+                text_x = (gvar.mean(peaks[key]) + gvar.mean(peaks['co133'])) / 2
+            ax.text(text_x, text_y, peak_labels[key], horizontalalignment='center')
+        
+        ax.legend(loc='lower left', fontsize='small')
         ax.grid(linestyle=':')
     
         # fit calibration and mass
@@ -151,7 +193,11 @@ for channel in [1, 2, 3]:
         keys = list(X.keys())
         X_plot = [X[key] for key in keys]
         Y_plot = [Y[key] for key in keys]
-        rt = axcal.errorbar(gvar.mean(X_plot), gvar.mean(Y_plot), xerr=gvar.sdev(X_plot), yerr=gvar.sdev(Y_plot), fmt='.', label='{}_{}'.format(label, part_label))
+        if nparts == 1:
+            cal_label = 'PMT %d' % channel
+        else:
+            cal_label = '{}_{}'.format(label, part_label)
+        rt = axcal.errorbar(gvar.mean(X_plot), gvar.mean(Y_plot), xerr=gvar.sdev(X_plot), yerr=gvar.sdev(Y_plot), fmt='.', label=cal_label)
         color = rt[0].get_color()
         X_plot += [fit.p['mass'], fit.p['mass'] + 1274.5]
         Y_plot += [Y['nabeta'], Y['nabetagamma']]
@@ -159,6 +205,16 @@ for channel in [1, 2, 3]:
         axcal.errorbar(fit.pmean['mass'] + 1274.5, gvar.mean(Y['nabetagamma']), xerr=fit.psdev['mass'], yerr=gvar.sdev(Y['nabetagamma']), fmt='x', color=color)
         xspace = np.linspace(np.min(gvar.mean(X_plot)), np.max(gvar.mean(X_plot)), 500)
         axcal.plot(xspace, curve(xspace, fit.pmean), '-', color=color)
+        
+coord = dict(
+    nabeta=[500, 400],
+    cs=[750, 200],
+    co117=[1500, 400],
+    nabetagamma=[1750, 800],
+    coco=[2350, 650]
+)
+for key in coord:
+    axcal.text(*coord[key], peak_labels[key], ha='center')
     
 # print(gvar.fmt_errorbudget(mass, input_var))
 print(gvar.tabulate(mass))

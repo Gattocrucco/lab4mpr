@@ -35,12 +35,14 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
         Background type.
     absolute_sigma : boolean
         If True, ordinary fit. If False, rescale uncertainties with the chisquare.
+        NOT IMPLEMENTED
     ax : None or subplot
         Axes to plot the fit.
     print_info : boolean
         If True, print a report.
     plot_kw : dictionary
-        Keyword arguments passed to all plotting functions.
+        Keyword arguments passed to all plotting functions. Overrides
+        internal settings.
     manual_p0 : dictionary
         Overrides initial estimates made automatically.
     
@@ -52,7 +54,7 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
     inputs : dictionary
         Keys: 'data' contains the part of the histogram selected by the cut.
         'cut' and 'chi2' contain variables to account for the uncertainty derived by
-        varying the cut and for absolute_sigma=False if used.
+        varying the cut and for absolute_sigma=False if used (NOT IMPLEMENTED).
     """
     # data
     x = (bins[1:] + bins[:-1]) / 2
@@ -126,17 +128,23 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
     
     # plot
     if not ax is None:
-        # lab4.bar(bins, gvar.mean(y), label='dati', ax=ax, **plot_kw)
         xspace = np.linspace(np.min(x[cut]), np.max(x[cut]), 100)
-        ax.plot(xspace, fcn(xspace, fit.pmean), label='fit{}'.format('' if success else ' (failed!)'), **plot_kw)
+        kw = dict(label='fit{}'.format('' if success else ' (failed!)'))
+        kw.update(plot_kw)
+        ax.plot(xspace, fcn(xspace, fit.pmean), **kw)
         ycomp = fcn_comp(xspace, fit.pmean)
         for i in range(npeaks):
-            ax.plot(xspace, ycomp[peak_label[i]], linestyle='--', label=peak_label[i], **plot_kw)
+            kw = dict(linestyle='--', label=peak_label[i])
+            kw.update(plot_kw)
+            ax.plot(xspace, ycomp[peak_label[i]], **kw)
         if not bkg is None:
-            ax.plot(xspace, ycomp['bkg'], linestyle='--', label='background', **plot_kw)
+            kw = dict(linestyle=':', label='background')
+            kw.update(plot_kw)
+            ax.plot(xspace, ycomp['bkg'], **kw)
         if not success:
-            pass
-            ax.plot(xspace, fcn(xspace, p0), linestyle='-', label='p0', **plot_kw)
+            kw = dict(linestyle='-', label='p0')
+            kw.update(plot_kw)
+            ax.plot(xspace, fcn(xspace, p0), **kw)
     
     # output
     inputs = dict(data=y[cut])
