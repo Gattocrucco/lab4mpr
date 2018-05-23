@@ -3,3 +3,7 @@ relazione.pdf
 *.log
 *.synctex
 *.out
+*.watcher_pid
+*.lb
+*.fdb_latexmk
+*.fls
