@@ -1,19 +1,36 @@
 #!/usr/bin/env python
-from __future__ import division,print_function
+from __future__ import division, print_function
 from pylab import *
 import sys
 import lab4
+import numpy as np
+
+# usage:
+# temp.py <file>
+# temp.py <file> <canali> ...
 
 filename=sys.argv[1]
+if len(sys.argv) >= 3:
+  chans = [int(i) for i in sys.argv[2:]]
+else:
+  chans = [0]
 
-ch1,ch2,ch3,tr1,tr2,tr3,c2,c3,ts=lab4.loadtxt(filename,unpack=True,usecols=(0,1,2,4,5,6,8,9,12))
+data = lab4.loadtxt(filename, unpack=True, usecols=chans + [12])
+ts = data[-1]
+ts -= ts[0]
 
-figure('temp ch1')
+decimation = data.shape[1] // 10000
+ts = ts[::decimation]
 
-plot((ts-ts[0])/3600, ch1,marker='.',markersize=2,linestyle='',label=filename)
-'''
-figure("temp ch2")
-plot((ts-ts[0])/3600, ch2,marker='.',markersize=2,linestyle='',label=filename)
-'''
-legend()
+figure('temp')
+clf()
+
+for i in range(len(chans)):
+  subplot(len(chans), 1, i + 1)
+  if i == 0:
+    title(filename + ', n=' + str(data.shape[1]) + (' [::%d]' % decimation if decimation else ''))
+  plot(ts, data[i,::decimation], ',', label="ADC a%d" % (chans[i],))
+  legend(loc=0)
+xlabel('tempo [s]')
 show()
+
