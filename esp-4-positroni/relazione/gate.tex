@@ -38,4 +38,3 @@ ma questo valore non è un buon punto di lavoro perché cambiare la durata del g
 L'alternativa migliore sembrerebbe essere una durata del gate di \SI{1}{\micro s}, ma il manuale dell'ADC specifica che a tale valore (o anche maggiore) diminuisce la linearità della digitalizzazione. Per questo abbiamo scelto di usare un gate di \SI{550}{ns} nell'apparato A.
 \marginpar{Il manuale dice che aumenta l'errore, non che peggiora la linearità (quella era per segnali sopra \SI1V). Inoltre come limite dà \SI{200}{ns}.}
 Questa scelta è poi diventata \SI{1}{\micro s} nell'apparato B per evitare problemi derivanti dal jitter dei segnali. Infine notiamo che cambiare i ritardi sui segnali in ingresso non influisce significativamente sulla risoluzione dell'apparato.
-\marginpar{I dati nella tabella non mi tornano. Le sigma sono grosse quanto le medie e infatti i rapporti vengono tutti dell'ordine dell'unità, diversi da quelli riportati nel grafico.}
