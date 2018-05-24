@@ -1,10 +1,16 @@
 \subsection{Misure con TDC}
 
 Collegando le uscite discriminate dei PMT 1 e 2 ai due ingressi dell'unico TDC funzionante che abbiamo trovato in laboratorio, possiamo misurare i ritardi tra le risposte di due PMT posti uno di fronte all'altro sfruttando i fotoni dell'annichilazione. Per eseguire la misura usiamo come trigger le coincidenze e ritardiamo i segnali dei due PMT, dato che il trigger è successivo alla rivelazione dei fotoni. \`E stato scelto un ritardo di \SI{60}{ns} in modo che la differenza tra i tempi di arrivo $\Delta t=t_1-t_2$ possa essere sia positiva che negativa.
+\marginpar{L'ultima frase non torna, sembra come se il fatto che sia \SI{60}{ns} sia particolarmente utile.
+Che sia positiva che negativa dipendeva dal fatto che li avessimo ritardati.
+Comunque la spiegazione è poco chiara per uno che non ha fatto le misure.}
 
 Prima di eseguire la misura calibriamo il TDC con il generatore di funzioni usando come trigger un'onda quadra e come \emph{stop} lo stesso segnale ma ritardato in modo arbitrario.
+\marginpar{Perché lo \emph{start} lo chiami trigger e il gate lo chiami \emph{stop}? (PI)}
 Eseguiamo questa calibrazione per le due scale disponibili: \SI{102}{ns} e \SI{510}{ns}.
+\marginpar{Fondiscala.}
 Le calibrazioni hanno mostrato una buona linearità, ma la misura dei ritardi ha mostrato che il TDC, per un motivo a noi ignoto, non funziona.
+\marginpar{In realtà a suo arbitrio può decidere di non funzionare anche quando lo testiamo con il generatore di segnali.}
 Il grafico di Figura\autoref{100} è uguale a quello di Figura\autoref{500} nonostante le acquisizioni siano state fatte con due scale diverse. Se nei due grafici ci fosse la stessa cosa, vedremmo la figura allargata di un fattore dato dal rapporto dei due fondoscala. Inoltre l'offset delle scale del TDC vale circa \SI{1}{digit}, quindi lo spostamento di circa \SI{50}{digit} del picco presente nei grafici non può essere spiegato da nessun effetto fisico.
 
 \begin{figure}[h]
