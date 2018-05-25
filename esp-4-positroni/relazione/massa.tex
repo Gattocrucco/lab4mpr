@@ -12,3 +12,52 @@
 	\caption{\label{fig:mass18-cal}
 	Ciao}
 \end{figure}
+
+Per ricavare la massa dell'elettrone misuriamo l'energia del picco di annichilazione del \na{}
+calibrando la scala di energia con i fotopicchi di \co{} e \cs{}.
+Poiché la scala di energia varia significativamente nell'arco di tempo in cui facciamo le misure,
+misuriamo contemporaneamente lo spettro di tutte le sorgenti.
+Triggeriamo su un singolo PMT,
+collegando solo quel PMT all'ADC, per evitare il crosstalk tra i canali dell'ADC.
+Ripetiamo la misura con i 3 scintillatori disponibili.
+
+\subsubsection{Fit dei picchi}
+
+Fittiamo ogni picco, scegliendo a mano l'intervallo di canali su cui fittare,
+con una gaussiana più un esponenziale come fondo.
+Il fit è ai minimi quadrati sull'istogramma.
+I bin fittati contengono tutti almeno 5 eventi.
+I fit sono riportati in \autoref{fig:mass18-peaks}.
+Tutti i fit hanno un pvalue ragionevole;
+il test di Kolmogorov-Smirnov sull'uniformità dei pvalue dà un pvalue \SI{18}\%.
+Per i picchi del cobalto e quello del neon, che sono sovrapposti, il fit è unico.
+Con dei test vediamo che il risultato per la media del picco del neon,
+che è praticamente nascosto da quelli del cobalto,
+è instabile, quindi lo teniamo nel fit come fondo ma non lo usiamo per ricavare la massa.
+
+\subsubsection{Fit della massa}
+
+Inizialmente fittiamo le medie dei picchi in funzione dell'energia con una retta
+\begin{equation}
+	\label{eq:retta}
+	E_\text{adc} = m \cdot E + q,
+\end{equation}
+dove $E$ è
+\begin{itemize}
+	\item il valore noto dell'energia per i picchi di calibrazione;
+	\item la massa $m$ dell'elettrone (parametro di fit) per il picco di annichilazione;
+	\item $m$ più l'energia del fotone del neon per il picco $\na_{\beta+\gamma}$.
+\end{itemize}
+Il pvalue del fit è praticamente 0,
+ovvero le incertezze statistiche sono sufficientemente piccole da rigettare il modello \eqref{eq:retta}.
+Poiché abbiamo ancora 3 gradi di libertà,
+rendiamo il modello più generico aggiungendo il termine quadratico:
+\begin{equation}
+	\label{eq:parabola}
+	E_\text{adc} = 2k \cdot E^2 + m \cdot E + q.
+\end{equation}
+Anche questo modello viene rigettato con forza per i PMT 1 e 2, ma non per il 3.
+Non vogliamo avere meno di due gradi di libertà nel fit,
+quindi in mancanza di un modello adeguato stimiamo un'incertezza sistematica aggiuntiva in questo modo:
+ripetiamo il fit lasciando libera, oltre all'energia del picco di annichilazione,
+anche l'energia di un picco di calibrazione.
