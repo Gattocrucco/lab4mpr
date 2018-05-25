@@ -73,6 +73,7 @@ rebin = 4
 input_var = {}
 mass = {}
 Q = []
+table = []
 for channel in [1, 2, 3]:
     label = 'ch{:d}'.format(channel)
     
@@ -142,9 +143,10 @@ for channel in [1, 2, 3]:
                 idx_mean = np.argsort(gvar.mean(peak_co_mean))
                 peaks['co117'] = peak_co_mean[idx_mean[0]]
                 peaks['co133'] = peak_co_mean[idx_mean[1]]
+                input_var['{:s}_{}_{}'.format(label, part_label, key)] = np.array([peaks['co117'], peaks['co133']])
             else:
                 peaks[key] = outputs['peak1_mean']
-            input_var['{:s}_{}_{}'.format(label, part_label, key)] = inputs['data']
+                input_var['{:s}_{}_{}'.format(label, part_label, key)] = peaks[key]
             Q.append(full['fit'].Q)
         
         print('_________{:s} {} peaks_________'.format(label, part_label))
@@ -231,6 +233,7 @@ for channel in [1, 2, 3]:
         #     input_var['{}_{}_chi2'.format(label, part_label)] = chi2
     
         print(fit.format(maxline=True))
+        print(lab.format_par_cov(gvar.mean(fit.p), gvar.evalcov(fit.p)))
             
         # plot
         keys = list(X.keys())
@@ -248,6 +251,16 @@ for channel in [1, 2, 3]:
         axcal.errorbar(fit.pmean['mass'] + 1274.5, gvar.mean(Y['nabetagamma']), xerr=fit.psdev['mass'], yerr=gvar.sdev(Y['nabetagamma']), fmt='x', color=color)
         xspace = np.linspace(np.min(gvar.mean(X_plot)), np.max(gvar.mean(X_plot)), 500)
         axcal.plot(xspace, curve(xspace, fit.pmean), '-', color=color)
+        
+        table.append([
+            channel,
+            '\\SI{%s}' % fit.p['intercept'],
+            '\\SI{%s}' % fit.p['slope'],
+            '\\SI{%s}' % fit.p['curvature'],
+            '\\SI{%s}' % fit.p['mass'],
+            '%.1f' % (fit.chi2 / fit.dof),
+            '%.1f' % factor
+        ])
         
 coord = dict(
     nabeta=[500, 400],
@@ -267,6 +280,7 @@ print('Kolmogorov-Smirnov test on peak pvalues: {:.2f}\n'.format(Qtest.pvalue))
     
 print(gvar.tabulate(mass))
 print(gvar.fmt_errorbudget(mass, input_var))
+print(lab.TextMatrix(table).latex())
 
 axcal.legend(loc=0)
 axcal.set_xlabel('valore nominale / fittato [keV]')

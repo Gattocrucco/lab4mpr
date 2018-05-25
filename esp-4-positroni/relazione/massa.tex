@@ -1,18 +1,5 @@
 \subsection{Massa dell'elettrone}
 
-\begin{figure}
-	\includegraphics[width=\textwidth]{immagini/mass18-peaks}
-	\caption{\label{fig:mass18-peaks}
-	Ciao}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=25em]{immagini/mass18-cal}
-	\caption{\label{fig:mass18-cal}
-	Ciao}
-\end{figure}
-
 Per ricavare la massa dell'elettrone misuriamo l'energia del picco di annichilazione del \na{}
 calibrando la scala di energia con i fotopicchi di \co{} e \cs{}.
 Poiché la scala di energia varia significativamente nell'arco di tempo in cui facciamo le misure,
@@ -22,6 +9,12 @@ collegando solo quel PMT all'ADC, per evitare il crosstalk tra i canali dell'ADC
 Ripetiamo la misura con i 3 scintillatori disponibili.
 
 \subsubsection{Fit dei picchi}
+
+\begin{figure}
+	\includegraphics[width=\textwidth]{immagini/mass18-peaks}
+	\caption{\label{fig:mass18-peaks}
+	Ciao}
+\end{figure}
 
 Fittiamo ogni picco, scegliendo a mano l'intervallo di canali su cui fittare,
 con una gaussiana più un esponenziale come fondo.
@@ -37,27 +30,61 @@ che è praticamente nascosto da quelli del cobalto,
 
 \subsubsection{Fit della massa}
 
+\begin{figure}
+	\centering
+	\includegraphics[width=25em]{immagini/mass18-cal}
+	\caption{\label{fig:mass18-cal}
+	Ciao}
+\end{figure}
+
+\begin{table}
+	\hspace{-3em}
+	\begin{tabular}{ccccccc}
+		PMT & $a$ & $b$ [\si{keV^{-1}}] & $c$ [\si{keV^{-2}}] & $m$ [\si{keV}] & $\chi^2$/dof & $F$ \\
+		\hline
+		1 &   \SI{7.31(54)} &  \SI{0.3584(11)} &   \SI{2.60(26)} & \SI{519.95(50)} & 33.3 & 6.9 \\
+		2 & \SI{228.02(31)} & \SI{0.22802(56)} &  \SI{-3.55(11)} & \SI{516.44(55)} & 24.4 & 6.2 \\
+		3 & \SI{113.47(44)} & \SI{0.46701(84)} & \SI{-32.94(18)} & \SI{495.25(44)} &  4.1 & 2.3
+	\end{tabular}
+	\caption{\label{tab:massa}
+	Risultati dei fit di calibrazione e massa dell'elettrone per ogni PMT.
+	La curva di calibrazione è $E_\text{adc}=2cE^2+bE+a$.
+	In tutti i fit le correlazioni risultano circa \SI{50}\% tra $m$ e gli altri parametri
+	e circa \SI{95}\% tra $a$, $b$ e $c$.
+	}
+\end{table}
+
 Inizialmente fittiamo le medie dei picchi in funzione dell'energia con una retta
 \begin{equation}
 	\label{eq:retta}
-	E_\text{adc} = m \cdot E + q,
+	E_\text{adc} = b \cdot E + a,
 \end{equation}
-dove $E$ è
+dove, a seconda dei casi, $E$ è
 \begin{itemize}
 	\item il valore noto dell'energia per i picchi di calibrazione;
 	\item la massa $m$ dell'elettrone (parametro di fit) per il picco di annichilazione;
 	\item $m$ più l'energia del fotone del neon per il picco $\na_{\beta+\gamma}$.
 \end{itemize}
+Nel fit teniamo conto della correlazione tra i picchi del cobalto.
 Il pvalue del fit è praticamente 0,
 ovvero le incertezze statistiche sono sufficientemente piccole da rigettare il modello \eqref{eq:retta}.
+
 Poiché abbiamo ancora 3 gradi di libertà,
 rendiamo il modello più generico aggiungendo il termine quadratico:
 \begin{equation}
 	\label{eq:parabola}
-	E_\text{adc} = 2k \cdot E^2 + m \cdot E + q.
+	E_\text{adc} = 2c \cdot E^2 + b \cdot E + a.
 \end{equation}
 Anche questo modello viene rigettato con forza per i PMT 1 e 2, ma non per il 3.
 Non vogliamo avere meno di due gradi di libertà nel fit,
 quindi in mancanza di un modello adeguato stimiamo un'incertezza sistematica aggiuntiva in questo modo:
-ripetiamo il fit lasciando libera, oltre all'energia del picco di annichilazione,
-anche l'energia di un picco di calibrazione.
+per ogni picco di calibrazione ripetiamo il fit lasciando libera,
+oltre all'energia del picco di annichilazione,
+anche l'energia del picco di calibrazione.
+Per ognuno di questi fit calcoliamo il rapporto tra
+la differenza tra l'energia fittata e l'energia nota del picco di calibrazione
+e la deviazione standard stimata dal fit sull'energia fittata.
+Riscaliamo l'incertezza sulla massa del fit principale
+per la media quadratica di questi rapporti.
+Il grafico del fit è riportato in \autoref{fig:mass18-cal},
+i risultati dettagliati sono riportati in \autoref{tab:massfit}.

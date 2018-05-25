@@ -4,10 +4,12 @@ from matplotlib.colors import LogNorm
 from fit_peak import fit_peak
 import gvar
 
-file1="0518_rimbalzi.txt"
+cartella_dati = '../DAQ/'
+
+file1=cartella_dati + "0518_rimbalzi.txt"
 rate1=19817608/1894989*1000
 
-file2="0518_rimbalzi_piombo.txt"
+file2=cartella_dati + "0518_rimbalzi_piombo.txt"
 rate2=20262459/1896859*1000
 
 ch1,ch2=lab4.loadtxt(file1,unpack=True,usecols=(0,1))
