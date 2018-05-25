@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 import lab4
 import copy
 import lab
+from scipy import stats
 
 print_peak_fit = False
 
@@ -26,6 +27,11 @@ figcal = plt.figure('mass18-cal', figsize=[4.44, 3.51])
 figcal.clf()
 figcal.set_tight_layout(True)
 axcal = figcal.add_subplot(111)
+
+figQ = plt.figure('mass18-Q')
+figQ.clf()
+figQ.set_tight_layout(True)
+axQ = figQ.add_subplot(111)
 
 peak_labels = dict(
     nabeta='Na$_{\\beta}$',
@@ -66,6 +72,7 @@ rebin = 4
 
 input_var = {}
 mass = {}
+Q = []
 for channel in [1, 2, 3]:
     label = 'ch{:d}'.format(channel)
     
@@ -119,14 +126,14 @@ for channel in [1, 2, 3]:
             ax.set_ylim(*[(-0.467, 11300), (-0.866, 44900), (-0.738, 18600)][channel - 1])
     
         # fit peaks
-        kw = dict(ax=ax, plot_kw=dict(scaley=False, scalex=False, color='black', label=None), print_info=print_peak_fit)
+        kw = dict(ax=ax, plot_kw=dict(scaley=False, scalex=False, color='black', label=None), print_info=print_peak_fit, full_output=True)
         for key in cut[label].keys():
             if kw['print_info']:
                 print('_________{:s} {} {}_________'.format(label, part_label, key))
             cut_margins = cut[label][key]
             cut_bool = (cut_margins[0] <= x) & (x <= cut_margins[1]) & cut5
             npeaks = 3 if key == 'conagamma' else 1
-            outputs, inputs = fit_peak.fit_peak(bins, hist, npeaks=npeaks, cut=cut_bool, bkg='exp', **kw)
+            outputs, inputs, full = fit_peak.fit_peak(bins, hist, npeaks=npeaks, cut=cut_bool, bkg='exp', **kw)
             if key == 'conagamma':
                 peak123_mean = np.array([outputs['peak%d_mean' % i] for i in range(1, 4)])
                 peak123_norm = np.array([outputs['peak%d_norm' % i] for i in range(1, 4)])
@@ -138,6 +145,7 @@ for channel in [1, 2, 3]:
             else:
                 peaks[key] = outputs['peak1_mean']
             input_var['{:s}_{}_{}'.format(label, part_label, key)] = inputs['data']
+            Q.append(full['fit'].Q)
         
         print('_________{:s} {} peaks_________'.format(label, part_label))
         print(lab.format_par_cov(gvar.mean(peaks), gvar.evalcov(peaks)))
@@ -202,7 +210,7 @@ for channel in [1, 2, 3]:
         for test_x in X:
             test_p0 = {test_x: X[test_x]}
             test_p0.update(p0)
-            test_fit = lsqfit.nonlinear_fit(data=(X, Y), fcn=fcn, p0=test_p0, debug=True)
+            test_fit = lsqfit.nonlinear_fit(data=(X, Y), fcn=fcn, p0=test_p0, debug=True, svdcut=None)
             test_result[test_x] = test_fit.p[test_x]
             delta_sigma = (test_fit.pmean[test_x] - X[test_x]) / test_fit.psdev[test_x]
             delta_sigmas.append(delta_sigma)
@@ -211,7 +219,7 @@ for channel in [1, 2, 3]:
         print('Rms of delta/sigma = {:.1f}\n'.format(factor))
     
         print('__________{:s} {} calibration and mass fit__________'.format(label, part_label))
-        fit = lsqfit.nonlinear_fit(data=(X, Y), fcn=fcn, p0=p0, debug=True)
+        fit = lsqfit.nonlinear_fit(data=(X, Y), fcn=fcn, p0=p0, debug=True, svdcut=None)
         test = change_error(fit.p['mass'], factor, corr=False)
         input_var['{}_{}_test'.format(label, part_label)] = test
         mass['{}_{}'.format(label, part_label)] = fit.p['mass'] + test
@@ -250,6 +258,12 @@ coord = dict(
 )
 for key in coord:
     axcal.text(*coord[key], peak_labels[key], ha='center')
+
+Qbins = np.linspace(0, 1, int(np.ceil(np.sqrt(len(Q)))) + 1)
+axQ.hist(Q, bins=Qbins, histtype='step')
+
+Qtest = stats.kstest(Q, 'uniform')
+print('Kolmogorov-Smirnov test on peak pvalues: {:.2f}\n'.format(Qtest.pvalue))
     
 print(gvar.tabulate(mass))
 print(gvar.fmt_errorbudget(mass, input_var))
@@ -261,3 +275,4 @@ axcal.grid(linestyle=':')
 
 fig.show()
 figcal.show()
+figQ.show()

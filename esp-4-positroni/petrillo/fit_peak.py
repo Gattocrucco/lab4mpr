@@ -16,7 +16,7 @@ def cut(bins, cut):
     
     return cut
 
-def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=None, print_info=False, plot_kw={}, manual_p0={}):
+def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=None, print_info=False, plot_kw={}, manual_p0={}, full_output=False):
     """
     Fit gaussian peaks on a histogram with background.
     
@@ -157,7 +157,13 @@ def fit_peak(bins, hist, cut=None, npeaks=1, bkg=None, absolute_sigma=True, ax=N
         outputs[peak_label[i] + '_mean'] = mean
         outputs[peak_label[i] + '_sigma'] = sigma
     
-    return outputs, inputs
+    if full_output:
+        full = dict(
+            fit=fit
+        )
+        return outputs, inputs, full
+    else:
+        return outputs, inputs
 
 def cut_2d(binsx, binsy, cutx, cuty):
     x = (binsx[1:] + binsx[:-1]) / 2
