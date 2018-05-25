@@ -22,6 +22,9 @@ Per quanto riguarda la parte logica, costruiamo e mettiamo in tempo tre tipi di 
 \end{enumerate}
 Il trigger di canale è semplicemente il segnale discriminato del PMT corrispondente; quello di coincidenze è dato dall'uscita di lunga durata del modulo stesso. Mandiamo questi segnali all'ADC in modo che il trigger di canale arrivi in contemporanea con il segnale analogico del canale stesso. Se in quel momento c'è anche un trigger di coincidenza, sappiamo se l'evento ci è arrivato da una coincidenza anziché da un canale singolo. Abbiamo fatto tutto questo per acquisire tutti i canali contemporaneamente ed agevolare la lettura dei dati via software. Purtroppo il \emph{cross-talk}%
 \footnote{Spiegheremo come ci siamo accorti di questo problema nella \autoref{ref}.} presente nell'ADC ha rovinato le misure fatte con questo apparato.
+
+\marginpar{``Influenzato'' non mi piace tanto.}
+
 Per dare precedenza agli eventi più rari abbiamo collegato questi trigger ad un modulo \emph{or} ritardando i trigger singoli rispetto a quelli di coincidenze a 2 e questi ultimi rispetto alle coincidenze a 3. L'uscita dell'\emph{or} era poi inviata ad un \emph{timer} che generava il gate dell'ADC. L'altro canale di questo \emph{timer} veniva usato per avviare o fermare le acquisizioni.
 
 \subsubsection{Problemi riscontrati}
@@ -35,15 +38,16 @@ Poi abbiamo escluso l'\emph{or} dal circuito perché i segnali che ci arrivavano
 Il problema più interessante è dato dal fatto che, confrontando gli spettri del \na{}, abbiamo visto che i fotoni emessi dalla sorgente con attività maggiore avevano energia maggiore.
 Il grafico in \autoref{distanze} mostra l'energia dei fotopicchi del sodio in funzione del rate misurato ponendo la sorgente ad attività elevata a varie distanze dal rivelatore.
 
-\marginpar{Sto supponendo che prima di questo punto abbiamo scritto che ci sono due sorgenti di sodio. Ricordarsi di aggiungere il nadebole.}
+\marginpar{Sto supponendo che prima di questo punto abbiamo scritto che ci sono due sorgenti di sodio. Ricordarsi di aggiungere il nadebole e la tabella dei dati.}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=25 em]{immagini/naforte}
-\caption{Posizione dei fotopicchi del sodio in funzione del rate di eventi. In alcune delle acquisizioni non era visibile il picco del neon oppure era talmente deformato da rendere privo di senso il fit gaussiano.}
+\caption{Posizione dei fotopicchi del sodio in funzione del rate di eventi ponendo la sorgente a diverse distanze dal rivelatore. In alcune delle acquisizioni non era visibile il picco del neon oppure era talmente deformato da rendere privo di senso il fit gaussiano.}
 \label{distanze}
 \end{figure}
 
-Pensiamo che tale effetto sia dovuto ad un pile-up nella digitalizzazione in quanto l'ADC ha un tempo di digitalizzazione di \SI{60}{\micro s}. Dal grafico si evince che anche con un rate di eventi minore di \SI{10}{kHz} il problema persiste. La spiegazione è data dal fatto che la distribuzione temporale tra un evento e l'altro è esponenziale, quindi tra due eventi consecutivi intercorre spesso un piccolo intervallo di tempo. 
+Pensiamo che tale effetto sia dovuto ad un pile-up nella digitalizzazione in quanto l'ADC ha un tempo di conversione di \SI{60}{\micro s}. Dal grafico si evince che anche con un rate di eventi minore di \SI{10}{kHz} il problema persiste. La spiegazione è data dal fatto che la distribuzione temporale tra un evento e l'altro è esponenziale, quindi tra due eventi consecutivi intercorre spesso un piccolo intervallo di tempo. 
+Abbiamo quindi deciso di utilizzare la sorgente ad attività minore per misurare la massa dell'elettrone e quella ad attività maggiore per le misure in cui non ci interessa l'energia degli eventi o cerchiamo eventi rari.
 
 \marginpar{Qualcuno che conosce la distribuzione esponenziale è pregato di controllare la correttezza di questa frase.}

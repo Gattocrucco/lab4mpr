@@ -14,7 +14,7 @@ Dopo aver acceso l'apparato il bit stuck è scomparso e l'aumento di risoluzione
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=24 em]{immagini/doppio}
+\includegraphics[width=20 em]{immagini/doppio}
 \caption{Acquisizione in cui l'annichilazione presenta due picchi.}
 \label{doppio}
 \end{figure}
@@ -25,23 +25,25 @@ Tale problema non era visibile ad occhio nudo nelle precedenti acquisizioni, ma 
 \texttt{Io mi riferivo a quella misura di stabilità in cui non si vedeva che i picchi erano 2}}
 
 Abbiamo poi scoperto la causa del problema, ovvero il \emph{cross-talk}.
-Come mostra il grafico di \autoref{sdoppio}, il doppio picco è la somma di quello osservato nelle acquisizioni in coincidenza con quello osservato in anticoincidenza. 
+Come mostra il grafico di Figura\autoref{sdoppio}, il doppio picco è la somma di quello osservato nelle acquisizioni in coincidenza con quello osservato in anticoincidenza. 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=24 em]{immagini/sdoppio}
-\caption{Rappresentazione della stessa acquisizione separando le coincidenze dalle anticoincidenze.}
+\subfloat
+{
+\includegraphics[width=18 em]{immagini/sdoppio}
 \label{sdoppio}
-\end{figure}
-
-Siamo arrivati alla conclusione che si tratti di un cross-talk dal fatto che il picco in anticoincidenza coincide con quello delle acquisizioni singole. Inoltre abbiamo visto, aumentando la distanza di un PMT dalla sorgente, che il picco delle coincidenze si rimpicciolisce (perché ha meno eventi) e il picco in anticoincidenza tende ad assomigliare sempre di più a quello dell'acquisizione con canale singolo (\autoref{dist}).
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=24 em]{immagini/dist}
-\caption{Grafico di una misura in cui il PMT1 è vicino alla sorgente mentre il PMT2 è lontano dalla sorgente.}
+}
+\subfloat
+{
+\includegraphics[width=18 em]{immagini/dist}
 \label{dist}
+}
+
+\caption{A sinistra: rappresentazione di dell'acquisizione di \autoref{doppio} separando le coincidenze dalle anticoincidenze. \\
+A destra: grafico della stessa misura in cui il PMT1 è vicino alla sorgente mentre il PMT2 è lontano dalla sorgente.}
+
 \end{figure}
 
-
- In seguito abbiamo provato che questo problema si riscontra anche quando i canali da analizzare non sono collegati ad ingressi adiacenti dell'ADC. Inspiegabilmente, il problema si è ripresentato solo a giorni alterni. 
+Siamo arrivati alla conclusione che si tratti di un cross-talk dal fatto che il picco in anticoincidenza coincide con quello delle acquisizioni singole. Inoltre abbiamo visto, aumentando la distanza di un PMT dalla sorgente, che il picco delle coincidenze si rimpicciolisce (perché ha meno eventi) e il picco in anticoincidenza tende ad assomigliare sempre di più a quello dell'acquisizione con canale singolo (Figura\autoref{dist}).
+In seguito abbiamo provato che questo problema si riscontra anche quando i canali da analizzare non sono collegati ad ingressi adiacenti dell'ADC. Inspiegabilmente, il problema si è ripresentato solo a giorni alterni. 
