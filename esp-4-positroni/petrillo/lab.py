@@ -2899,10 +2899,17 @@ def format_par_cov(par, cov=None, labels=None):
     Generate a LaTeX table:
     >>> print(format_par_cov(out.upar).latex())
     """
-    upar = par
-    par = unumpy.nominal_values(upar)
     if cov is None:
-        cov = uncertainties.covariance_matrix(upar)
+        cov = uncertainties.covariance_matrix(par)
+        par = unumpy.nominal_values(par)
+   
+    if isinstance(par, dict) and isinstance(cov, dict):
+        keys = list(par.keys())
+        par = [par[key] for key in keys]
+        cov = [[float(cov[keyi, keyj]) for keyj in keys] for keyi in keys]
+        if labels is None:
+            labels = keys
+    
     pars = xe(par, np.sqrt(np.diag(cov)))
     corr = fit_norm_cov(cov) * 100
     
@@ -2919,6 +2926,7 @@ def format_par_cov(par, cov=None, labels=None):
         for j in range(i + 1, len(corr)):
             c = corr[i, j]
             matrix[-1].append('{:.1f} %'.format(c) if math.isfinite(c) else str(c))
+    
     return TextMatrix(matrix, fill_side='left')
 
 class TextMatrix(object):

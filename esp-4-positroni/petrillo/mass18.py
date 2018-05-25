@@ -5,7 +5,18 @@ import fit_peak
 from matplotlib import pyplot as plt
 import lab4
 import copy
+import lab
 
+print_peak_fit = False
+
+def change_error(x, factor=1, corr=False):
+    if corr:
+        delta = (x - gvar.mean(x)) * (factor - 1)
+    else:
+        assert factor >= 1
+        delta = gvar.gvar(0, gvar.sdev(x) * np.sqrt(factor**2 - 1))
+    return delta
+                
 fig = plt.figure('mass18-peaks', figsize=[6.87, 6.49])
 fig.clf()
 fig.set_tight_layout(True)
@@ -108,7 +119,7 @@ for channel in [1, 2, 3]:
             ax.set_ylim(*[(-0.467, 11300), (-0.866, 44900), (-0.738, 18600)][channel - 1])
     
         # fit peaks
-        kw = dict(ax=ax, plot_kw=dict(scaley=False, scalex=False, color='black', label=None), print_info=1)
+        kw = dict(ax=ax, plot_kw=dict(scaley=False, scalex=False, color='black', label=None), print_info=print_peak_fit)
         for key in cut[label].keys():
             if kw['print_info']:
                 print('_________{:s} {} {}_________'.format(label, part_label, key))
@@ -127,6 +138,9 @@ for channel in [1, 2, 3]:
             else:
                 peaks[key] = outputs['peak1_mean']
             input_var['{:s}_{}_{}'.format(label, part_label, key)] = inputs['data']
+        
+        print('_________{:s} {} peaks_________'.format(label, part_label))
+        print(lab.format_par_cov(gvar.mean(peaks), gvar.evalcov(peaks)))
         
         for key in peak_labels:
             text_x = gvar.mean(peaks[key])
@@ -172,23 +186,44 @@ for channel in [1, 2, 3]:
         def fcn(x, p):
             ans = {}
             for key in x:
-                ans[key] = curve(x[key], p)
+                if key in p:
+                    ans[key] = curve(p[key], p)
+                else:
+                    ans[key] = curve(x[key], p)
             ans['nabeta'] = curve(p['mass'], p)
             ans['nabetagamma'] = curve(p['mass'] + 1274.5, p)
+            # ans['nabetagamma'] = curve(p['mass'], p) + curve(1274.5, p) - p['intercept']
+            # ans['coco'] = curve(X['co117'], p) + curve(X['co133'], p) - p['intercept']
             return ans
+        
+        print('__________{:s} {} test fit__________'.format(label, part_label))
+        test_result = {}
+        delta_sigmas = []
+        for test_x in X:
+            test_p0 = {test_x: X[test_x]}
+            test_p0.update(p0)
+            test_fit = lsqfit.nonlinear_fit(data=(X, Y), fcn=fcn, p0=test_p0, debug=True)
+            test_result[test_x] = test_fit.p[test_x]
+            delta_sigma = (test_fit.pmean[test_x] - X[test_x]) / test_fit.psdev[test_x]
+            delta_sigmas.append(delta_sigma)
+            print('Test {:6s}: nominal {:6.1f}, fitted {:11s}, delta/sigma = {:.1f}, mass = {}'.format(test_x, X[test_x], test_fit.p[test_x], delta_sigma, test_fit.p['mass']))
+        factor = np.sqrt(np.mean(np.array(delta_sigmas) ** 2))
+        print('Rms of delta/sigma = {:.1f}\n'.format(factor))
     
         print('__________{:s} {} calibration and mass fit__________'.format(label, part_label))
         fit = lsqfit.nonlinear_fit(data=(X, Y), fcn=fcn, p0=p0, debug=True)
-        mass['{}_{}'.format(label, part_label)] = fit.p['mass']
+        test = change_error(fit.p['mass'], factor, corr=False)
+        input_var['{}_{}_test'.format(label, part_label)] = test
+        mass['{}_{}'.format(label, part_label)] = fit.p['mass'] + test
         
-        chi2_dof = fit.chi2 / fit.dof
-        if chi2_dof > 1:
-            chi2 = gvar.gvar(0, fit.p['mass'].sdev * np.sqrt(fit.chi2 / fit.dof - 1))
-            mass['{}_{}'.format(label, part_label)] += chi2
-            input_var['{}_{}_chi2'.format(label, part_label)] = chi2
+        # chi2_dof = fit.chi2 / fit.dof
+        # if chi2_dof > 1:
+        #     chi2 = gvar.gvar(0, fit.p['mass'].sdev * np.sqrt(fit.chi2 / fit.dof - 1))
+        #     mass['{}_{}'.format(label, part_label)] += chi2
+        #     input_var['{}_{}_chi2'.format(label, part_label)] = chi2
     
         print(fit.format(maxline=True))
-    
+            
         # plot
         keys = list(X.keys())
         X_plot = [X[key] for key in keys]
@@ -216,8 +251,8 @@ coord = dict(
 for key in coord:
     axcal.text(*coord[key], peak_labels[key], ha='center')
     
-# print(gvar.fmt_errorbudget(mass, input_var))
 print(gvar.tabulate(mass))
+print(gvar.fmt_errorbudget(mass, input_var))
 
 axcal.legend(loc=0)
 axcal.set_xlabel('valore nominale / fittato [keV]')
