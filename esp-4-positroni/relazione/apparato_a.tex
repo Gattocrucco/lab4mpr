@@ -33,5 +33,17 @@ Il più evidente fin da subito è stato il \emph{bit stuck}: il terzo bit dei da
 Poi abbiamo escluso l'\emph{or} dal circuito perché i segnali che ci arrivavano dalle coincidenze mostravano avere un'energia minore. Abbiamo risolto il problema togliendo l'\emph{or} dal circuito.
 
 Il problema più interessante è dato dal fatto che, confrontando gli spettri del \na{}, abbiamo visto che i fotoni emessi dalla sorgente con attività maggiore avevano energia maggiore.
-Il grafico in \autoref{distanze} mostra l'energia dei fotopicchi del sodio in funzione della distanza della sorgente ad attività elevata dal rivelatore usato per fare la misura.
-\marginpar{Sto supponendo che prima di questo punto abbiamo scritto che ci sono due sorgenti di sodio.}
+Il grafico in \autoref{distanze} mostra l'energia dei fotopicchi del sodio in funzione del rate misurato ponendo la sorgente ad attività elevata a varie distanze dal rivelatore.
+
+\marginpar{Sto supponendo che prima di questo punto abbiamo scritto che ci sono due sorgenti di sodio. Ricordarsi di aggiungere il nadebole.}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=25 em]{immagini/naforte}
+\caption{Posizione dei fotopicchi del sodio in funzione del rate di eventi. In alcune delle acquisizioni non era visibile il picco del neon oppure era talmente deformato da rendere privo di senso il fit gaussiano.}
+\label{distanze}
+\end{figure}
+
+Pensiamo che tale effetto sia dovuto ad un pile-up nella digitalizzazione in quanto l'ADC ha un tempo di digitalizzazione di \SI{60}{\micro s}. Dal grafico si evince che anche con un rate di eventi minore di \SI{10}{kHz} il problema persiste. La spiegazione è data dal fatto che la distribuzione temporale tra un evento e l'altro è esponenziale, quindi tra due eventi consecutivi intercorre spesso un piccolo intervallo di tempo. 
+
+\marginpar{Qualcuno che conosce la distribuzione esponenziale è pregato di controllare la correttezza di questa frase.}
