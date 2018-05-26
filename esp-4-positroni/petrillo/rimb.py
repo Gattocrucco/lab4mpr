@@ -22,14 +22,10 @@ axs = fig.subplots(1, len(files), sharey=True, sharex=True)
 norm = colors.LogNorm()
 
 for i in range(len(files)):
-    ch1, ch2, tr1, tr2, c2 = lab4.loadtxt(files[i], unpack=True, usecols=(0,1,4,5,8))
-    coinc = ((tr1 > 500) & (tr2 > 500)) | (c2 > 500)
-    
-    out1 = ch1[coinc]
-    out2 = ch2[coinc]
+    ch1, ch2 = lab4.loadtxt(files[i], unpack=True, usecols=(0,1))
     
     ax = axs[i]
-    _, _, _, im = ax.hist2d(out1, out2, bins=np.arange(0, 1150, 8), cmap='jet', norm=norm)
+    _, _, _, im = ax.hist2d(ch1, ch2, bins=np.arange(0, 1150, 8), cmap='jet', norm=norm)
     
     if i == 0:
         im0 = im

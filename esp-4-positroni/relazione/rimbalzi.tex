@@ -1,6 +1,8 @@
 \subsection{Rimbalzi}
 
-Guardando l'istogramma 2D delle misure in coincidenza, abbiamo notato dei comportamenti non attesi che abbiamo supposto e poi verificato essere dei fotoni che rimbalzano da un rivelatore all'altro.
+Guardando lo spettro 2D delle misure in coincidenza
+abbiamo notato dei picchi non attesi che abbiamo supposto e poi verificato
+essere dei fotoni che rimbalzano da un rivelatore all'altro.
 
 La \autoref{scatter} mostra un tipico istogramma 2D
 nella configurazione in cui 2 rivelatori sono posti uno di fronte all'altro alla stessa distanza da una sorgente di \na{}.
@@ -45,23 +47,25 @@ A destra: aggiunta della schermatura di piombo per sopprimere i rimbalzi.}
 \end{figure}
 
 \begin{figure}[h]
-\centering
-\hspace{-2.5 cm}
-\subfloat
-{
-\includegraphics[width=21 em]{immagini/0518_rimbalzi}
-\label{spostato}
-}
-\subfloat
-{
-\includegraphics[width=21 em]{immagini/0518_piombo}
-\label{piombo}
-}
-\caption{A sinistra: misura eseguita nella configurazione di Figura\autoref{spostati}. \\
+% \centering
+% \hspace{-2.5 cm}
+% \subfloat
+% {
+% \includegraphics[width=21 em]{immagini/0518_rimbalzi}
+% \label{spostato}
+% }
+% \subfloat
+% {
+% \includegraphics[width=21 em]{immagini/0518_piombo}
+% \label{piombo}
+% }
+\hspace{-0.25\textwidth}
+\includegraphics[width=1.5\textwidth]{immagini/diff}
+\caption{\label{fig:diff}
+A sinistra: misura eseguita nella configurazione di Figura\autoref{spostati}. \\
 A destra: misura eseguita nella configurazione di Figura\autoref{spostati2}.  \\
 Le fasce densamente popolate adiacenti ai bordi della figura sono date dagli eventi in cui un rivelatore registra un evento mentre l'altro acquisisce uno zero.
 Una descrizione più dettagliata di questi grafici è presente nel testo.}
-
 \end{figure}
 
 \subsubsection{Misura con un solo fotone}
@@ -95,7 +99,7 @@ aggiunta del piombo che blocca i rimbalzi.}
 % \includegraphics[width=18 em]{immagini/ce_pb}
 % \label{no_ce}
 % }
-\includegraphics[width=\textwidth]{immagini/rimb}
+\includegraphics[width=\textwidth]{immagini/rimb} % script: petrillo/rimb.py
 \caption{\label{ce}
 Spettro delle coincidenze tra i due scintillatori.
 A sinistra: misura eseguita nella configurazione di \autoref{solo} sinistra.
