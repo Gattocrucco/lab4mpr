@@ -20,7 +20,8 @@ Fittiamo ogni picco, scegliendo a mano l'intervallo di canali su cui fittare,
 con una gaussiana più un esponenziale come fondo.
 Il fit è ai minimi quadrati sull'istogramma.
 I bin fittati contengono tutti almeno 5 eventi.
-I fit sono riportati in \autoref{fig:mass18-peaks}.
+Controlliamo che cambiare il ribinnaggio dei canali dell'ADC non cambia significativamente il risultato.
+I~fit sono riportati in \autoref{fig:mass18-peaks}.
 Tutti i fit hanno un pvalue ragionevole;
 il test di Kolmogorov-Smirnov sull'uniformità dei pvalue dà un pvalue \SI{18}\%.
 Per i picchi del cobalto e quello del neon, che sono sovrapposti, il fit è unico.
@@ -39,19 +40,20 @@ che è praticamente nascosto da quelli del cobalto,
 
 \begin{table}
 	\hspace{-3em}
-	\begin{tabular}{ccccccc}
+	\begin{tabular}{c|cccc|cc}
 		PMT & $a$ & $b$ [\si{keV^{-1}}] & $c$ [\si{keV^{-2}}] & $m$ [\si{keV}] & $\chi^2$/dof & $F$ \\
 		\hline
-		1 &   \SI{7.31(54)} &  \SI{0.3584(11)} &   \SI{2.60(26)} & \SI{519.95(50)} & 33.3 & 6.9 \\
-		2 & \SI{228.02(31)} & \SI{0.22802(56)} &  \SI{-3.55(11)} & \SI{516.44(55)} & 24.4 & 6.2 \\
-		3 & \SI{113.47(44)} & \SI{0.46701(84)} & \SI{-32.94(18)} & \SI{495.25(44)} &  4.1 & 2.3
+		1 &   \num{7.31(54)} &  \num{0.3584(11)} &   \num{2.60(26)} & \num{519.95(50)} & 33.3 & 6.9 \\
+		2 & \num{228.02(31)} & \num{0.22802(56)} &  \num{-3.55(11)} & \num{516.44(55)} & 24.4 & 6.2 \\
+		3 & \num{113.47(44)} & \num{0.46701(84)} & \num{-32.94(18)} & \num{495.25(44)} &  4.1 & 2.3
 	\end{tabular}
-	\caption{\label{tab:massa}
+	\caption{\label{tab:massfit}
 	Risultati dei fit di calibrazione e massa dell'elettrone per ogni PMT.
 	La curva di calibrazione è $E_\text{adc}=2cE^2+bE+a$.
 	In tutti i fit le correlazioni risultano circa \SI{50}\% tra $m$ e gli altri parametri
 	e circa \SI{95}\% tra $a$, $b$ e $c$.
-	}
+	$F$ è il fattore per cui riscalare l'incertezza su $m$
+	ricavato testando il fit sui picchi di calibrazione.}
 \end{table}
 
 Inizialmente fittiamo le medie dei picchi in funzione dell'energia con una retta
@@ -88,3 +90,11 @@ Riscaliamo l'incertezza sulla massa del fit principale
 per la media quadratica di questi rapporti.
 Il grafico del fit è riportato in \autoref{fig:mass18-cal},
 i risultati dettagliati sono riportati in \autoref{tab:massfit}.
+Le masse fittate, con l'incertezza riscalata, risultano
+\begin{center}
+	\begin{tabular}{cc}
+		PMT 1: & $m=\SI{520.0(34)}{keV}$ \\
+		PMT 2: & $m=\SI{516.4(34)}{keV}$ \\
+		PMT 3: & $m=\SI{495.2(10)}{keV}$
+	\end{tabular}
+\end{center}
