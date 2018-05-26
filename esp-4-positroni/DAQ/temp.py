@@ -9,7 +9,7 @@ import numpy as np
 # temp.py <file>
 # temp.py <file> <canali> ...
 
-filename=sys.argv[1]
+filename="../DAQ/0523_3gamma_rumore.txt"
 if len(sys.argv) >= 3:
   chans = [int(i) for i in sys.argv[2:]]
 else:
@@ -19,7 +19,7 @@ data = lab4.loadtxt(filename, unpack=True, usecols=chans + [12])
 ts = data[-1]
 ts -= ts[0]
 
-decimation = data.shape[1] // 10000
+decimation = data.shape[1] // 100000
 ts = ts[::decimation]
 
 figure('temp')
