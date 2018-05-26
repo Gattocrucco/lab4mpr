@@ -284,6 +284,11 @@ print(gvar.tabulate(mass))
 print(gvar.fmt_errorbudget(mass, input_var))
 print(lab.TextMatrix(table).latex())
 
+media = np.mean(list(gvar.mean(mass).values()))
+std = np.std(list(gvar.mean(mass).values()), ddof=1)
+massa = gvar.gvar(media, std)
+print('media ignorante = {}'.format(massa))
+
 axcal.legend(loc=0)
 axcal.set_xlabel('valore nominale / fittato [keV]')
 axcal.set_ylabel('media del picco [canale ADC]')
