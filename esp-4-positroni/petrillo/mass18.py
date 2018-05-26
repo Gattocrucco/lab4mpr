@@ -202,8 +202,10 @@ for channel in [1, 2, 3]:
                     ans[key] = curve(x[key], p)
             ans['nabeta'] = curve(p['mass'], p)
             ans['nabetagamma'] = curve(p['mass'] + 1274.5, p)
-            # ans['nabetagamma'] = curve(p['mass'], p) + curve(1274.5, p) - p['intercept']
-            # ans['coco'] = curve(X['co117'], p) + curve(X['co133'], p) - p['intercept']
+            if 'co133' in p:
+                ans['coco'] = curve(p['co133'] + x['co117'], p)
+            elif 'co117' in p:
+                ans['coco'] = curve(x['co133'] + p['co117'], p)
             return ans
         
         print('__________{:s} {} test fit__________'.format(label, part_label))
@@ -254,10 +256,10 @@ for channel in [1, 2, 3]:
         
         table.append([
             channel,
-            '\\SI{%s}' % fit.p['intercept'],
-            '\\SI{%s}' % fit.p['slope'],
-            '\\SI{%s}' % fit.p['curvature'],
-            '\\SI{%s}' % fit.p['mass'],
+            '\\num{%s}' % fit.p['intercept'],
+            '\\num{%s}' % fit.p['slope'],
+            '\\num{%s}' % fit.p['curvature'],
+            '\\num{%s}' % fit.p['mass'],
             '%.1f' % (fit.chi2 / fit.dof),
             '%.1f' % factor
         ])
