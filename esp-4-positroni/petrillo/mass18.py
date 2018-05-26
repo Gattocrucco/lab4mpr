@@ -290,7 +290,7 @@ massa = gvar.gvar(media, std)
 print('media ignorante = {}'.format(massa))
 
 axcal.legend(loc=0)
-axcal.set_xlabel('valore nominale / fittato [keV]')
+axcal.set_xlabel('valore nominale oppure fittato [keV]')
 axcal.set_ylabel('media del picco [canale ADC]')
 axcal.grid(linestyle=':')
 
