@@ -162,8 +162,8 @@ quindi possiamo ricavare $r$ misurando le accettanze.
 \subsubsection{Misura}
 
 \begin{figure}
-	\hspace{-0.2\textwidth}
-	\includegraphics[width=1.4\textwidth]{immagini/ec}
+	\hspace{-0.25\textwidth}
+	\includegraphics[width=1.5\textwidth]{immagini/ec}
 	\caption{\label{fig:ec}
 	ciao}
 \end{figure}
@@ -189,4 +189,25 @@ Risulta $A_1 = A_2 = A_{12} = \num{0.028(12)}$.
 
 \paragraph{Fit dei picchi}
 
-
+Poiché, come si vede in \autoref{fig:ec},
+tutti i picchi hanno un fondo significativo,
+ricaviamo il rate dei picchi fittandoli con gaussiane più fondo.
+I fit sono ai minimi quadrati sugli istogrammi.
+Riportiamo i modelli usati:
+\newcommand*\gauss{\operatorname{gauss}}
+\begin{center}
+	\begin{tabular}{l|l}
+		Picco & Modello \\
+		\hline
+		$\beta_1$, $\beta_2$, $\gamma_1$, $\gamma_2$
+		& $Ae^{-\lambda x} + N\gauss(x, \mu, \sigma)$ \\
+		$\gamma\beta$, $(\gamma\beta,\beta)$
+		& $\big(Ae^{-\lambda x_1} + N\gauss(x_1,\mu_1,\sigma_1)\big)\gauss(x_2,\mu_2,\sigma_2)$ \\
+		$\beta\gamma$, $(\beta,\gamma\beta)$
+		& $\big(Ae^{-\lambda x_2} + N\gauss(x_2,\mu_2,\sigma_2)\big)\gauss(x_1,\mu_1,\sigma_1)$ \\
+		$\beta\beta$
+		& $N\gauss(\mathbf x,\boldsymbol\mu,\boldsymbol\Sigma)
+		+ A_2e^{-\lambda x_2}\gauss(x_1,\mu_1,\sigma_1)
+		+ A_1e^{-\lambda x_1}\gauss(x_2,\mu_2,\sigma_2)$
+	\end{tabular}
+\end{center}
