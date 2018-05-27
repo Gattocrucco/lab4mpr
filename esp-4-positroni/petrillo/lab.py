@@ -2929,6 +2929,9 @@ def format_par_cov(par, cov=None, labels=None):
     
     return TextMatrix(matrix, fill_side='left')
 
+def _array_like(obj):
+    return isinstance(obj, tuple) or isinstance(obj, list) or isinstance(obj, np.ndarray)
+
 class TextMatrix(object):
     """
     Object to format tables.
@@ -2956,7 +2959,7 @@ class TextMatrix(object):
             Specify on which side shorter rows are filled.
         """
         # make sure matrix is at least 1D
-        if not hasattr(matrix, '__len__'):
+        if not _array_like(matrix):
             matrix = [matrix]
         matrix = copy.copy(matrix)
         
@@ -2964,7 +2967,7 @@ class TextMatrix(object):
         # and get lengths of all elements
         lengths = []
         for i in range(len(matrix)):
-            if not hasattr(matrix[i], '__len__'):
+            if not _array_like(matrix[i]):
                 matrix[i] = [matrix[i]]
             lengths.append(len(matrix[i]))
             
