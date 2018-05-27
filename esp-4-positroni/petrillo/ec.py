@@ -14,20 +14,13 @@ file_ch1 = '../DAQ/0511_ec2_ch1.txt'
 file_ch2 = '../DAQ/0511_ec2_ch2.txt'
 
 # prepare figures
-fig_c2 = plt.figure('ec-c2')
-fig_c2.clf()
-fig_c2.set_tight_layout(True)
-G = gridspec.GridSpec(3, 3)
-ax_c2 = fig_c2.add_subplot(G[:-1,1:])
-ax_c2_ch1 = fig_c2.add_subplot(G[-1,1:], sharex=ax_c2)
-ax_c2_ch2 = fig_c2.add_subplot(G[:-1,0], sharey=ax_c2)
-ax_colorbar = fig_c2.add_subplot(G[-1,0])
-
-fig_ch = plt.figure('ec-ch')
-fig_ch.clf()
-fig_ch.set_tight_layout(True)
-ax_ch1 = fig_ch.add_subplot(121)
-ax_ch2 = fig_ch.add_subplot(122)
+fig = plt.figure('ec')
+fig.clf()
+fig.set_tight_layout(True)
+G = gridspec.GridSpec(1, 7)
+ax_c2 = fig.add_subplot(G[:,0:3])
+ax_ch1 = fig.add_subplot(G[:,3:5])
+ax_ch2 = fig.add_subplot(G[:,5:7], sharex=ax_c2, sharey=ax_ch1)
 
 fig_diff = plt.figure('ec-diff')
 fig_diff.clf()
@@ -41,19 +34,21 @@ ch2, = lab4.loadtxt(file_ch2, unpack=True, usecols=(1,))
 # plot
 bins = np.arange(0, 1150, 8)
 H, _, _, im = ax_c2.hist2d(ch1_c2, ch2_c2, bins=bins, norm=colors.LogNorm(), cmap='jet')
-fig_c2.colorbar(im, ax=ax_colorbar, fraction=0.5, aspect=2)
-ax_colorbar.axis('off')
-ax_c2_ch1.hist(ch1_c2, bins=bins, orientation='vertical', histtype='step', log=True)
-ax_c2_ch2.hist(ch2_c2, bins=bins, orientation='horizontal', histtype='step', log=True)
+fig.colorbar(im, ax=ax_c2)
 
-ax_c2_ch1.set_xlabel('energia PMT 1 [canale ADC]')
-ax_c2_ch2.set_ylabel('energia PMT 2 [canale ADC]')
+ax_c2.set_xlabel('energia PMT 1 [canale ADC]')
+ax_c2.set_ylabel('energia PMT 2 [canale ADC]')
 
 H1, _, _ = ax_ch1.hist(ch1, bins=bins, histtype='step', log=True)
 H2, _, _ = ax_ch2.hist(ch2, bins=bins, histtype='step', log=True)
 
 ax_ch1.set_xlabel('energia PMT 1 [canale ADC]')
+ax_ch1.set_ylabel('conteggio / 8 canali')
 ax_ch2.set_xlabel('energia PMT 2 [canale ADC]')
+
+ax_c2.legend(title='trigger coincidenze')
+ax_ch1.legend(title='trigger PMT 1')
+ax_ch2.legend(title='trigger PMT 2')
 
 ############ fit ############
 
@@ -91,7 +86,7 @@ hist = gvar.gvar(H, np.sqrt(H))
 for key in cuts.keys():
     print('_____________{}_____________'.format(key))
     cut = fit_peak.cut_2d(bins, bins, *cuts[key]) & (H >= 5)
-    outputs, inputs = fit_peak.fit_peak_2d(bins, bins, hist, cut=cut, bkg=bkgs[key], print_info=1, ax_2d=ax_c2, ax_2d_diff=None if key == 'betagammabeta' else ax_diff, plot_cut=True, corr=key == 'betabeta')
+    outputs, inputs = fit_peak.fit_peak_2d(bins, bins, hist, cut=cut, bkg=bkgs[key], print_info=1, ax_2d=ax_c2, ax_2d_diff=None if key == 'betagammabeta' else ax_diff, plot_cut=False, corr=key == 'betabeta')
     norm[key] = outputs['norm'] / (bins[1] - bins[0]) ** 2 * rate_corr
     count[key] = outputs['norm'] / (bins[1] - bins[0]) ** 2
 
@@ -109,7 +104,7 @@ for key in cuts:
     h = [H1, H2][key[1] - 1]
     hist = gvar.gvar(h, np.sqrt(h))
     cut = fit_peak.cut(bins, cuts[key]) & (h >= 5)
-    kw = dict(cut=cut, bkg='exp', print_info=1, ax=[ax_ch1, ax_ch2][key[1] - 1], plot_kw=dict(scaley=False))
+    kw = dict(cut=cut, bkg='exp', print_info=1, ax=[ax_ch1, ax_ch2][key[1] - 1], plot_kw=dict(scaley=False, color='black', label=None))
     if key[0] == 'beta':
         outputs, inputs = fit_peak.fit_peak(bins, hist, npeaks=2, **kw)
         norm[key] = outputs['peak1_norm'] + outputs['peak2_norm']
@@ -207,7 +202,7 @@ ratios = {
     'p_gamma_tot/p_gamma': 1 / gvar.gvar(0.22, 0.02) * gvar.gvar(1, 0.1) # dal Knoll
 }
 
-ratios['p_beta12_tot/p_beta12'] = ratios['p_beta_tot/p_beta'] ** 2 * gvar.gvar(1, 0.15)
+ratios['p_beta12_tot/p_beta12'] = 2 * ratios['p_beta_tot/p_beta'] - 1
 
 Y = {}
 Y.update(norm)
@@ -260,8 +255,14 @@ print(fit.format(maxline=True))
 
 R = acc12 / (acc1 * acc2) * fit.p['Rp_beta'] ** 2 / fit.p['Rp_beta12']
 
-print('R/R_tot = {}'.format(R / fit.p['R_tot']))
+rat = R / fit.p['R_tot']
 
-fig_ch.show()
-fig_c2.show()
+input_var = {}
+input_var.update(data=list(norm.values()), ratios=list(ratios.values()), accs=[acc1, acc2, acc12])
+output_var = dict(R=R, Rtot=fit.p['R_tot'], R_Rtot=rat)
+
+print(gvar.tabulate(output_var))
+print(gvar.fmt_errorbudget(output_var, input_var, percent=False))
+
+fig.show()
 fig_diff.show()
