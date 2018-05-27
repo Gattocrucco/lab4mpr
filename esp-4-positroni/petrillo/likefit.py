@@ -50,7 +50,8 @@ def minus_log_likelihood(p, xs, volume):
     L_par = p[3:-1]
     f = fun_01(p[-1])
     fm1 = fun_10(p[-1])
-    
+    #f=1
+    #fm1=0
     # covariance matrix is L @ L.T
     L = np.zeros((3, 3))
     L[np.triu_indices(3)] = L_par
@@ -60,26 +61,39 @@ def minus_log_likelihood(p, xs, volume):
 if __name__ == '__main__':
     from matplotlib import pyplot as plt
     from mpl_toolkits.mplot3d import Axes3D
+#    
+
+#    
+#    samples_sig = np.random.randn(3, 1000)
+#    volume = (np.max(samples_sig) - np.min(samples_sig)) ** 3
+#    samples_bkg = np.random.uniform(np.min(samples_sig), np.max(samples_sig), size=(3, 100))
+#    samples = np.concatenate([samples_sig, samples_bkg], axis=1)
+#    
+
+#    
+#    p0 = np.array([
+#        0, 0, 0,
+#        1, 0, 0, 1, 0, 1,
+#        0.1
+#    ])
     
+    data = array([ch1[trs_s],ch2[trs_s],ch3[trs_s]])
     fig = plt.figure('likefit')
     fig.clf()
     ax = fig.add_subplot(111, projection='3d')
-    
-    samples_sig = np.random.randn(3, 1000)
-    volume = (np.max(samples_sig) - np.min(samples_sig)) ** 3
-    samples_bkg = np.random.uniform(np.min(samples_sig), np.max(samples_sig), size=(3, 100))
-    samples = np.concatenate([samples_sig, samples_bkg], axis=1)
-    
-    ax.scatter(*samples)
+    ax.scatter(*data)
     for axis in 'xyz':
         exec('ax.set_{}label("{}")'.format(axis, axis))
+        
+    data_volume = (2*d) ** 3
+    p0 = np.array([ch1_en,ch2_en,ch3_en,10,10,10,10,10,10,-0.1])
     
-    p0 = np.array([
-        0, 0, 0,
-        1, 0, 0, 1, 0, 1,
-        0.1
-    ])
-    output = likelihood_fit(minus_log_likelihood, p0, args=(samples, volume))
+    output = likelihood_fit(minus_log_likelihood, p0, args=(data, data_volume))
     print(lab.format_par_cov(output.par, output.cov))
-    
+    L_par = output.par[3:-1]
+    L = np.zeros((3, 3))
+    L[np.triu_indices(3)] = L_par
+    cov = L@L.T
+    print(lab.fit_norm_cov(cov))
+    print(fun_01(output.par[-1])*len(ch1[trs_s]))
     fig.show()
