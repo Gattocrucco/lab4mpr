@@ -7,6 +7,7 @@ import fit_peak
 import gvar
 import lsqfit
 import copy
+import cross
 
 file_c2 = '../DAQ/0511_ec2_c2.txt'
 file_ch1 = '../DAQ/0511_ec2_ch1.txt'
@@ -38,7 +39,7 @@ ch1, = lab4.loadtxt(file_ch1, unpack=True, usecols=(0,))
 ch2, = lab4.loadtxt(file_ch2, unpack=True, usecols=(1,))
 
 # plot
-bins = np.arange(1150 // 8) * 8
+bins = np.arange(0, 1150, 8)
 H, _, _, im = ax_c2.hist2d(ch1_c2, ch2_c2, bins=bins, norm=colors.LogNorm(), cmap='jet')
 fig_c2.colorbar(im, ax=ax_colorbar, fraction=0.5, aspect=2)
 ax_colorbar.axis('off')
@@ -118,91 +119,81 @@ for key in cuts:
 
 ##### global fit
 
-# norm.pop('gammabeta')
-# norm.pop('betagamma')
-# norm.pop('betabeta')
-
-p0_1 = {
-    'Racc': 1e6,
-    'R_tot': 11e6,
-    'p_beta1': 0.1,
-    'p_beta2': 0.1,
-    'p_gamma1acc': 0.1,
-    'p_gamma2acc': 0.1,
-}
-
 radius = gvar.gvar(2.54, 0.01)
-distance = gvar.gvar(4.5, 0.1)
-cos_theta = distance / np.sqrt(distance ** 2 + radius ** 2)
-acc = 1/2 * (1 - cos_theta)
+distance = gvar.gvar(4.5, 0.1) + gvar.gvar(0.3, 0.1)
+distance_1 = distance + radius * 2/3
+distance_2 = distance + radius * 4/3
+cos_theta = distance_1 / np.sqrt(distance_1 ** 2 + radius ** 2)
+acc_1 = 1/2 * (1 - cos_theta)
+cos_theta = distance_2 / np.sqrt(distance_1 ** 2 + radius ** 2)
+acc_2 = 1/2 * (1 - cos_theta)
 
-def fcn_1(p):
-    ans = {}
-    
-    Racc = p['Racc']
-    R_tot = p['R_tot']
-    p_beta1 = p['p_beta1']
-    p_beta2 = p['p_beta2']
-    p_gamma1 = p['p_gamma1acc']
-    p_gamma2 = p['p_gamma2acc']
-    
-    Rp_beta12 = Racc * p_beta1 * p_beta2
-    Rp_beta1 = 2 * Racc * p_beta1
-    Rp_beta2 = 2 * Racc * p_beta2
-    
-    ans['beta', 1] = Rp_beta1 * (1 - p_gamma1)
-    ans['gamma', 1] = R_tot * p_gamma1 - Rp_beta1 * p_gamma1
-    ans['gammabeta'] = Rp_beta2 * p_gamma1 - Rp_beta12 * p_gamma1
-    ans['gammabetabeta'] = Rp_beta12 * p_gamma1
-    
-    ans['beta', 2] = Rp_beta2 * (1 - p_gamma2)
-    ans['gamma', 2] = R_tot * p_gamma2 - Rp_beta2 * p_gamma2
-    ans['betagamma'] = Rp_beta1 * p_gamma2 - Rp_beta12 * p_gamma2
-    ans['betagammabeta'] = Rp_beta12 * p_gamma2
-    
-    ans['betabeta'] = Rp_beta12 * (1 - p_gamma1 - p_gamma2)
-    
-    
-    for key in copy.copy(ans):
-        if not (key in norm):
-            ans.pop(key)
-    
-    return ans
-
-p0_2 = {
-    'R_tot': 11e6,
-    'Rp_beta1': 10e6 * 0.1,
-    'Rp_beta2': 10e6 * 0.1,
-    'p_gamma1': 0.1,
-    'p_gamma2': 0.1,
-    'Rp_beta12': 10e6 * 0.1
+ratios = {
+    'p_beta1_tot/p_beta1': cross.total(0.511) / cross.photoel(0.511) * gvar.gvar(1, 0.2), # calcolare meglio
+    'p_gamma1_tot/p_gamma1': cross.total(1.275) / cross.photoel(1.275) * gvar.gvar(1, 0.2), # calcolare meglio
+    'p_beta2_tot/p_beta2': cross.total(0.511) / cross.photoel(0.511) * gvar.gvar(1, 0.2), # calcolare meglio
+    'p_gamma2_tot/p_gamma2': cross.total(1.275) / cross.photoel(1.275) * gvar.gvar(1, 0.2), # calcolare meglio
 }
 
-def fcn_2(p):
+ratios['p_beta12_tot/p_beta12'] = ratios['p_beta1_tot/p_beta1'] + ratios['p_beta2_tot/p_beta2'] + ratios['p_beta1_tot/p_beta1'] * ratios['p_beta2_tot/p_beta2'] + 1
+
+Y = {}
+Y.update(norm)
+Y.update(ratios)
+
+p0 = dict(
+    Rp_beta12=norm['betabeta'],
+    Rp_beta1=norm['beta', 1] / 2,
+    Rp_beta2=norm['beta', 2] / 2,
+    p_gamma1=norm['gammabeta'] / norm['beta', 2],
+    p_gamma2=norm['betagamma'] / norm['beta', 1],
+    R_tot=norm['gamma', 1] * norm['beta', 2] / norm['gammabeta']
+)
+
+p0.update(dict(
+    Rp_beta1_tot =  Y['p_beta1_tot/p_beta1'  ] * p0['Rp_beta1' ],
+    p_gamma1_tot =  Y['p_gamma1_tot/p_gamma1'] * p0['p_gamma1' ],
+    Rp_beta2_tot =  Y['p_beta2_tot/p_beta2'  ] * p0['Rp_beta2' ],
+    p_gamma2_tot =  Y['p_gamma2_tot/p_gamma2'] * p0['p_gamma2' ],
+    Rp_beta12_tot = Y['p_beta12_tot/p_beta12'] * p0['Rp_beta12']
+))
+
+def fcn(p):
     ans = {}
 
     R_tot = p['R_tot']
-    Rp_beta1 = p['Rp_beta1'] * 2
-    Rp_beta2 = p['Rp_beta2'] * 2
+    Rp_beta1 = p['Rp_beta1']
+    Rp_beta2 = p['Rp_beta2']
     p_gamma1 = p['p_gamma1']
     p_gamma2 = p['p_gamma2']
     Rp_beta12 = p['Rp_beta12']
+    Rp_beta1_tot = p['Rp_beta1_tot']
+    Rp_beta2_tot = p['Rp_beta2_tot']
+    p_gamma1_tot = p['p_gamma1_tot']
+    p_gamma2_tot = p['p_gamma2_tot']
+    Rp_beta12_tot = p['Rp_beta12_tot']
     
-    ans['beta', 1] = Rp_beta1 * (1 - p_gamma1)
-    ans['gamma', 1] = R_tot * p_gamma1 - Rp_beta1 * p_gamma1
-    ans['gammabeta'] = Rp_beta2 * p_gamma1 - Rp_beta12 * p_gamma1
+    ans['p_beta1_tot/p_beta1'] = Rp_beta1_tot / Rp_beta1
+    ans['p_gamma1_tot/p_gamma1'] = p_gamma1_tot / p_gamma1
+    ans['p_beta2_tot/p_beta2'] = Rp_beta2_tot / Rp_beta2
+    ans['p_gamma2_tot/p_gamma2'] = p_gamma2_tot / p_gamma2
+    ans['p_beta12_tot/p_beta12'] = Rp_beta12_tot / Rp_beta12
+
+    ans['beta', 1] = 2 * Rp_beta1 * (1 - p_gamma1_tot)
+    ans['gamma', 1] = R_tot * p_gamma1 - 2 * Rp_beta1_tot * p_gamma1
+    ans['gammabeta'] = 2 * Rp_beta2 * p_gamma1 - Rp_beta12_tot * p_gamma1
     ans['gammabetabeta'] = Rp_beta12 * p_gamma1
     
-    ans['beta', 2] = Rp_beta2 * (1 - p_gamma2)
-    ans['gamma', 2] = R_tot * p_gamma2 - Rp_beta2 * p_gamma2
-    ans['betagamma'] = Rp_beta1 * p_gamma2 - Rp_beta12 * p_gamma2
+    ans['beta', 2] = 2 * Rp_beta2 * (1 - p_gamma2_tot)
+    ans['gamma', 2] = R_tot * p_gamma2 - 2 * Rp_beta2_tot * p_gamma2
+    ans['betagamma'] = 2 * Rp_beta1 * p_gamma2 - Rp_beta12_tot * p_gamma2
     ans['betagammabeta'] = Rp_beta12 * p_gamma2
     
-    ans['betabeta'] = Rp_beta12 * (1 - p_gamma1 - p_gamma2)
+    ans['betabeta'] = Rp_beta12 * (1 - p_gamma1_tot - p_gamma2_tot)
     
     return ans
 
-fit = lsqfit.nonlinear_fit(data=norm, fcn=fcn_2, p0=p0_2, debug=True)
+fit = lsqfit.nonlinear_fit(data=Y, fcn=fcn, p0=gvar.mean(p0), debug=True)
 print(fit.format(maxline=True))
 
 fig_ch.show()

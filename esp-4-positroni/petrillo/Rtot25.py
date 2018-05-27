@@ -129,9 +129,9 @@ Y.update(norm)
 Y.update(ratios)
 
 p0.update(dict(
-    Rp_beta1_tot  = Y['p_beta1_tot/p_beta1'  ] * p0['Rp_beta1' ],
+    Rp_beta1_tot = Y['p_beta1_tot/p_beta1'  ] * p0['Rp_beta1' ],
     p_gamma1_tot = Y['p_gamma1_tot/p_gamma1'] * p0['p_gamma1'],
-    Rp_beta2_tot  = Y['p_beta2_tot/p_beta2'  ] * p0['Rp_beta2' ],
+    Rp_beta2_tot = Y['p_beta2_tot/p_beta2'  ] * p0['Rp_beta2' ],
     p_gamma2_tot = Y['p_gamma2_tot/p_gamma2'] * p0['p_gamma2']
 ))
 
