@@ -1,6 +1,7 @@
 \subsection{Annichilazione in 3 fotoni}
 
 %teoria
+\subsubsection{Stime teoriche}
 Lo scattering $e^+e^-$ può produrre uno stato finale con 3 fotoni: il rapporto teorico dei branching ratio tra questo processo e la più comune annichilazione in 2 fotoni è $\sim 1/378$\cite{3gamma}. La distribuzione angolare attesa per i 3 fotoni prodotti è rappresentata in \autoref{fig:3gamma_angular_distr}. Se il decadimento avviene a riposo nel sistema del laboratorio\footnote{ipotesi ragionevole nel nostro caso e suffragata dall'osservazione in \autoref{positron_momentum}} i fotoni sono vincolati ad essere emessi su un piano: quindi fissata la direzione di 2 fotoni, il terzo è vincolato ad essere emesso su un arco di circonferenza i cui limiti sono fissati dalla conservazione dell'energia. A causa di questi vincoli e poiché i nostri spettrometri rivelano sono in un certo angolo solido, il rate dei conteggi per questo tipo di segnale sarà inversamente proporzionale a $d^5$ dove $d$ è la distanza dei rivelatori (nel caso semplice in cui sono alla stessa distanza).
 Come visibile in \autoref{fig:3gamma_angular_distr} la probabilità relativa di emissione varia poco negli angoli permessi (variazione massima del $\sim 25\%$) ed per i nostri scopi è ragionevolmente uniforme per angoli intorno a $\alpha\simeq \SI{120}{\degree}$ e $\beta\simeq\SI{120}{\degree}$.
 Le energie dei 3 fotoni al variare degli angoli sono facilmente ricavabili dalla conservazione del quadrimpulso:
@@ -11,19 +12,87 @@ E_2 &= E_3 \cdot \frac{\sin\beta}{\sin\alpha}\\
 E_1 &= 2m_e - E_2 - E_3\\
 \end{align*}
 
- \begin{figure}[h]
+\begin{figure}[h]
 	\centering
-	\includegraphics[width=15em]{immagini/3gamma_distribution}
+	\includegraphics[width=20em]{immagini/3gamma_distribution}
 	\caption{\label{fig:3gamma_angular_distr}Probabilità di una data distribuzione angolare per l'annichilazione a 3 fotoni. $\alpha$ e $\beta$ sono rispettivamente gli angoli tra il fotone 1 e i fotoni 2 e 3. La scala della probabilità e arbitraria.}
 \end{figure}
 %progettazione dell'esperimento
 
-Una stima preliminare del rate di segnale atteso è ottenibile a partire dalla formula:
+Una stima dell'ordine di grandezza del numero di eventi di segnale attesi è ottenibile a partire dalla formula:
 \begin{equation}
 \label{eq:stima_3gamma}
-R_{3\gamma} = R_{\beta^+} \cdot \frac{\text{BR}(3\gamma)}{\text{BR}(2\gamma)} \cdot 
+N_{3\gamma} \simeq T \cdot R_{\beta^+} \cdot \frac{\text{BR}(3\gamma)}{\text{BR}(2\gamma)} \cdot \text{Acc} \cdot \text{Eff} \cdot R_{p2t} \cdot 3!
 \end{equation}
+Dove:
+\begin{itemize}
+	\item $T$ è il tempo di presa dati, realisticamente dell'ordine di $\SI{10}{h}$;
+	\item $R_{\beta^+}$ è il rate di emissione di positroni della nostra sorgente principale, dell'ordine di $\SI{500}{kBq}$;
+	\item $\frac{\text{BR}(3\gamma)}{\text{BR}(2\gamma)}$ è il rapporto dei branching ratio dei due processi ed è atteso essere $1/378$;
+	\item Acc è l'accettanza combinata dei tre rivelatori che possiamo stimare in $\sim \frac{r^5}{2^7 d^5}$\footnote{quest è solo una stima dell'integrale dello spazio delle fasi a 3 corpi} dove $r$ è il raggio dei rivelatori ($1"$) e che ad una distanza di $\SI{20}{cm}$ da' un'accettanza del $\sim\SI{2e-7}{}$;
+	\item Eff è l'efficienza intrinseca combinata dei tre spettrometri che per rivelatori di NaI $2"\times2"$ è nota \cite{knoll} e all'energia di $\sim \SI{300}{keV}$ vale circa $(90\%)^3 \simeq  70\%$;
+	\item $R_{p2t}$ è il rapporto tra gli eventi nel picco fotoelettrico e il totale, anche questo noto \cite{knoll} e alla stessa energia vale circa $(60\%)^3 \simeq 20\%$;
+	\item il fattore $3!$ serve a tener conto della molteplicità.
+\end{itemize}
+\subsubsection{Rumore}
+Il risultato della stima è circa 10 eventi. A questo punto è necessario stimare/misurare il rumore.
+Il rate di coincidenze a 3 in alcune configurazioni provate è in ogni caso molto maggiore del segnale atteso è quindi necessario ottimizzare il rapporto segnale/rumore per rendere visibile il segnale.
+Le coincidenze casuali sono depresse dal fatto che si tratta di un coincidenza a tre e la sorgente principale di rumore è la sorgente stessa: 
+anche se la sorgente non si trova sulla congiungente di nessuna coppia di rivelatori, rendendo di fatto impossibile rilevare direttamente la coppia di fotoni back-to-back prodotti nell'annichilazione, è comunque possibile che la coincidenza a tre scatti e possa esserci un evento indistinguibile dal segnale:
+\begin{itemize}
+	\item il $\gamma_{\text{Ne}}$\footnote{Nel seguito useremo la notazione $\gamma_{\text{Ne}}$ per indicare i fotoni prodotti dal decadimento del $^22\text{Ne}$ e con $\gamma_{\beta}$ quelli prodotti dall'annichilazione in due fotoni.} passa per il rilevatore 1 e ci interagisce facendo scattering Compton;
+	\item un $\gamma_{\beta}$ fa scattering Compton nel rivelatore 2;
+	\item l'altro $\gamma_{\beta}$ fa scattering Compton o Reyleigh nel materiale che circonda la sorgente (la scatola di metallo che la contiene, il piombo e le pareti in piombo nelle vicinanze) venendo deviata e successivamente interagisce nel rivelatore 3.
+\end{itemize}
+Un evento del genere farebbe scattare la coincidenza e al variare degli angoli di scattering potrebbe portare ad un evento simile al segnale per energia rilasciata dei rivelatori. Un'altro possibile evento di rumore è quello in cui:
+\begin{itemize}
+	\item un $\gamma_{beta}$ fa scattering Compton nel rivelatore 1 e l'altro è perso;
+	\item il $\gamma_{\text{Ne}}$ fa scattering Compton nel rivelatore 2 e il fotone uscente dal processo di scattering interagisce con il rivelatore 3.
+\end{itemize}
+Chiaramente molti altri possibili rimbalzi sono possibili e possono risultare simili al segnale, ma ogni rimbalzo riduce sostanzialmente la probabilità dell'evento: un "rimbalzo" dal rivelatore 2 al 3 come nell'esempio precedente è soppresso dal fatto che il back-scattering Compton è sfavorito e dall'accettanza del rivelatore 3 visto dal 2 che in prima approssimazione va come $\frac{1}{(2d)^2}$.
+Un metodo per misurare il rumore dovuto alla sorgente, eliminando solo il segnale dell'annichilazione in $3\gamma$, è quello di sollevare/abbassare la sorgente in modo tale che nessun piano possa passare per la sorgente e i tre rivelatori: questo eliminerà il segnale fisico lasciando ragionevolmente immutata la forma del rumore.
+\subsubsection{Realizzazione della misura}
+Si sono adottati alcuni accorgimenti per migliorare il rapporto segnale rumore:
+\begin{itemize}
+	\item per aumentare il segnale mettiamo gli scintillatori il più vicino possibile alla sorgente: il segnale cresce con l'inverso di $d^5$ quindi passando da $\SI{20}{cm}$ a $\SI{10}{cm}$ si guadagna un fattore 32;
+	\item aspettandoci che i rimbalzi tra un rivelatore e l'altro possano rappresentare una parte rilevante del rumore interponiamo dei blocchi di piombo tra un rivelatore e l'altro, abbastanza spessi da fermare la maggior parte dei fotoni (la lunghezza di interazione per energie nel range $\SI{300/500}{keV}$ è $\sim \SI{0.5}{cm}$ e si sono usati blocchi da $\sim \SI{4}{cm}$);
+	\item dopo aver osservato la distribuzione tipica del rumore decidiamo gli angoli a cui effettuare la misura di segnale in modo che l'energia dello stesso sia nella zona con meno rumore possibile: 
+\end{itemize}
+La misura finale è stata presa nelle condizioni schematizzate in \autoref{fig:schema_3gamma}\marginpar{fare figura} e riproposta nella foto in \autoref{fig:foto_3gamma}, dove sono chiari i vincoli imposti dall'apparato: i rivelatori distano circa $\SI{12}{cm}$ dalla sorgente, $\alpha \simeq \SI{59}{\degree}$ e $\beta \simeq \SI{43}{\degree}$. Il picco delle energie attese dei tre fotoni sono $E_1= \SI{397}{keV}$, $E_2 =\SI{277}{keV}$, $E_3=\SI{347}{keV}$.
 
+Sono state realizzate due prese dati di segnale e una di rumore: sono state svolte quando il laboratorio è chiuso e la risposta dei rivelatori è stabile, con lo stesso obiettivo la parte iniziale e finale della presa dati è stata tagliata: il risultato sono due misure di segnale da $\SI{9.7}{h}$ e $\SI{15.3}{h}$ e una di rumore da $\SI{11.1}{h}$.
+
+\subsubsection{Analisi}
+Durante la presa dati sono state misurate e salvate le sole coincidenze a 3. Le energie dei tre rivelatori sono state calibrate per ogni presa dati a partire dai dati stessi, fittando il picco di annichilazione e quello del $^22\text{Ne}$ ben visibili nel rumore. I PMT1 e 2 sono stati calibrati con un modello lineare, mentre per il PMT3, notevolmente meno lineare degli altri, si è deciso di usare una parabola passante per 0. Questa scelta è motivata dal fatto che avendo solo due punti un'altro vincolo è necessario e non si può fare affidamento sui precedenti fit di risposta parabolica del PMT3 poiché questo si scalibra molto nel tempo e ci interessa la risposta a energie lontane da quelle delle precenti calibrazioni (inferiori al picco di annichilazione); questa scelta può poi essere verificata a posteriori controllando che il segnale sia alla giusta energia su quel canale.
+
+Per stimare l'entità del segnale osservato si è proceduto in due modi.
+\paragraph{Stima diretta del rumore}
+
+
+
+
+ \begin{figure}[h]
+	\centering
+	\includegraphics[width=20em]{immagini/3gamma_foto}
+	\caption{\label{fig:3gamma_signal} L'apparato utilizzato per la misura del rate di annichilazione in tre fotoni, la sorgente si trova in A1.}
+	\label{fig:foto_3gamma}
+\end{figure}
+
+ \begin{figure}[h]
+	\centering
+	\includegraphics[width=38em]{immagini/3gamma_signal}
+	\hspace{-3.5em}
+	\caption{\label{fig:3gamma_signal} I dati qui rappresentati sono le coincidenze a 3 di una delle 2 prese dati di segnale. Nella colonna di sinistra sono mostrati gli scetter plot di ciascuna coppia di canali; nella colonna di destra sono mostrati gli scatter plot di ciascuna coppia di canali dove sono stati selezionati solo gli eventi con energia nell' altro canale in un certo intervallo centrato sul segnale atteso. I box rossi indicano i limiti degli intervalli su ciascun canale. Il segnale è chiaramente visibile nel box.}
+\end{figure}
+
+ \begin{figure}[h]
+	\centering
+	\includegraphics[width=38em]{immagini/3gamma_noise}
+	\hspace{-3.5em}
+	\caption{\label{fig:3gamma_noise} I dati qui rappresentati sono le coincidenze a 3 nella presa dati di rumore. Nella colonna di sinistra sono mostrati gli scetter plot di ciascuna coppia di canali; nella colonna di destra sono mostrati gli scatter plot di ciascuna coppia di canali dove sono stati selezionati solo gli eventi con energia nell' altro canale in un certo intervallo centrato sul segnale atteso. I box rossi indicano i limiti degli intervalli su ciascun canale. Nessun segnale è visibile nel box.}
+\end{figure}
+
+	
 
 %realizzazione esperimento
 
