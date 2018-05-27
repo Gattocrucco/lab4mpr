@@ -171,7 +171,8 @@ quindi possiamo ricavare $r$ misurando le accettanze.
 	\includegraphics[width=1.5\textwidth]{immagini/ec}
 	\caption{\label{fig:ec}
 	Dati e fit dei picchi per misurare il braching ratio di cattura elettronica.
-	I picchi $\beta_1$ e $\beta_2$ sono fittati con due gaussiane per il problema descritto in \autoref{ref}.}
+	I picchi $\beta_1$ e $\beta_2$ sono fittati con due gaussiane per il problema descritto in \autoref{ref}.
+	I risultati dei fit sono in \autoref{tab:fitpicchi}.}
 \end{figure}
 
 \paragraph{Apparato}
@@ -209,8 +210,8 @@ Risulta $A_1 = A_2 = A_{12} = \num{0.028(12)}$.
 		& $\big(Ae^{-\lambda x_2} + N\gauss(x_2,\mu_2,\sigma_2)\big)\gauss(x_1,\mu_1,\sigma_1)$ \\
 		$\beta\beta$
 		& $N\gauss(\mathbf x,\boldsymbol\mu,\boldsymbol\Sigma)
-		+ A_2e^{-\lambda x_2}\gauss(x_1,\mu_1,\sigma_1)
-		+ A_1e^{-\lambda x_1}\gauss(x_2,\mu_2,\sigma_2)$
+		+ A_2e^{-\lambda_2 x_2}\gauss(x_1,\mu_1,\sigma_1)
+		+ A_1e^{-\lambda_1 x_1}\gauss(x_2,\mu_2,\sigma_2)$
 	\end{tabular}
 	\caption{\label{tab:modelli}
 	Modelli usati per fittare i vari picchi.
@@ -221,8 +222,39 @@ Risulta $A_1 = A_2 = A_{12} = \num{0.028(12)}$.
 	e diviso per il numero di eventi registrati dall'ADC e per l'area dei bin.}
 \end{table}
 
+\begin{table}
+	% tabella generata da ec.py
+	\small
+	\sisetup{separate-uncertainty=false}
+	\hspace{-12em}
+	\begin{tabular}{c||ccccc|cc|cc}
+		Picco       &     $\beta\beta$ &     $\gamma\beta$ & $\gamma\beta,\beta$ &     $\beta\gamma$ & $\beta,\gamma\beta$ &        $\beta_1$ &      $\gamma_1$ &        $\beta_2$ &      $\gamma_2$ \\ \hline\hline
+		$N$         & \num{7.40(5)e+6} &  \num{3.7(12)e+4} &     \num{3.1(9)e+4} &   \num{3.8(7)e+4} &    \num{5.0(15)e+4} & \num{3.02(6)e+4} & \num{5.5(3)e+3} & \num{3.60(7)e+4} & \num{7.0(3)e+3} \\ \hline
+		$\mu_1$     &  \num{288.57(5)} &   \num{745.4(28)} &    \num{1035.2(22)} &    \num{288.4(4)} &      \num{289.7(7)} &   \num{303.1(3)} & \num{781.6(11)} &   \num{263.6(7)} &               - \\
+		$\sigma_1$  &   \num{11.87(6)} &       \num{22(4)} &         \num{17(3)} &     \num{12.7(4)} &       \num{14.0(8)} &  \num{13.51(29)} &  \num{21.2(11)} &     \num{9.4(5)} &               - \\
+		$A_1$       &    \num{123(23)} &       \num{17(4)} &          \num{6(4)} &                 - &                   - &      \num{52(5)} &   \num{6.0(22)} &                - &               - \\
+		$\lambda_1$ &  \num{-0.009(4)} & \num{-0.0034(28)} &      \num{0(10)e-3} &                 - &                   - & \num{0.0060(19)} &   \num{0(4)e-3} &                - &               - \\ \hline
+		$\mu_2$     &  \num{233.89(3)} &    \num{233.2(4)} &      \num{232.7(6)} &   \num{655.8(17)} &     \num{948.7(14)} &     \num{339(5)} &               - &   \num{236.3(5)} &  \num{684.1(7)} \\
+		$\sigma_2$  &   \num{10.53(3)} &     \num{10.9(4)} &       \num{11.1(7)} &    \num{17.7(24)} &         \num{24(4)} &       \num{7(4)} &               - &     \num{9.8(4)} &   \num{17.5(7)} \\
+		$A_2$       &      \num{53(6)} &                 - &                   - &    \num{13.8(22)} &          \num{2(4)} &                - &               - &      \num{59(8)} &   \num{7.7(20)} \\
+		$\lambda_2$ & \num{0.0148(28)} &                 - &                   - & \num{-0.0014(24)} &     \num{0.013(24)} &                - &               - & \num{0.0039(20)} &  \num{0.004(5)} \\ \hline
+		corr.       &   \num{0.098(3)} &                 - &                   - &                 - &                   - &                - &               - &                - &               - \\ \hline
+		$\chi^2$    &             87.3 &              54.5 &                40.1 &              74.6 &                44.9 &              2.5 &             7.4 &              0.9 &             6.1 \\
+		dof         &               61 &                60 &                  32 &                62 &                  52 &                7 &              11 &                5 &              10
+	\end{tabular}
+	\caption{\label{tab:fitpicchi}
+	Risultati dei fit dei picchi per la misura di branching ratio della cattura elettronica.
+	I parametri sono spiegati nella \autoref{tab:modelli}.
+	Per $\beta_1$ e $\beta_2$, per compattezza,
+	$\mu$ e $\sigma$ del picco più a destra
+	(vedi \autoref{fig:ec})
+	sono riportate nella casella dell'altro PMT.}
+	\sisetup{separate-uncertainty=true}
+\end{table}
+
 Poiché, come si vede in \autoref{fig:ec},
 tutti i picchi hanno un fondo significativo,
 ricaviamo il rate dei picchi fittandoli con gaussiane più fondo.
 I fit sono ai minimi quadrati sugli istogrammi.
-Riportiamo i modelli usati in \autoref{tab:modelli}.
+Riportiamo i modelli usati in \autoref{tab:modelli}
+e i risultati dei fit in \autoref{tab:fitpicchi}.

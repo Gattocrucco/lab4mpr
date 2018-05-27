@@ -1,0 +1,53 @@
+0504_effi_chx_chy.txt (usare 11)
+(lontani, allineamento non verificato, betabeta, beta1, gamma1 (bassa statistica) + h.c.)
+-> R
+
+0508_electron_mass_c2.txt (usare 11)
+(vicini, allineamento non verificato, betabeta, beta1, gamma1 + h.c.)
+-> R
+
+0510_effi_bbn.txt
+(vicino-lontano, allineati, betabeta, betagamma + h.c.)
+-> niente
+
+Rtot22.py (usare 25)
+0522_prova_rtot_attaccati.txt
+0522_prova_rtot_attaccati_ch1.txt
+0522_prova_rtot_attaccati_ch2.txt
+(attaccati, betagamma, beta1, gamma1 + h.c.)
+-> Rtot
+
+Rtot24.py (usare 25)
+0524_rtot_prova1.txt
+0524_rtot_prova1_ch2.txt
+0524_rtot_prova1_ch1.txt
+(vicino-lontano, non allineati, betabeta, gammabeta, beta1, beta2, gamma1, gamma2)
+-> Rtot
+
+–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+0504_c3_gate550.txt (riciclare Rtot24.py)
+0504_c3_v2.txt
+(vicini, allineamento non verificato, betabeta, betagamma, beta1, gamma1 + h.c.)
+-> Rtot
+
+ec.py
+0511_ec2_c2.txt
+0511_ec2_ch1.txt
+0511_ec2_ch2.txt
+(vicini, allineati, betabeta, betagamma, betagammabeta, beta1, gamma1 + h.c.)
+-> R, Rtot
+
+R.py
+0521_effi_ch1.txt
+0521_effi_ch2.txt
+0521_effi_c2.txt
+(lontani, allineati, betabeta, beta1, beta2)
+-> R
+
+Rtot25.py
+0525_rtot_ch2.txt
+0525_rtot_ch1.txt
+0525_rtot_c2.txt
+(vicino-lontano, non allineati, gammabeta, beta1, gamma1 + h.c.)
+-> Rtot
