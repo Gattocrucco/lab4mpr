@@ -78,7 +78,7 @@ if __name__ == '__main__':
     for axis in 'xyz':
         exec('ax.set_{}label("{}")'.format(axis, axis))
     
-    output = likelihood_fit(minus_log_likelihood, p0, args=(data, data_volume))
+    output = likelihood_fit(minus_log_likelihood, p0, args=(sample, volume))
     print(lab.format_par_cov(output.par, output.cov))
     
     # compute meaningful parameters
