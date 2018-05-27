@@ -235,26 +235,31 @@ def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, corr=False, ax_2d=None, 
     yy_cut = yy[cut]
     hist_cut = hist[cut]
     
+    def fun_norm(u):
+        return u / (1 + gvar.exp(-2 * u)) + 1 / (2 * gvar.cosh(u))
+    def fun_ampl(u):
+        return u / (1 + gvar.exp(-2 * u)) + 1 / (2 * gvar.cosh(u))
+    
     # initial parameters
     p0 = {
         'mean': np.array([np.mean(xx_cut), np.mean(yy_cut)]),
         'sigma': np.array([np.std(xx_cut), np.std(yy_cut)]) / 2,
-        'lognorm': np.log(np.sum(gvar.mean(hist_cut) * np.outer(np.diff(binsx), np.diff(binsy))[cut]))
+        'norm_unbounded': np.sum(gvar.mean(hist_cut) * np.outer(np.diff(binsx), np.diff(binsy))[cut])
     }
     if corr:
         p0['corr'] = 0.01
     if bkg == 'expcross':
         center = p0['mean']
         p0['exp_lambda'] = 1 / (p0['sigma'] * 4)
-        p0['log_exp_ampl'] = np.array(2 * [np.log(np.max(gvar.mean(hist_cut)) / 5)])
+        p0['exp_ampl_unbounded'] = np.array(2 * [np.max(gvar.mean(hist_cut)) / 5])
     elif bkg == 'expx':
         center = p0['mean'][0]
         p0['exp_lambda'] = 1 / (p0['sigma'][0] * 4)
-        p0['log_exp_ampl'] = np.log(np.max(gvar.mean(hist_cut)) / 5)
+        p0['exp_ampl_unbounded'] = np.max(gvar.mean(hist_cut)) / 5
     elif bkg == 'expy':
         center = p0['mean'][1]
         p0['exp_lambda'] = 1 / (p0['sigma'][1] * 4)
-        p0['log_exp_ampl'] = np.log(np.max(gvar.mean(hist_cut)) / 5)
+        p0['exp_ampl_unbounded'] = np.max(gvar.mean(hist_cut)) / 5
     elif not bkg is None:
         raise KeyError(bkg)
     
@@ -265,25 +270,25 @@ def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, corr=False, ax_2d=None, 
         ans = {}
         mean = p['mean']
         sigma = p['sigma']
-        norm = gvar.exp(p['lognorm'])
+        norm = fun_norm(p['norm_unbounded'])
         if corr:
             ans['peak'] = norm * _gauss2d(xx, yy, mean, sigma, p['corr'])
         else:
             ans['peak'] = norm * _gauss(xx, mean[0], sigma[0]) * _gauss(yy, mean[1], sigma[1])
         
         if bkg == 'expcross':
-            ampl = gvar.exp(p['log_exp_ampl'])
+            ampl = fun_ampl(p['exp_ampl_unbounded'])
             lamda = p['exp_lambda']
             ans['bkg'] = 0
             for i in range(2):
                 j = [1, 0][i]
                 ans['bkg'] += ampl[i] * gvar.exp(-([xx, yy][i] - center[i]) * lamda[i]) * gvar.exp(-1/2 * (([xx, yy][j] - mean[j]) / sigma[j]) ** 2)
         elif bkg == 'expx':
-            ampl = gvar.exp(p['log_exp_ampl'])
+            ampl = fun_ampl(p['exp_ampl_unbounded'])
             lamda = p['exp_lambda']
             ans['bkg'] = ampl * gvar.exp(-(xx - center) * lamda) * gvar.exp(-1/2 * ((yy - mean[1]) / sigma[1]) ** 2)
         elif bkg == 'expy':
-            ampl = gvar.exp(p['log_exp_ampl'])
+            ampl = fun_ampl(p['exp_ampl_unbounded'])
             lamda = p['exp_lambda']
             ans['bkg'] = ampl * gvar.exp(-(yy - center) * lamda) * gvar.exp(-1/2 * ((xx - mean[0]) / sigma[0]) ** 2)
         else:
@@ -393,7 +398,7 @@ def fit_peak_2d(binsx, binsy, hist, cut=None, bkg=None, corr=False, ax_2d=None, 
     outputs = {
         'mean': fit.p['mean'],
         'sigma': fit.p['sigma'],
-        'norm': gvar.exp(fit.p['lognorm'])
+        'norm': fun_norm(fit.p['norm_unbounded'])
     }
     return outputs, inputs
 
