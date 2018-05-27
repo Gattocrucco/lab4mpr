@@ -4,28 +4,33 @@ Nel processo di cattura elettronica nel \na{}
 viene emesso solo il fotone del neon a \SI{1275}{keV} e non il positrone.
 Vogliamo misurare il rapporto di decadimento della cattura elettronica.
 Le uniche informazioni precise sui rate parziali le possiamo estrarre dai fotopicchi
-perché sono le uniche parti dello spettro per cui abbiamo un modello (la gaussiana).
+perché sono le uniche parti dello spettro che distinguiamo chiaramente
+e per le quali abbiamo un modello ragionevole (la gaussiana).
 
 \subsubsection{Normalizzazione del rate}
 
 L'ADC riesce a leggere solo una frazione degli eventi,
 però è ragionevole supporre che la decimazione sia imparziale,
-quindi per ottenere il rate parziale dallo spettro basta normalizzare
-moltiplicando per il rate misurato dal contatore
-e dividendo per il numero di eventi registrati dall'ADC.
+quindi per ottenere il rate parziale di una regione dello spettro
+basta moltiplicare il numero di eventi in quella regione
+per il rate misurato dal contatore
+e dividere per il numero totale di eventi registrati dall'ADC.
 
 \subsubsection{Fotopicchi}
 
 \begin{figure}
 	\centering
-	INSERIRE DISEGNO
-	\caption{\label{fig:fotopicchi}
-	INSERIRE ciao}
+	\includegraphics[width=27em]{immagini/schemapicchi}
+	\caption{\label{fig:schemapicchi}
+	Schema dei fotopicchi usati per misurare il branching ratio di cattura elettronica della sorgente \na{}.
+	$\beta$ sono i fotoni emessi dall'annichilazione dei positroni
+	e $\gamma$ quelli emessi dal neon eccitato in cui decade il \na.}
 \end{figure}
 
-Usando due scintillatori possiamo ricavare il rate di nove fotopicchi diversi,
-corrispodenti alle varie configurazioni con cui i fotoni possono interagire con i rivelatori
-(vedi \autoref{fig:fotopicchi})\footnote{Non abbiamo considerato configurazioni con tre rivelatori per questa misura.}.
+Usando due scintillatori\footnote{Non abbiamo considerato configurazioni con tre rivelatori per questa misura.} possiamo ricavare il rate di undici fotopicchi diversi,
+corrispodenti alle varie configurazioni con cui i fotoni possono interagire con i rivelatori;
+di questi undici ne useremo però al più nove,
+riportati schematicamente in \autoref{fig:schemapicchi}.
 Indichiamo con $\beta$ i fotoni di annichilazione (\SI{511}{keV})
 e con $\gamma$ i fotoni del neon (\SI{1275}{keV}).
 Chiamiamo i rivelatori ``1'' e ``2''.
@@ -165,7 +170,8 @@ quindi possiamo ricavare $r$ misurando le accettanze.
 	\hspace{-0.25\textwidth}
 	\includegraphics[width=1.5\textwidth]{immagini/ec}
 	\caption{\label{fig:ec}
-	ciao}
+	Dati e fit dei picchi per misurare il braching ratio di cattura elettronica.
+	I picchi $\beta_1$ e $\beta_2$ sono fittati con due gaussiane per il problema descritto in \autoref{ref}.}
 \end{figure}
 
 \paragraph{Apparato}
@@ -189,13 +195,9 @@ Risulta $A_1 = A_2 = A_{12} = \num{0.028(12)}$.
 
 \paragraph{Fit dei picchi}
 
-Poiché, come si vede in \autoref{fig:ec},
-tutti i picchi hanno un fondo significativo,
-ricaviamo il rate dei picchi fittandoli con gaussiane più fondo.
-I fit sono ai minimi quadrati sugli istogrammi.
-Riportiamo i modelli usati:
 \newcommand*\gauss{\operatorname{gauss}}
-\begin{center}
+\begin{table}
+	\hspace{-2em}
 	\begin{tabular}{l|l}
 		Picco & Modello \\
 		\hline
@@ -210,4 +212,17 @@ Riportiamo i modelli usati:
 		+ A_2e^{-\lambda x_2}\gauss(x_1,\mu_1,\sigma_1)
 		+ A_1e^{-\lambda x_1}\gauss(x_2,\mu_2,\sigma_2)$
 	\end{tabular}
-\end{center}
+	\caption{\label{tab:modelli}
+	Modelli usati per fittare i vari picchi.
+	Con $\gauss(x,\mu,\sigma)$ si intende una gaussiana di media $\mu$ e deviazione standard $\sigma$.
+	Le variabili in grassetto sono bidimensionali.
+	$\boldsymbol\Sigma$ è la matrice di covarianza.
+	Il rate del picco è $N$ moltiplicato per il rate
+	e diviso per il numero di eventi registrati dall'ADC e per l'area dei bin.}
+\end{table}
+
+Poiché, come si vede in \autoref{fig:ec},
+tutti i picchi hanno un fondo significativo,
+ricaviamo il rate dei picchi fittandoli con gaussiane più fondo.
+I fit sono ai minimi quadrati sugli istogrammi.
+Riportiamo i modelli usati in \autoref{tab:modelli}.
