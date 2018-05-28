@@ -2624,7 +2624,7 @@ def mme(x, unit, metertype='lab3', sqerr=False):
 _d = lambda x, n: int(("%.*e" % (n - 1, abs(x)))[0])
 _ap = lambda x, n: float("%.*e" % (n - 1, x))
 _nd = lambda x: math.floor(math.log10(abs(x))) + 1
-def _format_epositive(x, e, errsep=True, minexp=3):
+def _format_epositive(x, e, errsep=True, minexp=3, dot=True):
     # DECIDE NUMBER OF DIGITS
     if _d(e, 2) < 3:
         n = 2
@@ -2655,9 +2655,11 @@ def _format_epositive(x, e, errsep=True, minexp=3):
         return sx, se, ex
     short_se = se[-(n+1):] if '.' in se[-n:] else se[-n:]
     # ("%#.*g" % (n, e * 10 ** (n - _nd(e))))[:n]
+    if not dot:
+        short_se = short_se.replace('.', '')
     return sx + '(' + short_se + ')', '', ex
 
-def util_format(x, e, pm=None, percent=False, comexp=True, nicexp=False):
+def util_format(x, e, pm=None, percent=False, comexp=True, nicexp=False, dot=True):
     """
     Format a value with its uncertainty.
 
@@ -2675,6 +2677,8 @@ def util_format(x, e, pm=None, percent=False, comexp=True, nicexp=False):
         If True, write the exponent once.
     nicexp : bool
         If True, format exponent like ×10¹²³.
+    dot : bool
+        If True, eventually put decimals separator in uncertainty when pm=None.
 
     Returns
     -------
@@ -2699,7 +2703,7 @@ def util_format(x, e, pm=None, percent=False, comexp=True, nicexp=False):
     e = abs(float(e))
     if not math.isfinite(x) or not math.isfinite(e) or e == 0:
         return "%.3g %s %.3g" % (x, '+-', e)
-    sx, se, ex = _format_epositive(x, e, not (pm is None))
+    sx, se, ex = _format_epositive(x, e, errsep=not (pm is None), dot=dot)
     if ex == 0:
         es = ''
     elif nicexp:
@@ -2929,6 +2933,9 @@ def format_par_cov(par, cov=None, labels=None):
     
     return TextMatrix(matrix, fill_side='left')
 
+def _array_like(obj):
+    return isinstance(obj, tuple) or isinstance(obj, list) or isinstance(obj, np.ndarray)
+
 class TextMatrix(object):
     """
     Object to format tables.
@@ -2956,7 +2963,7 @@ class TextMatrix(object):
             Specify on which side shorter rows are filled.
         """
         # make sure matrix is at least 1D
-        if not hasattr(matrix, '__len__'):
+        if not _array_like(matrix):
             matrix = [matrix]
         matrix = copy.copy(matrix)
         
@@ -2964,7 +2971,7 @@ class TextMatrix(object):
         # and get lengths of all elements
         lengths = []
         for i in range(len(matrix)):
-            if not hasattr(matrix[i], '__len__'):
+            if not _array_like(matrix[i]):
                 matrix[i] = [matrix[i]]
             lengths.append(len(matrix[i]))
             

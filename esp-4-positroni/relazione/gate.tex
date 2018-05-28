@@ -1,7 +1,9 @@
 \subsection{Gate dell'ADC}
 
 Variamo la durata del gate dell'ADC e calcoliamo il rapporto $\sigma\!/$\!media per il picco di annichilazione rivelato dal PMT1, modellato come al solito con una gaussiana.
+\marginpar{Aggiungere una locuzione o frase introduttiva.}
 Su alcune misure abbiamo introdotto dei ritardi per migliorare o peggiorare la sincronizzazione con il gate al fine di quantificare quanto la messa in tempo influisca sulla nostra risoluzione. Il risultato di questa misura è in \autoref{fig:gate}, i dati sono in \autoref{tab:gate}.
+\marginpar{Dove sono finiti i ritardi nella tabella?}
 
 \begin{figure}[h]
 \centering
@@ -34,3 +36,5 @@ durata (ritardo) [ns] & media [digit] & $\sigma$ [digit] & $\sigma\!/$\!media\\
 Dall'analisi dei dati abbiamo potuto vedere che, fatta eccezione per le misure a \SI{300}{ns} e \SI{400}{ns}, la risoluzione dell'ADC è compatibilmente la stessa.
 Abbiamo allora deciso di porre la durata del gate a \SI{550}{ns} perché era il valore usato prima di questa misura.
 Questa scelta è poi diventata \SI{1}{\micro s} nell'apparato B per evitare problemi derivanti dal jitter dei segnali. Infine notiamo che cambiare i ritardi sui segnali in ingresso non influisce significativamente sulla risoluzione dell'apparato.
+\marginpar{Ma li abbiamo cambiati di pochissimo rispetto ai tempi in gioco,
+quindi non vale dire che non influiscono significativamente.}

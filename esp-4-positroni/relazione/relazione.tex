@@ -9,6 +9,7 @@
 \usepackage{siunitx}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{amsbsy}
 \usepackage{xfrac}
 \usepackage{esint}
 \usepackage[hidelinks]{hyperref}
@@ -20,6 +21,7 @@
 \usepackage{subfig}
 \usepackage{wasysym}
 \usepackage{booktabs}
+\usepackage{verbatim}
 
 \setlength{\marginparwidth}{95pt}
 \let\oldmarginpar\marginpar
@@ -29,7 +31,7 @@
 \newcommand*\dv[2]{\frac{\de #1}{\de #2}}
 \DeclareMathOperator\Ei{Ei}
 \newcommand*\is{\equiv}
-\newcommand\cs{$^{\text{137}}\text{Cs}$}
+\newcommand\cs{\ensuremath{^{\text{137}}\text{Cs}}}
 \newcommand\co{\ensuremath{^{\text{60}}\text{Co}}}
 \newcommand\na{\ensuremath{^{\text{22}}\text{Na}}}
 \newcommand\am{$^{\text{241}}\text{Am}$}
@@ -55,7 +57,7 @@ Esperienza 4: Annichilazione del positrone}
 
 \begin{abstract}
 
-Misuriamo la massa dell'elettrone con una precisione maggiore dell'$1\permil$ facendo felice Punzi e (forse) il rate di cattura elettronica. Se siamo fortunati vediamo anche il positronio decadere in 3 fotoni.
+Misuriamo la massa dell'elettrone con una precisione del 2.5\%, diamo una stima del rate di cattura elettronica e mostriamo l'esistenza di un'annichilazione in 3 fotoni.
 
 \end{abstract}
 
@@ -65,6 +67,7 @@ Misuriamo la massa dell'elettrone con una precisione maggiore dell'$1\permil$ fa
 \section{Introduzione}
 
 \input{intro}
+\input{obiettivo}
 
 \section{Teoria}
 
@@ -94,9 +97,14 @@ Misuriamo la massa dell'elettrone con una precisione maggiore dell'$1\permil$ fa
 
 \input{massa}
 
+\input{cattura}
+
+\input{3gamma}
+
+% Fine
+
+\input{conclusioni}
+
 \input{biblio}
-
-\appendix
-
 
 \end{document}

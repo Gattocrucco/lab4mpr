@@ -10,9 +10,9 @@ import numpy as np
 # slice.py <numero di slice>              # -> chan=0
 # slice.py <numero di slice> <canale>
 
-filename = sys.argv[1]
-if len(sys.argv) == 2:
-  slices = 2
+filename = "../DAQ/0522_3gamma.txt"
+if len(sys.argv) <= 2:
+  slices = 6
   chans = [0]
 elif len(sys.argv) == 3:
   slices = int(sys.argv[2])
