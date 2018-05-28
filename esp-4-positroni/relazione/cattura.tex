@@ -212,19 +212,20 @@ Risulta $A_1 = A_2 = A_{12} = \num{0.028(12)}$.
 		$\beta_1$, $\beta_2$
 		& $Ae^{-\lambda x} + N_a\gauss(x, \mu_a, \sigma_a) + N_b\gauss(x, \mu_b, \sigma_b)$ \\
 		$\gamma\beta$, $(\gamma\beta,\beta)$
-		& $\big(Ae^{-\lambda x_1} + N\gauss(x_1,\mu_1,\sigma_1)\big)\gauss(x_2,\mu_2,\sigma_2)$ \\
+		& $\big(A_1e^{-\lambda_1 x_1} + N\gauss(x_1,\mu_1,\sigma_1)\big)\gauss(x_2,\mu_2,\sigma_2)$ \\
 		$\beta\gamma$, $(\beta,\gamma\beta)$
-		& $\big(Ae^{-\lambda x_2} + N\gauss(x_2,\mu_2,\sigma_2)\big)\gauss(x_1,\mu_1,\sigma_1)$ \\
+		& $\big(A_2e^{-\lambda_2 x_2} + N\gauss(x_2,\mu_2,\sigma_2)\big)\gauss(x_1,\mu_1,\sigma_1)$ \\
 		$\beta\beta$
 		& $N\gauss(\mathbf x,\boldsymbol\mu,\boldsymbol\sigma)
 		+ A_2e^{-\lambda_2 x_2}\gauss(x_1,\mu_1,\sigma_1)
 		+ A_1e^{-\lambda_1 x_1}\gauss(x_2,\mu_2,\sigma_2)$
 	\end{tabular}
-	\caption{\label{tab:modelli}
+	\caption[cippalippa]{\label{tab:modelli}
 	Modelli usati per fittare i vari picchi.
 	Con $\gauss(x,\mu,\sigma)$ si intende una gaussiana di media $\mu$ e deviazione standard $\sigma$.
 	Le variabili in grassetto sono bidimensionali.
-	$\boldsymbol\sigma$ è la matrice di covarianza $[\sigma_1,\sigma_{12};\sigma_{12},\sigma_2]$.
+	$\boldsymbol\sigma$ è la matrice di covarianza
+	$\begin{psmallmatrix} \sigma_1 & \sigma_{12} \\ \sigma_{12} & \sigma_2 \end{psmallmatrix}$.
 	Per $\beta_1$ e $\beta_2$ ci sono due gaussiane per il crosstalk descritto in \autoref{ref}
 	(vedi \autoref{fig:ec}).
 	Per $\beta\beta$ la gaussiana del picco ha il parametro di correlazione $\sigma_{12}$ libero
@@ -293,17 +294,6 @@ ricaviamo il rate dei picchi fittandoli con gaussiane più fondo.
 I fit sono ai minimi quadrati sugli istogrammi.
 Riportiamo i modelli usati in \autoref{tab:modelli}
 e i risultati dei fit in \autoref{tab:fitpicchi2d} e \autoref{tab:fitpicchi1d}.
-
-\marginpar{Non si capisce un cazzo di quella tabella enorme.
-\begin{enumerate}
-\item bisogna leggere l'altra tabella per capire
-\item la frase della compattezza è incomprensibile
-\item non hai accennato a nessun crosstalk
-\item non ci sono le unità di misura
-\item aggiusta l'altra tabella perché in quella enorme ci sono $\lambda_{1,2}$ e $A_{1,2}$ mentre in quella di spiegazione ci sono solo $A$ e $\lambda$ per i non $\beta\beta$
-\item correlazione con chi?
-\end{enumerate} }
-
 Per i picchi $\beta_1$ e $\beta_2$ abbiamo fittato con due gaussiane
 per il problema descritto in \autoref{ref} dovuto al crosstalk sull'ADC.
 I rate ricavati dalle normalizzazioni sono riportati in \autoref{tab:ecfit}.
