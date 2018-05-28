@@ -54,6 +54,7 @@ per ogni scintillatore di ottiene un picco $\beta$ e un $\gamma$,
 distinguiamo i rivelatori con un pedice: $\beta_1$, $\gamma_1$, $\beta_2$, $\gamma_2$.
 
 \subsubsection{Equazioni dei rate}
+\label{sec:eqrate}
 
 Per ogni fotopicco misuriamo il rate.
 Scrivendo i rate in funzione delle efficienze e accettanze dei rivelatori
@@ -119,6 +120,7 @@ Il sistema è a 9 equazioni con 11 incognite,
 quindi bisogna necessariamente fare approssimazioni o aggiungere equazioni anche per ricavare $\Rtot$.
 
 \subsubsection{Informazioni esterne}
+\label{sec:ptotp}
 
 Per aggiungere equazioni e ricavare $\Rtot$
 prendiamo valori tabulati di $p_{\dots} / p_{\dots}\tot$ da [KNOLL].
@@ -174,6 +176,8 @@ quindi possiamo ricavare $r$ misurando le accettanze.
 	I picchi $\beta_1$ e $\beta_2$ sono fittati con due gaussiane per il problema descritto in \autoref{ref}.
 	I risultati dei fit sono in \autoref{tab:fitpicchi}.}
 \end{figure}
+
+Questa misura è stata fatta con il circuito A.
 
 \paragraph{Apparato}
 
@@ -248,7 +252,8 @@ Risulta $A_1 = A_2 = A_{12} = \num{0.028(12)}$.
 	Per $\beta_1$ e $\beta_2$, per compattezza,
 	$\mu$ e $\sigma$ del picco più a destra
 	(vedi \autoref{fig:ec})
-	sono riportate nella casella dell'altro PMT.}
+	sono riportate nella casella dell'altro PMT
+	e $N$ è la somma delle due normalizzazioni.}
 	\sisetup{separate-uncertainty=true}
 \end{table}
 
@@ -258,3 +263,82 @@ ricaviamo il rate dei picchi fittandoli con gaussiane più fondo.
 I fit sono ai minimi quadrati sugli istogrammi.
 Riportiamo i modelli usati in \autoref{tab:modelli}
 e i risultati dei fit in \autoref{tab:fitpicchi}.
+
+\marginpar{Non si capisce un cazzo di quella tabella enorme.
+\begin{enumerate}
+\item bisogna leggere l'altra tabella per capire
+\item la frase della compattezza è incomprensibile
+\item non hai accennato a nessun crosstalk
+\item non ci sono le unità di misura
+\item aggiusta l'altra tabella perché in quella enorme ci sono $\lambda_{1,2}$ e $A_{1,2}$ mentre in quella di spiegazione ci sono solo $A$ e $\lambda$ per i non $\beta\beta$
+\item correlazione con chi?
+\end{enumerate} }
+
+Per i picchi $\beta_1$ e $\beta_2$ abbiamo fittato con due gaussiane
+per il problema descritto in \autoref{ref} dovuto al crosstalk sull'ADC.
+I rate ricavati dalle normalizzazioni sono riportati in \autoref{tab:ecfit}.
+
+\paragraph{Fit dei rate e delle probabilità di interazione}
+
+\begin{table}
+	% tabella generata da ec.py
+	\hspace{-2em}
+	\begin{tabular}{ccc|cc}
+		Dato & Input & Valore fittato & Parametro & Valore fittato \\
+		\hline
+		             $R_{\beta\beta}$ &     \num{4099(26)} &     \num{4096(26)} &      $\R p_{\beta12}$ &  \num{4.31(5)e+3} \\
+		            $R_{\gamma\beta}$ &        \num{20(6)} &        \num{18(3)} &       $\R p_{\beta1}$ & \num{5.69(12)e+3} \\
+		      $R_{\gamma\beta,\beta}$ &        \num{17(5)} &        \num{23(4)} &       $\R p_{\beta2}$ & \num{5.77(11)e+3} \\
+		            $R_{\beta\gamma}$ &        \num{21(4)} &        \num{19(3)} &         $p_{\gamma1}$ &   \num{0.0052(9)} \\
+		      $R_{\beta,\gamma\beta}$ &        \num{28(8)} &        \num{25(5)} &         $p_{\gamma2}$ &  \num{0.0058(11)} \\
+		                $R_{\beta_1}$ & \num{1.106(23)e+4} & \num{1.110(22)e+4} &               $\Rtot$ &   \num{4.0(7)e+5} \\
+		               $R_{\gamma_1}$ &  \num{2.02(12)e+3} &  \num{1.99(12)e+3} &   $\R p_{\beta1}\tot$ &  \num{8.2(14)e+3} \\
+		                $R_{\beta_2}$ & \num{1.122(21)e+4} & \num{1.124(21)e+4} &     $p_{\gamma1}\tot$ &    \num{0.024(6)} \\
+		               $R_{\gamma_2}$ &  \num{2.17(10)e+3} &   \num{2.19(9)e+3} &   $\R p_{\beta2}\tot$ & \num{1.16(18)e+4} \\
+		  $p_{\beta1}\tot/p_{\beta1}$ &       \num{2.0(3)} &     \num{1.44(23)} &     $p_{\gamma2}\tot$ &    \num{0.026(7)} \\
+		$p_{\gamma1}\tot/p_{\gamma1}$ &       \num{4.5(8)} &       \num{4.5(8)} &  $\R p_{\beta12}\tot$ &   \num{8.2(8)e+3} \\
+		  $p_{\beta2}\tot/p_{\beta2}$ &       \num{2.0(3)} &       \num{2.0(3)} &  & \\
+		$p_{\gamma2}\tot/p_{\gamma2}$ &       \num{4.5(8)} &       \num{4.5(8)} &  & \\
+		$p_{\beta12}\tot/p_{\beta12}$ &       \num{3.0(4)} &     \num{1.90(18)} &  &
+	\end{tabular}
+	\caption{\label{tab:ecfit}
+	Dati e risultati del fit dei rate e delle probabilità di interazione.
+	I rate sono in \si{s^{-1}}.
+	$\chi^2/\text{dof} = 2.8$, $\text{dof}=3$, $p=0.04$.
+	I ``valori fittati'' dei dati sono il risultato del modello usando i parametri fittati,
+	l'unica discrepanza (leggera) con i dati è in $p_{\beta12}\tot/p_{\beta12}$.
+	Notiamo che sono compatibili a coppie:
+	$R_{\beta1}$ con $R_{\beta2}$,
+	$R_{\gamma1}$ con $R_{\gamma2}$,
+	$R_{\gamma\beta}$ con $R_{\beta\gamma}$,
+	$R_{\gamma\beta,\beta}$ con $R_{\beta,\gamma\beta}$.
+	Ci aspettiamo questa compatibilità vista l'elevata simmetria dell'apparato.} 
+\end{table}
+
+Impostiamo un fit ai minimi quadrati
+in cui i dati sono i rate dei picchi e i rapporti $p_{\dots}/p_{\dots}\tot$ (vedi \autoref{sec:ptotp}),
+mentre il modello è dato dalle equazioni in \autoref{sec:eqrate}.
+I risultati dettagliati del fit sono riportati in \autoref{tab:ecfit}.
+I risultati importanti per la misura di cattura elettronica sono
+\begin{align*}
+	\R
+	&= (2.7 \pm 1.1) \cdot 10^5 \,\si{s^{-1}} = \\
+	&= \left(2.68
+	\pm 1.12^\text{(accettanze)}
+	\pm 0.08^\text{(statistico)}
+	\pm 0.00^\text{(rapporti)}\right) \cdot 10^5 \,\si{s^{-1}}, \\
+	\Rtot
+	&= (4.0 \pm 0.7) \cdot 10^5 \,\si{s^{-1}} = \\
+	&= \left(3.98
+	\pm 0.66^\text{(statistico)}
+	\pm 0.16^\text{(rapporti)}\right) \cdot 10^5 \,\si{s^{-1}}, \\
+	\R/\Rtot
+	&= 0.67 \pm 0.30 = \\
+	&= 0.67 \pm 0.28^\text{(accettanze)} \pm 0.11^\text{(statistico)} \pm 0.03^\text{(rapporti)}.
+\end{align*}
+Nel calcolo di $\R/\Rtot$ abbiamo tenuto conto della correlazione tra $\R$ e $\Rtot$,
+che però è praticamente trascurabile (\SI{0.2}\%).
+$\R/\Rtot$ è compatibile con il valore noto 0.9
+ma ha un'incertezza del \SI{50}\% data dall'incertezza sull'accettanza,
+ovvero dal non aver usato un modello preciso per la probabilità di interazione con il rivelatore.
+
