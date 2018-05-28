@@ -113,7 +113,12 @@ Tuttavia anche in questo caso la stima dipende dalla dimensione del box su cui s
 Essendo le due misure fatte incompatibili decidiamo di prenderne la media e stimare l'errore sistematico con la semi-differenza: $R_{3\gamma} = \SI{3.2(6)}{s^{-1}}$.
 
 \subsubsection{Stima del rapporto dei branching ratio}
-Per la misura del rapporto dei branching ratio oltre 
+Come visto in \autoref{eq:stima_3gamma} per la misura del rapporto dei branching ratio oltre al rate di segnale è necessario conosce:
+\begin{itemize}
+	\item $R_{\beta}$, il rate di decadimenti $\beta^+$ della sorgente, che in ottima approssimazione coincidono con il rate di annichilazioni in 2 fotoni; la stima più precisa di questo parametro si può ottenere dalla media pesata di $r$ è $R \cdot \text{BR}(\beta)$, si ottiene un valore per $R_{\beta} = \SI{3.6(4)e5}{Bq}$;
+	\item Eff e $R_{p2t}$, l'efficienza dei tre PMT e il rapporto tra eventi nel picco fotoelettrico e il totale non sono misurabili col nostro apparato, entrambi variano molto con l'energia e non disponiamo di sorgenti con energia in quel range; questi parametri saranno input completamente teorici ma sono noti (vedi \cite{knoll}) per cristalli standard come i nostri: $\text{Eff} = 65(5)\%$ e $R_{p2t} = 90(5)\%$.
+	\item Acc, l'accettanza è la quantità più difficile da stimare: a queste distanze tra sorgente e PMT dipende in maniera importante dall'efficienza sul bordo degli scintillatori.
+\end{itemize}
 
 
  \begin{figure}[h]
