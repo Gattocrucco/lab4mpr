@@ -61,12 +61,14 @@ scaler = dict(
 norm = {}
 count = {}
 
-peak_fit_table = []
+# things for the latex tables
 def fmt(u):
     return '\\num{' + lab.util_format(gvar.mean(u), gvar.sdev(u), pm=None, comexp=True, dot=False) + '}'
 nothing = '-'
 
 ##### fit 2d
+
+peak_2d_fit_table = []
 
 cuts = dict(
     betabeta=[(260, 320), (200, 270)],
@@ -88,7 +90,6 @@ bkgs = dict(
 
 rate_corr = scaler['c2'][0] / (scaler['c2'][1] / 1000) / np.sum(H)
 
-# use density to keep confrontable 1d and 2d histograms
 hist = gvar.gvar(H, np.sqrt(H))
 
 for key in cuts.keys():
@@ -121,7 +122,7 @@ for key in cuts.keys():
         exp_lambda_0 = nothing
         exp_ampl_1   = nothing
         exp_lambda_1 = nothing
-    peak_fit_table.append([
+    peak_2d_fit_table.append([
         labels[key],
         fmt(outputs['norm']),
         fmt(outputs['mean'][0]),
@@ -138,6 +139,8 @@ for key in cuts.keys():
     ])
 
 ##### fit 1d
+
+peak_1d_fit_table = []
 
 cuts = {
     ('beta', 1): [250, 370],
@@ -166,28 +169,15 @@ for key in cuts:
     norm[key] = this_norm / (bins[1] - bins[0]) * rate_corr
     
     # results table entry
-    res1 = [
+    peak_1d_fit_table.append([
+        labels[key],
+        fmt(this_norm),
         fmt(outputs['peak1_mean']),
         fmt(outputs['peak1_sigma']),
         fmt(outputs['exp_ampl']),
-        fmt(outputs['exp_lambda'])
-    ]
-    if key[0] == 'beta':
-        res2 = [
-            fmt(outputs['peak2_mean']),
-            fmt(outputs['peak2_sigma']),
-            nothing,
-            nothing
-        ]
-    else:
-        res2 = [nothing] * 4
-    if key[1] == 2:
-        res1, res2 = res2, res1
-    peak_fit_table.append([
-        labels[key],
-        fmt(this_norm)
-    ] + res1 + res2 + [
-        nothing,
+        fmt(outputs['exp_lambda']),
+        fmt(outputs['peak2_mean']) if key[0] == 'beta' else nothing,
+        fmt(outputs['peak2_sigma']) if key[0] == 'beta' else nothing,
         '{:.1f}'.format(fit.chi2),
         '{:d}'.format(fit.dof)
     ])
@@ -357,8 +347,11 @@ print(gvar.fmt_errorbudget(output_var, input_var, percent=False))
 
 # format results for report
 
-print('______________peak fit table_______________')
-print(lab.TextMatrix(peak_fit_table).transpose().latex())
+print('______________peak 2d fit table_______________')
+print(lab.TextMatrix(peak_2d_fit_table).transpose().latex())
+
+print('______________peak 1d fit table_______________')
+print(lab.TextMatrix(peak_1d_fit_table).transpose().latex())
 
 print('_______________Y fit table________________')
 rate_fit_table = []
