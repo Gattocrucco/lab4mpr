@@ -70,8 +70,6 @@ rate [1/s] & beta [digit] & neon [digit] \\
 \end{table}
 
 Pensiamo che tale effetto sia dovuto ad un pile-up nella digitalizzazione in quanto l'ADC ha un tempo di conversione di \SI{60}{\micro s}.
-\marginpar{Dalle misure fatte l'ultimo giorno sappiamo che
-il problema non può essere solo il pile-up della digitalizzazione.
-Inoltre avevamo anche escluso che il problema fosse solo il pile-up dei segnali.}
 Dal grafico si evince che anche con un rate di eventi minore di \SI{10}{ms^{-1}} il problema persiste perché la distribuzione temporale tra un evento e il successivo non è uniforme, ma esponenziale. Quindi tra due eventi consecutivi intercorre spesso un piccolo intervallo di tempo.
+In seguito abbiamo deciso di mettere un tempo morto di \SI{70}{\micro s} sui segnali da inviare all'ADC, ma il problema non si è risolto.
 Abbiamo quindi deciso di utilizzare la sorgente ad attività minore per misurare la massa dell'elettrone e quella ad attività maggiore per le misure in cui non ci interessa l'energia degli eventi o cerchiamo eventi rari.
