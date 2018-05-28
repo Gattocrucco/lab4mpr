@@ -4,8 +4,7 @@ Dopo aver eseguito in maniera preliminare le misure richieste, abbiamo deciso di
 
 \subsubsection{Descrizione del circuito}
 
-Il nuovo circuito segue lo schema in \autoref{disegno}.
-\marginpar{Jack deve disegnare l'apparato B}
+Il nuovo circuito segue lo schema in \autoref{circuitone}.
 I segnali dei PMT vengono inviati ai discriminatori per ottenere i segnali logici e agli attenuatori per essere poi inviati all'ADC. I segnali logici attraversano un modulo di antiretrigger per poi essere usati come trigger di acquisizioni singole o per effettuare coincidenze. Una copia dei segnali finisce al contatore. Abbiamo usato il timer per far partire/fermare le acquisizioni come abbiamo fatto per l'apparato precedente.
 
 \subsubsection{Problemi riscontrati}
@@ -45,5 +44,12 @@ A destra: grafico della stessa misura in cui il PMT1 è vicino alla sorgente men
 
 \end{figure}
 
-Siamo arrivati alla conclusione che si tratti di un crosstalk dal fatto che il picco in anticoincidenza coincide con quello delle acquisizioni singole. Inoltre abbiamo visto, aumentando la distanza di un PMT dalla sorgente, che il picco delle coincidenze si rimpicciolisce (perché ha meno eventi) e il picco in anticoincidenza tende ad assomigliare sempre di più a quello dell'acquisizione con canale singolo (Figura\autoref{dist}).
+Siamo arrivati alla conclusione che si tratti di un crosstalk dal fatto che il picco in anticoincidenza coincide con quello delle acquisizioni singole.
+\marginpar{Le acquisizioni singole sono anche quelle in cui vedi il doppio picco,
+quindi bisogna dire che coincide con quello se scolleghi l'altro PMT dal circuito.}
+Inoltre abbiamo visto, aumentando la distanza di un PMT dalla sorgente, che il picco delle coincidenze si rimpicciolisce (perché ha meno eventi) e il picco in anticoincidenza tende ad assomigliare sempre di più a quello dell'acquisizione con canale singolo (Figura\autoref{dist}).
+\marginpar{Una volta che hai separato lo spettro in coincidenza e anticoincidenza,
+mi sembra inutile far vedere che le coincidenze calano se allontani i rivelatori;
+sarebbe stato utile se non avessi potuto separare lo spettro.
+Metterei insieme il grafico di figura 4 e il primo di figura 5 che sono il confronto interessante.}
 In seguito abbiamo provato che questo problema si riscontra anche quando i canali da analizzare non sono collegati ad ingressi adiacenti dell'ADC. Inspiegabilmente, il problema si è ripresentato solo a giorni alterni. 

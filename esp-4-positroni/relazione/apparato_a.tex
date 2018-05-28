@@ -1,19 +1,27 @@
+\begin{figure}
+	\hspace{-0.25\textwidth}
+	\includegraphics[width=0.9\textwidth]{immagini/circuitone}~
+	\includegraphics[width=0.6\textwidth]{immagini/circuitob}
+	\caption{Circuito dell'apparato A (sinistra) e dell'apparato B (destra).}
+	\label{circuitone}
+\end{figure}
+
 \subsection{Apparato A}
 
 % Doveva farlo Bob.
+
+\marginpar{Più che chiamarli apparato A e B,
+poiché sono cambiati solo alcuni dettagli nel circuito,
+li chiamerei circuito A e B.}
 
 \subsubsection{Descrizione del circuito}
 
 Il circuito del primo apparato costruito è rappresentato in \autoref{circuitone}.
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=30 em]{immagini/circuitone}
-\caption{Schema circuitale dell'apparato A.}
-\label{circuitone}
-\end{figure}
-
 Le uscite dei PMT sono inviate ai discriminatori, le cui uscite attraversano un modulo di antiretrigger (tempo morto di \SI{1}{\micro s}) e vengono usate per costruire funzioni logiche. I segnali dei PMT vengono anche inviati all'ADC attraverso un attenuatore per evitare di danneggiare lo strumento.
+\marginpar{Gli attenuatori non sono per non danneggiare l'ADC
+perché il manuale dice che regge impulsi da \SI{50}V per \SI1{\micro s};
+servono per regolare il fondo scala.}
 Per quanto riguarda la parte logica, costruiamo e mettiamo in tempo tre tipi di trigger:
 \begin{enumerate}
 \item canale
@@ -30,10 +38,19 @@ Per dare precedenza agli eventi più rari abbiamo collegato questi trigger ad un
 \subsubsection{Problemi riscontrati}
 
 I problemi descritti in seguito ci hanno spinti a semplificare il circuito per cercare di risolverli.
+\marginpar{Però non abbiamo semplificato il circuito per risolvere il bit stuck,
+magari togliere del tutto la frase che tanto viene ripetuta all'inizio dell'apparato B.}
 
-Il più evidente fin da subito è stato il \emph{bit stuck}: il terzo bit dei dati in formato binario è sempre 1. Gli istogrammi presentano delle lacune di \SI{4}{digit} ogni \SI{4}{digit}. Risolviamo questo problema istogrammando con canali più larghi di \SI{8}{digit}.
+Il più evidente fin da subito è stato il \emph{bit stuck}: il terzo bit dei dati in formato binario è sempre 1.
+\marginpar{Specificare che è il terzo meno significativo,
+si indica con LSB (least significant bit).}
+Gli istogrammi presentano delle lacune di \SI{4}{digit} ogni \SI{4}{digit}. Risolviamo questo problema istogrammando con canali più larghi di \SI{8}{digit}.
+\marginpar{La condizione non è che siano più larghi di 8 digit,
+ma che i mattoncini di base dei bin siano i bin $[0,8)$, $[8,16)$, \dots}
 
 Poi abbiamo escluso l'\emph{or} dal circuito perché i segnali che ci arrivavano dalle coincidenze mostravano avere un'energia minore. Abbiamo risolto il problema togliendo l'\emph{or} dal circuito.
+\marginpar{Spiegare perché: che la temporizzazione è diversa,
+che il modulo gate ha jitter eccessivo per tempi $>\SI{1}{ms}$.}
 
 Il problema più interessante è dato dal fatto che, confrontando gli spettri del \na{}, abbiamo visto che i fotoni emessi dalla sorgente con attività maggiore avevano energia maggiore.
 Il grafico in \autoref{distanze} mostra l'energia dei fotopicchi del sodio in funzione del rate misurato ponendo la sorgente ad attività elevata a varie distanze dal rivelatore.
@@ -66,7 +83,15 @@ rate [1/s] & beta [digit] & neon [digit] \\
 \label{tabella forte}
 \end{table}
 
-Pensiamo che tale effetto sia dovuto ad un pile-up nella digitalizzazione in quanto l'ADC ha un tempo di conversione di \SI{60}{\micro s}. Dal grafico si evince che anche con un rate di eventi minore di \SI{10}{kHz} il problema persiste. La spiegazione è data dal fatto che la distribuzione temporale tra un evento e l'altro è esponenziale, quindi tra due eventi consecutivi intercorre spesso un piccolo intervallo di tempo. 
+Pensiamo che tale effetto sia dovuto ad un pile-up nella digitalizzazione in quanto l'ADC ha un tempo di conversione di \SI{60}{\micro s}.
+\marginpar{Dalle misure fatte l'ultimo giorno sappiamo che
+il problema non può essere solo il pile-up della digitalizzazione.
+Inoltre avevamo anche escluso che il problema fosse solo il pile-up dei segnali.}
+Dal grafico si evince che anche con un rate di eventi minore di \SI{10}{kHz} il problema persiste. La spiegazione è data dal fatto che la distribuzione temporale tra un evento e l'altro è esponenziale, quindi tra due eventi consecutivi intercorre spesso un piccolo intervallo di tempo.
+\marginpar{Usare \si{s^{-1}} per il rate.}
 Abbiamo quindi deciso di utilizzare la sorgente ad attività minore per misurare la massa dell'elettrone e quella ad attività maggiore per le misure in cui non ci interessa l'energia degli eventi o cerchiamo eventi rari.
 
-\marginpar{Qualcuno che conosce la distribuzione esponenziale è pregato di controllare la correttezza di questa frase.}
+\marginpar{Qualcuno che conosce la distribuzione esponenziale è pregato di controllare la correttezza di questa frase.\\
+\emph{La frase è corretta però è scritta come se avessi già detto
+che all'inizio pensavi che gli eventi fossero equispaziati.
+Se il lettore non la pensa così ha difficoltà a capire.}}
