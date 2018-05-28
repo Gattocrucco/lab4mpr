@@ -3,7 +3,7 @@
 	\includegraphics[width=0.9\textwidth]{immagini/circuitone} \\
 	\vspace{1em}
 	\includegraphics[width=0.6\textwidth]{immagini/circuitob}
-	\caption{Circuito dell'apparato A (sopra) e dell'apparato B (sotto).}
+	\caption{Circuito A (sopra) e B (sotto).}
 	\label{circuitone}
 \end{figure}
 
@@ -96,7 +96,9 @@ rate [1/s] & Beta [digit] & Neon [digit] \\
 \label{tabella forte}
 \end{table}
 
-Pensiamo che tale effetto sia dovuto ad un pile-up nella digitalizzazione in quanto l'ADC ha un tempo di conversione di \SI{60}{\micro s}.
-Dal grafico si evince che anche con un rate di eventi minore di \SI{10}{ms^{-1}} il problema persiste perché la distribuzione temporale tra un evento e il successivo non è uniforme, ma esponenziale. Quindi tra due eventi consecutivi intercorre spesso un piccolo intervallo di tempo.
-In seguito abbiamo deciso di mettere un tempo morto di \SI{70}{\micro s} sui segnali da inviare all'ADC, ma il problema non si è risolto.
-Abbiamo quindi deciso di utilizzare la sorgente ad attività minore per misurare la massa dell'elettrone e quella ad attività maggiore per le misure in cui non ci interessa l'energia degli eventi o cerchiamo eventi rari.
+Inizialmente abbiamo supposto che tale effetto sia dovuto ad un pile-up nella digitalizzazione in quanto l'ADC ha un tempo di conversione di \SI{60}{\micro s}.
+Dal grafico si evince che anche con un rate di eventi minore di $(\SI{100}{\micro s})^{-1}$ il problema persiste perché la distribuzione temporale tra un evento e il successivo non è una delta ma esponenziale, quindi tra due eventi consecutivi intercorre spesso un intervallo di tempo minore di quello medio.
+Quindi in seguito (nel circuito B) abbiamo deciso di mettere un tempo morto di \SI{70}{\micro s} sui segnali da inviare all'ADC, ma il problema non si è risolto.
+Abbiamo comunque escluso che il problema possa essere dovuto interamente a pile-up dei segnali dei rivelatori.
+
+Alla fine quindi deciso di utilizzare la sorgente ad attività minore per misurare la massa dell'elettrone e quella ad attività maggiore per le misure in cui non ci interessa con precisione l'energia degli eventi o cerchiamo eventi rari.
