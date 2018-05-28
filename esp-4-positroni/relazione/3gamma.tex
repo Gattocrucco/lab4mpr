@@ -23,17 +23,16 @@ dove $\alpha$ e $\beta$ sono rispettivamente gli i supplementari degli angoli tr
 Una stima dell'ordine di grandezza del numero di eventi di segnale attesi è ottenibile a partire dalla formula:
 \begin{equation}
 \label{eq:stima_3gamma}
-N_{3\gamma} \simeq T \cdot R_{\beta^+} \cdot \frac{\text{BR}(3\gamma)}{\text{BR}(2\gamma)} \cdot \text{Acc} \cdot \text{Eff} \cdot R_{p2t} \cdot 3!
+N_{3\gamma} \simeq T \cdot R_{\beta^+} \cdot \frac{\text{BR}(3\gamma)}{\text{BR}(2\gamma)} \cdot \text{Acc} \cdot \text{Eff} \cdot R_{p2t}
 \end{equation}
 Dove:
 \begin{itemize}
 	\item $T$ è il tempo di presa dati, realisticamente dell'ordine di $\SI{10}{h}$;
 	\item $R_{\beta^+}$ è il rate di emissione di positroni della nostra sorgente principale, dell'ordine di $\SI{500}{kBq}$;
 	\item $\frac{\text{BR}(3\gamma)}{\text{BR}(2\gamma)}$ è il rapporto dei branching ratio dei due processi ed è atteso essere $1/378$;
-	\item Acc è l'accettanza combinata dei tre rivelatori che possiamo stimare in $\sim \frac{r^5}{2^7 d^5}$\footnote{questa è solo una stima dell'integrale dello spazio delle fasi a 3 corpi} dove $r$ è il raggio dei rivelatori ($1''$) e che ad una distanza di $\SI{20}{cm}$ dà un'accettanza del $\sim\SI{2e-7}{}$;
+	\item Acc è l'accettanza combinata dei tre rivelatori che possiamo stimare in $\sim 3!\frac{r^5}{2^7 d^5}$\footnote{questa è solo una stima dell'integrale dello spazio delle fasi a 3 corpi} dove $r$ è il raggio dei rivelatori ($1''$) e che ad una distanza di $\SI{20}{cm}$ dà un'accettanza del $\sim\SI{1.2e-6}{}$;
 	\item Eff è l'efficienza intrinseca combinata dei tre spettrometri che per rivelatori di NaI $2''\times2''$ è nota \cite{knoll} e all'energia di $\sim \SI{300}{keV}$ vale circa $(90\%)^3 \simeq  70\%$;
-	\item $R_{p2t}$ è il rapporto tra gli eventi nel picco fotoelettrico e il totale, anche questo noto \cite{knoll} e alla stessa energia vale circa $(60\%)^3 \simeq 20\%$;
-	\item il fattore $3!$ serve a tener conto della molteplicità.
+	\item $R_{p2t}$ è il rapporto tra gli eventi nel picco fotoelettrico e il totale, anche questo noto \cite{knoll} e alla stessa energia vale circa $(60\%)^3 \simeq 20\%$.
 \end{itemize}
 \subsubsection{Rumore}
 Il risultato della stima è circa 10 eventi. A questo punto è necessario stimare/misurare il rumore.
@@ -117,8 +116,10 @@ Come visto in \autoref{eq:stima_3gamma} per la misura del rapporto dei branching
 \begin{itemize}
 	\item $R_{\beta}$, il rate di decadimenti $\beta^+$ della sorgente, che in ottima approssimazione coincidono con il rate di annichilazioni in 2 fotoni; la stima più precisa di questo parametro si può ottenere dalla media pesata di $r$ è $R \cdot \text{BR}(\beta)$, si ottiene un valore per $R_{\beta} = \SI{3.6(4)e5}{Bq}$;
 	\item Eff e $R_{p2t}$, l'efficienza dei tre PMT e il rapporto tra eventi nel picco fotoelettrico e il totale non sono misurabili col nostro apparato, entrambi variano molto con l'energia e non disponiamo di sorgenti con energia in quel range; questi parametri saranno input completamente teorici ma sono noti (vedi \cite{knoll}) per cristalli standard come i nostri: $\text{Eff} = 65(5)\%$ e $R_{p2t} = 90(5)\%$.
-	\item Acc, l'accettanza è la quantità più difficile da stimare: a queste distanze tra sorgente e PMT dipende in maniera importante dall'efficienza sul bordo degli scintillatori.
+	\item Acc, l'accettanza è la quantità più difficile da stimare: a queste distanze tra sorgente e PMT dipende in maniera importante dall'efficienza sul bordo degli scintillatori, decidiamo di stimarla approssimando gli scintillatori a cerchi, calcolando l'accettanza a $1/3$ e $2/3$ del cilindro e prendendone media e semi-differenza: $Acc = \SI{1.5(4)e-5}{}$ 
 \end{itemize}
+
+La stima del rapporto di branching ratio ottenuta a partire da questi input è $\frac{\text{BR}(3\gamma)}{\text{BR}(2\gamma)} = \SI{3.0(14)e-2}{}$, da confrontarsi con valore teorico noto di $\SI{2.6e-3}{}$.
 
 
  \begin{figure}[h]

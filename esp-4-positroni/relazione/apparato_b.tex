@@ -9,44 +9,41 @@ I segnali dei PMT vengono inviati ai discriminatori per ottenere i segnali logic
 
 \subsubsection{Problemi riscontrati}
 \label{ref}
-Dopo aver acceso l'apparato il bit stuck è scomparso e l'aumento di risoluzione ci ha permesso di notare un problema che era già presente nel circuito precedente. Abbiamo iniziato a vedere uno sdoppiamento dello spettro, come evidenziato dalla \autoref{doppio}. 
+Dopo aver acceso l'apparato il bit stuck è scomparso e l'aumento di risoluzione ci ha permesso di notare un problema che era già presente nel circuito precedente. Abbiamo iniziato a vedere uno sdoppiamento dello spettro, come evidenziato dalla \autoref{doppio} sinistra. 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=20 em]{immagini/doppio}
-\caption{Acquisizione in cui l'annichilazione presenta due picchi.}
-\label{doppio}
-\end{figure}
-
-Tale problema non era visibile ad occhio nudo nelle precedenti acquisizioni, ma un fit eseguito in seguito ha mostrato la presenza di due gaussiane sovrapposte.
-
-\marginpar{Mi pare che sia coincidenza/anticoincidenza (come detto subito dopo) che ci convince del doppio picco, non uno dei fit.
-\texttt{Io mi riferivo a quella misura di stabilità in cui non si vedeva che i picchi erano 2}}
-
-Abbiamo poi scoperto la causa del problema, ovvero il crosstalk.
-Come mostra il grafico di \autoref{sdoppio} sinistra, il doppio picco è la somma di quello osservato nelle acquisizioni in coincidenza con quello osservato in anticoincidenza. 
-
-\begin{figure}[h]
-\centering
+\subfloat
+{
+\includegraphics[width=18 em]{immagini/doppio}
+}
 \subfloat
 {
 \includegraphics[width=18 em]{immagini/sdoppio}
 }
+\caption{A sinistra: acquisizione in cui l'annichilazione presenta due picchi.\\
+A destra: divisione del segnale in coincidenze (``c2'') e anticoincidenze (``not c2'').}
+\label{doppio}
+\end{figure}
+
+Abbiamo poi scoperto la causa del problema, ovvero il crosstalk.
+Come mostra il grafico di \autoref{doppio} destra, il doppio picco è la somma di quello osservato nelle acquisizioni in coincidenza con quello osservato in anticoincidenza. 
+
+
+
+\begin{figure}[h]
+\centering
 \subfloat
 {
-\includegraphics[width=18 em]{immagini/dist}
+\includegraphics[width=20 em]{immagini/dist}
 }
-\caption{A sinistra: rappresentazione di dell'acquisizione di \autoref{doppio} separando le coincidenze dalle anticoincidenze. \\
-A destra: grafico della stessa misura in cui il PMT1 è vicino alla sorgente mentre il PMT2 è lontano dalla sorgente.}
+\caption{Grafico in cui il PMT1 è vicino alla sorgente mentre il PMT2 è lontano dalla sorgente.}
 \label{sdoppio}
 \end{figure}
 
 Siamo arrivati alla conclusione che si tratti di un crosstalk dal fatto che il picco in anticoincidenza coincide con quello di un singolo canale quando tutti gli altri sono scollegati.
-Inoltre abbiamo visto, aumentando la distanza di un PMT dalla sorgente, che il picco delle coincidenze si rimpicciolisce (perché ha meno eventi) e il picco in anticoincidenza tende ad assomigliare sempre di più a quello dell'acquisizione con canale singolo (\autoref{sdoppio} destra).
+Inoltre abbiamo visto, aumentando la distanza di un PMT dalla sorgente, che il picco delle coincidenze si rimpicciolisce (perché ha meno eventi) e il picco in anticoincidenza tende ad assomigliare sempre di più a quello dell'acquisizione con canale singolo (\autoref{sdoppio}).
 
-\marginpar{Una volta che hai separato lo spettro in coincidenza e anticoincidenza,
-mi sembra inutile far vedere che le coincidenze calano se allontani i rivelatori;
-sarebbe stato utile se non avessi potuto separare lo spettro.
-Metterei insieme il grafico di figura 4 e il primo di figura 5 che sono il confronto interessante.}
+Tale problema non era visibile ad occhio nudo nelle precedenti acquisizioni, ma un fit eseguito in seguito su misure ad alta statistica ha mostrato la presenza di due gaussiane sovrapposte.
 
 In seguito abbiamo provato che questo problema si riscontra anche quando i canali da analizzare non sono collegati ad ingressi adiacenti dell'ADC. Inspiegabilmente, il problema si è ripresentato solo a giorni alterni. 
