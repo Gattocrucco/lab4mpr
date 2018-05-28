@@ -73,7 +73,8 @@ La misura finale è stata presa nelle condizioni schematizzate in \autoref{fig:s
 \end{figure}
 Sono state realizzate due prese dati di segnale e una di rumore: sono state svolte quando il laboratorio era chiuso e la risposta dei rivelatori è stabile, con lo stesso obiettivo la parte iniziale e finale della presa dati è stata tagliata: il risultato sono due misure di segnale da $\SI{9.7}{h}$ e $\SI{15.3}{h}$ e una di rumore da $\SI{11.1}{h}$.
 
-\marginpar{``Con lo stesso obiettivo?'' Forse volevi dire ``per lo stesso motivo''}
+% boh il conflict mi ha stufato
+%\marginpar{``Con lo stesso obiettivo?'' Forse volevi dire ``per lo stesso motivo''}
 
  \begin{figure}[h]
 	\centering
@@ -90,12 +91,10 @@ Per stimare l'entità del segnale osservato si è proceduto in due modi.
 \paragraph{Stima diretta del rumore}
 Determiniamo l'energia a cui ci attendiamo di osservare il segnale e stimiamo la larghezza del picco 3D, l'allargamento è sostanzialmente dovuto a 2 processi:
 \begin{itemize}
-	\item i fotoni in arrivo non sono monocromatici a causa della dimensione fisica degli scintillatori e gli angoli $\alpha$ e $\beta$ possono variare in un certo range e conseguentemente le energie si troveranno in range massimo:  $E_1 \in [341,437]\,\si{keV}$, $E_2 \in [246,343]\,\si{keV}$ e $E_3 \in [337,394]\,\si{keV}$; si tratta di un range massimo, la forma della distribuzione dipenderà soprattutto dall'efficienza dei rivelatori che a queste distanze cala lentamente sui bordi;
+	\item i fotoni in arrivo non sono monocromatici a causa della dimensione fisica degli scintillatori e gli angoli $\alpha$ e $\beta$ possono variare in un certo range e conseguentemente anche le energie si troveranno entro un certo range:  $E_1 \in [341,437]\,\si{keV}$, $E_2 \in [246,343]\,\si{keV}$ e $E_3 \in [337,394]\,\si{keV}$; si tratta di un range massimo, la forma della distribuzione dipenderà soprattutto dall'efficienza dei rivelatori che a queste distanze cala lentamente sui bordi;
 	\item la risoluzione dello strumento che a queste energie può essere stimata dalla formula (vedi \cite{3}):
 	$\sigma_E(E) = E \cdot \frac{2.27 + 7.28 \cdot E ^ {-0.29} - 2.41 \cdot E ^ {0.21}} {235}$ e che all'energie di interesse vale circa $\SI{60}{keV}$.
 \end{itemize}
-
-\marginpar{Scritto così non si capisce cos'è il ``rate massimo''. Manca la referenza.}
 
 Si è deciso quindi di selezionare gli eventi in una scatola 3D che contenga la quasi totalità del segnale, in modo da non preoccuparci di dover stimare l'efficienza di questa selezione, complicata da simulare. 
 I limiti scelti per la selezione del segnale sono stati: $E_1 \in [301,477]\,\si{keV}$, $E_2 \in [206,383]\,\si{keV}$ e $E_3 \in [297,434]\,\si{keV}$.
