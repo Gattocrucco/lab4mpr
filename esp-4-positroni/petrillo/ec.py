@@ -195,7 +195,7 @@ acc_2 = 1/2 * (1 - cos_theta)
 
 acc1 = gvar.gvar(gvar.mean(acc_1+acc_2) / 2, gvar.mean(acc_1 - acc_2))
 acc2 = copy.copy(acc1)
-acc12 = copy.copy(acc1)
+acc12 = 2 * copy.copy(acc1)
 
 ################# fit con 1 != 2
 
