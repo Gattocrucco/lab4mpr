@@ -21,9 +21,7 @@ Per quanto riguarda la parte logica, costruiamo e mettiamo in tempo tre tipi di 
 \item coincidenza a 3.
 \end{enumerate}
 Il trigger di canale è semplicemente il segnale discriminato del PMT corrispondente; quello di coincidenze è dato dall'uscita di lunga durata del modulo stesso. Mandiamo questi segnali all'ADC in modo che il trigger di canale arrivi in contemporanea con il segnale analogico del canale stesso. Se in quel momento c'è anche un trigger di coincidenza, sappiamo se l'evento ci è arrivato da una coincidenza anziché da un canale singolo. Abbiamo fatto tutto questo per acquisire tutti i canali contemporaneamente ed agevolare la lettura dei dati via software. Purtroppo il \emph{crosstalk}%
-\footnote{Spiegheremo come ci siamo accorti di questo problema nella \autoref{ref}.} presente nell'ADC ha rovinato le misure fatte con questo circuito.
-
-\marginpar{``Rovinato'' non mi piace tanto.}
+\footnote{Spiegheremo come ci siamo accorti di questo problema nella \autoref{ref}.} presente nell'ADC ha afflitto pesantemente le misure fatte con questo circuito.
 
 Per dare precedenza agli eventi più rari abbiamo collegato questi trigger ad un modulo \emph{or} ritardando i trigger singoli rispetto a quelli di coincidenze a 2 e questi ultimi rispetto alle coincidenze a 3. L'uscita dell'\emph{or} era poi inviata ad un \emph{timer} che generava il gate dell'ADC. L'altro canale di questo \emph{timer} veniva usato per avviare o fermare le acquisizioni.
 
@@ -33,9 +31,12 @@ Purtroppo il circuito presentava dei problemi.
 
 Il più evidente fin da subito è stato il \emph{bit stuck}: il terzo bit meno significativo dei dati in formato binario è sempre 1.
 Gli istogrammi presentano delle lacune di \SI{4}{digit} ogni \SI{4}{digit}. Risolviamo questo problema usando canali del tipo $[0,8n) , n \in \mathcal{N}$ nei vari istogrammi.
-Poi abbiamo escluso l'\emph{or} dal circuito perché i segnali che ci arrivavano dalle coincidenze mostravano avere un'energia minore. Abbiamo risolto il problema togliendo l'\emph{or} dal circuito.
-\marginpar{Spiegare perché: che la temporizzazione è diversa,
-che il modulo gate ha jitter eccessivo per tempi $>\SI{1}{ms}$.}
+
+Poi abbiamo visto che i segnali in coincidenza mostravano un'energia minore di quelli non in coincidenza quando usavamo il modulo \emph{or}.
+Tale differenza era data da un'errata temporizzazione dei segnali.
+Uno dei motivi per cui abbiamo usato l'or all'interno del circuito era il poter calibrare l'acquisizione durante le misure di lunga durata alternando il segnale del PMT singolo a quello delle coincidenze.
+Per fare questo abbiamo posto un tempo morto sul trigger degli eventi non in coincidenza, ma il modulo che abbiamo usato per farlo ha un jitter significativo se gli impulsi che genera sono più lunghi di \SI{1}{ms}. Di conseguenza abbiamo segnali non più in tempo con il gate dell'ADC e l'energia misurata non è quella effettiva.
+Non avendo più motivi per usarlo, abbiamo rimosso l'or dal circuito.
 
 Il problema più interessante è dato dal fatto che, confrontando gli spettri del \na{}, abbiamo visto che i fotoni emessi dalla sorgente con attività maggiore avevano energia maggiore.
 Il grafico in \autoref{distanze} mostra l'energia dei fotopicchi del sodio in funzione del rate misurato ponendo la sorgente ad attività elevata a varie distanze dal rivelatore.
