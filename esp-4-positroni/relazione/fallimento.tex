@@ -1,15 +1,24 @@
 \subsection{Misure con TDC}
 
-Collegando le uscite discriminate dei PMT 1 e 2 ai due ingressi dell'unico TDC funzionante%
-\footnote{All'apparenza.}%
-\,che abbiamo trovato in laboratorio, possiamo misurare i ritardi tra le risposte di due PMT posti uno di fronte all'altro sfruttando i fotoni dell'annichilazione. Per eseguire la misura usiamo come \emph{start} le coincidenze e ritardiamo i segnali dei due PMT, dato che lo start è successivo alla rivelazione dei fotoni. Questa procedura ci permette di misurare la differenza tra i tempi di arrivo $\Delta t=t_1-t_2$. Il ritardo introdotto fa in modo che la grandezza $\Delta t$ possa essere sia positiva che negativa. Abbiamo scelto un ritardo di \SI{60}{ns}.
+\paragraph{Calibrazione}
 
-Prima di eseguire la misura calibriamo il TDC con il generatore di funzioni usando come start un'onda quadra e come \emph{stop} lo stesso segnale ma ritardato in modo arbitrario.
+Prima di eseguire la misura calibriamo il TDC con il generatore di funzioni usando come \emph{start} un'onda quadra e come \emph{stop} lo stesso segnale ma ritardato in modo arbitrario.
 Eseguiamo questa calibrazione per i due fondiscala disponibili: \SI{102}{ns} e \SI{510}{ns}.
-Le calibrazioni hanno mostrato una buona linearità, ma la misura dei ritardi ha mostrato che il TDC, per un motivo a noi ignoto, non funziona.
+Le calibrazioni hanno mostrato una buona linearità,
+anche se i fondiscala sono significativamente diversi da quelli nominali,
+ma a volte il TDC smette di funzionare e richiede di riavviare il crate.
 
-La distribuzione dei ritardi acquisita con due fondiscala diversi risulta identica (vedi \autoref{confronto}).
-Se nei due grafici ci fosse la stessa distribuzione, vedremmo la figura allargata di un fattore dato dal rapporto dei due fondiscala. Inoltre l'offset delle scale del TDC vale circa \SI{1}{digit}, quindi lo spostamento di circa \SI{50}{digit} del picco presente nei grafici non può essere spiegato da nessun effetto fisico.
+\paragraph{Risoluzione temporale}
+
+Collegando le uscite discriminate dei PMT 1 e 2 ai due ingressi dell'unico TDC funzionante
+che abbiamo trovato in laboratorio possiamo misurare i ritardi tra le risposte di due PMT posti uno di fronte all'altro sfruttando i fotoni dell'annichilazione. Per eseguire la misura usiamo come \emph{start} le coincidenze e ritardiamo i segnali dei due PMT, dato che lo start è successivo alla rivelazione dei fotoni. Questa procedura ci permette di misurare la differenza tra i tempi di arrivo $\Delta t=t_1-t_2$. Il ritardo introdotto fa in modo che la grandezza $\Delta t$ possa essere sia positiva che negativa. Abbiamo scelto un ritardo di \SI{60}{ns}.
+
+% La distribuzione dei ritardi acquisita con due fondiscala diversi risulta identica (vedi \autoref{confronto}).
+% Se nei due grafici ci fosse la stessa distribuzione, vedremmo la figura allargata di un fattore dato dal rapporto dei due fondiscala. Inoltre l'offset delle scale del TDC vale circa \SI{1}{digit}, quindi lo spostamento di circa \SI{50}{digit} del picco presente nei grafici non può essere spiegato da nessun effetto fisico.
+
+In \autoref{confronto} riportiamo la misura fatta con i due fondiscala.
+Usare due fondiscala serve per controllare che la distribuzione scali nel modo corretto
+e quindi che non sia un artefatto del TDC.
 
 \begin{figure}[h]
 \centering
@@ -20,8 +29,7 @@ Se nei due grafici ci fosse la stessa distribuzione, vedremmo la figura allargat
 {\includegraphics[width=18 em]{immagini/500}
 }
 
-\caption{Misura di ritardo vista da entrambe le scale del TDC.}
+\caption{Misura della differenza di tempo dei segnali in coincidenza tra PMT 1 e PMT 2,
+con entrambi i fondiscala dell'ADC.}
 \label{confronto}
 \end{figure}
-
-Questo problema ci impedisce di fare i facoltativi.

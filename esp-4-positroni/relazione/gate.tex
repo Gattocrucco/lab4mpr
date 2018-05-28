@@ -1,9 +1,8 @@
 \subsection{Gate dell'ADC}
 
-Vogliamo sapere se la durata del tempo di gate influisce sulla precisione delle nostre misure.
+L'ADC a nostra disposizione acquisisce i segnali in ingresso se essi si trovano all'interno di una finestra temporale definita da un segnale logico di \emph{gate}.
+Vogliamo sapere se la durata del segnale di gate influisce sulla precisione delle nostre misure.
 Variamo la durata del gate dell'ADC e calcoliamo il rapporto $\sigma\!/$\!media per il picco di annichilazione rivelato dal PMT1, modellato come al solito con una gaussiana.
-
-\marginpar{Contestualizzare i ritardi?}
 
 Il risultato di questa misura è in \autoref{fig:gate}, i dati sono in \autoref{tab:gate}.
 
@@ -31,7 +30,7 @@ durata (ritardo) [ns] & media [digit] & $\sigma$ [digit] & $\sigma\!/$\!media\\
 1000 (32) & 542.68$\,\pm\,$41 & 15.75$\,\pm\,$69 & 0.0290 $\,\pm\,$13 
 \end{tabular}
 
-\caption{Andamento della risoluzione in funzione della durata del gate. I numeri tra parentesi indicano di quanto è stato ritardato il PMT1.}
+\caption{Andamento della risoluzione in funzione della durata del gate. I numeri tra parentesi indicano un eventuale ritardo aggiuntivo del PMT1 rispetto al PMT2.}
 \label{tab:gate}
 \end{table}
 
