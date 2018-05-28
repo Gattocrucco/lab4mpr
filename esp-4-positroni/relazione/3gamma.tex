@@ -104,28 +104,33 @@ Il metodo sopra esposto ha la criticità di dipendere dalla dimensione del box: 
 	\item la misura di rumore potrebbe non riprodurre il rumore delle misure di segnale abbastanza fedelmente poiché cambiano gli angoli tra sorgente e i PMT e i rimbalzi cambiano energia.
 \end{itemize}
 Dato che il segnale è ben visibile nei nostri dati decidiamo di fittarlo con una gaussiana 3D più un fondo costante: 
-%\begin{equation*}
-%frac{N_{3\gamma}}{\sqrt{\det(2\piV)}} \cdot exp ( \frac{1}{2} (textbf{x}-\textbf{\mu})^T V^{-1}( \textbf{x}-\textbf{\mu} ) ) + N_{noise}
-%\end{equation*}
+\begin{equation*}
+\frac{N_{3\gamma}}{\sqrt{\det(2\pi V)}} \cdot \exp ( \frac{1}{2} (\textbf{x}-\boldsymbol{\mu})^T V^{-1}( \textbf{x}-\boldsymbol{\mu} ) ) + N_{noise}
+\end{equation*}
 Data la quantità esigua di dati per un fit in 3 dimensioni decidiamo di eseguire un fit di likelihood. I dati selezionati per il fit sono gli stessi del punto precedenti e il cui risultato è una normalizzazione $N_{\gamma} = \SI{1.89(6)e2}{}$. Il risulato del fit corretto per l'inefficienza dell'ADC come al punto precedente porta ad una stima del rate di annichilazioni a 3 fotoni di $R_{3\gamma} = \SI{2.60(8)e-2}{s^{-1}}$, dove anche qui l'errore è solo quello statistico del fit.
 Tuttavia anche in questo caso la stima dipende dalla dimensione del box su cui selezioniamo i dati da fittare e varia incompatibilmente con l'errore statistico. Questo potrebbe essere dovuto al fatto che una costante stimi male il fondo in quella zona e/o che il segnale è poco gaussiano.
 
 Essendo le due misure fatte incompatibili decidiamo di prenderne la media e stimare l'errore sistematico con la semi-differenza: $R_{3\gamma} = \SI{3.2(6)}{s^{-1}}$.
 
 \subsubsection{Stima del rapporto dei branching ratio}
-Per la misura del rapporto dei branching ratio oltre 
+Come visto in \autoref{eq:stima_3gamma} per la misura del rapporto dei branching ratio oltre al rate di segnale è necessario conosce:
+\begin{itemize}
+	\item $R_{\beta}$, il rate di decadimenti $\beta^+$ della sorgente, che in ottima approssimazione coincidono con il rate di annichilazioni in 2 fotoni; la stima più precisa di questo parametro si può ottenere dalla media pesata di $r$ è $R \cdot \text{BR}(\beta)$, si ottiene un valore per $R_{\beta} = \SI{3.6(4)e5}{Bq}$;
+	\item Eff e $R_{p2t}$, l'efficienza dei tre PMT e il rapporto tra eventi nel picco fotoelettrico e il totale non sono misurabili col nostro apparato, entrambi variano molto con l'energia e non disponiamo di sorgenti con energia in quel range; questi parametri saranno input completamente teorici ma sono noti (vedi \cite{knoll}) per cristalli standard come i nostri: $\text{Eff} = 65(5)\%$ e $R_{p2t} = 90(5)\%$.
+	\item Acc, l'accettanza è la quantità più difficile da stimare: a queste distanze tra sorgente e PMT dipende in maniera importante dall'efficienza sul bordo degli scintillatori.
+\end{itemize}
 
 
  \begin{figure}[h]
 	\hspace{-4em}
 	\includegraphics[width=44em]{immagini/3gamma_signal}
-	\caption{\label{fig:3gamma_signal} I dati qui rappresentati sono le coincidenze a 3 di una delle 2 prese dati di segnale. Nella colonna di sinistra sono mostrati gli scetter plot di ciascuna coppia di canali; nella colonna di destra sono mostrati gli scatter plot di ciascuna coppia di canali dove sono stati selezionati solo gli eventi con energia nell' altro canale in un certo intervallo centrato sul segnale atteso. I box rossi indicano i limiti degli intervalli su ciascun canale. Il segnale è chiaramente visibile nel box.}
+	\caption{\label{fig:3gamma_signal} I dati qui rappresentati sono le coincidenze a 3 di una delle 2 prese dati di segnale. Nella colonna di sinistra sono mostrati gli spettri 2D di ciascuna coppia di rivelatori; nella colonna di destra sono mostrati gli spettri 2D di ciascuna coppia di rivelatori dove sono stati selezionati solo gli eventi con energia nell'altro rivelatore in un certo intervallo centrato sul segnale atteso. I box rossi indicano i limiti degli intervalli su ciascun rivelatore. Il segnale è chiaramente visibile nel box.}
 \end{figure}
 
  \begin{figure}[h]
 	\hspace{-4em}
 	\includegraphics[width=44em]{immagini/3gamma_noise}
-	\caption{\label{fig:3gamma_noise} I dati qui rappresentati sono le coincidenze a 3 nella presa dati di rumore. Nella colonna di sinistra sono mostrati gli scetter plot di ciascuna coppia di canali; nella colonna di destra sono mostrati gli scatter plot di ciascuna coppia di canali dove sono stati selezionati solo gli eventi con energia nell' altro canale in un certo intervallo centrato sul segnale atteso. I box rossi indicano i limiti degli intervalli su ciascun canale. Nessun segnale è visibile nel box.}
+	\caption{\label{fig:3gamma_noise} I dati qui rappresentati sono le coincidenze a 3 nella presa dati di rumore. Nella colonna di sinistra sono mostrati gli spettri 2D di ciascuna coppia di rivelatori; nella colonna di destra sono mostrati gli spettri 2D di ciascuna coppia di rivelatori dove sono stati selezionati solo gli eventi con energia nell'altro rivelatore in un certo intervallo centrato sul segnale atteso. I box rossi indicano i limiti degli intervalli su ciascun rivelatore. Nessun segnale è visibile nel box.}
 \end{figure}
 
 	

@@ -217,14 +217,14 @@ for d in arange(70,300,300):
         
         
         #________________________________________________________
-        #SCATTER PLOT 2D
+        #Spettro 2D 2D
         
         if (doplot==True):
             figure('sc2 '+file_name+' ch1/ch2/ch3: %d/%d/%d'%(ch1_lim[0]+d,ch2_lim[0]+d,ch3_lim[0]+d),figsize=(10, 16)).set_tight_layout(True)
             clf()
                   
             subplot(321)
-            title("Scatter plot PMT1/PMT2")
+            title("Spettro 2D PMT1/PMT2")
             _,_,_,im=plt.hist2d(out1,out2,bins=(bins_ch1,bins_ch2),norm=LogNorm(),cmap='jet')
             colorbar(im)
             plot(box_ch1,box_ch2,color="red")
@@ -238,7 +238,7 @@ for d in arange(70,300,300):
                 ylim(zoom_min_ch2,zoom_max_ch2)    
                 
             subplot(323)
-            title("Scatter plot PMT1/PMT3")
+            title("Spettro 2D PMT1/PMT3")
             _,_,_,im=plt.hist2d(out1,out3,bins=(bins_ch1,bins_ch3),norm=LogNorm(),cmap='jet')
             colorbar(im)
             plot(box_ch1,box_ch3,color="red")
@@ -252,7 +252,7 @@ for d in arange(70,300,300):
                 ylim(zoom_min_ch3,zoom_max_ch3)
             
             subplot(325)
-            title("Scatter plot PMT2/PMT3")
+            title("Spettro 2D PMT2/PMT3")
             _,_,_,im=plt.hist2d(out2,out3,bins=(bins_ch2,bins_ch3),norm=LogNorm(),cmap='jet')
             colorbar(im)
             plot(box_ch2_,box_ch3,color="red")
@@ -267,7 +267,7 @@ for d in arange(70,300,300):
             
             
             subplot(322)
-            title("Scatter plot PMT1/PMT2 \n PMT3 in (%d,%d)[keV]"%(ch3_lim[0],ch3_lim[1]))
+            title("Spettro 2D PMT1/PMT2 \n PMT3 in (%d,%d)[keV]"%(ch3_lim[0],ch3_lim[1]))
             _,_,_,im=plt.hist2d(out1_12,out2_12,bins=(bins_ch1,bins_ch2),norm=LogNorm(),cmap='jet')
             colorbar(im)
             
@@ -280,7 +280,7 @@ for d in arange(70,300,300):
             ylim(zoom_min_ch2,zoom_max_ch2)
              
             subplot(324)
-            title("Scatter plot PMT1/PMT3 \n PMT2 in (%d,%d)[keV]"%(ch2_lim[0],ch2_lim[1]))
+            title("Spettro 2D PMT1/PMT3 \n PMT2 in (%d,%d)[keV]"%(ch2_lim[0],ch2_lim[1]))
             _,_,_,im=plt.hist2d(out1_13,out3_13,bins=(bins_ch1,bins_ch3),norm=LogNorm(),cmap='jet')
             colorbar(im)
             
@@ -293,7 +293,7 @@ for d in arange(70,300,300):
             ylim(zoom_min_ch3,zoom_max_ch3)
                 
             subplot(326)
-            title("Scatter plot  PMT2/PMT3 \n PMT1 in (%d,%d)[keV]"%(ch1_lim[0],ch1_lim[1]))
+            title("Spettro 2D  PMT2/PMT3 \n PMT1 in (%d,%d)[keV]"%(ch1_lim[0],ch1_lim[1]))
             _,_,_,im=plt.hist2d(out2_23,out3_23,bins=(bins_ch2,bins_ch3),norm=LogNorm(),cmap='jet')
             colorbar(im)
             
