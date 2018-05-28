@@ -28,7 +28,7 @@ per salvare e poter leggere via software i trigger.
 
 % Per dare precedenza agli eventi più rari abbiamo collegato questi trigger ad un modulo \emph{or} ritardando i trigger singoli rispetto a quelli di coincidenze a 2 e questi ultimi rispetto alle coincidenze a 3. L'uscita dell'\emph{or} era poi inviata ad un \emph{timer} che generava il gate dell'ADC. L'altro canale di questo \emph{timer} veniva usato per avviare o fermare le acquisizioni.
 
-Poiché i trigger sui singoli rivelatori hanno un rate molto più alto delle coincidenze
+Poiché i trigger sui singoli rivelatori hanno un rate molto più alto delle coincidenze,
 abbiamo introdotto una decimazione con un tempo morto regolabile.
 
 \subsubsection{Problemi riscontrati}
@@ -65,10 +65,6 @@ Confrontando gli spettri del \na{} abbiamo visto che i fotoni emessi dalla sorge
 Il grafico in \autoref{distanze} mostra l'energia dei fotopicchi del sodio in funzione del rate misurato ponendo la sorgente ad attività elevata a varie distanze dal rivelatore.
 I dati della misura si trovano \autoref{tabella forte}.
 
-\marginpar{Nella \autoref{distanze}
-la sorgente debole non deve essere una riga
-ma un punto perché ha un rate.}
-
 \begin{figure}[h]
 \centering
 \includegraphics[width=28 em]{immagini/naforte}
@@ -101,4 +97,4 @@ Dal grafico si evince che anche con un rate di eventi minore di $(\SI{100}{\micr
 Quindi in seguito (nel circuito B) abbiamo deciso di mettere un tempo morto di \SI{70}{\micro s} sui segnali da inviare all'ADC, ma il problema non si è risolto.
 Abbiamo comunque escluso che il problema possa essere dovuto interamente a pile-up dei segnali dei rivelatori.
 
-Alla fine quindi deciso di utilizzare la sorgente ad attività minore per misurare la massa dell'elettrone e quella ad attività maggiore per le misure in cui non ci interessa con precisione l'energia degli eventi o cerchiamo eventi rari.
+Alla fine decidiamo di utilizzare la sorgente ad attività minore per misurare la massa dell'elettrone e quella ad attività maggiore per le misure in cui non ci interessa con precisione l'energia degli eventi o cerchiamo eventi rari.
