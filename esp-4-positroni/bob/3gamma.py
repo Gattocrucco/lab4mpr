@@ -124,9 +124,13 @@ for d in arange(70,300,300):
         ch1_en = Energy(ang1,ang2)[0]
         ch2_en = Energy(ang1,ang2)[1]
         ch3_en = Energy(ang1,ang2)[2]  
-        ch1_lim = [ch1_en-d1inf,ch1_en+d1sup]
-        ch2_lim = [ch2_en-d2inf,ch2_en+d2sup]
-        ch3_lim = [ch3_en-d3inf,ch3_en+d3sup]  
+#        ch1_lim = [ch1_en-d1inf,ch1_en+d1sup]
+#        ch2_lim = [ch2_en-d2inf,ch2_en+d2sup]
+#        ch3_lim = [ch3_en-d3inf,ch3_en+d3sup]  
+        
+        ch1_lim = [301,477]
+        ch2_lim = [206,383]
+        ch3_lim = [297,434] 
         
         box_ch1 = [ch1_lim[0],ch1_lim[0],ch1_lim[1],ch1_lim[1],ch1_lim[0]]
         box_ch2 = [ch2_lim[0],ch2_lim[1],ch2_lim[1],ch2_lim[0],ch2_lim[0]]
@@ -179,7 +183,7 @@ for d in arange(70,300,300):
         
         #FIT LIKELIHOOD
         samples = array([ch1[trs_s],ch2[trs_s],ch3[trs_s]])
-        volume = (2*d) ** 3
+        volume = (ch1_lim[1]-ch1_lim[0])*(ch2_lim[1]-ch2_lim[0])*(ch3_lim[1]-ch3_lim[0])
         p0 = np.array([ch1_en,ch2_en,ch3_en,10,10,10,10,10,10,-0.1])
         output = likelihood_fit(minus_log_likelihood, p0, args=(samples, volume))
         #print(lab.format_par_cov(output.par, output.cov))
@@ -199,12 +203,12 @@ for d in arange(70,300,300):
         uf_str = np.vectorize(lambda uf: '{:P}'.format(uf) if abs(uf.s / uf.n) > 1e-6 else '{:.3g}'.format(uf.n))
         mu_pretty = lab.TextMatrix([uf_str(mu)])
         corr_pretty = lab.TextMatrix(uf_str(Corr))
-#        print('Mean:')
-#        print(mu_pretty)
-#        print('\nCorrelation matrix:')
-#        print(corr_pretty)
-#        print('\nNumber of signal (fraction):')
-#        print('{:P} ({:P})'.format(N_sig, fraction))
+        print('Mean:')
+        print(mu_pretty)
+        print('\nCorrelation matrix:')
+        print(corr_pretty)
+        print('\nNumber of signal (fraction):')
+        print('{:P} ({:P})'.format(N_sig, fraction))
         events_fit[i]=N_sig
         
 
@@ -220,12 +224,12 @@ for d in arange(70,300,300):
             clf()
                   
             subplot(321)
-            title("Scatter plot ch1/ch2")
+            title("Scatter plot PMT1/PMT2")
             _,_,_,im=plt.hist2d(out1,out2,bins=(bins_ch1,bins_ch2),norm=LogNorm(),cmap='jet')
             colorbar(im)
             plot(box_ch1,box_ch2,color="red")
-            xlabel("ch1 [keV]")
-            ylabel("ch2 [keV]")
+            xlabel("PMT1 [keV]")
+            ylabel("PMT2 [keV]")
             if(scala=="auto"):
                 xlim(-20,1400)
                 ylim(-20,1400)
@@ -234,12 +238,12 @@ for d in arange(70,300,300):
                 ylim(zoom_min_ch2,zoom_max_ch2)    
                 
             subplot(323)
-            title("Scatter plot ch1/ch3")
+            title("Scatter plot PMT1/PMT3")
             _,_,_,im=plt.hist2d(out1,out3,bins=(bins_ch1,bins_ch3),norm=LogNorm(),cmap='jet')
             colorbar(im)
             plot(box_ch1,box_ch3,color="red")
-            xlabel("ch1 [keV]")
-            ylabel("ch3 [keV]")
+            xlabel("PMT1 [keV]")
+            ylabel("PMT3 [keV]")
             if(scala=="auto"):
                 xlim(-20,1400)
                 ylim(-20,1400)
@@ -248,12 +252,12 @@ for d in arange(70,300,300):
                 ylim(zoom_min_ch3,zoom_max_ch3)
             
             subplot(325)
-            title("Scatter plot ch2/ch3")
+            title("Scatter plot PMT2/PMT3")
             _,_,_,im=plt.hist2d(out2,out3,bins=(bins_ch2,bins_ch3),norm=LogNorm(),cmap='jet')
             colorbar(im)
             plot(box_ch2_,box_ch3,color="red")
-            xlabel("ch2 [keV]")
-            ylabel("ch3 [keV]")
+            xlabel("PMT2 [keV]")
+            ylabel("PMT3 [keV]")
             if(scala=="auto"):
                 xlim(-20,1400)
                 ylim(-20,1400)
@@ -263,40 +267,40 @@ for d in arange(70,300,300):
             
             
             subplot(322)
-            title("Scatter plot ch1/ch2 \n ch3 in (%d,%d)[keV]"%(ch3_lim[0],ch3_lim[1]))
+            title("Scatter plot PMT1/PMT2 \n PMT3 in (%d,%d)[keV]"%(ch3_lim[0],ch3_lim[1]))
             _,_,_,im=plt.hist2d(out1_12,out2_12,bins=(bins_ch1,bins_ch2),norm=LogNorm(),cmap='jet')
             colorbar(im)
             
             plot(box_ch1,box_ch2,color="red")
             
-            xlabel("ch1 [keV]")
-            ylabel("ch2 [keV]")
+            xlabel("PMT1 [keV]")
+            ylabel("PMT2 [keV]")
         
             xlim(zoom_min_ch1,zoom_max_ch1)
             ylim(zoom_min_ch2,zoom_max_ch2)
              
             subplot(324)
-            title("Scatter plot ch1/ch3 \n ch2 in (%d,%d)[keV]"%(ch2_lim[0],ch2_lim[1]))
+            title("Scatter plot PMT1/PMT3 \n PMT2 in (%d,%d)[keV]"%(ch2_lim[0],ch2_lim[1]))
             _,_,_,im=plt.hist2d(out1_13,out3_13,bins=(bins_ch1,bins_ch3),norm=LogNorm(),cmap='jet')
             colorbar(im)
             
             plot(box_ch1,box_ch3,color="red")
             
-            xlabel("ch1 [keV]")
-            ylabel("ch3 [keV]")
+            xlabel("PMT1 [keV]")
+            ylabel("PMT3 [keV]")
         
             xlim(zoom_min_ch1,zoom_max_ch1)
             ylim(zoom_min_ch3,zoom_max_ch3)
                 
             subplot(326)
-            title("Scatter plot  ch2/ch3 \n con ch1 in (%d,%d)[keV]"%(ch1_lim[0],ch1_lim[1]))
+            title("Scatter plot  PMT2/PMT3 \n PMT1 in (%d,%d)[keV]"%(ch1_lim[0],ch1_lim[1]))
             _,_,_,im=plt.hist2d(out2_23,out3_23,bins=(bins_ch2,bins_ch3),norm=LogNorm(),cmap='jet')
             colorbar(im)
             
             plot(box_ch2_,box_ch3,color="red")
             
-            xlabel("ch2 [keV]")
-            ylabel("ch3 [keV]")
+            xlabel("PMT2 [keV]")
+            ylabel("PMT3 [keV]")
         
             xlim(zoom_min_ch2,zoom_max_ch2)
             ylim(zoom_min_ch3,zoom_max_ch3)
