@@ -11,6 +11,7 @@ E_3 &= \frac{2 m_e}{\frac{\sin\beta \;+\;(1+\cos\alpha)}{\sin\alpha}+\cos\beta+1
 E_2 &= E_3 \cdot \frac{\sin\beta}{\sin\alpha}\\
 E_1 &= 2m_e - E_2 - E_3\\
 \end{align*}
+dove $\alpha$ e $\beta$ sono rispettivamente gli i supplementari degli angoli tra il fotone 1 e i fotoni 2 e 3.
 
 \begin{figure}[h]
 	\centering
@@ -58,19 +59,15 @@ Si sono adottati alcuni accorgimenti per migliorare il rapporto segnale rumore:
 	\item aspettandoci che i rimbalzi tra un rivelatore e l'altro possano rappresentare una parte rilevante del rumore interponiamo dei blocchi di piombo tra un rivelatore e l'altro, abbastanza spessi da fermare la maggior parte dei fotoni (la lunghezza di interazione per energie nel range $\SI{300/500}{keV}$ è $\sim \SI{0.5}{cm}$ e si sono usati blocchi da $\sim \SI{4}{cm}$);
 	\item dopo aver osservato la distribuzione tipica del rumore decidiamo gli angoli a cui effettuare la misura di segnale in modo che l'energia dello stesso sia nella zona con meno rumore possibile: 
 \end{itemize}
-La misura finale è stata presa nelle condizioni schematizzate in \autoref{fig:schema_3gamma}\marginpar{fare figura} e riproposta nella foto in \autoref{fig:foto_3gamma}, dove sono chiari i vincoli imposti dall'apparato: i rivelatori distano circa $\SI{12}{cm}$ dalla sorgente, $\alpha \simeq \SI{59}{\degree}$ e $\beta \simeq \SI{43}{\degree}$. Il picco delle energie attese dei tre fotoni sono $E_1= \SI{397}{keV}$, $E_2 =\SI{277}{keV}$, $E_3=\SI{347}{keV}$.
 
-Sono state realizzate due prese dati di segnale e una di rumore: sono state svolte quando il laboratorio è chiuso e la risposta dei rivelatori è stabile, per lo stesso motivo la parte iniziale e finale della presa dati è stata tagliata: il risultato sono due misure di segnale da $\SI{9.7}{h}$ e $\SI{15.3}{h}$ e una di rumore da $\SI{11.1}{h}$.
-
-\subsubsection{Analisi}
-Durante la presa dati sono state misurate e salvate le sole coincidenze a 3. Le energie dei tre rivelatori sono state calibrate per ogni presa dati a partire dai dati stessi, fittando il picco di annichilazione e quello del $^{22}\text{Ne}$ ben visibili nel rumore. I PMT1 e 2 sono stati calibrati con un modello lineare, mentre per il PMT3, notevolmente meno lineare degli altri, si è deciso di usare una parabola passante per 0. Questa scelta è motivata dal fatto che, avendo solo due punti, un'altro vincolo è necessario e non si può fare affidamento sui precedenti fit di risposta parabolica del PMT3 poiché questo si scalibra molto nel tempo e ci interessa la risposta a energie lontane da quelle delle precenti calibrazioni (inferiori al picco di annichilazione); questa scelta può poi essere verificata a posteriori controllando che il segnale sia alla giusta energia su quel canale.
-
-Per stimare l'entità del segnale osservato si è proceduto in due modi.
-\paragraph{Stima diretta del rumore}
-
-
-
-
+La misura finale è stata presa nelle condizioni schematizzate in \autoref{fig:schema_3gamma}\marginpar{fare figura} e riproposta nella foto in \autoref{fig:foto_3gamma}, dove sono chiari i vincoli imposti dall'apparato: i PMT1, 2 e 3 distano rispettivamente $\SI{10.4(1)}{cm}$, $\SI{9.4(1)}{cm}$ e $\SI{11.0(1)}{cm}$  dalla sorgente e $\alpha \simeq \SI{59(1)}{\degree}$ e $\beta \simeq \SI{43(1)}{\degree}$. Il picco delle energie attese dei tre fotoni sono $E_1= \SI{397}{keV}$, $E_2 =\SI{277}{keV}$, $E_3=\SI{347}{keV}$.
+ \begin{figure}[h]
+	\centering
+	\includegraphics[width=20em]{immagini/schema3gamma}
+	\caption{\label{fig:3gamma_signal} Schema dell'apparato utilizzato per la misura del rate di annichilazione in tre fotoni.}
+	\label{fig:foto_3gamma}
+\end{figure}
+Sono state realizzate due prese dati di segnale e una di rumore: sono state svolte quando il laboratorio è chiuso e la risposta dei rivelatori è stabile, con lo stesso obiettivo la parte iniziale e finale della presa dati è stata tagliata: il risultato sono due misure di segnale da $\SI{9.7}{h}$ e $\SI{15.3}{h}$ e una di rumore da $\SI{11.1}{h}$.
  \begin{figure}[h]
 	\centering
 	\includegraphics[width=20em]{immagini/3gamma_foto}
@@ -78,17 +75,56 @@ Per stimare l'entità del segnale osservato si è proceduto in due modi.
 	\label{fig:foto_3gamma}
 \end{figure}
 
+\subsubsection{Analisi}
+Durante la presa dati sono state misurate e salvate le sole coincidenze a 3. Le energie dei tre rivelatori sono state calibrate per ogni presa dati a partire dai dati stessi, fittando il picco di annichilazione e quello del $^{22}\text{Ne}$ ben visibili nel rumore. I PMT1 e 2 sono stati calibrati con un modello lineare, mentre per il PMT3, notevolmente meno lineare degli altri, si è deciso di usare una parabola passante per 0. Questa scelta è motivata dal fatto che, avendo solo due punti, un'altro vincolo è necessario e non si può fare affidamento sui precedenti fit di risposta parabolica del PMT3 poiché questo si scalibra molto nel tempo e ci interessa la risposta a energie lontane da quelle delle precenti calibrazioni (inferiori al picco di annichilazione); questa scelta può poi essere verificata a posteriori controllando che il segnale sia alla giusta energia su quel canale.
+
+Per stimare l'entità del segnale osservato si è proceduto in due modi.
+\paragraph{Stima diretta del rumore}
+Determiniamo l'energia a cui ci attendiamo di osservare il segnale e stimiamo la larghezza del picco 3D: l'allargamento è sostanzialmente dovuto a 2 processi:
+\begin{itemize}
+	\item i fotoni in arrivo non sono monocromatici a causa della dimensione fisica degli scintillatori e gli angoli $\alpha$ e $\beta$ possono variare in un certo range e conseguentemente le energie si troveranno in range massimo:  $E_1 \in [341,437]\si{keV}$, $E_2 \in [246,343]\si{keV}$ e $E_3 \in [337,394]\si{keV}$; si tratta di un range massimo, la forma della distribuzione dipenderà sopratutto dall'efficienza dei PMT che a queste distanze cala lentamente sui bordi;
+	\item la risoluzione dello strumento che a queste energie può essere stimata dalla formula (vedi \cite{6}):
+	$\sigma_E(E) = a \cdot E \cdot \frac{2.27 + 7.28 \cdot E ^ {-0.29} - 2.41 \cdot E ^ {0.21}} {235}$ e che all'energie di interesse vale circa $\SI{60}{keV}$
+\end{itemize}
+Si è deciso quindi di selezionare gli eventi in una scatola 3D che contenga la quasi totalità del segnale, in modo da non preoccuparci di dover stimare l'efficienza di questa selezione, complicata da simulare. 
+I limiti scelti per la selezione del segnale sono stati: $E_1 \in [301,477]\si{keV}$, $E_2 \in [206,383]\si{keV}$ e $E_3 \in [297,434]\si{keV}$.
+I dati raccolti e i limiti della selezione in energia eseguita sono mostrati in \autoref{fig:3gamma_signal} (segnale) e \autoref{fig:3gamma_noise} (rumore).
+Nelle due misure di segnale il gli eventi che superano questa selezione sono 4763. 
+A questo punto ripetiamo lo stesso procedimento per la misura di rumore, in questa si contano 522 eventi nel box.
+
+La misura di rumore fatta come descritta sopra ha lo svantaggio di spostare leggermente la sorgente rispetto ai PMT, ci aspettiamo che questo non cambi sostanzialmente l'energia tipica del rumore, ma poiché la sorgente è molto vicina ai rivelatori, anche piccoli spostamenti portano ad un sostanziale cambiamento di rate. Correggiamo imponendo che il rate totale nella misura di rumore sia uguale a quelle di segnale e moltiplichiamo gli eventi di rumore trovati nel box per il rapporto dei rate totali, questo procedimento è giustificato dal fatto che il segnale fisico è una piccola parte ($< 1\%$) degli eventi totali osservati.
+
+I rate trovati così vanno corretti per l'efficienza dell'ADC che avendo lunghi tempi morti perde una certa frazione degli eventi triggerati, questa è ben stimata con il rapporto tra gli eventi totali triggerati dalla coincidenza e eventi toali triggerati dall'ADC per ciascuna presa dati.
+Il rate di annichilazione a 3 fotoni così trovato è $R_{3\gamma} = \SI{3.78(15)e-2}{s^{-1}}$, dove l'errore riportato è puramente statistico ed è sostanzialmente dovuto alla statistica di eventi nel box.
+
+\paragraph{Fit gaussiana 3D}
+Il metodo sopra esposto ha la criticità di dipendere dalla dimensione del box: variando di qualche decina di $\si{keV}$ i bordi dello stesso il rate di segnale misurato cambia incompatibilmente con l'errore, questo può essere dovuto a:
+\begin{itemize}
+	\item il picco 3D è abbastanza largo da fondersi con le spalle Compton, questo tipo di rumore dovuto alla stessa annichilazione in 3 fotoni non è presente nella misura di rumore e non è perciò stimabile con questo procedimento;
+	\item la misura di rumore potrebbe non riprodurre il rumore delle misure di segnale abbastanza fedelmente poiché cambiano gli angoli tra sorgente e i PMT e i rimbalzi cambiano energia.
+\end{itemize}
+Dato che il segnale è ben visibile nei nostri dati decidiamo di fittarlo con una gaussiana 3D più un fondo costante: 
+%\begin{equation*}
+%frac{N_{3\gamma}}{\sqrt{\det(2\piV)}} \cdot exp ( \frac{1}{2} (textbf{x}-\textbf{\mu})^T V^{-1}( \textbf{x}-\textbf{\mu} ) ) + N_{noise}
+%\end{equation*}
+Data la quantità esigua di dati per un fit in 3 dimensioni decidiamo di eseguire un fit di likelihood. I dati selezionati per il fit sono gli stessi del punto precedenti e il cui risultato è una normalizzazione $N_{\gamma} = \SI{1.89(6)e2}{}$. Il risulato del fit corretto per l'inefficienza dell'ADC come al punto precedente porta ad una stima del rate di annichilazioni a 3 fotoni di $R_{3\gamma} = \SI{2.60(8)e-2}{s^{-1}}$, dove anche qui l'errore è solo quello statistico del fit.
+Tuttavia anche in questo caso la stima dipende dalla dimensione del box su cui selezioniamo i dati da fittare e varia incompatibilmente con l'errore statistico. Questo potrebbe essere dovuto al fatto che una costante stimi male il fondo in quella zona e/o che il segnale è poco gaussiano.
+
+Essendo le due misure fatte incompatibili decidiamo di prenderne la media e stimare l'errore sistematico con la semi-differenza: $R_{3\gamma} = \SI{3.2(6)}{s^{-1}}$.
+
+\subsubsection{Stima del rapporto dei branching ratio}
+Per la misura del rapporto dei branching ratio oltre 
+
+
  \begin{figure}[h]
-	\centering
-	\includegraphics[width=38em]{immagini/3gamma_signal}
-	\hspace{-3.5em}
+	\hspace{-4em}
+	\includegraphics[width=44em]{immagini/3gamma_signal}
 	\caption{\label{fig:3gamma_signal} I dati qui rappresentati sono le coincidenze a 3 di una delle 2 prese dati di segnale. Nella colonna di sinistra sono mostrati gli scetter plot di ciascuna coppia di canali; nella colonna di destra sono mostrati gli scatter plot di ciascuna coppia di canali dove sono stati selezionati solo gli eventi con energia nell' altro canale in un certo intervallo centrato sul segnale atteso. I box rossi indicano i limiti degli intervalli su ciascun canale. Il segnale è chiaramente visibile nel box.}
 \end{figure}
 
  \begin{figure}[h]
-	\centering
-	\includegraphics[width=38em]{immagini/3gamma_noise}
-	\hspace{-3.5em}
+	\hspace{-4em}
+	\includegraphics[width=44em]{immagini/3gamma_noise}
 	\caption{\label{fig:3gamma_noise} I dati qui rappresentati sono le coincidenze a 3 nella presa dati di rumore. Nella colonna di sinistra sono mostrati gli scetter plot di ciascuna coppia di canali; nella colonna di destra sono mostrati gli scatter plot di ciascuna coppia di canali dove sono stati selezionati solo gli eventi con energia nell' altro canale in un certo intervallo centrato sul segnale atteso. I box rossi indicano i limiti degli intervalli su ciascun canale. Nessun segnale è visibile nel box.}
 \end{figure}
 
