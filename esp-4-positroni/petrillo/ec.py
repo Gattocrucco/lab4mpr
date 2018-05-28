@@ -146,7 +146,7 @@ cuts = {
     ('gamma', 2): [620, 750]
 }
 
-labels = {key: '$\\{}_{}$'.format(*key) for key in cuts}
+labels.update({key: '$\\{}_{}$'.format(*key) for key in cuts})
 
 for key in cuts:
     print('_____________{}{}_____________'.format(key[0], key[1]))
@@ -221,6 +221,7 @@ ratios['p_beta12_tot/p_beta12'] = ratios['p_beta1_tot/p_beta1'] + ratios['p_beta
 Y = {}
 Y.update(norm)
 Y.update(ratios)
+labels.update({key: '${}$'.format(key.replace('beta', '{\\beta').replace('gamma', '{\\gamma').replace('1', '1}').replace('2', '2}').replace('1}2}', '12}').replace('_tot', '\\tot')) for key in ratios})
 
 p0 = dict(
     Rp_beta12=norm['betabeta'],
@@ -358,6 +359,33 @@ print(gvar.fmt_errorbudget(output_var, input_var, percent=False))
 
 print('______________peak fit table_______________')
 print(lab.TextMatrix(peak_fit_table).transpose().latex())
+
+print('_______________Y fit table________________')
+rate_fit_table = []
+Y_fitted = fcn(fit.p)
+new_labels = {}
+for key in labels:
+    if key in ratios:
+        new_labels[key] = labels[key]
+    else:
+        new_labels[key] = '$R_{%s}$' % (labels[key].split('$')[1],)
+for key in Y:
+    rate_fit_table.append([
+        new_labels[key],
+        fmt(Y[key]),
+        fmt(Y_fitted[key])
+    ])
+print(lab.TextMatrix(rate_fit_table).latex(newline=' & \n'))
+
+print('______________parameters fit table________________')
+par_fit_table = []
+par_labels = {key: '${}$'.format(key.replace('Rp', '\\R p').replace('R_tot', '\\Rtot').replace('beta', '{\\beta').replace('gamma', '{\\gamma').replace('1', '1}').replace('2', '2}').replace('1}2}', '12}').replace('_tot', '\\tot')) for key in fit.p}
+for key in fit.p:
+    par_fit_table.append([
+        par_labels[key],
+        fmt(fit.p[key])
+    ])
+print(lab.TextMatrix(par_fit_table).latex())
 
 fig.show()
 fig_diff.show()
